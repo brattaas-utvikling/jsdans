@@ -8,7 +8,7 @@ export default function HeroSection() {
       {/* Background image with overlay */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1508700929628-666bc8bd84ea?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTY0fHxkYW5jZXIlMjBjb250ZW1wb3Jhcnl8ZW58MHwwfDB8fHwy"
+          src="https://images.unsplash.com/photo-1621976360623-004223992275?q=80&w=1728&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           alt="Dancers in motion"
           className="w-full h-full object-cover"
         />
