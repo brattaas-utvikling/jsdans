@@ -1,0 +1,436 @@
+// Dance studio schedule data with detailed information for the weekly timetable
+
+export const STUDIO_ROOMS = ["Studio A", "Studio B", "Studio C"];
+
+export const DAYS_OF_WEEK = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
+
+export const TIME_SLOTS = [
+  "9:00 AM",
+  "10:00 AM",
+  "11:00 AM",
+  "12:00 PM",
+  "1:00 PM",
+  "2:00 PM",
+  "3:00 PM",
+  "4:00 PM",
+  "5:00 PM",
+  "6:00 PM",
+  "7:00 PM",
+  "8:00 PM",
+];
+
+export const LEVEL_COLORS: { [key: string]: { bg: string; border: string; text: string } } = {
+  Beginner: {
+    bg: "bg-blue-100 dark:bg-blue-900/20",
+    border: "border-blue-200 dark:border-blue-800",
+    text: "text-blue-600 dark:text-blue-400",
+  },
+  Intermediate: {
+    bg: "bg-purple-100 dark:bg-purple-900/20",
+    border: "border-purple-200 dark:border-purple-800",
+    text: "text-purple-600 dark:text-purple-400",
+  },
+  Advanced: {
+    bg: "bg-coral-100 dark:bg-coral-900/20",
+    border: "border-coral-200 dark:border-coral-800",
+    text: "text-coral-600 dark:text-coral-400",
+  },
+  "All Levels": {
+    bg: "bg-mint-100 dark:bg-mint-900/20",
+    border: "border-mint-200 dark:border-mint-800",
+    text: "text-mint-600 dark:text-mint-400",
+  },
+};
+
+export const AGE_GROUP_COLORS = {
+  Kids: {
+    bg: "bg-yellow-100 dark:bg-yellow-900/20",
+    border: "border-yellow-200 dark:border-yellow-800",
+    text: "text-yellow-600 dark:text-yellow-400",
+  },
+  Teens: {
+    bg: "bg-pink-100 dark:bg-pink-900/20",
+    border: "border-pink-200 dark:border-pink-800",
+    text: "text-pink-600 dark:text-pink-400",
+  },
+  Adults: {
+    bg: "bg-teal-100 dark:bg-teal-900/20",
+    border: "border-teal-200 dark:border-teal-800",
+    text: "text-teal-600 dark:text-teal-400",
+  },
+  Seniors: {
+    bg: "bg-orange-100 dark:bg-orange-900/20",
+    border: "border-orange-200 dark:border-orange-800",
+    text: "text-orange-600 dark:text-orange-400",
+  },
+};
+
+export const WEEKLY_SCHEDULE = [
+  {
+    id: 1,
+    className: "Hip Hop",
+    day: "Monday",
+    startTime: "4:00 PM",
+    endTime: "5:30 PM",
+    level: "Beginner",
+    ageGroup: "Teens",
+    instructor: "Marcus Johnson",
+    room: "Studio A",
+    maxCapacity: 20,
+    currentEnrollment: 15,
+  },
+  {
+    id: 2,
+    className: "Contemporary",
+    day: "Monday",
+    startTime: "6:00 PM",
+    endTime: "7:30 PM",
+    level: "Intermediate",
+    ageGroup: "Adults",
+    instructor: "Emma Wilson",
+    room: "Studio A",
+    maxCapacity: 18,
+    currentEnrollment: 12,
+  },
+  {
+    id: 3,
+    className: "Ballet Fundamentals",
+    day: "Monday",
+    startTime: "4:00 PM",
+    endTime: "5:00 PM",
+    level: "Beginner",
+    ageGroup: "Kids",
+    instructor: "Sophia Martinez",
+    room: "Studio B",
+    maxCapacity: 15,
+    currentEnrollment: 10,
+  },
+  {
+    id: 4,
+    className: "Breakdance",
+    day: "Monday",
+    startTime: "6:00 PM",
+    endTime: "7:30 PM",
+    level: "Beginner",
+    ageGroup: "Teens",
+    instructor: "Alex Chen",
+    room: "Studio B",
+    maxCapacity: 15,
+    currentEnrollment: 8,
+  },
+  {
+    id: 5,
+    className: "Jazz",
+    day: "Tuesday",
+    startTime: "4:00 PM",
+    endTime: "5:30 PM",
+    level: "Beginner",
+    ageGroup: "Teens",
+    instructor: "Sophia Martinez",
+    room: "Studio A",
+    maxCapacity: 20,
+    currentEnrollment: 16,
+  },
+  {
+    id: 6,
+    className: "Contemporary",
+    day: "Tuesday",
+    startTime: "6:00 PM",
+    endTime: "7:30 PM",
+    level: "Beginner",
+    ageGroup: "Adults",
+    instructor: "Emma Wilson",
+    room: "Studio A",
+    maxCapacity: 18,
+    currentEnrollment: 14,
+  },
+  {
+    id: 7,
+    className: "Hip Hop",
+    day: "Tuesday",
+    startTime: "5:00 PM",
+    endTime: "6:30 PM",
+    level: "Intermediate",
+    ageGroup: "Teens",
+    instructor: "Marcus Johnson",
+    room: "Studio B",
+    maxCapacity: 18,
+    currentEnrollment: 15,
+  },
+  {
+    id: 8,
+    className: "Tap Dance",
+    day: "Tuesday",
+    startTime: "7:00 PM",
+    endTime: "8:30 PM",
+    level: "Beginner",
+    ageGroup: "Adults",
+    instructor: "James Wilson",
+    room: "Studio B",
+    maxCapacity: 15,
+    currentEnrollment: 8,
+  },
+  {
+    id: 9,
+    className: "Hip Hop",
+    day: "Wednesday",
+    startTime: "6:00 PM",
+    endTime: "7:30 PM",
+    level: "Intermediate",
+    ageGroup: "Adults",
+    instructor: "Marcus Johnson",
+    room: "Studio A",
+    maxCapacity: 20,
+    currentEnrollment: 18,
+  },
+  {
+    id: 10,
+    className: "Ballet",
+    day: "Wednesday",
+    startTime: "4:00 PM",
+    endTime: "5:30 PM",
+    level: "Intermediate",
+    ageGroup: "Teens",
+    instructor: "Sophia Martinez",
+    room: "Studio A",
+    maxCapacity: 15,
+    currentEnrollment: 12,
+  },
+  {
+    id: 11,
+    className: "Breakdance",
+    day: "Wednesday",
+    startTime: "4:00 PM",
+    endTime: "5:30 PM",
+    level: "Intermediate",
+    ageGroup: "Teens",
+    instructor: "Alex Chen",
+    room: "Studio B",
+    maxCapacity: 15,
+    currentEnrollment: 10,
+  },
+  {
+    id: 12,
+    className: "Contemporary",
+    day: "Wednesday",
+    startTime: "6:00 PM",
+    endTime: "7:30 PM",
+    level: "Advanced",
+    ageGroup: "Adults",
+    instructor: "Emma Wilson",
+    room: "Studio B",
+    maxCapacity: 15,
+    currentEnrollment: 12,
+  },
+  {
+    id: 13,
+    className: "Jazz",
+    day: "Thursday",
+    startTime: "6:00 PM",
+    endTime: "7:30 PM",
+    level: "Intermediate",
+    ageGroup: "Adults",
+    instructor: "Sophia Martinez",
+    room: "Studio A",
+    maxCapacity: 18,
+    currentEnrollment: 15,
+  },
+  {
+    id: 14,
+    className: "Contemporary",
+    day: "Thursday",
+    startTime: "4:00 PM",
+    endTime: "5:30 PM",
+    level: "Intermediate",
+    ageGroup: "Teens",
+    instructor: "Emma Wilson",
+    room: "Studio A",
+    maxCapacity: 18,
+    currentEnrollment: 14,
+  },
+  {
+    id: 15,
+    className: "Breakdance",
+    day: "Thursday",
+    startTime: "5:00 PM",
+    endTime: "6:30 PM",
+    level: "Advanced",
+    ageGroup: "Teens",
+    instructor: "Alex Chen",
+    room: "Studio B",
+    maxCapacity: 12,
+    currentEnrollment: 10,
+  },
+  {
+    id: 16,
+    className: "Hip Hop",
+    day: "Thursday",
+    startTime: "7:00 PM",
+    endTime: "8:30 PM",
+    level: "Advanced",
+    ageGroup: "Adults",
+    instructor: "Marcus Johnson",
+    room: "Studio B",
+    maxCapacity: 15,
+    currentEnrollment: 12,
+  },
+  {
+    id: 17,
+    className: "Breakdance",
+    day: "Friday",
+    startTime: "5:00 PM",
+    endTime: "6:30 PM",
+    level: "Advanced",
+    ageGroup: "Adults",
+    instructor: "Alex Chen",
+    room: "Studio A",
+    maxCapacity: 15,
+    currentEnrollment: 12,
+  },
+  {
+    id: 18,
+    className: "Hip Hop",
+    day: "Friday",
+    startTime: "4:00 PM",
+    endTime: "5:00 PM",
+    level: "Beginner",
+    ageGroup: "Kids",
+    instructor: "Marcus Johnson",
+    room: "Studio B",
+    maxCapacity: 15,
+    currentEnrollment: 10,
+  },
+  {
+    id: 19,
+    className: "Jazz",
+    day: "Friday",
+    startTime: "6:00 PM",
+    endTime: "7:30 PM",
+    level: "Advanced",
+    ageGroup: "Adults",
+    instructor: "Sophia Martinez",
+    room: "Studio B",
+    maxCapacity: 15,
+    currentEnrollment: 12,
+  },
+  {
+    id: 20,
+    className: "Hip Hop",
+    day: "Saturday",
+    startTime: "10:00 AM",
+    endTime: "11:30 AM",
+    level: "Advanced",
+    ageGroup: "Adults",
+    instructor: "Marcus Johnson",
+    room: "Studio A",
+    maxCapacity: 20,
+    currentEnrollment: 18,
+  },
+  {
+    id: 21,
+    className: "Jazz",
+    day: "Saturday",
+    startTime: "1:00 PM",
+    endTime: "2:30 PM",
+    level: "Advanced",
+    ageGroup: "Teens",
+    instructor: "Sophia Martinez",
+    room: "Studio A",
+    maxCapacity: 18,
+    currentEnrollment: 15,
+  },
+  {
+    id: 22,
+    className: "Contemporary",
+    day: "Saturday",
+    startTime: "11:00 AM",
+    endTime: "12:30 PM",
+    level: "Advanced",
+    ageGroup: "Teens",
+    instructor: "Emma Wilson",
+    room: "Studio B",
+    maxCapacity: 15,
+    currentEnrollment: 12,
+  },
+  {
+    id: 23,
+    className: "Breakdance",
+    day: "Saturday",
+    startTime: "1:00 PM",
+    endTime: "2:30 PM",
+    level: "Beginner",
+    ageGroup: "Kids",
+    instructor: "Alex Chen",
+    room: "Studio B",
+    maxCapacity: 12,
+    currentEnrollment: 8,
+  },
+  {
+    id: 24,
+    className: "Dance Fitness",
+    day: "Saturday",
+    startTime: "9:00 AM",
+    endTime: "10:00 AM",
+    level: "All Levels",
+    ageGroup: "Adults",
+    instructor: "James Wilson",
+    room: "Studio C",
+    maxCapacity: 25,
+    currentEnrollment: 20,
+  },
+  {
+    id: 25,
+    className: "Parent & Child Dance",
+    day: "Saturday",
+    startTime: "11:00 AM",
+    endTime: "12:00 PM",
+    level: "All Levels",
+    ageGroup: "Kids",
+    instructor: "Sophia Martinez",
+    room: "Studio C",
+    maxCapacity: 15,
+    currentEnrollment: 10,
+  },
+];
+
+// Helper function to get classes for a specific day and time slot
+export function getClassesForTimeSlot(day: string, timeSlot: string) {
+  return WEEKLY_SCHEDULE.filter(
+    (classItem) =>
+      classItem.day === day &&
+      ((timeSlot >= classItem.startTime && timeSlot < classItem.endTime) ||
+        timeSlot === classItem.startTime)
+  );
+}
+
+// Helper function to check if a class spans multiple time slots
+export function getClassDuration(classItem: { startTime: string; endTime: string }) {
+  const startIndex = TIME_SLOTS.indexOf(classItem.startTime);
+  const endIndex = TIME_SLOTS.indexOf(classItem.endTime);
+
+  // If endTime is not exactly a time slot, find the next time slot after it
+  if (endIndex === -1) {
+    // Find the next time slot after endTime
+    for (let i = 0; i < TIME_SLOTS.length; i++) {
+      if (TIME_SLOTS[i] > classItem.endTime) {
+        return i - startIndex;
+      }
+    }
+    return TIME_SLOTS.length - startIndex;
+  }
+
+  return endIndex - startIndex;
+}
+
+// Helper function to get color scheme based on level and age group
+export function getClassColorScheme(classItem: { level: string; }) {
+  // Prioritize level colors, but could be modified to use age group colors instead
+  return LEVEL_COLORS[classItem.level] || LEVEL_COLORS["Beginner"];
+}
