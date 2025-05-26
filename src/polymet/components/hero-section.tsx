@@ -8,7 +8,7 @@ export default function HeroSection() {
       {/* Background image with overlay */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1621976360623-004223992275?q=80&w=1728&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          src="https://images.unsplash.com/photo-1646084067464-0aa782d923dc?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           alt="Dancers in motion"
           className="w-full h-full object-cover"
         />
@@ -19,7 +19,7 @@ export default function HeroSection() {
       {/* Content */}
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         <div className="max-w-3xl">
-          <div className="flex items-center gap-2 mb-4">
+          <div className="flex items-centergap-2 mb-4">
             <MusicIcon className="h-6 w-6 text-purple-400" />
 
             <p className="text-white font-medium tracking-wide uppercase text-sm">
@@ -50,7 +50,7 @@ export default function HeroSection() {
             <Button
               size="lg"
               variant="outline"
-              className="rounded-full text-white border-white/30 hover:bg-white/10 hover:text-white"
+              className="rounded-full text-purple-500 border-white/30 hover:bg-black/10 hover:text-purple-500"
             >
               View Class Schedule
             </Button>
@@ -63,7 +63,7 @@ export default function HeroSection() {
 
       <div className="absolute -bottom-12 -right-12 w-64 h-64 bg-purple-500/20 rounded-full blur-3xl" />
 
-      <div className="absolute top-1/4 -left-12 w-48 h-48 bg-pink-500/20 rounded-full blur-3xl" />
+      <div className="absolute top-1/4 -left-12 w-48 h-48 bg-pink-500/10 rounded-full blur-3xl" />
     </section>
   );
 }
