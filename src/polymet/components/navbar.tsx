@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { MusicIcon, MenuIcon, XIcon, MoonIcon, SunIcon } from "lucide-react";
+import { MenuIcon, XIcon, MoonIcon, SunIcon, Trophy } from "lucide-react";
 import { STUDIO_INFO } from "@/polymet/data/dance-studio-data";
 
 export default function Navbar() {
@@ -43,14 +43,13 @@ export default function Navbar() {
           : "bg-transparent"
       }`}
     >
-      <div className="container mx-auto px-4 md:px-6">
+      <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <a href="#" className="flex items-center gap-2">
-            <MusicIcon
+          <a href="#" className="flex items-center gap-2 flex-shrink-0">
+            <Trophy
               className={`h-6 w-6 ${isScrolled ? "text-purple-600 dark:text-purple-400" : "text-white"}`}
             />
-
             <span
               className={`font-bold text-lg ${isScrolled ? "text-gray-900 dark:text-white" : "text-white"}`}
             >
@@ -59,71 +58,61 @@ export default function Navbar() {
           </a>
 
           {/* Desktop navigation */}
-          <nav className="hidden md:flex items-center space-x-1">
+          <nav className="hidden md:flex items-center space-x-1 flex-1 justify-center">
             <a
               href="#"
-              className={`px-3 py-2 rounded-md text-sm font-medium ${
+              className={`px-3 py-2 rounded-md text-sm font-medium whitespace-nowrap ${
                 isScrolled
                   ? "text-gray-700 hover:text-purple-600 dark:text-gray-200 dark:hover:text-purple-400"
                   : "text-white/80 hover:text-white"
               }`}
             >
-              Home
+              Hjem
             </a>
             <a
               href="#about"
-              className={`px-3 py-2 rounded-md text-sm font-medium ${
+              className={`px-3 py-2 rounded-md text-sm font-medium whitespace-nowrap ${
                 isScrolled
                   ? "text-gray-700 hover:text-purple-600 dark:text-gray-200 dark:hover:text-purple-400"
                   : "text-white/80 hover:text-white"
               }`}
             >
-              About
+              Om oss
             </a>
             <a
               href="#classes"
-              className={`px-3 py-2 rounded-md text-sm font-medium ${
+              className={`px-3 py-2 rounded-md text-sm font-medium whitespace-nowrap ${
                 isScrolled
                   ? "text-gray-700 hover:text-purple-600 dark:text-gray-200 dark:hover:text-purple-400"
                   : "text-white/80 hover:text-white"
               }`}
             >
-              Classes
-            </a>
-            <a
-              href="#testimonials"
-              className={`px-3 py-2 rounded-md text-sm font-medium ${
-                isScrolled
-                  ? "text-gray-700 hover:text-purple-600 dark:text-gray-200 dark:hover:text-purple-400"
-                  : "text-white/80 hover:text-white"
-              }`}
-            >
-              Testimonials
+              Kurs
             </a>
             <a
               href="#pricing"
-              className={`px-3 py-2 rounded-md text-sm font-medium ${
+              className={`px-3 py-2 rounded-md text-sm font-medium whitespace-nowrap ${
                 isScrolled
                   ? "text-gray-700 hover:text-purple-600 dark:text-gray-200 dark:hover:text-purple-400"
                   : "text-white/80 hover:text-white"
               }`}
             >
-              Pricing
+              Pris
             </a>
             <a
               href="#contact"
-              className={`px-3 py-2 rounded-md text-sm font-medium ${
+              className={`px-3 py-2 rounded-md text-sm font-medium whitespace-nowrap ${
                 isScrolled
                   ? "text-gray-700 hover:text-purple-600 dark:text-gray-200 dark:hover:text-purple-400"
                   : "text-white/80 hover:text-white"
               }`}
             >
-              Contact
+              Kontakt oss
             </a>
           </nav>
 
           {/* Right side buttons */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-shrink-0">
             {/* Dark mode toggle */}
             <Button
               variant="ghost"
@@ -145,13 +134,13 @@ export default function Navbar() {
 
             {/* CTA button */}
             <Button
-              className={`rounded-full ${
+              className={`rounded-full whitespace-nowrap ${
                 isScrolled
                   ? "bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0"
                   : "bg-white/10 hover:bg-white/20 text-white border border-white/30"
               }`}
             >
-              Book a Class
+              Book et kurs
             </Button>
 
             {/* Mobile menu button */}
@@ -188,42 +177,35 @@ export default function Navbar() {
             className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-purple-100 hover:text-purple-600 dark:text-gray-200 dark:hover:bg-purple-900/30 dark:hover:text-purple-400"
             onClick={() => setIsMenuOpen(false)}
           >
-            Home
+            Hjem
           </a>
           <a
             href="#about"
             className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-purple-100 hover:text-purple-600 dark:text-gray-200 dark:hover:bg-purple-900/30 dark:hover:text-purple-400"
             onClick={() => setIsMenuOpen(false)}
           >
-            About
+            Om oss
           </a>
           <a
             href="#classes"
             className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-purple-100 hover:text-purple-600 dark:text-gray-200 dark:hover:bg-purple-900/30 dark:hover:text-purple-400"
             onClick={() => setIsMenuOpen(false)}
           >
-            Classes
-          </a>
-          <a
-            href="#testimonials"
-            className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-purple-100 hover:text-purple-600 dark:text-gray-200 dark:hover:bg-purple-900/30 dark:hover:text-purple-400"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Testimonials
+            Kurs
           </a>
           <a
             href="#pricing"
             className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-purple-100 hover:text-purple-600 dark:text-gray-200 dark:hover:bg-purple-900/30 dark:hover:text-purple-400"
             onClick={() => setIsMenuOpen(false)}
           >
-            Pricing
+            Pris
           </a>
           <a
             href="#contact"
             className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-purple-100 hover:text-purple-600 dark:text-gray-200 dark:hover:bg-purple-900/30 dark:hover:text-purple-400"
             onClick={() => setIsMenuOpen(false)}
           >
-            Contact
+            Kontak oss
           </a>
         </div>
       </div>

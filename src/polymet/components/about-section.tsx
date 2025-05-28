@@ -10,9 +10,9 @@ export default function AboutSection() {
         <div className="flex flex-col lg:flex-row items-center gap-12">
           {/* Image column */}
           <div className="w-full lg:w-1/2 relative">
-            <div className="relative z-10 rounded-2xl overflow-hidden shadow-xl">
+            <div className="relative z-10 rounded-lg overflow-hidden shadow-xl">
               <img
-                src="https://picsum.photos/seed/dancestudio456/800/600"
+                src="https://images.unsplash.com/photo-1556394890-c874aac332b1?q=80&w=3100&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 alt="Dance studio interior"
                 className="w-full h-auto object-cover"
               />

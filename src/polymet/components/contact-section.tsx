@@ -5,8 +5,8 @@ import {
   ClockIcon,
   InstagramIcon,
   FacebookIcon,
-  TwitterIcon,
   YoutubeIcon,
+  X,
 } from "lucide-react";
 import { STUDIO_INFO } from "@/polymet/data/dance-studio-data";
 import ContactForm from "@/polymet/components/contact-form";
@@ -140,9 +140,9 @@ export default function ContactSection() {
                       href={STUDIO_INFO.social.twitter}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="h-10 w-10 rounded-full bg-blue-400 flex items-center justify-center text-white hover:opacity-90 transition-opacity"
+                      className="h-10 w-10 rounded-full bg-black flex items-center justify-center text-white hover:opacity-90 transition-opacity"
                     >
-                      <TwitterIcon className="h-5 w-5" />
+                      <X className="h-5 w-5" />
 
                       <span className="sr-only">Twitter</span>
                     </a>

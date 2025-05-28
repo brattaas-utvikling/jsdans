@@ -5,7 +5,7 @@ import ClassCard from "@/polymet/components/class-card";
 export default function ClassesSection() {
   return (
     <section id="classes" className="py-20 bg-gray-50 dark:bg-gray-900">
-      <div className="container mx-auto px-4 md:px-6">
+      <div className="container mx-auto">
         {/* Section header */}
         <div className="text-center max-w-3xl mx-auto mb-12">
           <h2 className="text-sm font-medium text-purple-600 dark:text-purple-400 uppercase tracking-wider mb-3">

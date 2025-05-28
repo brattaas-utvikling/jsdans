@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { MusicIcon } from "lucide-react";
+import { Trophy } from "lucide-react";
 import { STUDIO_INFO } from "@/polymet/data/dance-studio-data";
 
 export default function HeroSection() {
@@ -20,7 +20,7 @@ export default function HeroSection() {
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         <div className="max-w-3xl">
           <div className="flex items-centergap-2 mb-4">
-            <MusicIcon className="h-6 w-6 text-purple-400" />
+            <Trophy className="h-6 w-6 text-purple-400" />
 
             <p className="text-white font-medium tracking-wide uppercase text-sm">
               {STUDIO_INFO.name}
