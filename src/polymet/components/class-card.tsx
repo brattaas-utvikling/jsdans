@@ -14,6 +14,7 @@ import {
   UserIcon,
   ZapIcon,
   WindIcon,
+  BoomBox,
 } from "lucide-react";
 
 type ClassCardProps = {
@@ -42,6 +43,9 @@ export default function ClassCard({
   // Determine which icon to use based on the icon prop
   const IconComponent = () => {
     switch (icon) {
+      case "radio":
+        return <BoomBox className="h-5 w-5" />;
+
       case "music":
         return <MusicIcon className="h-5 w-5" />;
 
@@ -101,7 +105,7 @@ export default function ClassCard({
               <CalendarIcon className="h-4 w-4 text-gray-500" />
 
               <span className="text-gray-700 dark:text-gray-300">
-                Next class:
+                Neste kurs:
               </span>
             </div>
             <div
@@ -128,7 +132,7 @@ export default function ClassCard({
           variant="outline"
           className={`w-full rounded-full ${textClass} border-${borderClass} hover:${bgClass}`}
         >
-          View Schedule
+          Vis timeplan
         </Button>
       </CardFooter>
     </Card>

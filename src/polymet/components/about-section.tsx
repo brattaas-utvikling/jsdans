@@ -29,10 +29,10 @@ export default function AboutSection() {
           {/* Content column */}
           <div className="w-full lg:w-1/2">
             <h2 className="text-sm font-medium text-purple-600 dark:text-purple-400 uppercase tracking-wider mb-3">
-              About the Studio
+              Om vårt dansestudio
             </h2>
             <h3 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white">
-              Where passion meets movement
+            Helt nytt. Helt oss.
             </h3>
 
             <div className="prose prose-lg dark:prose-invert">
@@ -40,45 +40,48 @@ export default function AboutSection() {
                 {STUDIO_INFO.description}
               </p>
               <p className="mb-6 text-gray-700 dark:text-gray-300">
-                Our expert instructors bring years of professional experience
-                and a passion for teaching. We believe that dance is for
-                everyone, regardless of age or experience level. Our classes are
-                designed to be inclusive, supportive, and most importantly, fun!
-              </p>
+              Vi er Kongsvingers nyeste dansesstudio, født av kjærlighet til bevegelse og fellesskap. Her møtes erfaring med frisk energi – våre instruktører brenner for å dele kunsten og glede ved dans.
+Studioet ligger sentralt og tilgjengelig, med gangavstand fra togstasjon, som inspirerer kreativitet. Vi tror på at dans ikke bare former kroppen, men også sjelen. Derfor har vi skapt et rom hvor alle kan utfolde seg – uansett bakgrunn eller ferdighetsnivå.
+</p>
+<p className="mt-4 mb-6 text-gray-700 dark:text-gray-300">
+    <span className="font-bold">Vår filosofi: </span> 
+    Dans er for alle. Kreativitet blomstrer når vi tør å være oss selv.
+  </p>
+
             </div>
 
             {/* Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
               <div className="text-center p-4 rounded-lg bg-purple-50 dark:bg-purple-900/20">
                 <p className="text-3xl font-bold text-purple-600 dark:text-purple-400">
-                  12+
+                  6+
                 </p>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Dance Styles
+                  Dansestiler
                 </p>
               </div>
               <div className="text-center p-4 rounded-lg bg-coral-50 dark:bg-coral-900/20">
                 <p className="text-3xl font-bold text-coral-600 dark:text-coral-400">
-                  20+
+                  5+
                 </p>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Instructors
+                  Instruktører
                 </p>
               </div>
               <div className="text-center p-4 rounded-lg bg-mint-50 dark:bg-mint-900/20">
                 <p className="text-3xl font-bold text-mint-600 dark:text-mint-400">
-                  50+
+                  10+
                 </p>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Weekly Classes
+                  Ukentlig Klasser
                 </p>
               </div>
               <div className="text-center p-4 rounded-lg bg-blue-50 dark:bg-blue-900/20">
                 <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">
-                  1000+
+                  100+
                 </p>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Happy Students
+                  Fornøyde dansere
                 </p>
               </div>
             </div>

@@ -28,13 +28,13 @@ export default function ScheduleSection() {
 
   // Filter classes based on selected filter
   const filteredClasses = WEEKLY_SCHEDULE.filter((classItem) => {
-    if (filter === "all") return true;
-    if (filter === "beginner") return classItem.level === "Beginner";
-    if (filter === "intermediate") return classItem.level === "Intermediate";
-    if (filter === "advanced") return classItem.level === "Advanced";
-    if (filter === "kids") return classItem.ageGroup === "Kids";
-    if (filter === "teens") return classItem.ageGroup === "Teens";
-    if (filter === "adults") return classItem.ageGroup === "Adults";
+    if (filter === "alle") return true;
+    if (filter === "nybegynner") return classItem.level === "Nybegynner";
+    if (filter === "litt erfaren") return classItem.level === "Litt erfaren";
+    if (filter === "avansert") return classItem.level === "Avansert";
+    if (filter === "barn") return classItem.ageGroup === "Barnekurs";
+    if (filter === "ungomd") return classItem.ageGroup === "Ungdomskurs";
+    if (filter === "voksne") return classItem.ageGroup === "Voksenkurs";
     return true;
   });
 
@@ -43,7 +43,7 @@ export default function ScheduleSection() {
     const selectedClass = WEEKLY_SCHEDULE.find((c) => c.id === classId);
     if (selectedClass) {
       alert(
-        `Class: ${selectedClass.className}\nInstructor: ${selectedClass.instructor}\nLevel: ${selectedClass.level}\nTime: ${selectedClass.startTime} - ${selectedClass.endTime}`
+        `Kurs: ${selectedClass.className}\nInstruktør: ${selectedClass.instructor}\nNivå: ${selectedClass.level}\nTime: ${selectedClass.startTime} - ${selectedClass.endTime}`
       );
       // In a real application, this would navigate to a class details page
     }
@@ -55,7 +55,7 @@ export default function ScheduleSection() {
       {/* Days Header */}
       <div className="grid grid-cols-7 bg-gray-50 dark:bg-gray-800/50">
         <div className="p-3 border-r border-gray-200 dark:border-gray-700 font-medium text-center text-sm text-gray-500 dark:text-gray-400">
-          Time
+          Tid
         </div>
         {DAYS_OF_WEEK.map((day) => (
           <div
@@ -140,7 +140,7 @@ export default function ScheduleSection() {
           }}
         >
           <ChevronLeftIcon className="h-4 w-4 mr-1" />
-          Previous
+          Forrige
         </Button>
 
         <h3 className="font-medium">{selectedDay}</h3>
@@ -154,7 +154,7 @@ export default function ScheduleSection() {
             setSelectedDay(DAYS_OF_WEEK[nextIndex]);
           }}
         >
-          Next
+          Neste
           <ChevronRightIcon className="h-4 w-4 ml-1" />
         </Button>
       </div>
@@ -232,11 +232,11 @@ export default function ScheduleSection() {
   return (
     <section className="py-16 px-4 md:px-8 max-w-7xl mx-auto">
       <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold mb-4">Weekly Class Schedule</h2>
+        <h2 className="text-3xl font-bold mb-4">Timeplan</h2>
         <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-          Find the perfect class for your schedule. Our weekly timetable shows
-          all available classes across our studios. Click on any class for more
-          details or to sign up.
+          Utforsk våre ukentlige og daglige danseklasser. Finn den perfekte
+          timen for deg, enten du er nybegynner eller erfaren danser. Vårt
+          studio tilbyr et variert utvalg av klasser for alle aldre og nivåer.
         </p>
       </div>
 
@@ -249,8 +249,8 @@ export default function ScheduleSection() {
           className="w-full md:w-auto"
         >
           <TabsList className="grid w-full md:w-[400px] grid-cols-2">
-            <TabsTrigger value="weekly">Weekly View</TabsTrigger>
-            <TabsTrigger value="daily">Daily View</TabsTrigger>
+            <TabsTrigger value="weekly">Ukentlig visning</TabsTrigger>
+            <TabsTrigger value="daily">Daglig visning</TabsTrigger>
           </TabsList>
 
           {/* Content moved inside Tabs component */}
@@ -268,13 +268,13 @@ export default function ScheduleSection() {
               <SelectValue placeholder="Filter classes" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Classes</SelectItem>
-              <SelectItem value="beginner">Beginner Level</SelectItem>
-              <SelectItem value="intermediate">Intermediate Level</SelectItem>
-              <SelectItem value="advanced">Advanced Level</SelectItem>
-              <SelectItem value="kids">Kids Classes</SelectItem>
-              <SelectItem value="teens">Teen Classes</SelectItem>
-              <SelectItem value="adults">Adult Classes</SelectItem>
+              <SelectItem value="all">Alle kurs</SelectItem>
+              <SelectItem value="beginner">Nybegynner</SelectItem>
+              <SelectItem value="intermediate">Litt erfaren</SelectItem>
+              <SelectItem value="advanced">Avansert</SelectItem>
+              <SelectItem value="kids">Barnekurs</SelectItem>
+              <SelectItem value="teens">Ungdomskurs</SelectItem>
+              <SelectItem value="adults">Voksenkurs</SelectItem>
             </SelectContent>
           </Select>
         </div>

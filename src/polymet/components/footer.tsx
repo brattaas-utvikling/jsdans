@@ -1,5 +1,5 @@
 import { STUDIO_INFO } from "@/polymet/data/dance-studio-data";
-import { MusicIcon } from "lucide-react";
+import {  Trophy } from "lucide-react";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -11,26 +11,25 @@ export default function Footer() {
           {/* Studio info */}
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <MusicIcon className="h-6 w-6 text-purple-400" />
+              <Trophy className="h-6 w-6 text-purple-400" />
 
               <h3 className="text-lg font-bold">{STUDIO_INFO.name}</h3>
             </div>
             <p className="text-gray-400 mb-4 max-w-xs">
-              {STUDIO_INFO.tagline}. Join our community of dancers and discover
-              the joy of movement.
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">{STUDIO_INFO.tagline}.</span> Vi tilbyr et bredt spekter av danseklasser for alle aldre og ferdighetsnivåer, fra nybegynnere til avanserte dansere.
             </p>
           </div>
 
           {/* Quick links */}
-          <div>
-            <h3 className="text-lg font-bold mb-4">Quick Links</h3>
+          <div className="mx-auto">
+            <h3 className="text-lg font-bold mb-4"></h3>
             <ul className="space-y-2">
               <li>
                 <a
                   href="#"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
-                  Home
+                  Hjem
                 </a>
               </li>
               <li>
@@ -38,7 +37,7 @@ export default function Footer() {
                   href="#about"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
-                  About Us
+                  Om oss
                 </a>
               </li>
               <li>
@@ -46,7 +45,7 @@ export default function Footer() {
                   href="#classes"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
-                  Classes
+                  Kurs
                 </a>
               </li>
               <li>
@@ -54,7 +53,7 @@ export default function Footer() {
                   href="#pricing"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
-                  Pricing
+                  Priser
                 </a>
               </li>
               <li>
@@ -62,14 +61,14 @@ export default function Footer() {
                   href="#contact"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
-                  Contact
+                  Kontakt oss
                 </a>
               </li>
             </ul>
           </div>
 
           {/* Classes */}
-          <div>
+          {/* <div>
             <h3 className="text-lg font-bold mb-4">Classes</h3>
             <ul className="space-y-2">
               <li>
@@ -113,10 +112,10 @@ export default function Footer() {
                 </a>
               </li>
             </ul>
-          </div>
+          </div> */}
 
           {/* Contact */}
-          <div>
+          {/* <div>
             <h3 className="text-lg font-bold mb-4">Contact</h3>
             <address className="not-italic text-gray-400 space-y-2">
               <p>{STUDIO_INFO.address.street}</p>
@@ -127,6 +126,23 @@ export default function Footer() {
               <p className="mt-4">{STUDIO_INFO.contact.phone}</p>
               <p>{STUDIO_INFO.contact.email}</p>
             </address>
+          </div> */}
+
+ {/* Map - spans 2 columns */}
+          <div className="md:col-span-2">
+            <div className="rounded-md overflow-hidden shadow-lg h-[300px]">
+              <iframe
+                src={STUDIO_INFO.mapUrl}
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Studio Location"
+                className="w-full h-full"
+              ></iframe>
+            </div>
           </div>
         </div>
 

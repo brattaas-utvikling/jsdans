@@ -9,15 +9,13 @@ export default function ClassesSection() {
         {/* Section header */}
         <div className="text-center max-w-3xl mx-auto mb-12">
           <h2 className="text-sm font-medium text-purple-600 dark:text-purple-400 uppercase tracking-wider mb-3">
-            Our Classes
+            Våre kurs
           </h2>
           <h3 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">
-            Find Your Perfect Dance Style
+            Finn din stil.
           </h3>
           <p className="text-gray-600 dark:text-gray-300">
-            From high-energy hip hop to expressive contemporary, we offer
-            classes for all ages and skill levels. Discover your passion and
-            express yourself through movement.
+          Fra urban grooves til klassisk eleganse – vårt kursprogram er designet for å møte deg der du er og ta deg dit du vil.
           </p>
         </div>
 
@@ -47,7 +45,7 @@ export default function ClassesSection() {
         {/* View all classes button */}
         <div className="mt-12 text-center">
           <Button className="rounded-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0">
-            View All Classes
+            Se alle våre kurs
           </Button>
         </div>
       </div>

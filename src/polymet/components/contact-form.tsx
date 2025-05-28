@@ -43,7 +43,7 @@ export default function ContactForm() {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 md:p-8">
       <h3 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
-        Get in Touch
+        Kontakt oss
       </h3>
 
       {isSubmitted ? (
@@ -53,10 +53,10 @@ export default function ContactForm() {
           </div>
           <div>
             <p className="font-medium text-green-800 dark:text-green-400">
-              Message sent successfully!
+              Takk for din henvendelse!
             </p>
             <p className="text-sm text-green-700 dark:text-green-500">
-              We'll get back to you as soon as possible.
+              Vi har mottatt din melding og vil kontakte deg så snart som mulig.
             </p>
           </div>
         </div>
@@ -64,27 +64,27 @@ export default function ContactForm() {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="name">Navn</Label>
               <Input
                 id="name"
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                placeholder="Your name"
+                placeholder="Ditt navn"
                 required
                 className="rounded-lg"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">E-post</Label>
               <Input
                 id="email"
                 name="email"
                 type="email"
                 value={formData.email}
                 onChange={handleChange}
-                placeholder="your.email@example.com"
+                placeholder="din.e-post@eksempel.no"
                 required
                 className="rounded-lg"
               />
@@ -92,26 +92,26 @@ export default function ContactForm() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="phone">Phone (optional)</Label>
+            <Label htmlFor="phone">Telefon (optional)</Label>
             <Input
               id="phone"
               name="phone"
               type="tel"
               value={formData.phone}
               onChange={handleChange}
-              placeholder="(123) 456-7890"
+              placeholder="+47 123 45 678"
               className="rounded-lg"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="message">Message</Label>
+            <Label htmlFor="message">Melding</Label>
             <Textarea
               id="message"
               name="message"
               value={formData.message}
               onChange={handleChange}
-              placeholder="Tell us about your interests or questions..."
+              placeholder="Skriv din melding her..."
               required
               className="min-h-[120px] rounded-lg"
             />
@@ -121,7 +121,7 @@ export default function ContactForm() {
             type="submit"
             className="w-full rounded-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0"
           >
-            Send Message
+            Send melding
           </Button>
         </form>
       )}
