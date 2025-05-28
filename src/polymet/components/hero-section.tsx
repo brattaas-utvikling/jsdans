@@ -30,14 +30,12 @@ export default function HeroSection() {
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight">
             {STUDIO_INFO.tagline}
             <span className="block mt-2 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
-              Express yourself through dance
+              Uttrykk deg selv gjennom dans
             </span>
           </h1>
 
           <p className="text-lg text-white/80 mb-8 max-w-xl">
-            Join our vibrant community of dancers and discover the joy of
-            movement in a supportive, creative environment for all ages and
-            skill levels.
+          Moderne dansesstudio i hjertet av [by/område] hvor alle er velkommen. Fra første steg til store scener – vi hjelper deg å finne din rytme.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4">
@@ -45,21 +43,21 @@ export default function HeroSection() {
               size="lg"
               className="rounded-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0"
             >
-              Book a Trial Class
+              Book gratis prøvetime
             </Button>
             <Button
               size="lg"
               variant="outline"
               className="rounded-full text-purple-500 border-white/30 hover:bg-black/10 hover:text-purple-500"
             >
-              View Class Schedule
+              Vis timeplan
             </Button>
           </div>
         </div>
       </div>
 
       {/* Decorative elements */}
-      <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-white dark:from-black to-transparent z-10" />
+      <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-white/30 dark:from-black to-transparent z-10" />
 
       <div className="absolute -bottom-12 -right-12 w-64 h-64 bg-purple-500/20 rounded-full blur-3xl" />
 

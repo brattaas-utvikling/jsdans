@@ -21,14 +21,15 @@ export default function ContactSection() {
         {/* Section header */}
         <div className="text-center max-w-3xl mx-auto mb-12">
           <h2 className="text-sm font-medium text-purple-600 dark:text-purple-400 uppercase tracking-wider mb-3">
-            Contact Us
+            Kontakt oss
           </h2>
           <h3 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">
-            Ready to Start Dancing?
+            Kom i kontakt med vårt dansestudio
           </h3>
           <p className="text-gray-600 dark:text-gray-300">
-            Have questions or want to join a class? Get in touch with us and
-            we'll help you get started.
+            Har du spørsmål, ønsker du mer informasjon, eller vil du bare si hei?
+            Fyll ut kontaktskjemaet nedenfor, så tar vi kontakt med deg så snart
+            som mulig!
           </p>
         </div>
 
@@ -45,7 +46,7 @@ export default function ContactSection() {
               {/* Contact info */}
               <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl shadow-lg p-6 md:p-8">
                 <h3 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
-                  Studio Information
+                  JS Dans
                 </h3>
 
                 <div className="space-y-4">
@@ -55,14 +56,13 @@ export default function ContactSection() {
                     </div>
                     <div>
                       <h4 className="font-medium text-gray-900 dark:text-white">
-                        Address
+                        Adresse
                       </h4>
                       <p className="text-gray-600 dark:text-gray-300">
                         {STUDIO_INFO.address.street}
                       </p>
                       <p className="text-gray-600 dark:text-gray-300">
-                        {STUDIO_INFO.address.city}, {STUDIO_INFO.address.state}{" "}
-                        {STUDIO_INFO.address.zip}
+                      {STUDIO_INFO.address.zip}{" "}{STUDIO_INFO.address.city}
                       </p>
                     </div>
                   </div>
@@ -73,7 +73,7 @@ export default function ContactSection() {
                     </div>
                     <div>
                       <h4 className="font-medium text-gray-900 dark:text-white">
-                        Phone
+                        Telefon
                       </h4>
                       <p className="text-gray-600 dark:text-gray-300">
                         {STUDIO_INFO.contact.phone}
@@ -87,7 +87,7 @@ export default function ContactSection() {
                     </div>
                     <div>
                       <h4 className="font-medium text-gray-900 dark:text-white">
-                        Email
+                        E-post
                       </h4>
                       <p className="text-gray-600 dark:text-gray-300">
                         {STUDIO_INFO.contact.email}
@@ -101,7 +101,7 @@ export default function ContactSection() {
                     </div>
                     <div>
                       <h4 className="font-medium text-gray-900 dark:text-white">
-                        Hours
+                        Åpningstid
                       </h4>
                       <p className="text-gray-600 dark:text-gray-300">
                         {STUDIO_INFO.contact.hours}
@@ -113,7 +113,7 @@ export default function ContactSection() {
                 {/* Social media */}
                 <div className="mt-8">
                   <h4 className="font-medium text-gray-900 dark:text-white mb-4">
-                    Follow Us
+                    Føl oss på sosiale medier
                   </h4>
                   <div className="flex space-x-4">
                     <a
@@ -160,20 +160,6 @@ export default function ContactSection() {
                 </div>
               </div>
 
-              {/* Map */}
-              <div className="rounded-2xl overflow-hidden shadow-lg h-[300px]">
-                <iframe
-                  src={STUDIO_INFO.mapUrl}
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title="Studio Location"
-                  className="w-full h-full"
-                ></iframe>
-              </div>
             </div>
 
             {/* Right column: Contact form */}

@@ -5,69 +5,69 @@ export const DANCE_CLASSES = [
     id: 1,
     name: "Hip Hop",
     description:
-      "Urban dance styles performed to hip-hop music, focusing on freestyle and personal interpretation.",
+      "Energisk og autentisk. For alle som vil utforske gatens rytmer. Alder: 8+  Nivå: Nybegynner til avansert",
     color:
-      "bg-coral-100 border-coral-300 text-coral-600 dark:bg-coral-900/20 dark:border-coral-800 dark:text-coral-400",
-    icon: "music",
-    image: "https://picsum.photos/seed/hiphop123/800/600",
+      "bg-orange-100 border-orange-300 text-orange-600 dark:bg-orange-900/20 dark:border-orange-800 dark:text-orange-400",
+    icon: "radio",
+    image: "https://plus.unsplash.com/premium_photo-1682089697749-f5cdd624f21e?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     schedule: [
-      { day: "Monday", time: "4:00 PM - 5:30 PM", level: "Beginner" },
-      { day: "Wednesday", time: "6:00 PM - 7:30 PM", level: "Intermediate" },
-      { day: "Saturday", time: "10:00 AM - 11:30 AM", level: "Advanced" },
+      { day: "Mandag", time: "16:00 - 17:30", level: "Nybegynner" },
+      { day: "Onsdag", time: "18:00 - 19:30", level: "Litt erfarne" },
+      { day: "Lørdag", time: "10:00 - 11:30", level: "Avansert" },
     ],
 
-    instructor: "Marcus Johnson",
+    instructor: "Max",
   },
   {
     id: 2,
     name: "Jazz",
     description:
-      "Energetic and fun dance style characterized by unique moves, fancy footwork, and big leaps.",
+      "Klassiske teknikker møter moderne uttrykk. Perfekt for deg som vil skinne på scenen. Alder: 10+ | Nivå: Nybegynner til avansert",
     color:
-      "bg-mint-100 border-mint-300 text-mint-600 dark:bg-mint-900/20 dark:border-mint-800 dark:text-mint-400",
+      "bg-green-100 border-green-300 text-green-600 dark:bg-green-900/20 dark:border-green-800 dark:text-green-400",
     icon: "music",
-    image: "https://picsum.photos/seed/jazz456/800/600",
+    image: "https://images.unsplash.com/photo-1547153760-18fc86324498?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     schedule: [
-      { day: "Tuesday", time: "4:00 PM - 5:30 PM", level: "Beginner" },
-      { day: "Thursday", time: "6:00 PM - 7:30 PM", level: "Intermediate" },
-      { day: "Saturday", time: "1:00 PM - 2:30 PM", level: "Advanced" },
+      { day: "Tirsdag", time: "16:00 - 17:30", level: "Nybegynner" },
+      { day: "Torsdag", time: "18:00 - 19:30", level: "Litt erfarne" },
+      { day: "Lørdag", time: "13:00 - 14:30", level: "Avansert" },
     ],
 
-    instructor: "Sophia Martinez",
+    instructor: "Sofia",
   },
   {
     id: 3,
     name: "Breakdance",
     description:
-      "Athletic style with acrobatic moves like head spins, windmills, and power moves.",
+      "Kraftfull og akrobatisk danseform som kombinerer styrke, kreativitet og stil. Lær alt fra basic steps til spektakulære freezes og power moves. Perfekt for deg som vil utfordre både kropp og kreativitet. Alder: 10+ | Nivå: Nybegynner til avansert",
     color:
       "bg-purple-100 border-purple-300 text-purple-600 dark:bg-purple-900/20 dark:border-purple-800 dark:text-purple-400",
     icon: "zap",
-    image: "https://picsum.photos/seed/break789/800/600",
+    image: "https://images.unsplash.com/photo-1508700929628-666bc8bd84ea?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     schedule: [
-      { day: "Monday", time: "6:00 PM - 7:30 PM", level: "Beginner" },
-      { day: "Wednesday", time: "4:00 PM - 5:30 PM", level: "Intermediate" },
-      { day: "Friday", time: "5:00 PM - 6:30 PM", level: "Advanced" },
+      { day: "Mandag", time: "18:00 - 19:30", level: "Nybegynner" },
+      { day: "Onsdag", time: "16:00 - 17:30", level: "Litt erfarne" },
+      { day: "Fredag", time: "17:00 - 18:30", level: "Avansert" },
     ],
 
-    instructor: "Alex Chen",
+    instructor: "Aleksander",
   },
   {
     id: 4,
     name: "Contemporary",
     description:
-      "Expressive dance combining elements of several dance genres including modern, jazz, lyrical, and ballet.",
+      "Uttrykksfulle bevegelser som forteller historier. Denne teknisk krevende danseformen blander elementer fra ballett, jazz og moderne dans. Her utforsker vi følelser og fortellinger gjennom flytende, organiske bevegelser som gir rom for personlig tolkning og kunstnerisk utvikling. Alder: 12+ | Nivå: Alle nivåer",
     color:
       "bg-blue-100 border-blue-300 text-blue-600 dark:bg-blue-900/20 dark:border-blue-800 dark:text-blue-400",
     icon: "wind",
-    image: "https://picsum.photos/seed/contemp101/800/600",
+    image: "https://images.unsplash.com/photo-1630543901558-868a6b596bd3?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjR8fGNvbnRlbXB0b3JhcnklMjBkYW5jZXxlbnwwfHwwfHx8MA%3D%3D",
     schedule: [
-      { day: "Tuesday", time: "6:00 PM - 7:30 PM", level: "Beginner" },
-      { day: "Thursday", time: "4:00 PM - 5:30 PM", level: "Intermediate" },
-      { day: "Sunday", time: "11:00 AM - 12:30 PM", level: "Advanced" },
+      { day: "Tirsdag", time: "18:00 - 19:30", level: "Nybegynner" },
+      { day: "Torsdag", time: "16:00 - 17:30", level: "Litt erfarne" },
+      { day: "Søndag", time: "11:00 - 12:30", level: "Avansert" },
     ],
 
-    instructor: "Emma Wilson",
+    instructor: "Emma",
   },
 ];
 
@@ -87,7 +87,7 @@ export const TESTIMONIALS = [
     role: "Adult Student",
     image: "https://github.com/furkanksl.png",
     quote:
-      "I started taking hip hop classes as a complete beginner at 35, and I've never felt out of place. The community is supportive and the instructors break down complex moves in ways that make them accessible.",
+      "I started taking hip hop classes as a complete Nybegynner at 35, and I've never felt out of place. The community is supportive and the instructors break down complex moves in ways that make them accessible.",
     rating: 5,
   },
   {
@@ -122,78 +122,74 @@ export const TESTIMONIALS = [
 export const PRICING_PLANS = [
   {
     id: 1,
-    name: "Single Class",
-    price: 25,
-    duration: "per class",
+    name: "Drop-in",
+    price: 280,
+    duration: "per time",
     features: [
-      "Access to one class",
-      "No commitment",
-      "All levels welcome",
-      "Professional instruction",
+      "Tilgang til én time",
+      "Ingen binding",
+      "Alle nivåer velkommen",
+      "Profesjonell instruksjon",
+      "Gratis første gang"
     ],
-
     popular: false,
-    color:
-      "bg-coral-50 border-coral-200 hover:border-coral-300 dark:bg-coral-900/10 dark:border-coral-900 dark:hover:border-coral-800",
+    color: "bg-coral-50 border-coral-200 hover:border-coral-300 dark:bg-coral-900/10 dark:border-coral-900 dark:hover:border-coral-800"
   },
   {
     id: 2,
-    name: "Monthly Pass",
-    price: 120,
-    duration: "per month",
+    name: "Månedlig medlemskap",
+    price: 1290,
+    duration: "per måned",
     features: [
-      "Unlimited classes",
-      "Priority booking",
-      "Access to all levels",
-      "One free private lesson",
-      "Monthly progress report",
+      "Ubegrenset antall timer",
+      "Prioritet ved booking",
+      "Tilgang til alle nivåer og stiler",
+      "Én gratis privat-time per måned",
+      "10% rabatt på workshops",
+      "Månedlig fremgangsrapport"
     ],
-
     popular: true,
-    color:
-      "bg-purple-50 border-purple-200 hover:border-purple-300 dark:bg-purple-900/10 dark:border-purple-900 dark:hover:border-purple-800",
+    color: "bg-purple-50 border-purple-200 hover:border-purple-300 dark:bg-purple-900/10 dark:border-purple-900 dark:hover:border-purple-800"
   },
   {
     id: 3,
-    name: "10-Class Pack",
-    price: 200,
-    duration: "for 10 classes",
+    name: "10-timers kort",
+    price: 2200,
+    duration: "10 timer",
     features: [
-      "10 classes of your choice",
-      "Valid for 3 months",
-      "All levels welcome",
-      "Discounted rate per class",
-      "Flexible scheduling",
+      "10 timer du kan velge fritt",
+      "Gyldig i 4 måneder",
+      "Alle stiler og nivåer",
+      "21% rabatt per time",
+      "Fleksibel timeplan",
+      "Kan deles med familie"
     ],
-
     popular: false,
-    color:
-      "bg-mint-50 border-mint-200 hover:border-mint-300 dark:bg-mint-900/10 dark:border-mint-900 dark:hover:border-mint-800",
-  },
+    color: "bg-mint-50 border-mint-200 hover:border-mint-300 dark:bg-mint-900/10 dark:border-mint-900 dark:hover:border-mint-800"
+  }
 ];
 
 export const STUDIO_INFO = {
-  name: "Rhythm & Motion Dance Studio",
-  tagline: "Where passion meets movement",
+  name: "JS Dans",
+  tagline: "Din nye dansehistorie starter her",
   description:
-    "Founded in 2010, Rhythm & Motion Dance Studio has been a home for dancers of all ages and skill levels. Our mission is to inspire creativity, build confidence, and foster a love for dance in a supportive environment.",
+    "Opplev gleden ved dans i våre lyse, moderne lokaler. Med erfarne instruktører og et varmt fellesskap skaper vi magiske øyeblikk for alle aldre og nivåer.",
   address: {
-    street: "123 Dance Avenue",
-    city: "New York",
-    state: "NY",
-    zip: "10001",
+    street: "Fjellgata 4",
+    city: "Kongsvinger",
+    zip: "2208",
   },
   contact: {
-    phone: "(555) 123-4567",
-    email: "info@rhythmandmotion.com",
-    hours: "Monday-Friday: 9am-9pm, Saturday: 9am-5pm, Sunday: 10am-3pm",
+    phone: "+47 123 45 678",
+    email: "kontakt@jsdans.no",
+    hours: "Mandag-Fredag: 15.00 - 22.00, Lørdag: 10.00 - 15.00"
   },
   social: {
-    instagram: "https://instagram.com/rhythmandmotion",
-    facebook: "https://facebook.com/rhythmandmotion",
-    twitter: "https://twitter.com/rhythmandmotion",
-    youtube: "https://youtube.com/rhythmandmotion",
+    instagram: "https://instagram.com/jsdans",
+    facebook: "https://facebook.com/jsdans",
+    twitter: "https://twitter.com/jsdans",
+    youtube: "https://youtube.com/jsdans",
   },
   mapUrl:
-    "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387193.3059353029!2d-74.25986548248684!3d40.69714941774136!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2s!4v1619826381244!5m2!1sen!2s",
+    "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1247.232038804706!2d12.002997696042817!3d60.18708001934726!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sno!2sno!4v1748429024156!5m2!1sno!2sno",
 };
