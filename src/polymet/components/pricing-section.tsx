@@ -11,14 +11,13 @@ export default function PricingSection() {
         {/* Section header */}
         <div className="text-center max-w-3xl mx-auto mb-12">
           <h2 className="text-sm font-medium text-purple-600 dark:text-purple-400 uppercase tracking-wider mb-3">
-            Pricing Plans
+            Prismodell
           </h2>
           <h3 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">
-            Flexible Options for Everyone
+            Fleksible priser for alle behov
           </h3>
           <p className="text-gray-600 dark:text-gray-300">
-            Choose the plan that works best for you, from single classes to
-            unlimited monthly passes. No long-term commitments required.
+            Velg en prismodell som passer deg best.
           </p>
         </div>
 
@@ -47,11 +46,10 @@ export default function PricingSection() {
         {/* Additional information */}
         <div className="mt-16 text-center max-w-3xl mx-auto">
           <h4 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">
-            Need a custom plan?
+            Trenger du en mer tilpasset prismodell?
           </h4>
           <p className="text-gray-600 dark:text-gray-300">
-            We offer special rates for families, students, and seniors. Contact
-            us to learn more about our discounts and custom packages.
+            We tilby egne spesialmodeller for både yngre og eldre. Ta kontak for et hyggelig tilbud!
           </p>
         </div>
       </div>
