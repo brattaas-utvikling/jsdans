@@ -31,7 +31,7 @@ export default function PricingCard({
       {popular && (
         <div className="absolute top-0 right-0 transform translate-x-2 -translate-y-2">
           <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
-            Most Popular
+            Populære kurs
           </div>
         </div>
       )}

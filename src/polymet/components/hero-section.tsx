@@ -4,7 +4,7 @@ import { STUDIO_INFO } from "@/polymet/data/dance-studio-data";
 
 export default function HeroSection() {
   return (
-    <section className="relative h-[90vh] min-h-[600px] flex items-center overflow-hidden">
+    <section id="hero" className="relative h-[90vh] min-h-[600px] flex items-center overflow-hidden">
       {/* Background image with overlay */}
       <div className="absolute inset-0 z-0">
         <img
@@ -35,7 +35,7 @@ export default function HeroSection() {
           </h1>
 
           <p className="text-lg text-white/80 mb-8 max-w-xl">
-          Moderne dansesstudio i hjertet av [by/område] hvor alle er velkommen. Fra første steg til store scener – vi hjelper deg å finne din rytme.
+          Moderne dansesstudio i hjertet av <span className="font-bold text-white/90">Kongsvinger</span> hvor alle er velkommen. Fra første steg til store scener – vi hjelper deg å finne din rytme.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4">
