@@ -209,8 +209,8 @@ export default function Navbar() {
     const isActive = isActiveRoute(item.href, item.type);
     const finalClassName = `${className} ${
       isActive 
-        ? "text-purple-600 dark:text-purple-400 font-semibold" 
-        : "text-zinc-700 dark:text-zinc-200 hover:text-purple-600 dark:hover:text-purple-400"
+        ? "text-blue-600 dark:text-blue-400 font-semibold" 
+        : "text-zinc-700 dark:text-zinc-200 hover:text-blue-600 dark:hover:text-blue-400"
     }`;
 
     if (item.type === "route") {
@@ -245,7 +245,7 @@ export default function Navbar() {
           {/* Logo */}
           <button 
             onClick={() => handleNavClick("/", "route")}
-            className="flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 rounded-md"
+            className="flex items-center gap-2"
           >
             <span className="font-bold text-lg text-zinc-900 dark:text-white transition-colors">
               {STUDIO_INFO.name}
@@ -258,7 +258,7 @@ export default function Navbar() {
               <NavLink
                 key={item.label}
                 item={item}
-                className="px-3 py-2 rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                className="px-3 py-2 rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 onClick={() => handleNavClick(item.href, item.type)}
               />
             ))}
@@ -271,7 +271,7 @@ export default function Navbar() {
               variant="ghost"
               size="icon"
               onClick={() => setIsDarkMode((prev) => !prev)}
-              className="rounded-full text-zinc-700 dark:text-zinc-200 hover:text-purple-600 dark:hover:text-purple-400 transition-colors focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+              className="rounded-full text-zinc-700 dark:text-zinc-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
               aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
             >
               {isDarkMode ? (
@@ -283,7 +283,7 @@ export default function Navbar() {
 
             {/* CTA Button */}
             <Button 
-              className="rounded-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white transition-all duration-200 focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+              className="hidden md:block rounded-full bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-500 hover:from-blue-600 hover:via-indigo-600 hover:to-violet-600 text-white border-0 transition-all duration-200 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
               onClick={() => handleNavClick("#contact", "anchor")}
             >
               Book et kurs
@@ -293,7 +293,7 @@ export default function Navbar() {
             <Button
               variant="ghost"
               size="icon"
-              className="md:hidden rounded-full text-zinc-700 dark:text-zinc-200 hover:text-purple-600 dark:hover:text-purple-400 transition-colors focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+              className="md:hidden rounded-full text-zinc-700 dark:text-zinc-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-expanded={isMenuOpen}
               aria-controls="mobile-menu"
@@ -322,7 +322,7 @@ export default function Navbar() {
             <NavLink
               key={item.label}
               item={item}
-              className="block px-3 py-2 rounded-md text-base font-medium hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+              className="block px-3 py-2 rounded-md text-base font-medium hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
               onClick={() => handleNavClick(item.href, item.type)}
             />
           ))}
@@ -330,11 +330,12 @@ export default function Navbar() {
           {/* Mobile CTA */}
           <div className="pt-2 pb-1">
             <Button 
-              className="w-full rounded-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white transition-all duration-200"
+              className="w-full rounded-full bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-500 hover:from-blue-600 hover:via-indigo-600 hover:to-violet-600 text-white border-0 transition-all duration-200"
               onClick={() => handleNavClick("#contact", "anchor")}
             >
               Book et kurs
             </Button>
+            
           </div>
         </div>
       </div>

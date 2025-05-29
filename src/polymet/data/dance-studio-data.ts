@@ -124,50 +124,48 @@ export const TESTIMONIALS = [
 export const PRICING_PLANS = [
   {
     id: 1,
-    name: "Drop-in",
-    price: 280,
-    duration: "per time",
+    name: "Tddler",
+    price: 1200,
+    duration: "per halvår",
     features: [
-      "Tilgang til én time",
-      "Ingen binding",
+      "Tilgang til alle Tddler-klasser",
+      "Alle nivåer velkommen",
+      "Profesjonell instruksjon",
+      "Gratis første gang",
+      "Tilgang til studioets fellesområder"
+    ],
+    popular: false,
+    color: "bg-indigo-50 border-indigo-200 hover:border-indigo-300 dark:bg-indigo-900/10 dark:border-indigo-900 dark:hover:border-indigo-800"
+  },
+  {
+    id: 2,
+    name: "1 klasse",
+    price: 1500,
+    duration: "per halvår",
+    features: [
+      "Tilgang til én klasse",
       "Alle nivåer velkommen",
       "Profesjonell instruksjon",
       "Gratis første gang"
     ],
-    popular: false,
-    color: "bg-coral-50 border-coral-200 hover:border-coral-300 dark:bg-coral-900/10 dark:border-coral-900 dark:hover:border-coral-800"
-  },
-  {
-    id: 2,
-    name: "Månedlig medlemskap",
-    price: 1290,
-    duration: "per måned",
-    features: [
-      "Ubegrenset antall timer",
-      "Prioritet ved booking",
-      "Tilgang til alle nivåer og stiler",
-      "Én gratis privat-time per måned",
-      "10% rabatt på workshops",
-      "Månedlig fremgangsrapport"
-    ],
     popular: true,
-    color: "bg-purple-50 border-purple-200 hover:border-purple-300 dark:bg-purple-900/10 dark:border-purple-900 dark:hover:border-purple-800"
+    color: "bg-blue-50 border-blue-200 hover:border-blue-300 dark:bg-blue-900/10 dark:border-blue-900 dark:hover:border-blue-800"
   },
   {
     id: 3,
-    name: "10-timers kort",
-    price: 2200,
-    duration: "10 timer",
+    name: "2 klasser",
+    price: 2800,
+    duration: "per halvår",
     features: [
-      "10 timer du kan velge fritt",
-      "Gyldig i 4 måneder",
-      "Alle stiler og nivåer",
-      "21% rabatt per time",
-      "Fleksibel timeplan",
-      "Kan deles med familie"
+      "Tilgang til to klasser",
+      "Alle nivåer velkommen",
+      "Profesjonell instruksjon",
+      "Gratis første gang",
+      "Tilgang til studioets fellesområder",
+      "200kr rabatt"
     ],
     popular: false,
-    color: "bg-mint-50 border-mint-200 hover:border-mint-300 dark:bg-mint-900/10 dark:border-mint-900 dark:hover:border-mint-800"
+    color: "bg-indigo-50 border-indigo-200 hover:border-indigo-300 dark:bg-indigo-900/10 dark:border-indigo-900 dark:hover:border-indigo-800"
   }
 ];
 

@@ -7,7 +7,7 @@ export default function ClassesSection() {
       <div className="container mx-auto">
         {/* Section header */}
         <div className="text-center max-w-3xl mx-auto mb-12">
-          <h2 className="text-sm font-medium text-purple-600 dark:text-purple-400 uppercase tracking-wider mb-3">
+          <h2 className="text-sm font-medium text-indigo-600 dark:text-indigo-400 uppercase tracking-wider mb-3">
             Våre kurs
           </h2>
           <h3 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">

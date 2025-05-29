@@ -46,7 +46,7 @@ export default function TestimonialCard({
 
         {/* Person */}
         <div className="flex items-center">
-          <div className="h-12 w-12 rounded-full overflow-hidden mr-4 border-2 border-purple-200 dark:border-purple-800">
+          <div className="h-12 w-12 rounded-full overflow-hidden mr-4 border-2 border-blue-200 dark:border-blue-800">
             <img
               src={image}
               alt={name}

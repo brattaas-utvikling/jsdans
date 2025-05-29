@@ -19,16 +19,16 @@ export default function AboutSection() {
             </div>
 
             {/* Decorative elements */}
-            <div className="absolute -top-6 -left-6 w-24 h-24 rounded-full bg-mint-400/30 dark:bg-mint-500/20 blur-xl" />
+            <div className="absolute -top-6 -left-6 w-24 h-24 rounded-full bg-cyan-400/30 dark:bg-cyan-500/20 blur-xl" />
 
-            <div className="absolute -bottom-8 -right-8 w-32 h-32 rounded-full bg-coral-400/30 dark:bg-coral-500/20 blur-xl" />
+            <div className="absolute -bottom-8 -right-8 w-32 h-32 rounded-full bg-indigo-400/30 dark:bg-indigo-500/20 blur-xl" />
 
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full border-2 border-purple-300 dark:border-purple-700 rounded-2xl -z-10 translate-x-4 translate-y-4" />
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full border-2 border-indigo-300 dark:border-indigo-700 rounded-2xl -z-10 " />
           </div>
 
           {/* Content column */}
           <div className="w-full lg:w-1/2">
-            <h2 className="text-sm font-medium text-purple-600 dark:text-purple-400 uppercase tracking-wider mb-3">
+            <h2 className="text-sm font-medium text-indigo-600 dark:text-indigo-400 uppercase tracking-wider mb-3">
               Om vårt dansestudio
             </h2>
             <h3 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white">
@@ -39,9 +39,9 @@ export default function AboutSection() {
               <p className="my-6 text-gray-700 dark:text-gray-300">
                 {STUDIO_INFO.description}
               </p>
-              <p className="text-xl md:text-2xl lg:text-3xl font-bold text-black mb-6 tracking-tight">
+              <p className="text-xl md:text-2xl lg:text-3xl font-bold text-black dark:text-white/90 mb-6 tracking-tight">
               Dans er for alle. Derfor har vi skapt en arena hvor alle kan utfolde seg
-              <span className="block mt-2 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
+              <span className="block mt-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-500">
               – uansett bakgrunn eller ferdighetsnivå.
               </span>
             </p>
