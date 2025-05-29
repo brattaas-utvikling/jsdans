@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Trophy } from "lucide-react";
-import { STUDIO_INFO } from "@/polymet/data/dance-studio-data";
+import { STUDIO_INFO } from "../../polymet/data/dance-studio-data";
 
 export default function HeroSection() {
   return (
@@ -20,7 +19,6 @@ export default function HeroSection() {
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         <div className="max-w-3xl">
           <div className="flex items-centergap-2 mb-4">
-            <Trophy className="h-6 w-6 text-purple-400" />
 
             <p className="text-white font-medium tracking-wide uppercase text-sm">
               {STUDIO_INFO.name}
@@ -35,8 +33,9 @@ export default function HeroSection() {
           </h1>
 
           <p className="text-lg text-white/80 mb-8 max-w-xl">
-          Moderne dansesstudio i hjertet av <span className="font-bold text-white/90">Kongsvinger</span> hvor alle er velkommen. Fra første steg til store scener – vi hjelper deg å finne din rytme.
+          Endelig kan vi dele dette vi har drømt om så lenge: vi åpner danseskole for unge dansekunstnere igjen! Velkommen til klasser allerede høsten 2025. 
           </p>
+          {/* Moderne dansesstudio i hjertet av <span className="font-bold text-white/90">Kongsvinger</span> hvor alle er velkommen. Fra første steg til store scener – vi hjelper deg å finne din rytme. */}
 
           <div className="flex flex-col sm:flex-row gap-4">
             <Button

@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import {
   STUDIO_ROOMS,
   DAYS_OF_WEEK,
@@ -21,10 +21,9 @@ export default function DanceSchedule() {
       (c) =>
         c.day === selectedDay &&
         (!ageFilter || c.ageGroup === ageFilter) &&
-        (!levelFilter || c.level === levelFilter) &&
-        c.room === selectedRoom
+        (!levelFilter || c.level === levelFilter)
     );
-  }, [selectedDay, ageFilter, levelFilter, selectedRoom]);
+  }, [selectedDay, ageFilter, levelFilter]);
 
   const classIndex = useMemo(() => {
     const map: Record<string, Record<string, typeof filteredSchedule[0]>> = {};
@@ -62,25 +61,18 @@ export default function DanceSchedule() {
 
   return (
     <div className="min-h-screen bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 p-4">
-      <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold mb-4">Timeplan</h2>
-        <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-          Utforsk våre ukentlige og daglige danseklasser. Finn den perfekte
-          timen for deg, enten du er nybegynner eller erfaren danser. Vårt
-          studio tilbyr et variert utvalg av klasser for alle aldre og nivåer.
-        </p>
-      </div>
+      <h1 className="text-2xl font-bold mb-4">Timeplan Dansestudio</h1>
 
       <div className="flex flex-wrap gap-2 mb-4">
         {DAYS_OF_WEEK.map((day) => (
           <button
             key={day}
-            className={`px-3 py-1 rounded-full text-sm ${
+            onClick={() => setSelectedDay(day)}
+            className={`px-3 py-1 rounded-full text-sm font-medium transition ${
               selectedDay === day
                 ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900"
-                : "bg-zinc-200 dark:bg-zinc-700"
+                : "bg-zinc-200 dark:bg-zinc-700 text-zinc-800 dark:text-zinc-100"
             }`}
-            onClick={() => setSelectedDay(day)}
             aria-label={`Velg ${day}`}
           >
             {day}
@@ -101,6 +93,7 @@ export default function DanceSchedule() {
             </option>
           ))}
         </select>
+
         <select
           className="bg-zinc-200 dark:bg-zinc-700 p-2 rounded"
           value={levelFilter || ""}
@@ -113,8 +106,10 @@ export default function DanceSchedule() {
             </option>
           ))}
         </select>
+
+        {/* Kun synlig på mobil */}
         <select
-          className="bg-zinc-200 dark:bg-zinc-700 p-2 rounded"
+          className="bg-zinc-200 dark:bg-zinc-700 p-2 rounded md:hidden"
           value={selectedRoom}
           onChange={(e) => setSelectedRoom(e.target.value)}
         >
@@ -127,27 +122,60 @@ export default function DanceSchedule() {
       </div>
 
       <div className="overflow-x-auto">
-        <div className="grid grid-cols-[80px_minmax(200px,1fr)] sm:grid-cols-[80px_minmax(250px,1fr)] md:grid-cols-[80px_minmax(300px,1fr)] gap-px bg-zinc-300 dark:bg-zinc-800">
-          <div className="bg-zinc-100 dark:bg-zinc-700"></div>
-          <div className="bg-zinc-100 dark:bg-zinc-700 text-center font-semibold py-2">
-            {selectedRoom}
+        {/* Mobilvisning: kun valgt rom */}
+        <div className="md:hidden">
+          <div className="grid grid-cols-[80px_minmax(250px,1fr)] gap-px bg-zinc-300 dark:bg-zinc-800">
+            <div className="bg-zinc-100 dark:bg-zinc-700"></div>
+            <div className="bg-zinc-100 dark:bg-zinc-700 text-center font-semibold py-2">
+              {selectedRoom}
+            </div>
+            {TIME_SLOTS.map((time) => (
+              <React.Fragment key={time}>
+                <div className="bg-zinc-200 dark:bg-zinc-600 text-sm text-center py-2">
+                  {time}
+                </div>
+                <div className="relative h-24 bg-white dark:bg-zinc-900">
+                  {renderClass(selectedRoom, time)}
+                </div>
+              </React.Fragment>
+            ))}
           </div>
-          {TIME_SLOTS.map((time) => (
-            <>
+        </div>
+
+        {/* Desktopvisning: alle rom */}
+        <div className="hidden md:block">
+          <div
+            className={`grid`}
+            style={{
+              gridTemplateColumns: `80px repeat(${STUDIO_ROOMS.length}, minmax(200px, 1fr))`,
+            }}
+          >
+            <div className="bg-zinc-100 dark:bg-zinc-700"></div>
+            {STUDIO_ROOMS.map((room) => (
               <div
-                key={`time-${time}`}
-                className="bg-zinc-200 dark:bg-zinc-600 text-sm text-center py-2"
+                key={`header-${room}`}
+                className="bg-zinc-100 dark:bg-zinc-700 text-center font-semibold py-2"
               >
-                {time}
+                {room}
               </div>
-              <div
-                key={`slot-${time}-${selectedRoom}`}
-                className="relative h-24 bg-white dark:bg-zinc-900"
-              >
-                {renderClass(selectedRoom, time)}
-              </div>
-            </>
-          ))}
+            ))}
+
+            {TIME_SLOTS.map((time) => (
+              <React.Fragment key={`row-${time}`}>
+                <div className="bg-zinc-200 dark:bg-zinc-600 text-sm text-center py-2">
+                  {time}
+                </div>
+                {STUDIO_ROOMS.map((room) => (
+                  <div
+                    key={`cell-${room}-${time}`}
+                    className="relative h-24 bg-white dark:bg-zinc-900"
+                  >
+                    {renderClass(room, time)}
+                  </div>
+                ))}
+              </React.Fragment>
+            ))}
+          </div>
         </div>
       </div>
     </div>

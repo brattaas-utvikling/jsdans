@@ -46,7 +46,7 @@ export default function PricingCard({
         <div className="mb-6">
           <p className="flex items-baseline">
             <span className="text-4xl font-extrabold text-gray-900 dark:text-white">
-              ${price}
+              {price}kr
             </span>
             <span className="ml-1 text-sm text-gray-500 dark:text-gray-400">
               {duration}
@@ -76,7 +76,7 @@ export default function PricingCard({
               : "bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700"
           }`}
         >
-          Choose Plan
+          Velg plan
         </Button>
       </CardFooter>
     </Card>
