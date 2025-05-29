@@ -60,15 +60,15 @@ export default function DanceSchedule() {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 p-4">
-      <h1 className="text-2xl font-bold mb-4">Timeplan Dansestudio</h1>
+    <div className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 p-4">
+      <h1 className="text-center text-3xl md:text-4xl font-bold my-8 text-gray-900 dark:text-white">Timeplan Dansestudio</h1>
 
-      <div className="flex flex-wrap gap-2 mb-4">
+      <div className="flex flex-wrap gap-2 mb-4 justify-center">
         {DAYS_OF_WEEK.map((day) => (
           <button
             key={day}
             onClick={() => setSelectedDay(day)}
-            className={`px-3 py-1 rounded-full text-sm font-medium transition ${
+            className={`px-4 py-2 rounded-full text-sm font-medium transition ${
               selectedDay === day
                 ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900"
                 : "bg-zinc-200 dark:bg-zinc-700 text-zinc-800 dark:text-zinc-100"
@@ -80,7 +80,7 @@ export default function DanceSchedule() {
         ))}
       </div>
 
-      <div className="flex gap-4 mb-4 flex-wrap">
+      <div className="flex gap-4 mb-4 flex-wrap justify-center">
         <select
           className="bg-zinc-200 dark:bg-zinc-700 p-2 rounded"
           value={ageFilter || ""}
@@ -143,7 +143,7 @@ export default function DanceSchedule() {
         </div>
 
         {/* Desktopvisning: alle rom */}
-        <div className="hidden md:block">
+        <div className="hidden md:block max-w-7xl mx-auto">
           <div
             className={`grid`}
             style={{

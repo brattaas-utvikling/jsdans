@@ -27,7 +27,7 @@ export default function HeroSection() {
 
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight">
             {STUDIO_INFO.tagline}
-            <span className="block mt-2 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
+            <span className="block mt-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-200 via-indigo-200 to-violet-200">
               Uttrykk deg selv gjennom dans
             </span>
           </h1>
@@ -40,14 +40,14 @@ export default function HeroSection() {
           <div className="flex flex-col sm:flex-row gap-4">
             <Button
               size="lg"
-              className="rounded-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0"
+              className="rounded-full bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-500 hover:from-blue-600 hover:via-indigo-600 hover:to-violet-600 text-white border-0"
             >
               Book gratis prøvetime
             </Button>
             <Button
               size="lg"
               variant="outline"
-              className="rounded-full text-purple-500 border-white/30 hover:bg-black/10 hover:text-purple-500"
+              className="rounded-full text-blue-100 border-blue-300/30 hover:bg-blue-500/10 hover:text-white hover:border-blue-500"
             >
               Vis timeplan
             </Button>

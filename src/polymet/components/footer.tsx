@@ -1,5 +1,4 @@
 import { STUDIO_INFO } from "@/polymet/data/dance-studio-data";
-import {  Trophy } from "lucide-react";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -11,12 +10,11 @@ export default function Footer() {
           {/* Studio info */}
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <Trophy className="h-6 w-6 text-purple-400" />
-
               <h3 className="text-lg font-bold">{STUDIO_INFO.name}</h3>
             </div>
+            <p className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-400 mb-4">{STUDIO_INFO.tagline}</p> 
             <p className="text-gray-400 mb-4 max-w-xs">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">{STUDIO_INFO.tagline}.</span> Vi tilbyr et bredt spekter av danseklasser for alle aldre og ferdighetsnivåer, fra nybegynnere til avanserte dansere.
+              Vi tilbyr et bredt spekter av danseklasser for alle aldre og ferdighetsnivåer, fra nybegynnere til avanserte dansere.
             </p>
           </div>
 
