@@ -16,25 +16,24 @@ import {
   TIME_SLOTS,
   STUDIO_ROOMS,
   WEEKLY_SCHEDULE,
-  // getClassesForTimeSlot,
   getClassDuration,
   getClassColorScheme,
 } from "../data/dance-studio-schedule-data";
 
 export default function ScheduleSection() {
-  const [filter, setFilter] = useState("all");
+  const [filter, setFilter] = useState("alle");
   const [currentView, setCurrentView] = useState("weekly");
   const [selectedDay, setSelectedDay] = useState(DAYS_OF_WEEK[0]);
 
-  // Filter classes based on selected filter
+  // Filter classes based on selected filter - FIKSET TIL NORSK
   const filteredClasses = WEEKLY_SCHEDULE.filter((classItem) => {
     if (filter === "alle") return true;
     if (filter === "nybegynner") return classItem.level === "Nybegynner";
-    if (filter === "litt erfaren") return classItem.level === "Litt erfaren";
+    if (filter === "erfaren") return classItem.level === "Erfaren";
     if (filter === "avansert") return classItem.level === "Avansert";
-    if (filter === "barn") return classItem.ageGroup === "Barnekurs";
-    if (filter === "ungomd") return classItem.ageGroup === "Ungdomskurs";
-    if (filter === "voksne") return classItem.ageGroup === "Voksenkurs";
+    if (filter === "barn") return classItem.ageGroup === "Barn";
+    if (filter === "ungdom") return classItem.ageGroup === "Ungdom";
+    if (filter === "voksne") return classItem.ageGroup === "Voksne";
     return true;
   });
 
@@ -53,7 +52,7 @@ export default function ScheduleSection() {
   const renderWeeklyView = () => (
     <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden">
       {/* Days Header */}
-      <div className="grid grid-cols-7 bg-gray-50 dark:bg-gray-800/50">
+      <div className="grid grid-cols-8 bg-gray-50 dark:bg-gray-800/50">
         <div className="p-3 border-r border-gray-200 dark:border-gray-700 font-medium text-center text-sm text-gray-500 dark:text-gray-400">
           Tid
         </div>
@@ -73,7 +72,7 @@ export default function ScheduleSection() {
           {TIME_SLOTS.map((timeSlot) => (
             <div
               key={timeSlot}
-              className="grid grid-cols-7 border-t border-gray-200 dark:border-gray-700"
+              className="grid grid-cols-8 border-t border-gray-200 dark:border-gray-700"
             >
               {/* Time Column */}
               <div className="p-2 border-r border-gray-200 dark:border-gray-700 text-center text-xs text-gray-500 dark:text-gray-400">
@@ -160,9 +159,9 @@ export default function ScheduleSection() {
       </div>
 
       {/* Studios Header */}
-      <div className="grid grid-cols-3 bg-gray-50 dark:bg-gray-800/50">
+      <div className="grid grid-cols-4 bg-gray-50 dark:bg-gray-800/50">
         <div className="p-3 border-r border-gray-200 dark:border-gray-700 font-medium text-center text-sm text-gray-500 dark:text-gray-400">
-          Time
+          Tid
         </div>
         {STUDIO_ROOMS.map((room) => (
           <div
@@ -179,7 +178,7 @@ export default function ScheduleSection() {
         {TIME_SLOTS.map((timeSlot) => (
           <div
             key={timeSlot}
-            className="grid grid-cols-3 border-t border-gray-200 dark:border-gray-700"
+            className="grid grid-cols-4 border-t border-gray-200 dark:border-gray-700"
           >
             {/* Time Column */}
             <div className="p-2 border-r border-gray-200 dark:border-gray-700 text-center text-xs text-gray-500 dark:text-gray-400">
@@ -265,16 +264,16 @@ export default function ScheduleSection() {
 
           <Select value={filter} onValueChange={setFilter}>
             <SelectTrigger className="w-full md:w-[180px]">
-              <SelectValue placeholder="Filter classes" />
+              <SelectValue placeholder="Filter klasser" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">Alle kurs</SelectItem>
-              <SelectItem value="beginner">Nybegynner</SelectItem>
-              <SelectItem value="intermediate">Litt erfaren</SelectItem>
-              <SelectItem value="advanced">Avansert</SelectItem>
-              <SelectItem value="kids">Barnekurs</SelectItem>
-              <SelectItem value="teens">Ungdomskurs</SelectItem>
-              <SelectItem value="adults">Voksenkurs</SelectItem>
+              <SelectItem value="alle">Alle kurs</SelectItem>
+              <SelectItem value="nybegynner">Nybegynner</SelectItem>
+              <SelectItem value="erfaren">Erfaren</SelectItem>
+              <SelectItem value="avansert">Avansert</SelectItem>
+              <SelectItem value="barn">Barn</SelectItem>
+              <SelectItem value="ungdom">Ungdom</SelectItem>
+              <SelectItem value="voksne">Voksne</SelectItem>
             </SelectContent>
           </Select>
         </div>

@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { MenuIcon, XIcon, MoonIcon, SunIcon } from "lucide-react";
 import { STUDIO_INFO } from "@/polymet/data/dance-studio-data";
@@ -23,6 +24,8 @@ export default function Navbar() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const navbarRef = useRef<HTMLElement>(null);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   // Initialize dark mode from localStorage
   useEffect(() => {
@@ -115,22 +118,120 @@ export default function Navbar() {
   }, [isMenuOpen]);
 
   const navigationItems = [
-    { label: "Hjem", href: "#hero" },
-    { label: "Om oss", href: "#about" },
-    { label: "Kurs", href: "#classes" },
-    { label: "Pris", href: "#pricing" },
-    { label: "Kontakt oss", href: "#contact" }
+    { label: "Hjem", href: "/", type: "route" },
+    { label: "Om oss", href: "#about", type: "anchor" },
+    { label: "Kurs", href: "#classes", type: "anchor" },
+    { label: "Pris", href: "/priser", type: "route" },
+    { label: "Kontakt oss", href: "#contact", type: "anchor" }
   ];
 
-  const handleNavClick = (href: string) => {
+  const handleNavClick = (href: string, type: string) => {
     setIsMenuOpen(false);
     
-    // Smooth scroll to section
-    if (href !== "#") {
-      const element = document.querySelector(href);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
+    if (type === "route") {
+      if (href === "/" && location.pathname === "/") {
+        // If already on home page and clicking "Hjem", scroll to top
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        // Navigate to different route
+        navigate(href);
       }
+    } else if (type === "anchor") {
+      // Handle anchor links - href should be like "#about", "#contact" etc.
+      if (location.pathname !== "/") {
+        // If not on home page, navigate to home first then scroll
+        navigate("/");
+        setTimeout(() => {
+          const element = document.querySelector(href);
+          if (element) {
+            element.scrollIntoView({ behavior: "smooth" });
+          }
+        }, 100);
+      } else {
+        // If on home page, just scroll to the section
+        if (href.startsWith("#")) {
+          const element = document.querySelector(href);
+          if (element) {
+            element.scrollIntoView({ behavior: "smooth" });
+          }
+        }
+      }
+    }
+  };
+
+  // Track which section is currently in view
+  const [activeSection, setActiveSection] = useState("");
+
+  // Intersection Observer to track active sections
+  useEffect(() => {
+    if (location.pathname !== "/") {
+      setActiveSection("");
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+            setActiveSection(`#${entry.target.id}`);
+          }
+        });
+      },
+      {
+        threshold: 0.5,
+        rootMargin: "-80px 0px -80px 0px" // Account for navbar height
+      }
+    );
+
+    // Observe sections
+    const sections = ["hero", "about", "classes", "contact"];
+    sections.forEach((id) => {
+      const element = document.getElementById(id);
+      if (element) observer.observe(element);
+    });
+
+    return () => observer.disconnect();
+  }, [location.pathname]);
+
+  const isActiveRoute = (href: string, type: string) => {
+    if (type === "route") {
+      return location.pathname === href;
+    }
+    // For anchor links, check if this specific section is active
+    return location.pathname === "/" && activeSection === href;
+  };
+
+  const NavLink = ({ item, className, onClick }: { 
+    item: typeof navigationItems[0], 
+    className: string,
+    onClick: () => void 
+  }) => {
+    const isActive = isActiveRoute(item.href, item.type);
+    const finalClassName = `${className} ${
+      isActive 
+        ? "text-purple-600 dark:text-purple-400 font-semibold" 
+        : "text-zinc-700 dark:text-zinc-200 hover:text-purple-600 dark:hover:text-purple-400"
+    }`;
+
+    if (item.type === "route") {
+      return (
+        <Link
+          to={item.href}
+          className={finalClassName}
+          onClick={onClick}
+        >
+          {item.label}
+        </Link>
+      );
+    } else {
+      return (
+        <button
+          className={finalClassName}
+          onClick={onClick}
+        >
+          {item.label}
+        </button>
+      );
     }
   };
 
@@ -142,33 +243,24 @@ export default function Navbar() {
       <div className="w-full max-w-7xl mx-auto px-4 overflow-hidden">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <a 
-            href="#" 
+          <button 
+            onClick={() => handleNavClick("/", "route")}
             className="flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 rounded-md"
-            onClick={(e) => {
-              e.preventDefault();
-              handleNavClick("#");
-            }}
           >
             <span className="font-bold text-lg text-zinc-900 dark:text-white transition-colors">
               {STUDIO_INFO.name}
             </span>
-          </a>
+          </button>
 
           {/* Desktop navigation */}
           <nav className="hidden md:flex items-center space-x-1 flex-1 justify-center">
             {navigationItems.map((item) => (
-              <a
+              <NavLink
                 key={item.label}
-                href={item.href}
-                className="px-3 py-2 rounded-md text-sm font-medium text-zinc-700 dark:text-zinc-200 hover:text-purple-600 dark:hover:text-purple-400 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleNavClick(item.href);
-                }}
-              >
-                {item.label}
-              </a>
+                item={item}
+                className="px-3 py-2 rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                onClick={() => handleNavClick(item.href, item.type)}
+              />
             ))}
           </nav>
 
@@ -192,7 +284,7 @@ export default function Navbar() {
             {/* CTA Button */}
             <Button 
               className="rounded-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white transition-all duration-200 focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
-              onClick={() => handleNavClick("#contact")}
+              onClick={() => handleNavClick("#contact", "anchor")}
             >
               Book et kurs
             </Button>
@@ -227,24 +319,19 @@ export default function Navbar() {
       >
         <div className="px-4 py-2 space-y-1 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-sm shadow-lg border-t border-gray-200 dark:border-gray-700">
           {navigationItems.map((item) => (
-            <a
+            <NavLink
               key={item.label}
-              href={item.href}
-              className="block px-3 py-2 rounded-md text-base font-medium text-zinc-700 dark:text-zinc-200 hover:bg-purple-100 dark:hover:bg-purple-900/30 hover:text-purple-600 dark:hover:text-purple-400 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
-              onClick={(e) => {
-                e.preventDefault();
-                handleNavClick(item.href);
-              }}
-            >
-              {item.label}
-            </a>
+              item={item}
+              className="block px-3 py-2 rounded-md text-base font-medium hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+              onClick={() => handleNavClick(item.href, item.type)}
+            />
           ))}
           
           {/* Mobile CTA */}
           <div className="pt-2 pb-1">
             <Button 
               className="w-full rounded-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white transition-all duration-200"
-              onClick={() => handleNavClick("#contact")}
+              onClick={() => handleNavClick("#contact", "anchor")}
             >
               Book et kurs
             </Button>

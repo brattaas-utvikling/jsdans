@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { DANCE_CLASSES } from "@/polymet/data/dance-studio-data";
 import ClassCard from "@/polymet/components/class-card";
 
@@ -32,6 +31,8 @@ export default function ClassesSection() {
                 key={danceClass.id}
                 name={danceClass.name}
                 description={danceClass.description}
+                level={danceClass.level} // nytt
+                age={danceClass.age}     // nytt
                 color={danceClass.color}
                 icon={danceClass.icon}
                 image={danceClass.image}
@@ -42,12 +43,7 @@ export default function ClassesSection() {
           </div>
         </div>
 
-        {/* View all classes button */}
-        <div className="mt-12 text-center">
-          <Button className="rounded-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0">
-            Se alle våre kurs
-          </Button>
-        </div>
+
       </div>
     </section>
   );

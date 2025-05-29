@@ -1,6 +1,6 @@
 // Dance studio schedule data with detailed information for the weekly timetable
 
-export const STUDIO_ROOMS = ["Studio A", "Studio B", "Studio C"];
+export const STUDIO_ROOMS = ["Sal A", "Sal B", "Sal C"];
 
 export const DAYS_OF_WEEK = [
   "Mandag",
@@ -32,20 +32,20 @@ export const LEVEL_COLORS: { [key: string]: { bg: string; border: string; text: 
     border: "border-blue-200 dark:border-blue-800",
     text: "text-blue-600 dark:text-blue-400",
   },
-  littErfaren: {
+  Erfaren: {
     bg: "bg-purple-100 dark:bg-purple-900/20",
     border: "border-purple-200 dark:border-purple-800",
     text: "text-purple-600 dark:text-purple-400",
   },
   Avansert: {
-    bg: "bg-coral-100 dark:bg-coral-900/20",
-    border: "border-coral-200 dark:border-coral-800",
-    text: "text-coral-600 dark:text-coral-400",
+    bg: "bg-emerald-100 dark:bg-emerald-900/20",
+    border: "border-emerald-200 dark:border-emerald-800",
+    text: "text-emerald-600 dark:text-emerald-400",
   },
   "All nivåer": {
-    bg: "bg-mint-100 dark:bg-mint-900/20",
-    border: "border-mint-200 dark:border-mint-800",
-    text: "text-mint-600 dark:text-mint-400",
+    bg: "bg-sky-100 dark:bg-sky-900/20",
+    border: "border-sky-200 dark:border-sky-800",
+    text: "text-sky-600 dark:text-sky-400",
   },
 };
 
@@ -82,7 +82,7 @@ export const WEEKLY_SCHEDULE = [
     level: "Nybegynner", // Konsistent engelsk
     ageGroup: "Ungdom", // Konsistent engelsk
     instructor: "Markus",
-    room: "Studio A",
+    room: "Sal A",
     maxCapacity: 20,
     currentEnrollment: 15,
   },
@@ -92,10 +92,10 @@ export const WEEKLY_SCHEDULE = [
     day: "Mandag", // Fikset fra "Monday"
     startTime: "18:00", // Fikset fra "6:00 PM"
     endTime: "19:30", // Fikset fra "7:30 PM"
-    level: "littErfaren",
+    level: "Erfaren",
     ageGroup: "Voksne",
     instructor: "Emma Wilson",
-    room: "Studio A",
+    room: "Sal A",
     maxCapacity: 18,
     currentEnrollment: 12,
   },
@@ -108,7 +108,7 @@ export const WEEKLY_SCHEDULE = [
     level: "Nybegynner",
     ageGroup: "Barn",
     instructor: "Sophia Martinez",
-    room: "Studio B",
+    room: "Sal B",
     maxCapacity: 15,
     currentEnrollment: 10,
   },
@@ -121,7 +121,7 @@ export const WEEKLY_SCHEDULE = [
     level: "Nybegynner",
     ageGroup: "Ungdom",
     instructor: "Alex Chen",
-    room: "Studio B",
+    room: "Sal B",
     maxCapacity: 15,
     currentEnrollment: 8,
   },
@@ -134,7 +134,7 @@ export const WEEKLY_SCHEDULE = [
     level: "Nybegynner",
     ageGroup: "Ungdom",
     instructor: "Sophia Martinez",
-    room: "Studio A",
+    room: "Sal A",
     maxCapacity: 20,
     currentEnrollment: 16,
   },
@@ -147,7 +147,7 @@ export const WEEKLY_SCHEDULE = [
     level: "Nybegynner",
     ageGroup: "Voksne",
     instructor: "Emma Wilson",
-    room: "Studio A",
+    room: "Sal A",
     maxCapacity: 18,
     currentEnrollment: 14,
   },
@@ -157,10 +157,10 @@ export const WEEKLY_SCHEDULE = [
     day: "Tirsdag", // Fikset fra "Tuesday"
     startTime: "17:00", // Fikset fra "5:00 PM"
     endTime: "18:30", // Fikset fra "6:30 PM"
-    level: "littErfaren",
+    level: "Erfaren",
     ageGroup: "Ungdom",
     instructor: "Marcus Johnson",
-    room: "Studio B",
+    room: "Sal B",
     maxCapacity: 18,
     currentEnrollment: 15,
   },
@@ -173,7 +173,7 @@ export const WEEKLY_SCHEDULE = [
     level: "Nybegynner",
     ageGroup: "Voksne",
     instructor: "James Wilson",
-    room: "Studio B",
+    room: "Sal B",
     maxCapacity: 15,
     currentEnrollment: 8,
   },
@@ -183,10 +183,10 @@ export const WEEKLY_SCHEDULE = [
     day: "Onsdag", // Fikset fra "Wednesday"
     startTime: "18:00", // Fikset fra "6:00 PM"
     endTime: "19:30", // Fikset fra "7:30 PM"
-    level: "littErfaren",
+    level: "Erfaren",
     ageGroup: "Voksne",
     instructor: "Marcus Johnson",
-    room: "Studio A",
+    room: "Sal A",
     maxCapacity: 20,
     currentEnrollment: 18,
   },
@@ -196,10 +196,10 @@ export const WEEKLY_SCHEDULE = [
     day: "Onsdag", // Fikset fra "Wednesday"
     startTime: "16:00", // Fikset fra "4:00 PM"
     endTime: "17:30", // Fikset fra "5:30 PM"
-    level: "littErfaren",
+    level: "Erfaren",
     ageGroup: "Ungdom",
     instructor: "Sophia Martinez",
-    room: "Studio A",
+    room: "Sal A",
     maxCapacity: 15,
     currentEnrollment: 12,
   },
@@ -209,10 +209,10 @@ export const WEEKLY_SCHEDULE = [
     day: "Onsdag", // Fikset fra "Wednesday"
     startTime: "16:00", // Fikset fra "4:00 PM"
     endTime: "17:30", // Fikset fra "5:30 PM"
-    level: "littErfaren",
+    level: "Erfaren",
     ageGroup: "Ungdom",
     instructor: "Alex Chen",
-    room: "Studio B",
+    room: "Sal B",
     maxCapacity: 15,
     currentEnrollment: 10,
   },
@@ -225,7 +225,7 @@ export const WEEKLY_SCHEDULE = [
     level: "Avansert",
     ageGroup: "Voksne",
     instructor: "Emma Wilson",
-    room: "Studio B",
+    room: "Sal B",
     maxCapacity: 15,
     currentEnrollment: 12,
   },
@@ -235,10 +235,10 @@ export const WEEKLY_SCHEDULE = [
     day: "Torsdag", // Fikset fra "Thursday"
     startTime: "18:00", // Fikset fra "6:00 PM"
     endTime: "19:30", // Fikset fra "7:30 PM"
-    level: "littErfaren",
+    level: "Erfaren",
     ageGroup: "Voksne",
     instructor: "Sophia Martinez",
-    room: "Studio A",
+    room: "Sal A",
     maxCapacity: 18,
     currentEnrollment: 15,
   },
@@ -248,10 +248,10 @@ export const WEEKLY_SCHEDULE = [
     day: "Torsdag", // Fikset fra "Thursday"
     startTime: "16:00", // Fikset fra "4:00 PM"
     endTime: "17:30", // Fikset fra "5:30 PM"
-    level: "littErfaren",
+    level: "Erfaren",
     ageGroup: "Ungdom",
     instructor: "Emma Wilson",
-    room: "Studio A",
+    room: "Sal A",
     maxCapacity: 18,
     currentEnrollment: 14,
   },
@@ -264,7 +264,7 @@ export const WEEKLY_SCHEDULE = [
     level: "Avansert",
     ageGroup: "Ungdom",
     instructor: "Alex Chen",
-    room: "Studio B",
+    room: "Sal B",
     maxCapacity: 12,
     currentEnrollment: 10,
   },
@@ -277,7 +277,7 @@ export const WEEKLY_SCHEDULE = [
     level: "Avansert",
     ageGroup: "Voksne",
     instructor: "Marcus Johnson",
-    room: "Studio B",
+    room: "Sal B",
     maxCapacity: 15,
     currentEnrollment: 12,
   },
@@ -290,7 +290,7 @@ export const WEEKLY_SCHEDULE = [
     level: "Avansert",
     ageGroup: "Voksne",
     instructor: "Alex Chen",
-    room: "Studio A",
+    room: "Sal A",
     maxCapacity: 15,
     currentEnrollment: 12,
   },
@@ -303,7 +303,7 @@ export const WEEKLY_SCHEDULE = [
     level: "Nybegynner",
     ageGroup: "Barn",
     instructor: "Marcus Johnson",
-    room: "Studio B",
+    room: "Sal B",
     maxCapacity: 15,
     currentEnrollment: 10,
   },
@@ -316,7 +316,7 @@ export const WEEKLY_SCHEDULE = [
     level: "Avansert",
     ageGroup: "Voksne",
     instructor: "Sophia Martinez",
-    room: "Studio B",
+    room: "Sal B",
     maxCapacity: 15,
     currentEnrollment: 12,
   },
@@ -329,7 +329,7 @@ export const WEEKLY_SCHEDULE = [
     level: "Avansert",
     ageGroup: "Voksne",
     instructor: "Marcus Johnson",
-    room: "Studio A",
+    room: "Sal A",
     maxCapacity: 20,
     currentEnrollment: 18,
   },
@@ -342,7 +342,7 @@ export const WEEKLY_SCHEDULE = [
     level: "Avansert",
     ageGroup: "Ungdom",
     instructor: "Sophia Martinez",
-    room: "Studio A",
+    room: "Sal A",
     maxCapacity: 18,
     currentEnrollment: 15,
   },
@@ -355,7 +355,7 @@ export const WEEKLY_SCHEDULE = [
     level: "Avansert",
     ageGroup: "Ungdom",
     instructor: "Emma Wilson",
-    room: "Studio B",
+    room: "Sal B",
     maxCapacity: 15,
     currentEnrollment: 12,
   },
@@ -368,7 +368,7 @@ export const WEEKLY_SCHEDULE = [
     level: "Nybegynner",
     ageGroup: "Barn",
     instructor: "Alex Chen",
-    room: "Studio B",
+    room: "Sal B",
     maxCapacity: 12,
     currentEnrollment: 8,
   },
@@ -378,10 +378,10 @@ export const WEEKLY_SCHEDULE = [
     day: "Lørdag", // Fikset fra "Saturday"
     startTime: "09:00", // Fikset fra "9:00 AM"
     endTime: "10:00", // Fikset fra "10:00 AM"
-    level: "All Levels",
+    level: "Alle nivåer", // Fikset fra "All Levels"
     ageGroup: "Voksne",
     instructor: "James Wilson",
-    room: "Studio C",
+    room: "Sal C",
     maxCapacity: 25,
     currentEnrollment: 20,
   },
@@ -391,10 +391,10 @@ export const WEEKLY_SCHEDULE = [
     day: "Lørdag", // Fikset fra "Saturday"
     startTime: "11:00", // Fikset fra "11:00 AM"
     endTime: "12:00", // Fikset fra "12:00 PM"
-    level: "All Levels",
+    level: "Alle nivåer", // Fikset fra "All Levels"
     ageGroup: "Barn",
     instructor: "Sophia Martinez",
-    room: "Studio C",
+    room: "Sal C",
     maxCapacity: 15,
     currentEnrollment: 10,
   },

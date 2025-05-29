@@ -36,40 +36,42 @@ export default function AboutSection() {
             </h3>
 
             <div className="prose prose-lg dark:prose-invert">
-              <p className="mb-4 text-gray-700 dark:text-gray-300">
+              <p className="my-6 text-gray-700 dark:text-gray-300">
                 {STUDIO_INFO.description}
               </p>
-              <p className="mb-6 text-gray-700 dark:text-gray-300">
-              Vi er Kongsvingers nyeste dansesstudio, født av kjærlighet til bevegelse og fellesskap. Her møtes erfaring med frisk energi – våre instruktører brenner for å dele kunsten og glede ved dans.
-Studioet ligger sentralt og tilgjengelig, med gangavstand fra togstasjon, som inspirerer kreativitet. Vi tror på at dans ikke bare former kroppen, men også sjelen. Derfor har vi skapt et rom hvor alle kan utfolde seg – uansett bakgrunn eller ferdighetsnivå.
-</p>
-<p className="mt-4 mb-6 text-gray-700 dark:text-gray-300">
-    <span className="font-bold">Vår filosofi: </span> 
-    Dans er for alle. Kreativitet blomstrer når vi tør å være oss selv.
-  </p>
+              <p className="text-xl md:text-2xl lg:text-3xl font-bold text-black mb-6 tracking-tight">
+              Dans er for alle. Derfor har vi skapt en arena hvor alle kan utfolde seg
+              <span className="block mt-2 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
+              – uansett bakgrunn eller ferdighetsnivå.
+              </span>
+            </p>
+              {/* <p className="mt-4 mb-6 text-gray-700 dark:text-gray-300">
+                  <span className="font-bold">Vår filosofi: </span> 
+                  
+                </p> */}
 
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+            {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
               <div className="text-center p-4 rounded-lg bg-purple-50 dark:bg-purple-900/20">
                 <p className="text-3xl font-bold text-purple-600 dark:text-purple-400">
-                  6+
+                  4+
                 </p>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
                   Dansestiler
                 </p>
               </div>
-              <div className="text-center p-4 rounded-lg bg-coral-50 dark:bg-coral-900/20">
-                <p className="text-3xl font-bold text-coral-600 dark:text-coral-400">
+              <div className="text-center p-4 rounded-lg bg-rose-50 dark:bg-rose-900/20">
+                <p className="text-3xl font-bold text-rose-600 dark:text-rose-400">
                   5+
                 </p>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
                   Instruktører
                 </p>
               </div>
-              <div className="text-center p-4 rounded-lg bg-mint-50 dark:bg-mint-900/20">
-                <p className="text-3xl font-bold text-mint-600 dark:text-mint-400">
+              <div className="text-center p-4 rounded-lg bg-fuchsia-50 dark:bg-fuchsia-900/20">
+                <p className="text-3xl font-bold text-fuchsia-600 dark:text-fuchsia-400">
                   10+
                 </p>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
@@ -84,7 +86,7 @@ Studioet ligger sentralt og tilgjengelig, med gangavstand fra togstasjon, som in
                   Fornøyde dansere
                 </p>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

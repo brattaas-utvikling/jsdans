@@ -5,71 +5,73 @@ export const DANCE_CLASSES = [
     id: 1,
     name: "Hip Hop",
     description:
-      "Energisk og autentisk. For alle som vil utforske gatens rytmer. Alder: 8+  Nivå: Nybegynner til avansert",
+      "Hiphop er en tøff, energisk dansestil som har sin opprinnelse fra gatene i USA. Dansestilen er populær blant barn og unge, og lar dem utforske en verden full av kul musikk og rå moves. Hiphop I timene jobbes det med rytme, trinnkombinasjoner og koreografi, for ikke å snakke om attitude. Semesteret legges opp… hvor stilene varierer ut fra pedagog, og kan være alt fra old school til new school, popping, locking, wacking til moderne eller lyrisk hip hop.",
     color:
       "bg-orange-100 border-orange-300 text-orange-600 dark:bg-orange-900/20 dark:border-orange-800 dark:text-orange-400",
     icon: "radio",
     image: "https://plus.unsplash.com/premium_photo-1682089697749-f5cdd624f21e?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     schedule: [
       { day: "Mandag", time: "16:00 - 17:30", level: "Nybegynner" },
-      { day: "Onsdag", time: "18:00 - 19:30", level: "Litt erfarne" },
+      { day: "Onsdag", time: "18:00 - 19:30", level: "Erfaren" },
       { day: "Lørdag", time: "10:00 - 11:30", level: "Avansert" },
     ],
-
+    level: "Alle nivåer",
+    age: "8+",
     instructor: "Max",
   },
   {
     id: 2,
     name: "Jazz",
-    description:
-      "Klassiske teknikker møter moderne uttrykk. Perfekt for deg som vil skinne på scenen. Alder: 10+ | Nivå: Nybegynner til avansert",
+    description: "Jazzdansen kommer fra USA og oppstod som stilart på 1900-tallet. Det er en blanding av klassisk ballett og rytmer fra black culture. I dag har jazzen et mer moderne uttrykk og strekker seg fra klassisk jazz til energisk showdans. En klasse kan være svært variert, og inneholder alt fra sprudlende koreograferer til tekniske piruetter, hopp og spark.",
     color:
       "bg-green-100 border-green-300 text-green-600 dark:bg-green-900/20 dark:border-green-800 dark:text-green-400",
     icon: "music",
     image: "https://images.unsplash.com/photo-1547153760-18fc86324498?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     schedule: [
       { day: "Tirsdag", time: "16:00 - 17:30", level: "Nybegynner" },
-      { day: "Torsdag", time: "18:00 - 19:30", level: "Litt erfarne" },
+      { day: "Torsdag", time: "18:00 - 19:30", level: "Erfaren" },
       { day: "Lørdag", time: "13:00 - 14:30", level: "Avansert" },
     ],
-
+    level: "Alle nivåer",
+    age: "6 - 10 år",
     instructor: "Sofia",
   },
   {
     id: 3,
-    name: "Breakdance",
-    description:
-      "Kraftfull og akrobatisk danseform som kombinerer styrke, kreativitet og stil. Lær alt fra basic steps til spektakulære freezes og power moves. Perfekt for deg som vil utfordre både kropp og kreativitet. Alder: 10+ | Nivå: Nybegynner til avansert",
+    name: "Ballett",
+    description: "I klassisk ballett undervises små som ønsker å bli prima ballerina, og ungdom/eldre som vil utvikle seg danseteknisk og få flott holdning. Kursene i klassisk ballett er basert på tradisjonell balletteknikk. I timene starter man med grunnleggende øvelser ved barre, og deretter lengre sekvenser i senter og over gulv. Klassisk ballett er en grunnleggende teknisk dansestil som er morsom, krevende og et nyttig supplement for å bli bedre i andre dansestiler.",
     color:
       "bg-purple-100 border-purple-300 text-purple-600 dark:bg-purple-900/20 dark:border-purple-800 dark:text-purple-400",
     icon: "zap",
     image: "https://images.unsplash.com/photo-1508700929628-666bc8bd84ea?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     schedule: [
       { day: "Mandag", time: "18:00 - 19:30", level: "Nybegynner" },
-      { day: "Onsdag", time: "16:00 - 17:30", level: "Litt erfarne" },
+      { day: "Onsdag", time: "16:00 - 17:30", level: "Erfaren" },
       { day: "Fredag", time: "17:00 - 18:30", level: "Avansert" },
     ],
-
+    level: "Nybegynner til avansert",
+    age: "10+",
     instructor: "Aleksander",
   },
   {
     id: 4,
-    name: "Contemporary",
-    description:
-      "Uttrykksfulle bevegelser som forteller historier. Denne teknisk krevende danseformen blander elementer fra ballett, jazz og moderne dans. Her utforsker vi følelser og fortellinger gjennom flytende, organiske bevegelser som gir rom for personlig tolkning og kunstnerisk utvikling. Alder: 12+ | Nivå: Alle nivåer",
+    name: "Moderne",
+    description: "Moderne dans tar utgangspunkt i kreativitet, skaperglede og kroppsbeherskelse. I timene er det fokus på å formidle følelser innen dans, musikalitet og på å utforske ulike bevegelsesmønstre. Disse klassene gir elevene mulighet til å sette sitt eget preg på dansen, og utvikle seg selv som en skapende danser. En moderneklasse inneholder gulvarbeid, tekniske øvelser, improvisasjon og formidling av koreografi. Prinsipp som senter, pust, tyngdekraft og dynamikk står sterkt i disse timene. ",
     color:
       "bg-blue-100 border-blue-300 text-blue-600 dark:bg-blue-900/20 dark:border-blue-800 dark:text-blue-400",
     icon: "wind",
     image: "https://images.unsplash.com/photo-1630543901558-868a6b596bd3?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjR8fGNvbnRlbXB0b3JhcnklMjBkYW5jZXxlbnwwfHwwfHx8MA%3D%3D",
     schedule: [
       { day: "Tirsdag", time: "18:00 - 19:30", level: "Nybegynner" },
-      { day: "Torsdag", time: "16:00 - 17:30", level: "Litt erfarne" },
+      { day: "Torsdag", time: "16:00 - 17:30", level: "Erfaren" },
       { day: "Søndag", time: "11:00 - 12:30", level: "Avansert" },
     ],
-
+    level: "Alle nivåer",
+    age: "12+",
     instructor: "Emma",
   },
 ];
+
 
 export const TESTIMONIALS = [
   {
@@ -171,9 +173,9 @@ export const PRICING_PLANS = [
 
 export const STUDIO_INFO = {
   name: "JS Dans",
-  tagline: "Din nye dansehistorie starter her",
+  tagline: "Kreativitet blomstrer når vi tør å være oss selv.",
   description:
-    "Opplev gleden ved dans i våre lyse, moderne lokaler. Med erfarne instruktører og et varmt fellesskap skaper vi magiske øyeblikk for alle aldre og nivåer.",
+    "Vi var alle i sjokk og vanntro da Jump! forsvant for snart 3 år siden. Etter 20 år med dans for dansens skyld mistet nå mange en del av sin identitet. Vi er evig takknemlige for at dansekunsten fikk leve videre gjennom Victory dance disse årene, og vi håper at disse to dansestudioene kan leve side om side i skjønn forening i mange år fremover. Vi åpner vårt nye studio til ære for alt det Jump! var, med nye visjoner og i en struktur hvor alle får gjøre det de er best på. Det blir både kjente og ukjente fjes å se i administrasjonen og blant pedagogene som gleder seg til å møte gamle og nye unge dansere til høsten.",
   address: {
     street: "Fjellgata 4",
     city: "Kongsvinger",
