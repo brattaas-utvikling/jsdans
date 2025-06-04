@@ -58,9 +58,9 @@ export default function HeroSection() {
       {/* Decorative elements */}
       <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-white/30 dark:from-black to-transparent z-10" />
 
-      <div className="absolute -bottom-12 -right-12 w-64 h-64 bg-purple-500/20 rounded-full blur-3xl" />
+      <div className="absolute -bottom-12 -right-12 w-64 h-64 bg-blue-500/20 rounded-full blur-3xl" />
 
-      <div className="absolute top-1/4 -left-12 w-48 h-48 bg-pink-500/10 rounded-full blur-3xl" />
+      <div className="absolute top-1/4 -left-12 w-48 h-48 bg-purple-500/20 rounded-full blur-3xl" />
     </section>
   );
 }
