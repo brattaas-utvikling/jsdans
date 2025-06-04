@@ -46,7 +46,7 @@ export default function ContactSection() {
               {/* Contact info */}
               <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl shadow-lg p-6 md:p-8">
                 <h3 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
-                  JS Dans
+                  FLOW
                 </h3>
 
                 <div className="space-y-4">

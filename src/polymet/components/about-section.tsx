@@ -34,7 +34,6 @@ export default function AboutSection() {
             <h3 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white">
             Helt nytt. Helt oss.
             </h3>
-
             <div className="prose prose-lg dark:prose-invert">
               <p className="my-6 text-gray-700 dark:text-gray-300">
                 {STUDIO_INFO.description}
