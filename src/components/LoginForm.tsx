@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import { Input } from './ui/input';
+import { Button } from './ui/button';
 
 const LoginForm: React.FC = () => {
     const [email, setEmail] = useState<string>('');
@@ -46,10 +48,10 @@ const LoginForm: React.FC = () => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <h2>{isLogin ? 'Logg inn' : 'Registrer deg'}</h2>
+            <h2 className="text-sm font-medium text-indigo-600 dark:text-indigo-400 uppercase tracking-wider mb-3">{isLogin ? 'Logg inn' : 'Registrer deg'}</h2>
             
             {!isLogin && (
-                <input
+                <Input
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
@@ -58,7 +60,7 @@ const LoginForm: React.FC = () => {
                 />
             )}
             
-            <input
+            <Input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -66,7 +68,7 @@ const LoginForm: React.FC = () => {
                 required
             />
             
-            <input
+            <Input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -74,13 +76,13 @@ const LoginForm: React.FC = () => {
                 required
             />
             
-            <button type="submit">
+            <Button type="submit">
                 {isLogin ? 'Logg inn' : 'Registrer'}
-            </button>
+            </Button>
             
-            <button type="button" onClick={() => setIsLogin(!isLogin)}>
+            <Button type="button" onClick={() => setIsLogin(!isLogin)}>
                 {isLogin ? 'Trenger konto? Registrer deg' : 'Har konto? Logg inn'}
-            </button>
+            </Button>
             
             {error && <p style={{color: 'red'}}>{error}</p>}
         </form>

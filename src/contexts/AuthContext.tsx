@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { account } from '../lib/appwrite';
-import { Models } from 'appwrite';
+import { Models, ID } from 'appwrite';
 
 interface AuthContextType {
     user: Models.User<Models.Preferences> | null;
@@ -38,39 +38,46 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             setUser(userData);
         } catch (error) {
             console.log('Ingen bruker logget inn');
+            console.error('Error fetching user:', error);
         } finally {
             setLoading(false);
         }
     };
 
-    const login = async (email: string, password: string): Promise<Models.User<Models.Preferences>> => {
-        try {
-            await account.createEmailSession(email, password);
-            const userData = await account.get();
-            setUser(userData);
-            return userData;
-        } catch (error) {
-            throw error;
-        }
-    };
+const login = async (email: string, password: string): Promise<Models.User<Models.Preferences>> => {
+    try {
+        // For Appwrite 18.x - bruk createEmailPasswordSession
+        await account.createEmailPasswordSession(email, password);
+        const userData = await account.get();
+        setUser(userData);
+        return userData;
+    } catch (error) {
+        console.error('Login error:', error);
+        throw error;
+    }
+};
 
-    const register = async (email: string, password: string, name: string): Promise<Models.User<Models.Preferences>> => {
-        try {
-            await account.create('unique()', email, password, name);
-            return await login(email, password);
-        } catch (error) {
-            throw error;
-        }
-    };
+const register = async (email: string, password: string, name: string): Promise<Models.User<Models.Preferences>> => {
+    try {
+        await account.create(ID.unique(), email, password, name);
+        return await login(email, password);
+    } catch (error) {
+        // Custom feilmelding
+        throw new Error(`Registrering feilet: ${error instanceof Error ? error.message : 'Ukjent feil'}`);
+    }
+};
 
-    const logout = async (): Promise<void> => {
-        try {
-            await account.deleteSession('current');
-            setUser(null);
-        } catch (error) {
-            throw error;
-        }
-    };
+const logout = async (): Promise<void> => {
+    try {
+        await account.deleteSession('current');
+        setUser(null);
+    } catch (error) {
+        // Gjør noe nyttig - f.eks. logg feilen men fjern bruker likevel
+        console.error('Logout failed:', error);
+        setUser(null); // Fjern bruker fra state uansett
+        // Ikke throw error - vi vil at logout skal "fungere" uansett
+    }
+};
 
     const value: AuthContextType = {
         user,
