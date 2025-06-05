@@ -41,6 +41,7 @@
     "ag-grid-react": "^32.1.0",
     "antd": "^5.20.5",
     "aos": "^2.3.4",
+    "appwrite": "^18.1.1",
     "canvas-confetti": "^1.9.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
