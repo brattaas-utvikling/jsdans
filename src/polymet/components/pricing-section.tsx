@@ -49,7 +49,7 @@ export default function PricingSection() {
             Trenger du en mer tilpasset prismodell?
           </h4>
           <p className="text-gray-600 dark:text-gray-300">
-            We tilby egne spesialmodeller for både yngre og eldre. Ta kontak for et hyggelig tilbud!
+            Vi tilbyr egne spesialmodeller for både yngre og eldre. Ta kontak for et hyggelig tilbud!
           </p>
         </div>
       </div>
