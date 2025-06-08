@@ -121,6 +121,7 @@ export default function Navbar() {
     { label: "Hjem", href: "/", type: "route" },
     { label: "Om oss", href: "#about", type: "anchor" },
     { label: "Kurs", href: "#classes", type: "anchor" },
+    { label: "Courses", href: "/courses", type: "route" },
     { label: "Pris", href: "/priser", type: "route" },
     { label: "Kontakt oss", href: "#contact", type: "anchor" }
   ];

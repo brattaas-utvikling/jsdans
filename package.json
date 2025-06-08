@@ -1,7 +1,7 @@
 {
   "name": "polymet-react-app",
   "private": true,
-  "version": "0.2.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
     "@radix-ui/react-accordion": "^1.2.3",
     "@radix-ui/react-alert-dialog": "^1.1.6",
     "@radix-ui/react-aspect-ratio": "^1.1.2",
@@ -41,6 +42,7 @@
     "ag-grid-react": "^32.1.0",
     "antd": "^5.20.5",
     "aos": "^2.3.4",
+    "appwrite": "^18.1.1",
     "canvas-confetti": "^1.9.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -111,7 +113,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
-    "@types/node": "^22.13.9",
+    "@types/node": "^22.15.30",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
