@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { databases, ID } from '../lib/appwrite';
-import { useAuth } from '../contexts/AuthContext';
+import { databases } from '../lib/appwrite';
 import * as LucideIcons from 'lucide-react';
+// import { log } from 'console';
+// import ClassCard from '@/polymet/components/class-card';
 
 interface Schedule {
   $id: string;
@@ -28,7 +29,7 @@ const DanceClasses: React.FC = () => {
   const [classes, setClasses] = useState<DanceClass[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { user } = useAuth();
+  // Fjernet useAuth siden vi ikke trenger det for kjøp
 
   useEffect(() => {
     async function fetchClasses() {
@@ -37,8 +38,8 @@ const DanceClasses: React.FC = () => {
         
         // Hent dance classes med populated schedules relationship
         const response = await databases.listDocuments(
-          import.meta.env.VITE_APPWRITE_DATABASE_ID,
-          'dance_classes',
+          import.meta.env.VITE_DATABASE_ID,
+          import.meta.env.VITE_DANCE_CLASSES_COLLECTION_ID,
           [
             // Query.select(['*', 'schedules.*']) // Uncomment hvis du vil bruke Query
           ]
@@ -57,7 +58,8 @@ const DanceClasses: React.FC = () => {
           instructor: doc.instructor,
           schedules: doc.schedules || [], // Fra relationship
         })) as DanceClass[];
-
+        console.log('Fetched dance classes:', mappedClasses); // DEBUG
+        
         setClasses(mappedClasses);
       } catch (error) {
         console.error('Feil ved henting av danseklasser:', error);
@@ -70,40 +72,49 @@ const DanceClasses: React.FC = () => {
     fetchClasses();
   }, []);
 
+  
   const getIconComponent = (iconName: string) => {
     const formattedIconName = `${iconName.charAt(0).toUpperCase() + iconName.slice(1)}` as keyof typeof LucideIcons;
     const IconComponent = (LucideIcons[formattedIconName] as React.ComponentType<React.SVGProps<SVGSVGElement>>) || LucideIcons.Star;
     return IconComponent;
   };
-  
-  const handlePurchase = async (classId: string, className: string) => {
-    if (!user) {
-      alert('Du må være logget inn for å kjøpe');
-      return;
-    }
 
-    const confirmPurchase = window.confirm(`Vil du kjøpe ${className}?`);
-    if (!confirmPurchase) return;
+//   const handlePurchase = async (classId: string, className: string) => {
+//   const confirmPurchase = window.confirm(`Kjøp ${className} for 500 NOK via Vipps?`);
+//   if (!confirmPurchase) return;
 
-    try {
-      await databases.createDocument(
-        import.meta.env.VITE_APPWRITE_DATABASE_ID,
-        'purchases',
-        ID.unique(),
-        {
-          userId: user.$id,
-          danceClassId: classId,
-          className: className,
-          purchaseDate: new Date().toISOString(),
-          status: 'completed',
-        }
-      );
-      alert(`${className} er kjøpt! 🎉`);
-    } catch (error) {
-      console.error('Feil ved kjøp:', error);
-      alert('Noe gikk galt. Prøv igjen senere.');
-    }
-  };
+//   try {
+//     const response = await functions.createExecution(
+//       import.meta.env.VITE_VIPPS_FUNCTION_ID,
+//       JSON.stringify({
+//         danceClassId: classId,
+//         className: className,
+//         amount: 500 * 100,
+//         timestamp: new Date().toISOString(),
+//       })
+//     );
+
+// // console.log('Function response:', response);
+// console.log('Status:', response.status);
+// console.log('Response body:', response.responseBody);
+// console.log('Response errors:', response.responseErrors); // Viktig!
+
+//     if (response.responseStatusCode === 200) {
+//       const result = JSON.parse(response.responseBody);
+//       console.log('Parsed result:', result); // DEBUG
+      
+//       if (result.success && result.vippsUrl) {
+//         window.location.href = result.vippsUrl;
+//       } else {
+//         console.error('Missing vippsUrl in result:', result); // DEBUG
+//         throw new Error('Ingen Vipps URL mottatt');
+//       }
+//     }
+//   } catch (error) {
+//     console.error('Feil ved oppstart av Vipps-betaling:', error);
+//     alert('Kunne ikke starte Vipps-betaling. Prøv igjen senere.');
+//   }
+// };
 
   // Loading state
   if (loading) {
@@ -136,7 +147,7 @@ const DanceClasses: React.FC = () => {
     <div className="flex flex-wrap gap-4 p-4">
       {classes.map((danceClass) => {
         const IconComponent = getIconComponent(danceClass.icon);
-        
+
         return (
           <div
             key={danceClass.$id}
@@ -165,7 +176,7 @@ const DanceClasses: React.FC = () => {
             {/* Detaljer */}
             <div className="space-y-1 mb-3">
               <p><strong>Nivå:</strong> {danceClass.level}</p>
-              <p><strong>Alder:</strong> {danceClass.age}</p>
+              <p><strong>Alder:</strong> {danceClass.age}{" "}år</p>
               <p><strong>Instruktør:</strong> {danceClass.instructor}</p>
             </div>
 
@@ -187,11 +198,10 @@ const DanceClasses: React.FC = () => {
 
             {/* Kjøp knapp */}
             <button
-              className="w-full mt-4 px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700 transition-colors"
-              onClick={() => handlePurchase(danceClass.$id, danceClass.name)}
-              disabled={!user}
+              className="w-full mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors font-semibold"
+              // onClick={() => handlePurchase(danceClass.$id, danceClass.name)}
             >
-              {user ? 'Kjøp nå' : 'Logg inn for å kjøpe'}
+              Kjøp for 500 NOK med Vipps 💳
             </button>
           </div>
         );
