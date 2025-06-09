@@ -2,7 +2,8 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { MenuIcon, XIcon, MoonIcon, SunIcon } from "lucide-react";
-import { STUDIO_INFO } from "@/polymet/data/dance-studio-data";
+// import { STUDIO_INFO } from "@/polymet/data/dance-studio-data";
+import logo from "../../assets/urbanstudios_logo.svg";
 
 // Throttle utility function
 function throttle<T extends (...args: unknown[]) => void>(
@@ -119,11 +120,11 @@ export default function Navbar() {
 
   const navigationItems = [
     { label: "Hjem", href: "/", type: "route" },
-    { label: "Om oss", href: "#about", type: "anchor" },
+    { label: "Om oss", href: "/om-oss", type: "route" },
     { label: "Kurs", href: "#classes", type: "anchor" },
-    { label: "Courses", href: "/courses", type: "route" },
+    { label: "Påmelding", href: "/courses", type: "route" },
     { label: "Pris", href: "/priser", type: "route" },
-    { label: "Kontakt oss", href: "#contact", type: "anchor" }
+    { label: "Kontakt oss", href: "/kontakt", type: "route" }
   ];
 
   const handleNavClick = (href: string, type: string) => {
@@ -248,9 +249,14 @@ export default function Navbar() {
             onClick={() => handleNavClick("/", "route")}
             className="flex items-center gap-2"
           >
-            <span className="font-bold text-lg text-zinc-900 dark:text-white transition-colors">
+          <img
+            src={logo}
+            alt="Urban Studios Logo"
+            className="h-16 w-auto md:h-20"
+          />
+            {/* <span className="font-bold text-lg text-zinc-900 dark:text-white transition-colors">
               {STUDIO_INFO.name}
-            </span>
+            </span> */}
           </button>
 
           {/* Desktop navigation */}

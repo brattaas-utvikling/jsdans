@@ -5,8 +5,6 @@ import {
   ClockIcon,
   InstagramIcon,
   FacebookIcon,
-  YoutubeIcon,
-  X,
 } from "lucide-react";
 import { STUDIO_INFO } from "@/polymet/data/dance-studio-data";
 import ContactForm from "@/polymet/components/contact-form";
@@ -112,15 +110,15 @@ export default function ContactSection() {
 
                 {/* Social media */}
                 <div className="mt-8">
-                  <h4 className="font-medium text-gray-900 dark:text-white mb-4">
-                    Føl oss på sosiale medier
+                  <h4 className="font-semibold text-gray-900 dark:text-white mb-4">
+                    Følg oss på sosiale medier
                   </h4>
                   <div className="flex space-x-4">
                     <a
                       href={STUDIO_INFO.social.instagram}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-500 flex items-center justify-center text-white hover:opacity-90 transition-opacity"
+                      className="h-10 w-10 rounded-full bg-gradient-to-br from-purple-500 via-orange-500 to-pink-500 flex items-center justify-center text-white hover:opacity-90 transition-opacity"
                     >
                       <InstagramIcon className="h-5 w-5" />
 
@@ -135,26 +133,6 @@ export default function ContactSection() {
                       <FacebookIcon className="h-5 w-5" />
 
                       <span className="sr-only">Facebook</span>
-                    </a>
-                    <a
-                      href={STUDIO_INFO.social.twitter}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="h-10 w-10 rounded-full bg-black flex items-center justify-center text-white hover:opacity-90 transition-opacity"
-                    >
-                      <X className="h-5 w-5" />
-
-                      <span className="sr-only">Twitter</span>
-                    </a>
-                    <a
-                      href={STUDIO_INFO.social.youtube}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="h-10 w-10 rounded-full bg-red-600 flex items-center justify-center text-white hover:opacity-90 transition-opacity"
-                    >
-                      <YoutubeIcon className="h-5 w-5" />
-
-                      <span className="sr-only">YouTube</span>
                     </a>
                   </div>
                 </div>

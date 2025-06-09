@@ -154,7 +154,7 @@ export const PRICING_PLANS = [
   {
     id: 3,
     name: "2 klasser",
-    price: 2800,
+    price: 3000,
     duration: "per halvår",
     features: [
       "Tilgang til to klasser",
@@ -166,11 +166,42 @@ export const PRICING_PLANS = [
     ],
     popular: false,
     color: "bg-indigo-50 border-indigo-200 hover:border-indigo-300 dark:bg-indigo-900/10 dark:border-indigo-900 dark:hover:border-indigo-800"
+  },
+  {
+    id: 4,
+    name: "3+ klasser",
+    price: 4500,
+    duration: "per halvår",
+    features: [
+      "Tilgang til tre klasser",
+      "Alle nivåer velkommen",
+      "Profesjonell instruksjon",
+      "Gratis første gang",
+      "Tilgang til studioets fellesområder",
+      "500kr rabatt"
+    ],
+    popular: false,
+    color: "bg-indigo-50 border-indigo-200 hover:border-indigo-300 dark:bg-indigo-900/10 dark:border-indigo-900 dark:hover:border-indigo-800"
+  },
+  {
+    id: 5,
+    name: "Konpani",
+    price: 5000,
+    duration: "per halvår",
+    features: [
+      "Tilgang til to klasser",
+      "Alle nivåer velkommen",
+      "Profesjonell instruksjon",
+      "Tilgang til studioets fellesområder",
+    ],
+    popular: false,
+    color: "bg-indigo-50 border-indigo-200 hover:border-indigo-300 dark:bg-indigo-900/10 dark:border-indigo-900 dark:hover:border-indigo-800"
   }
 ];
 
 export const STUDIO_INFO = {
   name: "URBAN STUDIOS",
+  logo: "./assets/URBANSTUDIOS.svg",
   tagline: "Kreativitet blomstrer når vi tør å være oss selv.",
   description:
     "Vi var alle i sjokk og vanntro da Jump! forsvant for snart 3 år siden. Etter 20 år med dans for dansens skyld mistet nå mange en del av sin identitet. Vi er evig takknemlige for at dansekunsten fikk leve videre gjennom Victory dance disse årene, og vi håper at disse to dansestudioene kan leve side om side i skjønn forening i mange år fremover. Vi åpner vårt nye studio til ære for alt det Jump! var, med nye visjoner og i en struktur hvor alle får gjøre det de er best på. Det blir både kjente og ukjente fjes å se i administrasjonen og blant pedagogene som gleder seg til å møte gamle og nye unge dansere til høsten.",
