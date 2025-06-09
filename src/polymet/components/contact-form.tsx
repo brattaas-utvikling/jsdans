@@ -119,7 +119,7 @@ export default function ContactForm() {
 
           <Button
             type="submit"
-            className="w-full rounded-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white border-0"
+            className="w-full rounded-full bg-gradient-to-r from-blue-500 to-pink-500 hover:from-blue-600 hover:to-pink-600 text-white border-0"
           >
             Send melding
           </Button>

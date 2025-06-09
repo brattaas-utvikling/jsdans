@@ -28,14 +28,14 @@ export default function AboutSection() {
 
           {/* Content column */}
           <div className="w-full lg:w-1/2">
-            <h2 className="text-sm font-medium text-indigo-600 dark:text-indigo-400 uppercase tracking-wider mb-3">
+            <h2 className="font-medium text-indigo-600 dark:text-indigo-400 uppercase tracking-wider mb-3">
               Om vårt dansestudio
             </h2>
             <h3 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white">
             Helt nytt. Helt oss.
             </h3>
             <div className="prose prose-lg dark:prose-invert">
-              <p className="my-6 text-gray-700 dark:text-gray-300">
+              <p className="mt-6 mb-10 text-lg text-gray-700 dark:text-gray-300">
                 {STUDIO_INFO.description}
               </p>
               <p className="text-xl md:text-2xl lg:text-3xl font-bold text-black dark:text-white/90 mb-6 tracking-tight">
