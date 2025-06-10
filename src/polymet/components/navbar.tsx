@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { MenuIcon, XIcon, MoonIcon, SunIcon } from "lucide-react";
 // import { STUDIO_INFO } from "@/polymet/data/dance-studio-data";
-import logo from "../../assets/urbanstudios_logo.svg";
+import logo from "../../assets/urban_studios_logo.svg";
 
 // Throttle utility function
 function throttle<T extends (...args: unknown[]) => void>(
@@ -252,7 +252,7 @@ export default function Navbar() {
           <img
             src={logo}
             alt="Urban Studios Logo"
-            className="h-16 w-auto md:h-20"
+            className="h-16 w-autoobject-contain"
           />
             {/* <span className="font-bold text-lg text-zinc-900 dark:text-white transition-colors">
               {STUDIO_INFO.name}

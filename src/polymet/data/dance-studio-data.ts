@@ -201,25 +201,23 @@ export const PRICING_PLANS = [
 
 export const STUDIO_INFO = {
   name: "URBAN STUDIOS",
-  logo: "./assets/URBANSTUDIOS.svg",
+  logo: "./assets/urban_stuios_logo.png",
   tagline: "Kreativitet blomstrer når vi tør å være oss selv.",
   description:
     "Vi var alle i sjokk og vanntro da Jump! forsvant for snart 3 år siden. Etter 20 år med dans for dansens skyld mistet nå mange en del av sin identitet. Vi er evig takknemlige for at dansekunsten fikk leve videre gjennom Victory dance disse årene, og vi håper at disse to dansestudioene kan leve side om side i skjønn forening i mange år fremover. Vi åpner vårt nye studio til ære for alt det Jump! var, med nye visjoner og i en struktur hvor alle får gjøre det de er best på. Det blir både kjente og ukjente fjes å se i administrasjonen og blant pedagogene som gleder seg til å møte gamle og nye unge dansere til høsten.",
   address: {
-    street: "Fjellgata 4",
+    street: "Jernbanegata 16",
     city: "Kongsvinger",
     zip: "2208",
   },
   contact: {
     phone: "+47 123 45 678",
     email: "kontakt@urbanstudio.no",
-    hours: "Mandag-Fredag: 15.00 - 22.00, Lørdag: 10.00 - 15.00"
+    hours: "Mandag-Fredag: 15.00 - 22.00"
   },
   social: {
     instagram: "https://instagram.com/jsdans",
     facebook: "https://facebook.com/jsdans",
-    twitter: "https://twitter.com/jsdans",
-    youtube: "https://youtube.com/jsdans",
   },
   mapUrl:
     "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1247.232038804706!2d12.002997696042817!3d60.18708001934726!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sno!2sno!4v1748429024156!5m2!1sno!2sno",
