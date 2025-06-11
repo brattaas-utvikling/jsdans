@@ -160,7 +160,7 @@ export default function NewsPage() {
               Nyheter & Blogg
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed">
-              Hold deg oppdatert på alt som skjer hos Urban Studios. Fra nye kurs til 
+              Hold deg oppdatert på alt som skjer hos Urban Studios! Fra nye kurs til 
               spennende events og inspirerende danse-historier.
             </p>
           </motion.div>
@@ -191,13 +191,13 @@ export default function NewsPage() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                   
                   {/* Published status badge */}
-                  <div className="absolute top-4 left-4">
+                  {/* <div className="absolute top-4 left-4">
                     <span className={`px-3 py-1 text-white text-sm font-montserrat-medium rounded-full ${
                       featuredArticle.published ? 'bg-green-500' : 'bg-yellow-500'
                     }`}>
                       {featuredArticle.published ? 'Publisert' : 'Utkast'}
                     </span>
-                  </div>
+                  </div> */}
                 </div>
 
                 {/* Content */}
@@ -227,8 +227,8 @@ export default function NewsPage() {
 
                   <Link to={`/nyheter/${featuredArticle.$id}`}>
                     <Button className="font-montserrat-semibold rounded-full bg-gradient-to-r from-studio-blue-500 to-studio-pink-500 
-                                     hover:from-studio-blue-600 hover:to-studio-pink-600 text-white shadow-studio
-                                     transition-all duration-200 hover:shadow-studio-lg hover:scale-105">
+                                    hover:from-studio-blue-600 hover:to-studio-pink-600 text-white shadow-studio
+                                      transition-all duration-200 hover:shadow-studio-lg">
                       Les hele artikkelen
                       <ArrowRightIcon className="ml-2 h-4 w-4" />
                     </Button>

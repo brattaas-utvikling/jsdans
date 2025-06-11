@@ -282,7 +282,7 @@ export default function Navbar() {
                         bg-gradient-to-r from-studio-blue-500 via-studio-indigo-500 to-studio-pink-500 
                         hover:from-studio-blue-600 hover:via-studio-indigo-600 hover:to-studio-pink-600 
                         text-white border-0 shadow-studio transition-all duration-200 
-                        hover:shadow-studio-lg hover:scale-105
+                        hover:shadow-studio-lg 
                         focus:ring-2 focus:ring-studio-blue-500 focus:ring-offset-2"
               onClick={() => handleNavClick("#contact", "anchor")}
             >

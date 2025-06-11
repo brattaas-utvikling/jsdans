@@ -7,7 +7,6 @@ import {
   UserIcon, 
   ArrowLeftIcon,
   ShareIcon,
-  BookmarkIcon
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getDocument, DATABASE_ID, COLLECTIONS } from "@/lib/appwrite";
@@ -192,11 +191,11 @@ export default function NewsArticlePage() {
               transition={{ duration: 0.8 }}
               className="max-w-4xl"
             >
-              <span className={`inline-block px-3 py-1 rounded-full text-sm font-montserrat-medium mb-4 ${
+              {/* <span className={`inline-block px-3 py-1 rounded-full text-sm font-montserrat-medium mb-4 ${
                 article.published ? 'bg-green-500' : 'bg-yellow-500'
               } text-white`}>
                 {article.published ? 'Publisert' : 'Utkast'}
-              </span>
+              </span> */}
               
               <h1 className="font-bebas text-bebas-3xl md:text-bebas-4xl lg:text-bebas-5xl text-white mb-4 leading-tight">
                 {article.headlines}
@@ -247,13 +246,6 @@ export default function NewsArticlePage() {
                 >
                   <ShareIcon className="h-4 w-4" />
                 </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="rounded-full"
-                >
-                  <BookmarkIcon className="h-4 w-4" />
-                </Button>
               </div>
             </motion.div>
 
@@ -290,14 +282,14 @@ export default function NewsArticlePage() {
                 <div className="flex gap-3">
                   <Button
                     onClick={handleShare}
-                    className="rounded-full bg-studio-blue-500 hover:bg-studio-blue-600 font-montserrat-medium"
+                    className="rounded-full bg-studio-blue-700 hover:bg-studio-blue-600 font-montserrat-medium"
                   >
                     <ShareIcon className="mr-2 h-4 w-4" />
                     Del artikkel
                   </Button>
                   
                   <Button
-                    onClick={() => navigate('/news')}
+                    onClick={() => navigate('/nyheter')}
                     variant="outline"
                     className="rounded-full font-montserrat-medium"
                   >
