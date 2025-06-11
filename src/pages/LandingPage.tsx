@@ -1,16 +1,13 @@
-import HeroSection from "@/polymet/components/hero-section";
-import ClassesSection from "@/polymet/components/classes-section";
+import HeroSection from "@/components/HeroSection";
 import HomepageNews from "@/components/HomePageNews";
 import ScrollToTop from "@/helpers/ScrollToTop";
 
-export default function DanceStudioHome() {
+export default function LandingPage() {
   return (
     <>
       <ScrollToTop />
       <HeroSection />
       <HomepageNews />
-      <ClassesSection />
-
     </>
   );
 }

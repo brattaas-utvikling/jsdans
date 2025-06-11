@@ -8,7 +8,7 @@ import {
   getClassColorScheme,
   AGE_GROUP_COLORS,
   LEVEL_COLORS,
-} from "../data/dance-studio-schedule-data";
+} from "../../data/dance-studio-schedule-data";
 
 export default function DanceSchedule() {
   const [selectedDay, setSelectedDay] = useState("Mandag");

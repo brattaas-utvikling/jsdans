@@ -1,4 +1,4 @@
-import { DANCE_CLASSES } from "@/polymet/data/dance-studio-data";
+import { DANCE_CLASSES } from "@/data/dance-studio-data";
 import ClassCard from "@/polymet/components/class-card";
 
 export default function ClassesSection() {

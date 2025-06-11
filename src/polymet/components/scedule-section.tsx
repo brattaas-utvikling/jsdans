@@ -18,7 +18,7 @@ import {
   WEEKLY_SCHEDULE,
   getClassDuration,
   getClassColorScheme,
-} from "../data/dance-studio-schedule-data";
+} from "../../data/dance-studio-schedule-data";
 
 export default function ScheduleSection() {
   const [filter, setFilter] = useState("alle");

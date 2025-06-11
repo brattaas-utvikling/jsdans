@@ -1,5 +1,5 @@
 import { ClockIcon, FacebookIcon, InstagramIcon, MailIcon, MapPinIcon, PhoneIcon } from "lucide-react";
-import ContactForm from "./contact-form";
+import ContactForm from "./ContactForm";
 import { STUDIO_INFO } from "../data/dance-studio-data";
 
 export default function ContactSection() {
@@ -41,7 +41,7 @@ export default function ContactSection() {
             {/* Left column: Contact info - h-full for equal height */}
             <div className="h-full flex flex-col">
               <div className="bg-surface-muted dark:bg-surface-dark-muted rounded-2xl shadow-studio p-6 md:p-8
-                             border border-gray-100 dark:border-studio-blue-700/30 h-full flex flex-col">
+                                border border-gray-100 dark:border-studio-blue-700/30 h-full flex flex-col">
                 <h3 className="font-bebas text-bebas-lg mb-6 text-gray-900 dark:text-white">
                   URBAN STUDIOS
                 </h3>
@@ -121,22 +121,24 @@ export default function ContactSection() {
                       href={STUDIO_INFO.social.instagram}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="h-12 w-12 rounded-full bg-gradient-to-br from-studio-purple-500 via-studio-pink-500 to-studio-pink-600 
-                               flex items-center justify-center text-white hover:opacity-90 transition-all duration-200 
-                               hover:scale-105 shadow-studio"
+                      className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 via-pink-500 to-orange-400 
+                              hover:from-purple-600 hover:via-pink-600 hover:to-orange-500
+                              text-white transition-all duration-300 hover:scale-110 
+                                flex items-center justify-center shadow-studio hover:shadow-studio"
                     >
-                      <InstagramIcon className="h-5 w-5" />
+                      <InstagramIcon className="h-6 w-6" />
                       <span className="sr-only">Instagram</span>
                     </a>
                     <a
                       href={STUDIO_INFO.social.facebook}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="h-12 w-12 rounded-full bg-studio-blue-600 dark:bg-studio-blue-500
-                               flex items-center justify-center text-white hover:opacity-90 transition-all duration-200 
-                               hover:scale-105 shadow-studio"
+                      className="w-12 h-12 rounded-full bg-studio-blue-600 
+                                flex items-center justify-center text-white
+                              hover:bg-studio-blue-700 transition-all duration-300 
+                                hover:scale-105 shadow-studio"
                     >
-                      <FacebookIcon className="h-5 w-5" />
+                      <FacebookIcon className="h-6 w-6" />
                       <span className="sr-only">Facebook</span>
                     </a>
                   </div>
@@ -147,7 +149,7 @@ export default function ContactSection() {
             {/* Right column: Contact form - h-full for equal height */}
             <div className="h-full flex flex-col">
               <div className="bg-white dark:bg-surface-dark-muted rounded-2xl shadow-studio-lg p-6 md:p-8
-                             border border-gray-100 dark:border-studio-blue-700/30 h-full flex flex-col">
+                                border border-gray-100 dark:border-studio-blue-700/30 h-full flex flex-col">
                 <ContactForm />
               </div>
             </div>

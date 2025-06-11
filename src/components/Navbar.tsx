@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { MenuIcon, XIcon, MoonIcon, SunIcon } from "lucide-react";
-import logo from "../../assets/urban_studios_logo.svg";
+import logo from "../assets/urban_studios_logo.svg";
 
 // Throttle utility function
 function throttle<T extends (...args: unknown[]) => void>(
@@ -111,7 +111,7 @@ export default function Navbar() {
     { label: "Hjem", href: "/", type: "route" },
     { label: "Nyheter", href: "/nyheter", type: "route" },
     { label: "Om oss", href: "/om-oss", type: "route" },
-    { label: "Kurs", href: "#classes", type: "anchor" },
+    { label: "Kurs", href: "kurs", type: "route" },
     { label: "Påmelding", href: "/courses", type: "route" },
     { label: "Pris", href: "/priser", type: "route" },
     { label: "Kontakt oss", href: "/kontakt", type: "route" }

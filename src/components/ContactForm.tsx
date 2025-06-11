@@ -63,7 +63,7 @@ export default function ContactForm() {
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
+            <div className="space-y-2 font-montserrat">
               <Label htmlFor="name">Navn</Label>
               <Input
                 id="name"
@@ -72,7 +72,7 @@ export default function ContactForm() {
                 onChange={handleChange}
                 placeholder="Ditt navn"
                 required
-                className="rounded-lg"
+                className="rounded-lg font-montserrat"
               />
             </div>
 
@@ -86,7 +86,7 @@ export default function ContactForm() {
                 onChange={handleChange}
                 placeholder="din.e-post@eksempel.no"
                 required
-                className="rounded-lg"
+                className="rounded-lg font-montserrat"
               />
             </div>
           </div>
@@ -100,7 +100,7 @@ export default function ContactForm() {
               value={formData.phone}
               onChange={handleChange}
               placeholder="+47 123 45 678"
-              className="rounded-lg"
+              className="rounded-lg font-montserrat"
             />
           </div>
 
@@ -113,13 +113,13 @@ export default function ContactForm() {
               onChange={handleChange}
               placeholder="Skriv din melding her..."
               required
-              className="min-h-[120px] rounded-lg"
+              className="min-h-[120px] rounded-lg font-montserrat"
             />
           </div>
 
           <Button
             type="submit"
-            className="w-full rounded-full bg-gradient-to-r from-blue-500 to-pink-500 hover:from-blue-600 hover:to-pink-600 text-white border-0"
+            className="w-full rounded-full bg-gradient-to-r from-blue-500 to-pink-500 hover:from-blue-600 hover:to-pink-600 text-white border-0 font-montserrat font-semibold"
           >
             Send melding
           </Button>

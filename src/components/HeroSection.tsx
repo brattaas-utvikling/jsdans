@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import logo from "../../assets/urban_studios_logo.svg";
-import dancerSvg from "../../assets/urban_studio_dancer.svg";
+import logo from "../assets/urban_studios_logo.svg";
+import dancerSvg from "../assets/urban_studio_dancer.svg";
 
 export default function HeroSection() {
   const [svgsLoaded, setSvgsLoaded] = useState(false);
@@ -42,7 +42,7 @@ export default function HeroSection() {
   return (
     <section 
       id="hero" 
-      className="relative h-screen min-h-[600px] flex items-center overflow-hidden"
+      className="relative h-screen min-h-[600px] flex items-center overflow-hidden "
     >
       {/* Background logo with optimized animation */}
       <motion.div 
@@ -59,7 +59,7 @@ export default function HeroSection() {
             <img
               src={logo}
               alt="Urban Studios Logo"
-              className="w-full h-full object-contain"
+              className="mx-auto max-w-3xl w-full h-full object-contain container px-4 md:px-6"
               style={{ visibility: svgsLoaded ? 'visible' : 'hidden' }}
             />
             
@@ -74,7 +74,7 @@ export default function HeroSection() {
         )}
       </motion.div>
 
-      {/* Welcome floating element - appears after background animation */}
+      {/* Welcome floating element - dynamically positioned left of center */}
       <motion.div
         initial={{ opacity: 0, y: 30, x: -30 }}
         animate={{ 
@@ -87,60 +87,68 @@ export default function HeroSection() {
           duration: 1,
           ease: [0.25, 0.46, 0.45, 0.94]
         }}
-        className="absolute top-16 left-16 md:top-20 md:left-20 z-10"
+        className="absolute top-16 md:top-20 z-10"
+        style={{
+          left: 'calc(50% - 180px)', // 180px left of center on desktop
+        }}
       >
-        {svgsLoaded && (
-          <motion.div
-            animate={{
-              y: [0, -8, 0],
-              rotate: [0, 3, 0]
-            }}
-            transition={{
-              duration: 4,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 2.5 // Start floating after fade in
-            }}
-          >
-            <div className="flex items-center gap-3">
+        <div className="relative">
+          {/* Responsive adjustment using CSS transforms */}
+          <div className="md:translate-x-0 sm:translate-x-12 translate-x-20">
+            {svgsLoaded && (
               <motion.div
                 animate={{
-                  scale: [1, 1.1, 1],
-                  rotate: [0, 5, -5, 0]
+                  y: [0, -8, 0],
+                  rotate: [0, 3, 0]
                 }}
                 transition={{
-                  duration: 3,
+                  duration: 4,
                   repeat: Infinity,
                   ease: "easeInOut",
-                  delay: 3
+                  delay: 2.5 // Start floating after fade in
                 }}
-                className="w-5 h-5"
               >
-                {/* Light mode dancer (black) */}
-                <img
-                  src={dancerSvg}
-                  alt=""
-                  className="w-full h-full object-contain dark:hidden"
-                  style={{
-                    filter: 'brightness(0) saturate(100%) invert(0%)'
-                  }}
-                />
-                {/* Dark mode dancer (white) */}
-                <img
-                  src={dancerSvg}
-                  alt=""
-                  className="w-full h-full object-contain hidden dark:block"
-                  style={{
-                    filter: 'brightness(0) saturate(100%) invert(100%)'
-                  }}
-                />
+                <div className="flex items-center gap-3">
+                  <motion.div
+                    animate={{
+                      scale: [1, 1.1, 1],
+                      rotate: [0, 5, -5, 0]
+                    }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: 3
+                    }}
+                    className="w-5 h-5"
+                  >
+                    {/* Light mode dancer (black) */}
+                    <img
+                      src={dancerSvg}
+                      alt=""
+                      className="w-full h-full object-contain dark:hidden"
+                      style={{
+                        filter: 'brightness(0) saturate(100%) invert(0%)'
+                      }}
+                    />
+                    {/* Dark mode dancer (white) */}
+                    <img
+                      src={dancerSvg}
+                      alt=""
+                      className="w-full h-full object-contain hidden dark:block"
+                      style={{
+                        filter: 'brightness(0) saturate(100%) invert(100%)'
+                      }}
+                    />
+                  </motion.div>
+                  <span className="text-gray-800 dark:text-gray-200 font-montserrat-medium text-sm md:text-base">
+                    Velkommen
+                  </span>
+                </div>
               </motion.div>
-              <span className="text-gray-800 dark:text-gray-200 font-montserrat-medium text-sm md:text-base">
-                Velkommen
-              </span>
-            </div>
-          </motion.div>
-        )}
+            )}
+          </div>
+        </div>
       </motion.div>
 
       {/* Floating dancers - appear after welcome element */}

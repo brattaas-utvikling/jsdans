@@ -1,14 +1,15 @@
 // App.tsx
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import DanceStudioLayout from "@/polymet/layouts/dance-studio-layout";
-import DanceStudioHome from "@/polymet/pages/dance-studio-home";
-import PricingPage from "./polymet/pages/pricing-page";
+import Layout from "@/components/Layout";
+import LandingPage from "@/pages/LandingPage";
+import PricingPage from "./pages/PricingPage";
 import CoursesPageContainer from "./pages/CoursesPageContainer";
 import CheckoutPageContainer from "./pages/CheckoutPageContainer";
-import AboutSection from "./polymet/components/about-section";
-import ContactSection from "./polymet/components/contact-section";
+import AboutSection from "./components/AboutSection";
+import ContactSection from "./components/ContactSection";
 import NewsPage from "./pages/NewsPage";
 import NewsArticlePage from "./pages/NewsArticlePage";
+import ClassesSection from "./polymet/components/classes-section";
 
 
 
@@ -19,74 +20,82 @@ export default function App() {
         <Route
           path="/"
           element={
-            <DanceStudioLayout>
-              <DanceStudioHome />
-            </DanceStudioLayout>
+            <Layout>
+              <LandingPage />
+            </Layout>
           }
         />
         <Route
           path="/nyheter"
           element={
-            <DanceStudioLayout>
+            <Layout>
               <NewsPage />
-            </DanceStudioLayout>
+            </Layout>
           }
         />
         <Route
           path="/nyheter/:id"
           element={
-            <DanceStudioLayout>
+            <Layout>
               <NewsArticlePage />
-            </DanceStudioLayout>
+            </Layout>
           }
-        /> 
+        />
+        <Route
+          path="/kurs"
+          element={
+            <Layout>
+              <ClassesSection />
+            </Layout>
+          }
+        />
 
         <Route
           path="/courses"
           element={
-            <DanceStudioLayout>
+            <Layout>
               <CoursesPageContainer />
-            </DanceStudioLayout>
+            </Layout>
           }
         />
         <Route
           path="/priser"
           element={
-            <DanceStudioLayout>
+            <Layout>
               <PricingPage />
-            </DanceStudioLayout>
+            </Layout>
           }
         />
         <Route
           path="/checkout"
           element={
-            <DanceStudioLayout>
+            <Layout>
               <CheckoutPageContainer />
-            </DanceStudioLayout>
+            </Layout>
           }
         />
         <Route
           path="/om-oss"
           element={
-            <DanceStudioLayout>
+            <Layout>
               <AboutSection />
-            </DanceStudioLayout>
+            </Layout>
           }
         />
         <Route
           path="/kontakt"
           element={
-            <DanceStudioLayout>
+            <Layout>
               <ContactSection />
-            </DanceStudioLayout>
+            </Layout>
           }
         />
         <Route
           path="*"
           element={
-            <DanceStudioLayout>
+            <Layout>
               <h1>404 - Page Not Found</h1>
-            </DanceStudioLayout>
+            </Layout>
           }
         />
       </Routes>

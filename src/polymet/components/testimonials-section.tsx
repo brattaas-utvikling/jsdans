@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { TESTIMONIALS } from "@/polymet/data/dance-studio-data";
+import { TESTIMONIALS } from "@/data/dance-studio-data";
 import TestimonialCard from "@/polymet/components/testimonial-card";
 
 export default function TestimonialsSection() {
