@@ -7,6 +7,29 @@ export default {
   ],
   theme: {
   	extend: {
+			fontFamily: {
+        'bebas': ['Bebas Neue', 'Arial Black', 'sans-serif'],
+        'montserrat': ['Montserrat', 'system-ui', 'sans-serif'],
+        'sans': ['Montserrat', 'system-ui', 'sans-serif'], // Default sans font
+      },
+      fontSize: {
+        // Custom sizes for Bebas Neue (tends to need larger sizes)
+        'bebas-sm': ['1.5rem', { lineHeight: '1.2', letterSpacing: '0.025em' }],
+        'bebas-base': ['2rem', { lineHeight: '1.2', letterSpacing: '0.025em' }],
+        'bebas-lg': ['2.5rem', { lineHeight: '1.1', letterSpacing: '0.025em' }],
+        'bebas-xl': ['3rem', { lineHeight: '1.1', letterSpacing: '0.025em' }],
+        'bebas-2xl': ['3.5rem', { lineHeight: '1.1', letterSpacing: '0.025em' }],
+        'bebas-3xl': ['4rem', { lineHeight: '1.1', letterSpacing: '0.025em' }],
+        'bebas-4xl': ['5rem', { lineHeight: '1', letterSpacing: '0.025em' }],
+        'bebas-5xl': ['6rem', { lineHeight: '1', letterSpacing: '0.025em' }],
+        'bebas-6xl': ['7rem', { lineHeight: '1', letterSpacing: '0.025em' }],
+      },
+      letterSpacing: {
+        'bebas': '0.025em',
+        'montserrat-tight': '-0.025em',
+        'montserrat-normal': '0',
+        'montserrat-wide': '0.025em',
+      },
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
@@ -58,4 +81,3 @@ export default {
   },
   plugins: [require("tailwindcss-animate")],
 }
-

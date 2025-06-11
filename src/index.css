@@ -72,3 +72,150 @@ body {
     @apply bg-background text-foreground;
   }
 }
+/* -------------------------------------------------------- */
+
+/* src/index.css */
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Font face fallbacks for better loading */
+@font-face {
+  font-family: "Bebas Neue Fallback";
+  src: local("Arial Black"), local("Arial Bold");
+  font-display: swap;
+  ascent-override: 115%;
+  descent-override: 29%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Montserrat Fallback";
+  src: local("system-ui"), local("Segoe UI"), local("Arial");
+  font-display: swap;
+  ascent-override: 90%;
+  descent-override: 22%;
+  line-gap-override: 0%;
+}
+
+/* Base typography settings */
+@layer base {
+  html {
+    font-family: "Montserrat", "Montserrat Fallback", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Default heading styles */
+  h1 {
+    font-family: "Bebas Neue", "Bebas Neue Fallback", Arial Black, sans-serif;
+    font-weight: 400; /* Bebas Neue only has normal weight */
+    letter-spacing: 0.025em;
+    line-height: 1.1;
+  }
+
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Montserrat", "Montserrat Fallback", system-ui, sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+
+  /* Body and paragraph text */
+  body,
+  p {
+    font-family: "Montserrat", "Montserrat Fallback", system-ui, sans-serif;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+}
+
+/* Component layer for reusable font classes */
+@layer components {
+  /* Bebas Neue utility classes */
+  .font-bebas {
+    font-family: "Bebas Neue", "Bebas Neue Fallback", Arial Black, sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.025em;
+    line-height: 1.1;
+    text-transform: uppercase; /* Bebas looks best in uppercase */
+  }
+
+  /* Montserrat weight variations */
+  .font-montserrat-light {
+    font-family: "Montserrat", "Montserrat Fallback", system-ui, sans-serif;
+    font-weight: 300;
+  }
+
+  .font-montserrat {
+    font-family: "Montserrat", "Montserrat Fallback", system-ui, sans-serif;
+    font-weight: 400;
+  }
+
+  .font-montserrat-medium {
+    font-family: "Montserrat", "Montserrat Fallback", system-ui, sans-serif;
+    font-weight: 500;
+  }
+
+  .font-montserrat-semibold {
+    font-family: "Montserrat", "Montserrat Fallback", system-ui, sans-serif;
+    font-weight: 600;
+  }
+
+  .font-montserrat-bold {
+    font-family: "Montserrat", "Montserrat Fallback", system-ui, sans-serif;
+    font-weight: 700;
+  }
+
+  /* Pre-configured text combinations */
+  .text-hero {
+    @apply font-bebas text-bebas-4xl md:text-bebas-5xl lg:text-bebas-6xl;
+  }
+
+  .text-section-title {
+    @apply font-bebas text-bebas-2xl md:text-bebas-3xl lg:text-bebas-4xl;
+  }
+
+  .text-subtitle {
+    @apply font-montserrat-semibold text-xl md:text-2xl tracking-montserrat-tight;
+  }
+
+  .text-body {
+    @apply font-montserrat text-base md:text-lg leading-relaxed;
+  }
+
+  .text-caption {
+    @apply font-montserrat text-sm text-gray-600 tracking-montserrat-wide;
+  }
+
+  /* Button text styles */
+  .btn-text-primary {
+    @apply font-montserrat-semibold text-base tracking-montserrat-wide;
+  }
+
+  .btn-text-secondary {
+    @apply font-montserrat-medium text-sm tracking-montserrat-normal;
+  }
+
+  /* Navigation/menu text */
+  .nav-text {
+    @apply font-montserrat-medium text-base tracking-montserrat-normal;
+  }
+}
+
+/* Performance optimizations */
+@layer utilities {
+  .font-display-swap {
+    font-display: swap;
+  }
+
+  .text-optimize {
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}

@@ -240,7 +240,7 @@ export default function Navbar() {
   return (
     <header
       ref={navbarRef}
-      className="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm shadow-md transition-transform duration-300 ease-in-out"
+      className="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-sm shadow-md transition-transform duration-300 ease-in-out"
     >
       <div className="w-full max-w-7xl mx-auto px-4 overflow-hidden">
         <div className="flex items-center justify-between h-16 md:h-20">
@@ -254,9 +254,6 @@ export default function Navbar() {
             alt="Urban Studios Logo"
             className="h-16 w-autoobject-contain"
           />
-            {/* <span className="font-bold text-lg text-zinc-900 dark:text-white transition-colors">
-              {STUDIO_INFO.name}
-            </span> */}
           </button>
 
           {/* Desktop navigation */}
@@ -290,10 +287,10 @@ export default function Navbar() {
 
             {/* CTA Button */}
             <Button 
-              className="hidden md:block rounded-full bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-500 hover:from-blue-600 hover:via-indigo-600 hover:to-violet-600 text-white border-0 transition-all duration-200 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              className="hidden font-semibold font-montserrat md:block rounded-full bg-gradient-to-r from-blue-500 via-indigo-500 to-pink-500 hover:from-blue-600 hover:via-indigo-600 hover:to-pink-600 text-white border-0 transition-all duration-200 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
               onClick={() => handleNavClick("#contact", "anchor")}
             >
-              Book et kurs
+              Påmelding
             </Button>
 
             {/* Mobile menu toggle */}
@@ -324,7 +321,7 @@ export default function Navbar() {
         }`}
         aria-hidden={!isMenuOpen}
       >
-        <div className="px-4 py-2 space-y-1 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-sm shadow-lg border-t border-gray-200 dark:border-gray-700">
+        <div className="text-center px-4 py-2 space-y-1 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-sm shadow-lg border-t border-gray-200 dark:border-gray-700">
           {navigationItems.map((item) => (
             <NavLink
               key={item.label}
@@ -337,10 +334,10 @@ export default function Navbar() {
           {/* Mobile CTA */}
           <div className="pt-2 pb-1">
             <Button 
-              className="w-full rounded-full bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-500 hover:from-blue-600 hover:via-indigo-600 hover:to-violet-600 text-white border-0 transition-all duration-200"
+              className="w-full font-montserrat font-semibold rounded-full bg-gradient-to-r from-blue-500 via-indigo-500 to-pink-500 hover:from-blue-600 hover:via-indigo-600 hover:to-pink-600 text-white border-0 transition-all duration-200"
               onClick={() => handleNavClick("#contact", "anchor")}
             >
-              Book et kurs
+              Påmelding
             </Button>
             
           </div>
