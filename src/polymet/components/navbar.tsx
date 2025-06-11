@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { MenuIcon, XIcon, MoonIcon, SunIcon } from "lucide-react";
-// import { STUDIO_INFO } from "@/polymet/data/dance-studio-data";
 import logo from "../../assets/urban_studios_logo.svg";
 
 // Throttle utility function
@@ -34,7 +33,6 @@ export default function Navbar() {
     if (savedDarkMode) {
       setIsDarkMode(JSON.parse(savedDarkMode));
     } else {
-      // Check system preference
       const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       setIsDarkMode(systemPrefersDark);
     }
@@ -47,29 +45,24 @@ export default function Navbar() {
     
     const currentScrollY = window.scrollY;
     
-    // Don't hide navbar on desktop
     if (window.innerWidth >= 768) {
       navbar.style.transform = "translateY(0)";
       return;
     }
     
-    // Only apply transform if scrolled more than 10px to avoid jitter
     if (Math.abs(currentScrollY - lastScrollY) < 10) return;
     
     if (currentScrollY > lastScrollY && currentScrollY > 100) {
-      // Scrolling down & past 100px → hide navbar
       navbar.style.transform = "translateY(-100%)";
     } else {
-      // Scrolling up → show navbar
       navbar.style.transform = "translateY(0)";
     }
     
     setLastScrollY(currentScrollY);
   }, [lastScrollY]);
 
-  // Throttled scroll handler
   const throttledScrollHandler = useCallback(
-    throttle(handleScroll, 16), // ~60fps
+    throttle(handleScroll, 16),
     [handleScroll]
   );
 
@@ -78,13 +71,11 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", throttledScrollHandler);
   }, [throttledScrollHandler]);
 
-  // Handle dark mode toggle and persistence
   useEffect(() => {
     localStorage.setItem('darkMode', JSON.stringify(isDarkMode));
     document.documentElement.classList.toggle("dark", isDarkMode);
   }, [isDarkMode]);
 
-  // Close mobile menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (navbarRef.current && !navbarRef.current.contains(event.target as Node)) {
@@ -94,7 +85,6 @@ export default function Navbar() {
 
     if (isMenuOpen) {
       document.addEventListener("mousedown", handleClickOutside);
-      // Prevent body scroll when menu is open
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
@@ -106,7 +96,6 @@ export default function Navbar() {
     };
   }, [isMenuOpen]);
 
-  // Handle escape key to close mobile menu
   useEffect(() => {
     const handleEscapeKey = (event: KeyboardEvent) => {
       if (event.key === "Escape" && isMenuOpen) {
@@ -120,6 +109,7 @@ export default function Navbar() {
 
   const navigationItems = [
     { label: "Hjem", href: "/", type: "route" },
+    { label: "Nyheter", href: "/nyheter", type: "route" },
     { label: "Om oss", href: "/om-oss", type: "route" },
     { label: "Kurs", href: "#classes", type: "anchor" },
     { label: "Påmelding", href: "/courses", type: "route" },
@@ -132,16 +122,12 @@ export default function Navbar() {
     
     if (type === "route") {
       if (href === "/" && location.pathname === "/") {
-        // If already on home page and clicking "Hjem", scroll to top
         window.scrollTo({ top: 0, behavior: "smooth" });
       } else {
-        // Navigate to different route
         navigate(href);
       }
     } else if (type === "anchor") {
-      // Handle anchor links - href should be like "#about", "#contact" etc.
       if (location.pathname !== "/") {
-        // If not on home page, navigate to home first then scroll
         navigate("/");
         setTimeout(() => {
           const element = document.querySelector(href);
@@ -150,7 +136,6 @@ export default function Navbar() {
           }
         }, 100);
       } else {
-        // If on home page, just scroll to the section
         if (href.startsWith("#")) {
           const element = document.querySelector(href);
           if (element) {
@@ -161,10 +146,8 @@ export default function Navbar() {
     }
   };
 
-  // Track which section is currently in view
   const [activeSection, setActiveSection] = useState("");
 
-  // Intersection Observer to track active sections
   useEffect(() => {
     if (location.pathname !== "/") {
       setActiveSection("");
@@ -181,11 +164,10 @@ export default function Navbar() {
       },
       {
         threshold: 0.5,
-        rootMargin: "-80px 0px -80px 0px" // Account for navbar height
+        rootMargin: "-80px 0px -80px 0px"
       }
     );
 
-    // Observe sections
     const sections = ["hero", "about", "classes", "contact"];
     sections.forEach((id) => {
       const element = document.getElementById(id);
@@ -199,7 +181,6 @@ export default function Navbar() {
     if (type === "route") {
       return location.pathname === href;
     }
-    // For anchor links, check if this specific section is active
     return location.pathname === "/" && activeSection === href;
   };
 
@@ -211,8 +192,8 @@ export default function Navbar() {
     const isActive = isActiveRoute(item.href, item.type);
     const finalClassName = `${className} ${
       isActive 
-        ? "text-blue-600 dark:text-blue-400 font-semibold" 
-        : "text-zinc-700 dark:text-zinc-200 hover:text-blue-600 dark:hover:text-blue-400"
+        ? "text-studio-blue-500 dark:text-studio-blue-400 font-semibold" 
+        : "text-gray-700 dark:text-gray-200 hover:text-studio-blue-500 dark:hover:text-studio-blue-400"
     }`;
 
     if (item.type === "route") {
@@ -240,20 +221,24 @@ export default function Navbar() {
   return (
     <header
       ref={navbarRef}
-      className="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-sm shadow-md transition-transform duration-300 ease-in-out"
+      className="fixed top-0 left-0 right-0 z-50 
+                bg-white/95 dark:bg-studio-blue-800/95 
+                  backdrop-blur-md 
+                  shadow-studio border-b border-gray-200/20 dark:border-studio-blue-700/30
+                  transition-all duration-300 ease-in-out"
     >
       <div className="w-full max-w-7xl mx-auto px-4 overflow-hidden">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <button 
             onClick={() => handleNavClick("/", "route")}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 hover:opacity-90 transition-opacity"
           >
-          <img
-            src={logo}
-            alt="Urban Studios Logo"
-            className="h-16 w-autoobject-contain"
-          />
+            <img
+              src={logo}
+              alt="Urban Studios Logo"
+              className="h-16 w-auto object-contain"
+            />
           </button>
 
           {/* Desktop navigation */}
@@ -262,7 +247,10 @@ export default function Navbar() {
               <NavLink
                 key={item.label}
                 item={item}
-                className="px-3 py-2 rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                className="px-4 py-2 rounded-lg text-sm font-montserrat-medium transition-all duration-200 
+                          hover:bg-studio-blue-50 dark:hover:bg-studio-blue-700/50
+                          focus:outline-none focus:ring-2 focus:ring-studio-blue-500 focus:ring-offset-2 
+                          dark:focus:ring-offset-studio-blue-800"
                 onClick={() => handleNavClick(item.href, item.type)}
               />
             ))}
@@ -275,7 +263,10 @@ export default function Navbar() {
               variant="ghost"
               size="icon"
               onClick={() => setIsDarkMode((prev) => !prev)}
-              className="rounded-full text-zinc-700 dark:text-zinc-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              className="rounded-full text-gray-600 dark:text-gray-300 
+                        hover:text-studio-blue-600 dark:hover:text-studio-blue-400 
+                        hover:bg-studio-blue-50 dark:hover:bg-studio-blue-700/50
+                        transition-colors focus:ring-2 focus:ring-studio-blue-500 focus:ring-offset-2"
               aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
             >
               {isDarkMode ? (
@@ -287,17 +278,25 @@ export default function Navbar() {
 
             {/* CTA Button */}
             <Button 
-              className="hidden font-semibold font-montserrat md:block rounded-full bg-gradient-to-r from-blue-500 via-indigo-500 to-pink-500 hover:from-blue-600 hover:via-indigo-600 hover:to-pink-600 text-white border-0 transition-all duration-200 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              className="hidden md:block font-montserrat-semibold rounded-full 
+                        bg-gradient-to-r from-studio-blue-500 via-studio-indigo-500 to-studio-pink-500 
+                        hover:from-studio-blue-600 hover:via-studio-indigo-600 hover:to-studio-pink-600 
+                        text-white border-0 shadow-studio transition-all duration-200 
+                        hover:shadow-studio-lg hover:scale-105
+                        focus:ring-2 focus:ring-studio-blue-500 focus:ring-offset-2"
               onClick={() => handleNavClick("#contact", "anchor")}
             >
-              Påmelding
+              Book et kurs
             </Button>
 
             {/* Mobile menu toggle */}
             <Button
               variant="ghost"
               size="icon"
-              className="md:hidden rounded-full text-zinc-700 dark:text-zinc-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              className="md:hidden rounded-full text-gray-600 dark:text-gray-300 
+                        hover:text-studio-blue-600 dark:hover:text-studio-blue-400 
+                        hover:bg-studio-blue-50 dark:hover:bg-studio-blue-700/50
+                        transition-colors focus:ring-2 focus:ring-studio-blue-500 focus:ring-offset-2"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-expanded={isMenuOpen}
               aria-controls="mobile-menu"
@@ -321,12 +320,17 @@ export default function Navbar() {
         }`}
         aria-hidden={!isMenuOpen}
       >
-        <div className="text-center px-4 py-2 space-y-1 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-sm shadow-lg border-t border-gray-200 dark:border-gray-700">
+        <div className="text-center px-4 py-2 space-y-1 
+                       bg-white/95 dark:bg-studio-blue-800/95 backdrop-blur-md 
+                       shadow-studio-lg border-t border-gray-200/20 dark:border-studio-blue-700/30">
           {navigationItems.map((item) => (
             <NavLink
               key={item.label}
               item={item}
-              className="block px-3 py-2 rounded-md text-base font-medium hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              className="block px-4 py-3 rounded-lg text-base font-montserrat-medium 
+                        hover:bg-studio-blue-50 dark:hover:bg-studio-blue-700/50 
+                        transition-all duration-200 focus:outline-none focus:ring-2 
+                        focus:ring-studio-blue-500 focus:ring-offset-2"
               onClick={() => handleNavClick(item.href, item.type)}
             />
           ))}
@@ -334,12 +338,14 @@ export default function Navbar() {
           {/* Mobile CTA */}
           <div className="pt-2 pb-1">
             <Button 
-              className="w-full font-montserrat font-semibold rounded-full bg-gradient-to-r from-blue-500 via-indigo-500 to-pink-500 hover:from-blue-600 hover:via-indigo-600 hover:to-pink-600 text-white border-0 transition-all duration-200"
+              className="w-full font-montserrat-semibold rounded-full 
+                        bg-gradient-to-r from-studio-blue-500 via-studio-indigo-500 to-studio-pink-500 
+                        hover:from-studio-blue-600 hover:via-studio-indigo-600 hover:to-studio-pink-600 
+                        text-white border-0 shadow-studio transition-all duration-200"
               onClick={() => handleNavClick("#contact", "anchor")}
             >
-              Påmelding
+              Book et kurs
             </Button>
-            
           </div>
         </div>
       </div>
