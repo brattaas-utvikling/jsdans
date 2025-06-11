@@ -33,7 +33,7 @@ interface CartProps {
 }
 
 // 🔧 MIGRATION HELPER: Handle old cart data format
-const getStudentNames = (item: any) => {
+const getStudentNames = (item: CartItemWithPricing) => {
   // NEW FORMAT: Has firstName/lastName
   if (item.studentFirstName && item.studentLastName) {
     return {
