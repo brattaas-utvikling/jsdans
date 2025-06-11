@@ -7,6 +7,8 @@ import CoursesPageContainer from "./pages/CoursesPageContainer";
 import CheckoutPageContainer from "./pages/CheckoutPageContainer";
 import AboutSection from "./polymet/components/about-section";
 import ContactSection from "./polymet/components/contact-section";
+import NewsPage from "./pages/NewsPage";
+import NewsArticlePage from "./pages/NewsArticlePage";
 
 
 
@@ -22,6 +24,23 @@ export default function App() {
             </DanceStudioLayout>
           }
         />
+        <Route
+          path="/nyheter"
+          element={
+            <DanceStudioLayout>
+              <NewsPage />
+            </DanceStudioLayout>
+          }
+        />
+        <Route
+          path="/nyheter/:id"
+          element={
+            <DanceStudioLayout>
+              <NewsArticlePage />
+            </DanceStudioLayout>
+          }
+        /> 
+
         <Route
           path="/courses"
           element={

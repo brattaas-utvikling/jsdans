@@ -220,5 +220,5 @@ export const STUDIO_INFO = {
     facebook: "https://facebook.com/jsdans",
   },
   mapUrl:
-    "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1247.232038804706!2d12.002997696042817!3d60.18708001934726!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sno!2sno!4v1748429024156!5m2!1sno!2sno",
+    "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1983.6455432634814!2d12.000216412904194!3d60.18659904200348!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x464248f90618ef5d%3A0xe2f98650ab70101a!2sJernbanegata%2016%2C%202211%20Kongsvinger!5e0!3m2!1sno!2sno!4v1749630260279!5m2!1sno!2sno",
 };
