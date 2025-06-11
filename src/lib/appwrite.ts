@@ -33,7 +33,7 @@ export const createDocument = async (
   databaseId: string,
   collectionId: string,
   documentId: string,
-  data: Record<string, any>
+  data: Record<string, unknown>
 ) => {
   try {
     return await databases.createDocument(databaseId, collectionId, documentId, data);
@@ -48,7 +48,7 @@ export const updateDocument = async (
   databaseId: string,
   collectionId: string,
   documentId: string,
-  data: Record<string, any>
+  data: Record<string, unknown>
 ) => {
   try {
     return await databases.updateDocument(databaseId, collectionId, documentId, data);
