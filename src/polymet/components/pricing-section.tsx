@@ -1,4 +1,4 @@
-import { PRICING_PLANS } from "@/polymet/data/dance-studio-data";
+import { PRICING_PLANS } from "@/data/dance-studio-data";
 import PricingCard from "@/polymet/components/pricing-card";
 
 export default function PricingSection() {

@@ -1,4 +1,4 @@
-import { STUDIO_INFO } from "@/polymet/data/dance-studio-data";
+import { STUDIO_INFO } from "@/data/dance-studio-data";
 
 export default function AboutSection() {
   return (
