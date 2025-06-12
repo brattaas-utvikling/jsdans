@@ -21,7 +21,7 @@ export default function ContactSection() {
             Kontakt oss
           </h2>
           <h3 className="font-bebas text-bebas-3xl md:text-bebas-4xl mb-4 text-gray-900 dark:text-white">
-            Kom i kontakt med vårt dansestudio
+            Vi er her for deg
           </h3>
           <p className="text-gray-600 dark:text-gray-300 font-montserrat">
             Har du spørsmål, ønsker du mer informasjon, eller vil du bare si hei?
