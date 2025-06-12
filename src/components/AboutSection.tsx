@@ -1,94 +1,256 @@
-import { STUDIO_INFO } from "@/data/dance-studio-data";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { 
+  SparklesIcon,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { listDocuments, DATABASE_ID, COLLECTIONS, Query } from "@/lib/appwrite";
+import ScrollToTop from "@/helpers/ScrollToTop";
 
-export default function AboutSection() {
-  return (
-    <section
-      id="about"
-      className="py-20 bg-white dark:bg-black overflow-hidden"
-    >
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="flex flex-col lg:flex-row items-center gap-12">
-          {/* Image column */}
-          <div className="w-full lg:w-1/2 relative">
-            <div className="relative z-10 rounded-lg overflow-hidden shadow-xl">
-              <img
-                src="https://images.unsplash.com/photo-1556394890-c874aac332b1?q=80&w=3100&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                alt="Dance studio interior"
-                className="w-full h-auto object-cover"
-              />
-            </div>
+// TypeScript interface som matcher Appwrite schema
+interface AppwriteDocument {
+  $id: string;
+  $createdAt: string;
+  $updatedAt: string;
+  $collectionId: string;
+  $databaseId: string;
+  $permissions: string[];
+}
 
-            {/* Decorative elements */}
-            <div className="absolute -top-6 -left-6 w-24 h-24 rounded-full bg-cyan-400/30 dark:bg-cyan-500/20 blur-xl" />
+interface AboutSection extends AppwriteDocument {
+  headlines: string;
+  lead: string;
+  content: string;
+  img: string;
+}
 
-            <div className="absolute -bottom-8 -right-8 w-32 h-32 rounded-full bg-indigo-400/30 dark:bg-indigo-500/20 blur-xl" />
+export default function AboutPage() {
+  const [aboutSections, setAboutSections] = useState<AboutSection[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full border-2 border-indigo-300 dark:border-indigo-700 rounded-2xl -z-10 " />
-          </div>
+  // Fetch about sections from Appwrite
+  const fetchAboutFromAppwrite = async () => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const response = await listDocuments(
+        DATABASE_ID,
+        COLLECTIONS.ABOUT_US, // Anta at du har en ABOUT collection
+        [
+          Query.orderDesc('$createdAt'), // Sorter nyeste først
+          Query.limit(1) // Begrens til 1 seksjon
+        ]
+      );
+      
+      const sections = response.documents as unknown as AboutSection[];
+      setAboutSections(sections);
+    } catch (err) {
+      console.error('Error fetching about sections:', err);
+      setError('Kunne ikke laste om oss-innhold.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-          {/* Content column */}
-          <div className="w-full lg:w-1/2">
-            <h2 className="font-medium text-indigo-600 dark:text-indigo-400 uppercase tracking-wider mb-3">
-              Om vårt dansestudio
+  // Fetch data når komponenten laster
+  useEffect(() => {
+    fetchAboutFromAppwrite();
+  }, []);
+
+  // Finn hovedseksjon (første seksjon) og andre seksjoner
+  const heroSection = aboutSections[0];
+  const contentSections = aboutSections.slice(1);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-surface-dark flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-studio-blue-500 mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-300 font-montserrat">Laster om oss...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-surface-dark flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto px-4">
+          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-6">
+            <h2 className="font-bebas text-bebas-lg text-red-800 dark:text-red-200 mb-2">
+              Noe gikk galt
             </h2>
-            <h3 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white">
-            Helt nytt. Helt oss.
-            </h3>
-            <div className="prose prose-lg dark:prose-invert">
-              <p className="mt-6 mb-10 text-lg text-gray-700 dark:text-gray-300">
-                {STUDIO_INFO.description}
-              </p>
-              <p className="text-xl md:text-2xl lg:text-3xl font-bold text-black dark:text-white/90 mb-6 tracking-tight">
-              Dans er for alle. Derfor har vi skapt en arena hvor alle kan utfolde seg
-              <span className="block mt-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-500">
-              – uansett bakgrunn eller ferdighetsnivå.
-              </span>
+            <p className="text-red-600 dark:text-red-300 font-montserrat mb-4">
+              {error}
             </p>
-              {/* <p className="mt-4 mb-6 text-gray-700 dark:text-gray-300">
-                  <span className="font-bold">Vår filosofi: </span> 
-                  
-                </p> */}
-
-            </div>
-
-            {/* Stats */}
-            {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
-              <div className="text-center p-4 rounded-lg bg-purple-50 dark:bg-purple-900/20">
-                <p className="text-3xl font-bold text-purple-600 dark:text-purple-400">
-                  4+
-                </p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Dansestiler
-                </p>
-              </div>
-              <div className="text-center p-4 rounded-lg bg-rose-50 dark:bg-rose-900/20">
-                <p className="text-3xl font-bold text-rose-600 dark:text-rose-400">
-                  5+
-                </p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Instruktører
-                </p>
-              </div>
-              <div className="text-center p-4 rounded-lg bg-fuchsia-50 dark:bg-fuchsia-900/20">
-                <p className="text-3xl font-bold text-fuchsia-600 dark:text-fuchsia-400">
-                  10+
-                </p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Ukentlig Klasser
-                </p>
-              </div>
-              <div className="text-center p-4 rounded-lg bg-blue-50 dark:bg-blue-900/20">
-                <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">
-                  100+
-                </p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Fornøyde dansere
-                </p>
-              </div>
-            </div> */}
+            <Button 
+              onClick={fetchAboutFromAppwrite}
+              className="font-montserrat-medium bg-red-600 hover:bg-red-700 text-white"
+            >
+              Prøv igjen
+            </Button>
           </div>
         </div>
       </div>
-    </section>
+    );
+  }
+
+  if (aboutSections.length === 0) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-surface-dark flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto px-4">
+          <SparklesIcon className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+          <h2 className="font-bebas text-bebas-lg text-gray-900 dark:text-white mb-2">
+            Ingen innhold funnet
+          </h2>
+          <p className="text-gray-600 dark:text-gray-300 font-montserrat mb-4">
+            Vi jobber med å legge til innhold på om oss-siden.
+          </p>
+          <Button 
+            onClick={fetchAboutFromAppwrite}
+            className="font-montserrat-medium"
+            variant="outline"
+          >
+            Last på nytt
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-white dark:bg-surface-dark">
+      <ScrollToTop />
+
+      {/* Hero Section med første seksjon fra Appwrite */}
+      {heroSection && (
+        <section className="bg-gradient-to-br from-studio-blue-50 via-white to-studio-pink-50 
+                           dark:from-studio-blue-900/20 dark:via-surface-dark dark:to-studio-pink-900/20 
+                           pt-24 pb-20 relative overflow-hidden">
+          {/* Decorative elements */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-studio-pink-400/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-studio-blue-400/10 rounded-full blur-3xl" />
+          
+          <div className="container mx-auto px-4 md:px-6 relative z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
+              
+              {/* Text Content */}
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8 }}
+                className="space-y-8"
+              >
+                <div>
+                  <h1 className="text-center text-sm font-montserrat-medium text-studio-indigo-600 dark:text-studio-indigo-400 
+                        uppercase tracking-wider mb-3">
+                    {heroSection.headlines}
+                  </h1>
+
+                  <p className="font-bebas text-bebas-4xl md:text-bebas-5xl lg:text-bebas-6xl 
+                                text-gray-900 dark:text-white mb-6 leading-tight">
+                    {heroSection.lead}
+                  </p>
+                  <div className="prose prose-lg dark:prose-invert max-w-none">
+                    <p className="text-gray-700 dark:text-gray-300 font-montserrat leading-relaxed">
+                      {heroSection.content}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Put in a component with stats for the dance studio */}
+              
+              </motion.div>
+
+              {/* Hero Image */}
+              <motion.div
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="relative"
+              >
+                <div className="relative rounded-3xl overflow-hidden shadow-studio-xl">
+                  <img
+                    src={heroSection.img}
+                    alt={heroSection.headlines}
+                    className="w-full h-[500px] object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Content Sections */}
+      {contentSections.length > 0 && (
+        <section className="py-20 bg-surface-muted dark:bg-surface-dark-muted">
+          <div className="container mx-auto px-4 md:px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="space-y-20"
+            >
+              {contentSections.map((section, index) => (
+                <div key={section.$id} className="max-w-6xl mx-auto">
+                  <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${
+                    index % 2 === 1 ? 'lg:grid-flow-row-dense' : ''
+                  }`}>
+                    
+                    <motion.div
+                      initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.8 }}
+                      className={`space-y-6 ${index % 2 === 1 ? 'lg:col-start-2' : ''}`}
+                    >
+                      <div>
+                        <h2 className="font-bebas text-bebas-2xl md:text-bebas-3xl 
+                                      text-gray-900 dark:text-white mb-4 leading-tight">
+                          {section.headlines}
+                        </h2>
+                        <p className="text-lg text-gray-600 dark:text-gray-300 font-montserrat 
+                                    leading-relaxed mb-6">
+                          {section.lead}
+                        </p>
+                        <div className="prose dark:prose-invert max-w-none">
+                          <p className="text-gray-700 dark:text-gray-300 font-montserrat leading-relaxed">
+                            {section.content}
+                          </p>
+                        </div>
+                      </div>
+                    </motion.div>
+
+
+                    <motion.div
+                      initial={{ opacity: 0, x: index % 2 === 0 ? 30 : -30 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.8, delay: 0.2 }}
+                      className={`relative ${index % 2 === 1 ? 'lg:col-start-1 lg:row-start-1' : ''}`}
+                    >
+                      <div className="relative rounded-2xl overflow-hidden shadow-studio-lg group">
+                        <img
+                          src={section.img}
+                          alt={section.headlines}
+                          className="w-full h-[400px] object-cover transition-transform duration-500 
+                                    group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
+                      </div>
+                    </motion.div>
+                  </div>
+                </div>
+              ))}
+            </motion.div>
+          </div>
+        </section>
+      )}
+
+    </div>
   );
 }

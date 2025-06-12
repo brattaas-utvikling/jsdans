@@ -23,6 +23,7 @@ export const COLLECTIONS = {
   ORDER_ITEMS: import.meta.env.VITE_ORDER_ITEMS_COLLECTION_ID || 'order_items',
   FAMILY_GROUPS: import.meta.env.VITE_FAMILY_GROUPS_COLLECTION_ID || 'family_groups',
   NEWS: import.meta.env.VITE_NEWS_COLLECTION_ID || 'news',
+  ABOUT_US: import.meta.env.VITE_ABOUT_US_COLLECTION_ID || 'about_us',
 } as const;
 
 // Export Query for filtering (Appwrite v18)

@@ -85,13 +85,15 @@ export default function NewsPage() {
         DATABASE_ID,
         COLLECTIONS.NEWS,
         [
-          Query.orderDesc('created_at'), // Sorter nyeste først
+          Query.orderDesc('created_at'), // Sorter nyeste første
           Query.limit(50) // Begrens til 50 artikler
         ]
       );
       
       const articles = response.documents as unknown as NewsArticle[];
-      setNewsData(articles);
+
+      console.log(`Hentet ${articles.length} artikler fra Appwrite`); // Debug info
+      setNewsData(articles); // Behold for logging/debugging
       setFilteredNews(articles);
     } catch (err) {
       console.error('Error fetching news:', err);
@@ -127,6 +129,7 @@ export default function NewsPage() {
   return (
     <div className="min-h-screen bg-white dark:bg-surface-dark">
       <ScrollToTop />
+      
       {/* Error message */}
       {error && (
         <div className="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-400 p-4 mb-6">
@@ -143,7 +146,7 @@ export default function NewsPage() {
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-studio-blue-50 via-white to-studio-pink-50 
                         dark:from-studio-blue-900/20 dark:via-surface-dark dark:to-studio-pink-900/20 
-                          pt-24 pb-16 relative overflow-hidden">
+                        pt-24 pb-16 relative overflow-hidden">
         {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-studio-pink-400/10 rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-studio-blue-400/10 rounded-full blur-3xl" />
@@ -155,9 +158,13 @@ export default function NewsPage() {
             transition={{ duration: 0.8 }}
             className="text-center max-w-4xl mx-auto"
           >
+            <h2 className="text-sm font-montserrat-medium text-studio-indigo-600 dark:text-studio-indigo-400 
+                          uppercase tracking-wider mb-3">
+              Nyheter
+            </h2>
             <h1 className="font-bebas text-bebas-4xl md:text-bebas-5xl lg:text-bebas-6xl 
                           text-gray-900 dark:text-white mb-6">
-              Nyheter & Blogg
+              Hva skjer hos oss?
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed">
               Hold deg oppdatert på alt som skjer hos Urban Studios! Fra nye kurs til 
@@ -167,196 +174,233 @@ export default function NewsPage() {
         </div>
       </section>
 
-      {/* Featured Article */}
-      {featuredArticle && (
-        <section className="py-16 bg-white dark:bg-surface-dark">
-          <div className="container mx-auto px-4 md:px-6">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-              <h2 className="font-bebas text-bebas-2xl md:text-bebas-3xl text-gray-900 dark:text-white mb-8 text-center">
-                Utvalgt artikkel
-              </h2>
+{/* Featured Article */}
+{featuredArticle && (
+  <section className="py-16 bg-white dark:bg-surface-dark">
+    <div className="container mx-auto px-4 md:px-6">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+      >
+
+        
+        <div className="max-w-6xl mx-auto">
+          <Link to={`/nyheter/${featuredArticle.$id}`}>
+            <div className="relative h-[500px] md:h-[600px] rounded-3xl overflow-hidden shadow-studio-xl 
+                           hover:shadow-2xl transition-all duration-500 group cursor-pointer">
               
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center max-w-6xl mx-auto">
-                {/* Image */}
-                <div className="relative rounded-2xl overflow-hidden shadow-studio-lg group">
-                  <img
-                    src={featuredArticle.img}
-                    alt={featuredArticle.headlines}
-                    className="w-full h-[400px] object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                  
-                  {/* Published status badge */}
-                  {/* <div className="absolute top-4 left-4">
-                    <span className={`px-3 py-1 text-white text-sm font-montserrat-medium rounded-full ${
-                      featuredArticle.published ? 'bg-green-500' : 'bg-yellow-500'
-                    }`}>
-                      {featuredArticle.published ? 'Publisert' : 'Utkast'}
-                    </span>
-                  </div> */}
+              {/* Background Image */}
+              <img
+                src={featuredArticle.img}
+                alt={featuredArticle.headlines}
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 z-0"
+              />
+              
+              {/* Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/20 z-10" />
+              
+              {/* Content Container */}
+              <div className="absolute inset-0 z-20 flex flex-col justify-between p-6 md:p-10">
+                
+                {/* Top Section - Meta Info */}
+                <div className="flex items-start justify-between">
+                  <div className="space-y-3">
+                    
+                    {/* Meta info */}
+                    <div className="flex items-center gap-6 text-white/90">
+                      <div className="flex items-center gap-2 text-sm font-montserrat">
+                        <CalendarIcon className="h-4 w-4 text-white/80" />
+                        <span>{formatDate(featuredArticle.created_at)}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm font-montserrat">
+                        <ClockIcon className="h-4 w-4 text-white/80" />
+                        <span>{calculateReadingTime(featuredArticle.content)} min lesing</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm font-montserrat">
+                        <UserIcon className="h-4 w-4 text-white/80" />
+                        <span>{featuredArticle.author}</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
-                {/* Content */}
-                <div className="space-y-6">
-                  <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400 font-montserrat">
-                    <div className="flex items-center gap-1">
-                      <CalendarIcon className="h-4 w-4" />
-                      {formatDate(featuredArticle.created_at)}
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <ClockIcon className="h-4 w-4" />
-                      {calculateReadingTime(featuredArticle.content)} min lesing
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <UserIcon className="h-4 w-4" />
-                      {featuredArticle.author}
+                {/* Bottom Section - Headlines, Lead & CTA */}
+                <div className="space-y-6 max-w-4xl">
+                  <div className="space-y-4">
+                    <h3 className="font-bebas text-bebas-2xl md:text-bebas-3xl lg:text-bebas-4xl 
+                                  text-white leading-tight">
+                      {featuredArticle.headlines}
+                    </h3>
+
+                    <p className="text-white/95 font-montserrat text-lg md:text-xl leading-relaxed max-w-3xl">
+                      {featuredArticle.lead}
+                    </p>
+                  </div>
+
+                  {/* CTA Button */}
+                  <div className="flex items-center gap-4">
+        <Button 
+                      size="lg"
+                      className="relative font-montserrat-semibold rounded-full overflow-hidden
+                                bg-white/20 backdrop-blur-sm text-white border border-white/30 
+                                hover:border-white/50 transition-all duration-300 px-8 py-3
+                                group-hover:border-transparent"
+                    >
+                      {/* Static background */}
+                      <span className="relative z-10 flex items-center">
+                        Les hele artikkelen
+                        <ArrowRightIcon className="ml-2 h-5 w-5" />
+                      </span>
+                      
+                      {/* Animated gradient background */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-studio-blue-500 via-studio-purple-500 to-studio-pink-500 
+                                     transform -translate-x-full group-hover:translate-x-0 
+                                     transition-transform duration-700 ease-out" />
+                    </Button>
+                    
+                    {/* Optional: Share button */}
+                    {/* <Button 
+                      size="lg"
+                      variant="ghost"
+                      className="text-white/80 hover:text-white hover:bg-white/10 rounded-full"
+                    >
+                      <ShareIcon className="h-5 w-5" />
+                    </Button> */}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Link>
+        </div>
+      </motion.div>
+    </div>
+  </section>
+)}
+{/* Regular Articles Grid - Fully Responsive */}
+<section className="py-16 bg-surface-muted dark:bg-surface-dark-muted">
+  {/* Container for title only */}
+  <div className="container mx-auto px-4 md:px-6 mb-12">
+    <h2 className="font-bebas text-bebas-2xl md:text-bebas-3xl text-gray-900 dark:text-white text-center">
+      Andre Nyheter ({regularArticles.length})
+    </h2>
+  </div>
+
+  {/* Responsive container */}
+  <div className="container mx-auto px-4 md:px-6">
+    {regularArticles.length === 0 ? (
+      <div className="text-center py-16">
+        <p className="text-gray-500 dark:text-gray-400 font-montserrat text-lg">
+          Ingen nyheter funnet.
+        </p>
+        <Button 
+          onClick={fetchNewsFromAppwrite}
+          className="mt-4 font-montserrat-medium"
+          variant="outline"
+        >
+          Last på nytt
+        </Button>
+      </div>
+    ) : (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, delay: 0.4 }}
+        className="grid gap-6 
+                   grid-cols-1 
+                   sm:grid-cols-2 
+                   lg:grid-cols-3 
+                   xl:grid-cols-4 
+                   2xl:grid-cols-5
+                   place-items-center
+                   max-w-7xl mx-auto"
+      >
+        {regularArticles.map((article, index) => (
+          <motion.article
+            key={article.$id}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 * index }}
+            className="group cursor-pointer w-full max-w-sm"
+          >
+            <Link to={`/nyheter/${article.$id}`}>
+              <div className="relative h-96 w-full rounded-2xl overflow-hidden shadow-studio hover:shadow-studio-lg 
+                             transition-all duration-300 hover:scale-105">
+                
+                {/* Background Image */}
+                <img
+                  src={article.img}
+                  alt={article.headlines}
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 z-0"
+                />
+                
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/50 z-10" />
+                
+                {/* Content Container */}
+                <div className="absolute inset-0 z-20 h-full flex flex-col justify-between p-4 sm:p-6">
+                  
+                  {/* Top Section - Meta Info */}
+                  <div className="flex flex-col items-start space-y-2 sm:space-y-3">
+                    
+                    {/* Meta info */}
+                    <div className="space-y-1 sm:space-y-1.5 text-white/90">
+                      <div className="flex items-center gap-1.5 text-xs font-montserrat">
+                        <CalendarIcon className="h-3 w-3 text-white/80 flex-shrink-0" />
+                        <span className="truncate">{formatDate(article.created_at)}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5 text-xs font-montserrat">
+                        <ClockIcon className="h-3 w-3 text-white/80 flex-shrink-0" />
+                        <span>{calculateReadingTime(article.content)} min lesing</span>
+                      </div>
+                      <div className="flex items-center gap-1.5 text-xs font-montserrat">
+                        <UserIcon className="h-3 w-3 text-white/80 flex-shrink-0" />
+                        <span className="truncate">{article.author}</span>
+                      </div>
                     </div>
                   </div>
 
-                  <h3 className="font-bebas text-bebas-xl md:text-bebas-2xl text-gray-900 dark:text-white leading-tight">
-                    {featuredArticle.headlines}
-                  </h3>
-
-                  <p className="text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed text-lg">
-                    {featuredArticle.lead}
-                  </p>
-
-                  <Link to={`/nyheter/${featuredArticle.$id}`}>
-                    <Button className="font-montserrat-semibold rounded-full bg-gradient-to-r from-studio-blue-500 to-studio-pink-500 
-                                    hover:from-studio-blue-600 hover:to-studio-pink-600 text-white shadow-studio
-                                      transition-all duration-200 hover:shadow-studio-lg">
-                      Les hele artikkelen
-                      <ArrowRightIcon className="ml-2 h-4 w-4" />
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </section>
-      )}
-
-      {/* Regular Articles Grid */}
-      <section className="py-16 bg-surface-muted dark:bg-surface-dark-muted">
-        <div className="container mx-auto px-4 md:px-6">
-          {regularArticles.length === 0 ? (
-            <div className="text-center py-16">
-              <p className="text-gray-500 dark:text-gray-400 font-montserrat text-lg">
-                Ingen artikler funnet.
-              </p>
-              <Button 
-                onClick={fetchNewsFromAppwrite}
-                className="mt-4 font-montserrat-medium"
-                variant="outline"
-              >
-                Last på nytt
-              </Button>
-            </div>
-          ) : (
-            <>
-              <h2 className="font-bebas text-bebas-2xl md:text-bebas-3xl text-gray-900 dark:text-white mb-12 text-center">
-                Alle Artikler ({newsData.length})
-              </h2>
-              
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-              >
-                {regularArticles.map((article, index) => (
-                  <motion.article
-                    key={article.$id}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.1 * index }}
-                    className="bg-white dark:bg-surface-dark rounded-2xl shadow-studio hover:shadow-studio-lg 
-                              transition-all duration-300 hover:scale-105 overflow-hidden group"
-                  >
-                    {/* Image */}
-                    <div className="relative h-48 overflow-hidden">
-                      <img
-                        src={article.img}
-                        alt={article.headlines}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                      
-                      {/* Published status badge */}
-                      <div className="absolute top-3 left-3">
-                        <span className={`px-2 py-1 text-white text-xs font-montserrat-medium rounded-full ${
-                          article.published ? 'bg-green-500' : 'bg-yellow-500'
-                        }`}>
-                          {article.published ? 'Publisert' : 'Utkast'}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-6 space-y-4">
-                      {/* Meta info */}
-                      <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 font-montserrat">
-                        <div className="flex items-center gap-1">
-                          <CalendarIcon className="h-3 w-3" />
-                          {formatDate(article.created_at)}
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <ClockIcon className="h-3 w-3" />
-                          {calculateReadingTime(article.content)} min
-                        </div>
-                      </div>
-
-                      <h3 className="font-bebas text-bebas-base text-gray-900 dark:text-white leading-tight line-clamp-2">
+                  {/* Bottom Section - Headlines, Lead & CTA */}
+                  <div className="space-y-3 sm:space-y-4">
+                    <div className="space-y-2 sm:space-y-3">
+                      <h3 className="font-bebas text-bebas-base sm:text-bebas-lg text-white leading-tight line-clamp-2">
                         {article.headlines}
                       </h3>
 
-                      <p className="text-gray-600 dark:text-gray-300 font-montserrat text-sm leading-relaxed line-clamp-3">
+                      <p className="text-white/90 font-montserrat text-xs sm:text-sm leading-relaxed line-clamp-3">
                         {article.lead}
                       </p>
-
-                      {/* Author and CTA */}
-                      <div className="flex items-center justify-between pt-2 border-t border-gray-100 dark:border-studio-blue-700/30">
-                        <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 font-montserrat">
-                          <UserIcon className="h-3 w-3" />
-                          {article.author}
-                        </div>
-                        <Link
-                          to={`/nyheter/${article.$id}`}
-                          className="text-studio-blue-600 dark:text-studio-blue-400 hover:text-studio-pink-600 
-                                    dark:hover:text-studio-pink-400 font-montserrat-medium text-sm
-                                    flex items-center transition-colors"
-                        >
-                          Les mer
-                          <ArrowRightIcon className="ml-1 h-3 w-3" />
-                        </Link>
-                      </div>
                     </div>
-                  </motion.article>
-                ))}
-              </motion.div>
-            </>
-          )}
-        </div>
-      </section>
 
-      {/* Refresh button */}
-      <section className="py-12 bg-white dark:bg-surface-dark">
-        <div className="container mx-auto px-4 md:px-6 text-center">
-          <Button 
-            onClick={fetchNewsFromAppwrite}
-            className="font-montserrat-semibold rounded-full bg-gradient-to-r from-studio-blue-500 to-studio-pink-500 
-                      hover:from-studio-blue-600 hover:to-studio-pink-600 text-white shadow-studio
-                      transition-all duration-200 hover:shadow-studio-lg hover:scale-105"
-            disabled={loading}
-          >
-            {loading ? "Laster..." : "Last flere artikler"}
-          </Button>
-        </div>
-      </section>
+                    {/* CTA Button */}
+                    <Button 
+                      size="sm"
+                      className="relative w-full font-montserrat-medium rounded-full overflow-hidden
+                                bg-white/20 backdrop-blur-sm text-white border border-white/30 
+                                hover:border-white/50 transition-all duration-200
+                                group-hover:border-transparent text-xs sm:text-sm px-4 py-2"
+                    >
+                      {/* Static text */}
+                      <span className="relative z-10 flex items-center justify-center">
+                        Les mer
+                        <ArrowRightIcon className="ml-1.5 h-3 w-3 flex-shrink-0" />
+                      </span>
+                      
+                      {/* Animated gradient background */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-studio-blue-500 via-studio-purple-500 to-studio-pink-500 
+                                     transform -translate-x-full group-hover:translate-x-0 
+                                     transition-transform duration-700 ease-out" />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          </motion.article>
+        ))}
+      </motion.div>
+    )}
+  </div>
+</section>
     </div>
   );
 }
