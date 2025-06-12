@@ -375,7 +375,7 @@ export default function NewsPage() {
                     {/* CTA Button */}
                     <Button 
                       size="sm"
-                      className="relative w-full font-montserrat-medium rounded-full overflow-hidden
+                      className="relative font-montserrat-medium rounded-full overflow-hidden
                                 bg-white/20 backdrop-blur-sm text-white border border-white/30 
                                 hover:border-white/50 transition-all duration-200
                                 group-hover:border-transparent text-xs sm:text-sm px-4 py-2"
