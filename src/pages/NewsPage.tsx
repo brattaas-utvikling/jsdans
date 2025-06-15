@@ -325,7 +325,7 @@ export default function NewsPage() {
           >
             <Link to={`/nyheter/${article.$id}`}>
               <div className="relative h-96 w-full rounded-2xl overflow-hidden shadow-studio hover:shadow-studio-lg 
-                             transition-all duration-300 hover:scale-105">
+                             transition-all duration-300 group-hover:shadow-studio-xl">
                 
                 {/* Background Image */}
                 <img

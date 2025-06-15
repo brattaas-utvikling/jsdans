@@ -9,7 +9,7 @@ import AboutSection from "./components/AboutSection";
 import ContactSection from "./components/ContactSection";
 import NewsPage from "./pages/NewsPage";
 import NewsArticlePage from "./pages/NewsArticlePage";
-import ClassesSection from "./polymet/components/classes-section";
+import ClassesSection from "./pages/CoursesPage";
 
 
 
