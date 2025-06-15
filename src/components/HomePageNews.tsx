@@ -162,16 +162,10 @@ export default function HomepageNews({
                 <img
                   src={featuredArticle.img}
                   alt={featuredArticle.headlines}
-                  className="w-full h-[300px] object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                 
-                {/* Featured badge */}
-                <div className="absolute top-4 left-4">
-                  <span className="px-3 py-1 bg-studio-pink-500 text-white text-sm font-montserrat-medium rounded-full">
-                    Utvalgt
-                  </span>
-                </div>
               </div>
 
               {/* Featured Content */}
@@ -216,82 +210,6 @@ export default function HomepageNews({
           </motion.div>
         )}
 
-        {/* Regular Articles Grid */}
-        {regularArticles.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: showFeatured && !compact ? 0.4 : 0.2 }}
-            viewport={{ once: true }}
-            className={`grid gap-6 ${
-              compact 
-                ? 'grid-cols-1 md:grid-cols-2' 
-                : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
-            }`}
-          >
-            {regularArticles.map((article, index) => (
-              <motion.article
-                key={article.$id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.1 * index }}
-                viewport={{ once: true }}
-                className="bg-white dark:bg-surface-dark rounded-xl shadow-studio hover:shadow-studio-lg 
-                          transition-all duration-300 hover:scale-105 overflow-hidden group"
-              >
-                {/* Article Image */}
-                <div className="relative h-48 overflow-hidden">
-                  <img
-                    src={article.img}
-                    alt={article.headlines}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                </div>
-
-                {/* Article Content */}
-                <div className="p-6 space-y-4">
-                  {/* Meta info */}
-                  <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 font-montserrat">
-                    <div className="flex items-center gap-1">
-                      <CalendarIcon className="h-3 w-3" />
-                      {formatDate(article.created_at)}
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <ClockIcon className="h-3 w-3" />
-                      {calculateReadingTime(article.content)} min
-                    </div>
-                  </div>
-
-                  <h4 className="font-bebas text-bebas-base text-gray-900 dark:text-white leading-tight line-clamp-2">
-                    {article.headlines}
-                  </h4>
-
-                  <p className="text-gray-600 dark:text-gray-300 font-montserrat text-sm leading-relaxed line-clamp-2">
-                    {article.lead}
-                  </p>
-
-                  {/* Author and CTA */}
-                  <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-700">
-                    <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 font-montserrat">
-                      <UserIcon className="h-3 w-3" />
-                      {article.author}
-                    </div>
-                    <Link
-                      to={`/nyheter/${article.$id}`}
-                      className="text-studio-blue-600 dark:text-studio-blue-400 hover:text-studio-pink-600 
-                                dark:hover:text-studio-pink-400 font-montserrat-medium text-sm
-                                flex items-center transition-colors"
-                    >
-                      Les mer
-                      <ArrowRightIcon className="ml-1 h-3 w-3" />
-                    </Link>
-                  </div>
-                </div>
-              </motion.article>
-            ))}
-          </motion.div>
-        )}
 
         {/* Call to Action */}
         <motion.div

@@ -185,7 +185,7 @@ export const PRICING_PLANS = [
   },
   {
     id: 5,
-    name: "Konpani",
+    name: "Kompani",
     price: 5000,
     duration: "per halvår",
     features: [
