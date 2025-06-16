@@ -6,6 +6,7 @@ import { useCart } from '../hooks/useCart';
 import CoursesPage from '../components/CoursesPage';
 import { PageLoading } from '../components/ui/loading';
 import type { StudentData } from '../types';
+import ScrollToTop from '@/helpers/ScrollToTop';
 
 const CoursesPageContainer: React.FC = () => {
   // Fetch data hooks
@@ -255,6 +256,8 @@ const CoursesPageContainer: React.FC = () => {
   }
 
   return (
+    <>
+    <ScrollToTop />
     <CoursesPage
       danceClasses={danceClasses}
       schedules={schedules}
@@ -266,7 +269,8 @@ const CoursesPageContainer: React.FC = () => {
       onDuplicateStudent={handleDuplicateStudent}
       onToggleFamilyDiscount={handleToggleFamilyDiscount}
       onDetectFamily={handleDetectFamily}
-    />
+      />
+      </>
   );
 };
 

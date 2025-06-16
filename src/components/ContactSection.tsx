@@ -1,6 +1,7 @@
 import { ClockIcon, FacebookIcon, InstagramIcon, MailIcon, MapPinIcon, PhoneIcon } from "lucide-react";
 import ContactForm from "./ContactForm";
 import { STUDIO_INFO } from "../data/dance-studio-data";
+import ScrollToTop from "@/helpers/ScrollToTop";
 
 export default function ContactSection() {
   return (
@@ -9,6 +10,7 @@ export default function ContactSection() {
       className="py-20 bg-surface-light dark:bg-surface-dark 
                   relative overflow-hidden"
     >
+      <ScrollToTop />
       {/* Subtle gradient accent */}
       <div className="absolute inset-0 bg-gradient-to-tr from-studio-blue-50/10 via-transparent to-studio-pink-50/10 
                     dark:from-studio-blue-900/5 dark:via-transparent dark:to-studio-pink-900/5" />
