@@ -192,7 +192,7 @@ export default function RegistrationPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
               className="font-bebas text-bebas-4xl md:text-bebas-5xl lg:text-bebas-6xl 
-                        text-transparent bg-clip-text bg-gradient-to-r from-studio-blue-500 to-studio-pink-500 mb-6"
+                        text-transparent bg-clip-text bg-gradient-to-r from-studio-blue-500 to-studio-pink-500 mb-6 py-1"
             >
               Åpner høsten 2025
             </motion.h2>
