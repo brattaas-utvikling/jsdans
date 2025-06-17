@@ -119,7 +119,7 @@ export default function NewsPage() {
     return (
       <div className="min-h-screen bg-white dark:bg-surface-dark flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-studio-blue-500 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500 mx-auto mb-4"></div>
           <p className="text-gray-600 dark:text-gray-300 font-montserrat">Laster nyheter...</p>
         </div>
       </div>
@@ -158,14 +158,14 @@ export default function NewsPage() {
             transition={{ duration: 0.8 }}
             className="text-center max-w-4xl mx-auto"
           >
-            <h2 className="text-sm font-montserrat-medium text-studio-indigo-600 dark:text-studio-indigo-400 
+            <h1 className="text-sm font-montserrat-medium text-studio-indigo-600 dark:text-studio-indigo-400 
                           uppercase tracking-wider mb-3">
               Nyheter
-            </h2>
-            <h1 className="font-bebas text-bebas-4xl md:text-bebas-5xl lg:text-bebas-6xl 
+            </h1>
+            <h2 className="font-bebas text-bebas-4xl md:text-bebas-5xl lg:text-bebas-6xl 
                           text-gray-900 dark:text-white mb-6">
               Hva skjer hos oss?
-            </h1>
+            </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed">
               Hold deg oppdatert på alt som skjer hos Urban Studios! Fra nye kurs til 
               spennende events og inspirerende danse-historier.

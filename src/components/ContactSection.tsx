@@ -18,13 +18,13 @@ export default function ContactSection() {
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         {/* Section header */}
         <div className="text-center max-w-3xl mx-auto mb-12">
-          <h2 className="text-sm font-montserrat-medium text-studio-indigo-600 dark:text-studio-indigo-400 
+          <h1 className="text-sm font-montserrat-medium text-studio-indigo-600 dark:text-studio-indigo-400 
                         uppercase tracking-wider mb-3">
             Kontakt oss
-          </h2>
-          <h3 className="font-bebas text-bebas-3xl md:text-bebas-4xl mb-4 text-gray-900 dark:text-white">
+          </h1>
+          <h2 className="font-bebas text-bebas-3xl md:text-bebas-4xl mb-4 text-gray-900 dark:text-white">
             Vi er her for deg
-          </h3>
+          </h2>
           <p className="text-gray-600 dark:text-gray-300 font-montserrat">
             Har du spørsmål, ønsker du mer informasjon, eller vil du bare si hei?
             Fyll ut kontaktskjemaet nedenfor, så tar vi kontakt med deg så snart som mulig!
@@ -34,16 +34,16 @@ export default function ContactSection() {
         {/* Contact content med nye farger */}
         <div className="relative">
           {/* Decorative elements */}
-          <div className="absolute -top-10 -right-10 w-40 h-40 bg-studio-purple-400/10 rounded-full blur-3xl" />
-          <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-studio-blue-400/10 rounded-full blur-3xl" />
+          <div className="absolute -top-10 -right-10 w-40 h-40 bg-purple-400/10 rounded-full blur-3xl" />
+          <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-blue-400/10 rounded-full blur-3xl" />
 
           {/* Grid med equal heights */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch relative z-10">
             
             {/* Left column: Contact info - h-full for equal height */}
             <div className="h-full flex flex-col">
-              <div className="bg-surface-muted dark:bg-surface-dark-muted rounded-2xl shadow-studio p-6 md:p-8
-                                border border-gray-100 dark:border-studio-blue-700/30 h-full flex flex-col">
+              <div className="bg-gradient-to-b lg:bg-gradient-to-r from-blue-50 to-pink-50 dark:from-blue-900/20 dark:to-pink-900/20 rounded-2xl shadow-studio p-6 md:p-8
+                                border border-gray-100 dark:border-blue-700/30 h-full flex flex-col">
                 <h3 className="font-bebas text-bebas-lg mb-6 text-gray-900 dark:text-white">
                   URBAN STUDIOS
                 </h3>
@@ -52,7 +52,7 @@ export default function ContactSection() {
                 <div className="space-y-4 flex-grow">
                   <div className="flex items-start">
                     <div className="h-10 w-10 flex items-center justify-center mr-4 flex-shrink-0">
-                      <MapPinIcon className="h-5 w-5 text-studio-blue-600 dark:text-studio-blue-400" />
+                      <MapPinIcon className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                     </div>
                     <div>
                       <h4 className="font-montserrat-semibold text-gray-900 dark:text-white">
@@ -114,7 +114,7 @@ export default function ContactSection() {
                 </div>
 
                 {/* Social media - pushed to bottom */}
-                <div className="mt-8 pt-6 border-t border-gray-200 dark:border-studio-blue-700/30">
+                <div className="mt-8 pt-6 border-t border-gray-200 dark:border-blue-700/30">
                   <h4 className="font-montserrat-semibold text-gray-900 dark:text-white mb-4">
                     Følg oss på sosiale medier
                   </h4>
@@ -135,9 +135,9 @@ export default function ContactSection() {
                       href={STUDIO_INFO.social.facebook}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-12 h-12 rounded-full bg-studio-blue-600 
+                      className="w-12 h-12 rounded-full bg-blue-600 
                                 flex items-center justify-center text-white
-                              hover:bg-studio-blue-700 transition-all duration-300 
+                              hover:bg-blue-700 transition-all duration-300 
                                 hover:scale-105 shadow-studio"
                     >
                       <FacebookIcon className="h-6 w-6" />
@@ -150,8 +150,8 @@ export default function ContactSection() {
 
             {/* Right column: Contact form - h-full for equal height */}
             <div className="h-full flex flex-col">
-              <div className="bg-white dark:bg-surface-dark-muted rounded-2xl shadow-studio-lg p-6 md:p-8
-                                border border-gray-100 dark:border-studio-blue-700/30 h-full flex flex-col">
+              <div className="bg-gradient-to-b lg:bg-gradient-to-r from-pink-50 to-blue-50 dark:from-pink-900/20 dark:to-blue-900/20 rounded-2xl shadow-studio-lg p-6 md:p-8
+                                border border-gray-100 dark:border-blue-700/30 h-full flex flex-col">
                 <ContactForm />
               </div>
             </div>

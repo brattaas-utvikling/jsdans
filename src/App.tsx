@@ -3,13 +3,14 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "@/components/Layout";
 import LandingPage from "@/pages/LandingPage";
 import PricingPage from "./pages/PricingPage";
-import CoursesPageContainer from "./pages/CoursesPageContainer";
+// import CoursesPageContainer from "./pages/CoursesPageContainer";
 import CheckoutPageContainer from "./pages/CheckoutPageContainer";
 import AboutSection from "./components/AboutSection";
 import ContactSection from "./components/ContactSection";
 import NewsPage from "./pages/NewsPage";
 import NewsArticlePage from "./pages/NewsArticlePage";
 import ClassesSection from "./pages/CoursesPage";
+import RegistrationPage from "./pages/RegistrationPage";
 
 
 
@@ -51,10 +52,10 @@ export default function App() {
         />
 
         <Route
-          path="/courses"
+          path="/registration"
           element={
             <Layout>
-              <CoursesPageContainer />
+              <RegistrationPage />
             </Layout>
           }
         />

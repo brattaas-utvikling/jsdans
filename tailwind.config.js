@@ -87,7 +87,7 @@ export default {
         // Semantic colors for different sections
         'surface': {
           light: '#FFFFFF',
-          muted: '#F8FAFC',
+          muted: '#FAF5FF',
           dark: '#0F172A',
           'dark-muted': '#1E293B',
         },

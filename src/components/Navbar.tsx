@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -33,7 +33,8 @@ export default function Navbar() {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
     const saved = localStorage.getItem('darkMode');
     if (saved !== null) return JSON.parse(saved);
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    // Standard til lys modus hvis ingen preferanse er lagret
+    return false;
   });
   const [lastScrollY, setLastScrollY] = useState(0);
   const [activeSection, setActiveSection] = useState("");
@@ -43,16 +44,16 @@ export default function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Navigation items configuration
-  const navigationItems: NavigationItem[] = [
+  // Navigation items configuration - memoized to prevent re-renders
+  const navigationItems: NavigationItem[] = useMemo(() => [
     { label: "Hjem", href: "/", type: "route" },
     { label: "Nyheter", href: "/nyheter", type: "route" },
     { label: "Om oss", href: "/om-oss", type: "route" },
     { label: "Kurs", href: "/kurs", type: "route" },
-    { label: "Påmelding", href: "/courses", type: "route" },
+    { label: "Påmelding", href: "/registration", type: "route" },
     { label: "Pris", href: "/priser", type: "route" },
     { label: "Kontakt oss", href: "/kontakt", type: "route" }
-  ];
+  ], []);
 
   // Dynamic menu height calculation
   useEffect(() => {
@@ -90,7 +91,7 @@ export default function Navbar() {
   }, [lastScrollY]);
 
   const throttledScrollHandler = useCallback(
-    throttle(handleScroll, 16),
+    () => throttle(handleScroll, 16),
     [handleScroll]
   );
 
@@ -438,7 +439,7 @@ export default function Navbar() {
                 transition={{ duration: 0.3, delay: 0.2 }}
               >
                 <Button 
-                  className="w-full font-montserrat-semibold
+                  className="w-full font-montserrat-semibold rounded-full
                             bg-gradient-to-r from-studio-blue-500 via-studio-indigo-500 to-studio-pink-500 
                             hover:from-studio-blue-600 hover:via-studio-indigo-600 hover:to-studio-pink-600 
                             text-white border-0 shadow-studio transition-all duration-200"

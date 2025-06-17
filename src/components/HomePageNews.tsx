@@ -95,16 +95,13 @@ export default function HomepageNews({
   }, [maxArticles, showFeatured]);
 
   const featuredArticle = showFeatured ? newsData[0] : null;
-  const regularArticles = showFeatured 
-    ? newsData.slice(1, maxArticles + 1) 
-    : newsData.slice(0, maxArticles);
 
   if (loading) {
     return (
       <section className="py-16 bg-white dark:bg-surface-dark">
         <div className="container mx-auto px-4 md:px-6">
           <div className="flex items-center justify-center py-12">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-studio-blue-500"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-500"></div>
           </div>
         </div>
       </section>
@@ -155,7 +152,7 @@ export default function HomepageNews({
             viewport={{ once: true }}
             className="mb-12"
           >
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center bg-gradient-to-br from-studio-blue-50 to-studio-pink-50 dark:from-studio-blue-900/20 dark:to-studio-pink-900/20 rounded-2xl p-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center bg-gradient-to-br from-blue-50 to-pink-50 dark:from-blue-900/20 dark:to-pink-900/20 rounded-2xl p-8">
               
               {/* Featured Image */}
               <div className="relative rounded-xl overflow-hidden shadow-studio group">
