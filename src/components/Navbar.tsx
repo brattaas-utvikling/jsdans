@@ -284,9 +284,9 @@ export default function Navbar() {
                         text-white border-0 shadow-studio transition-all duration-200 
                         hover:shadow-studio-lg 
                         focus:ring-2 focus:ring-studio-blue-500 focus:ring-offset-2"
-              onClick={() => handleNavClick("#contact", "anchor")}
+              onClick={() => handleNavClick("/kurs", "route")}
             >
-              Book et kurs
+              Se våre kurs
             </Button>
 
             {/* Mobile menu toggle */}
@@ -316,7 +316,7 @@ export default function Navbar() {
       <div
         id="mobile-menu"
         className={`md:hidden transition-all duration-300 overflow-hidden ${
-          isMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+          isMenuOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
         }`}
         aria-hidden={!isMenuOpen}
       >

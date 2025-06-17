@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowRightIcon } from "lucide-react";
+// import { ArrowRightIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { STUDIO_INFO } from "@/data/dance-studio-data";
 
@@ -84,14 +84,14 @@ export default function CtaSection() {
               Se våre kurs
             </Button>
             
-            <Button
+            {/* <Button
               size="lg"
               variant="outline"
               className="rounded-full border-white/30 text-white hover:bg-white/10 hover:text-white font-montserrat-medium"
             >
               Timeplan
               <ArrowRightIcon className="ml-2 h-4 w-4" />
-            </Button>
+            </Button> */}
             
             <span id="cta-description" className="sr-only">
               Ingen forpliktelser - prøv våre danskurs kostnadsfritt

@@ -196,13 +196,14 @@ export default function HomepageNews({
                   </div>
                   
                   <Link to={`/nyheter/${featuredArticle.$id}`}>
-                    <Button 
-                      size="sm"
-                      className="rounded-full bg-studio-blue-500 hover:bg-studio-blue-600 font-montserrat-medium"
-                    >
-                      Les mer
-                      <ArrowRightIcon className="ml-2 h-4 w-4" />
-                    </Button>
+                        <Button
+                          size="sm"
+                          className="rounded-full bg-gradient-to-r from-blue-600 to-pink-600 hover:from-blue-700 hover:to-pink-700 text-white border-0 font-montserrat-medium"
+                          aria-describedby="read-more-description"
+                        >
+                          Les mer
+                          <ArrowRightIcon className="ml-2 h-4 w-4" />
+                        </Button>
                   </Link>
                 </div>
               </div>
