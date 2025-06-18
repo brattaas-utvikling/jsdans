@@ -227,8 +227,8 @@ export default function Navbar() {
     const isActive = isActiveRoute(item.href, item.type);
     const finalClassName = `${className} ${
       isActive 
-        ? "text-studio-blue-500 dark:text-studio-blue-400 font-semibold" 
-        : "text-gray-700 dark:text-gray-200 hover:text-studio-blue-500 dark:hover:text-studio-blue-400"
+        ? "text-blue-500 dark:text-pink-300 font-semibold" 
+        : "text-gray-700 dark:text-gray-200 hover:text-blue-500 dark:hover:text-pink-300"
     }`;
 
     if (item.type === "route") {
@@ -262,9 +262,9 @@ export default function Navbar() {
       animate={{ y: 0 }}
       transition={{ duration: 0.3 }}
       className="fixed top-0 left-0 right-0 z-50 
-                bg-white/95 dark:bg-studio-blue-800/95 
+                bg-white/95 dark:bg-blue-800/95 
                 backdrop-blur-md 
-                shadow-studio border-b border-gray-200/20 dark:border-studio-blue-700/30
+                shadow-studio border-b border-gray-200/20 dark:border-blue-700/30
                 transition-all duration-300 ease-in-out"
     >
       <div className="w-full max-w-7xl mx-auto px-4 overflow-hidden">
@@ -296,9 +296,8 @@ export default function Navbar() {
                 <NavLink
                   item={item}
                   className="px-4 py-2 rounded-lg text-sm font-montserrat-medium transition-all duration-200 
-                            hover:bg-studio-blue-50 dark:hover:bg-studio-blue-700/50
-                            focus:outline-none focus:ring-2 focus:ring-studio-blue-500 focus:ring-offset-2 
-                            dark:focus:ring-offset-studio-blue-800"
+                            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 
+                            dark:focus:ring-offset-blue-800"
                   onClick={() => handleNavClick(item.href, item.type)}
                   onMouseEnter={() => handleNavHover(item.href)}
                 />
@@ -315,10 +314,10 @@ export default function Navbar() {
                 variant="ghost"
                 size="icon"
                 onClick={() => setIsDarkMode((prev: boolean) => !prev)}
-                className="rounded-full text-gray-600 dark:text-gray-300 
-                          hover:text-studio-blue-600 dark:hover:text-studio-blue-400 
-                          hover:bg-studio-blue-50 dark:hover:bg-studio-blue-700/50
-                          transition-colors focus:ring-2 focus:ring-studio-blue-500 focus:ring-offset-2"
+                className="rounded-full text-blue-600 dark:text-pink-300 
+                          hover:text-blue-600 dark:hover:text-blue-400 
+                          hover:bg-blue-50 dark:hover:bg-blue-700/50
+                          transition-colors focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                 aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
               >
                 <AnimatePresence mode="wait">
@@ -347,11 +346,11 @@ export default function Navbar() {
             >
               <Button 
                 className="font-montserrat-semibold rounded-full 
-                          bg-gradient-to-r from-studio-blue-500 via-studio-indigo-500 to-studio-pink-500 
-                          hover:from-studio-blue-600 hover:via-studio-indigo-600 hover:to-studio-pink-600 
-                          text-white border-0 shadow-studio transition-all duration-200 
+                          bg-gradient-to-r from-blue-500 via-indigo-500 to-pink-500 
+                          hover:from-blue-600 hover:via-indigo-600 hover:to-pink-600 
+                          text-white border-0 shadow transition-all duration-200 
                           hover:shadow-studio-lg 
-                          focus:ring-2 focus:ring-studio-blue-500 focus:ring-offset-2"
+                          focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                 onClick={() => handleNavClick("/kurs", "route")}
                 onMouseEnter={() => handleNavHover("/kurs")}
               >
@@ -365,9 +364,9 @@ export default function Navbar() {
                 variant="ghost"
                 size="icon"
                 className="md:hidden rounded-full text-gray-600 dark:text-gray-300 
-                          hover:text-studio-blue-600 dark:hover:text-studio-blue-400 
-                          hover:bg-studio-blue-50 dark:hover:bg-studio-blue-700/50
-                          transition-colors focus:ring-2 focus:ring-studio-blue-500 focus:ring-offset-2"
+                          hover:text-blue-600 dark:hover:text-blue-400 
+                          hover:bg-blue-50 dark:hover:bg-blue-700/50
+                          transition-colors focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 aria-expanded={isMenuOpen}
                 aria-controls="mobile-menu"
@@ -409,8 +408,8 @@ export default function Navbar() {
             <div 
               ref={menuContentRef}
               className="text-center px-4 py-2 space-y-1 
-                         bg-white/95 dark:bg-studio-blue-800/95 backdrop-blur-md 
-                         shadow-studio-lg border-t border-gray-200/20 dark:border-studio-blue-700/30"
+                        bg-white/95 dark:bg-blue-800/95 backdrop-blur-md 
+                          shadow-studio-lg border-t border-gray-200/20 dark:border-blue-700/30"
             >
               {navigationItems.map((item, index) => (
                 <motion.div
@@ -422,9 +421,9 @@ export default function Navbar() {
                   <NavLink
                     item={item}
                     className="block px-4 py-3 rounded-lg text-base font-montserrat-medium 
-                              hover:bg-studio-blue-50 dark:hover:bg-studio-blue-700/50 
+                              hover:bg-blue-50 dark:hover:bg-blue-700/50 
                               transition-all duration-200 focus:outline-none focus:ring-2 
-                              focus:ring-studio-blue-500 focus:ring-offset-2"
+                              focus:ring-blue-500 focus:ring-offset-2"
                     onClick={() => handleNavClick(item.href, item.type)}
                     onMouseEnter={() => handleNavHover(item.href)}
                   />
@@ -440,8 +439,8 @@ export default function Navbar() {
               >
                 <Button 
                   className="w-full font-montserrat-semibold rounded-full
-                            bg-gradient-to-r from-studio-blue-500 via-studio-indigo-500 to-studio-pink-500 
-                            hover:from-studio-blue-600 hover:via-studio-indigo-600 hover:to-studio-pink-600 
+                            bg-gradient-to-r from-blue-600 via-indigo-600 to-pink-600 
+                            hover:from-blue-700 hover:via-indigo-700 hover:to-pink-700 
                             text-white border-0 shadow-studio transition-all duration-200"
                   onClick={() => handleNavClick("/kurs", "route")}
                 >
