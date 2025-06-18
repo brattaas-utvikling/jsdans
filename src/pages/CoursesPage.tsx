@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { listDocuments, DATABASE_ID, COLLECTIONS, Query } from "@/lib/appwrite";
 import ScrollToTop from "@/helpers/ScrollToTop";
 import ClassCard from "@/components/ClassCard";
+import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 
 // TypeScript interface som matcher Appwrite schema
 interface AppwriteDocument {
@@ -203,18 +205,14 @@ export default function CoursesPage() {
             transition={{ duration: 0.8 }}
             className="text-center max-w-3xl mx-auto"
           >
-            <h3 className="font-bebas text-bebas-2xl md:text-bebas-3xl text-gray-900 dark:text-white mb-4">
+            <h3 className="font-bebas text-bebas-xl md:text-bebas-2xl text-gray-900 dark:text-white mb-4">
               Ikke sikker på hvilket kurs som passer deg?
             </h3>
             <p className="text-gray-600 dark:text-gray-300 font-montserrat mb-8 text-lg">
-              Book en gratis konsultasjon, så hjelper vi deg med å finne det perfekte kurset basert på dine mål og erfaring.
+              Kontakt oss på kontakt@urbanstudios.no eller benytt vårt kontaktskjema, så hjelper vi deg med å finne det perfekte kurset basert på dine behov!
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button className="font-montserrat-semibold rounded-full bg-gradient-to-r from-studio-blue-500 to-studio-pink-500 
-                               hover:from-studio-blue-600 hover:to-studio-pink-600 text-white shadow-studio
-                               transition-all duration-200 hover:shadow-studio-lg hover:scale-105">
-                Book gratis konsultasjon
-              </Button>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Link to="/kontakt" className="w-full sm:w-auto">
               <Button 
                 variant="outline"
                 className="font-montserrat-semibold rounded-full border-studio-blue-300 text-studio-blue-600 
@@ -222,7 +220,9 @@ export default function CoursesPage() {
                           dark:hover:bg-studio-blue-900/30"
               >
                 Kontakt oss
+                <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
+            </Link>
             </div>
           </motion.div>
         </div>
