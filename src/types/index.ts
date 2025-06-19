@@ -15,6 +15,7 @@ export interface DanceClass {
   availableFromYear: number;
   $createdAt?: string;
   $updatedAt?: string;
+  schedules?: Schedule[]; // Optional schedules for this class
 }
 
 export interface Schedule {
