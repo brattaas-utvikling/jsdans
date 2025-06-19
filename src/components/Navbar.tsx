@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { MenuIcon, XIcon, MoonIcon, SunIcon } from "lucide-react";
-import logo from "../assets/urban_studios_logo.svg";
+import logo from "../assets/urban_stuidos_text.svg";
 
 // Throttle utility function
 function throttle<T extends (...args: unknown[]) => void>(
@@ -271,18 +271,19 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16 md:h-20">
           
           {/* Logo */}
-          <motion.button 
-            onClick={() => handleNavClick("/", "route")}
-            className="flex items-center gap-2 hover:opacity-90 transition-opacity"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <img
-              src={logo}
-              alt="Urban Studios Logo"
-              className="h-16 w-auto object-contain"
-            />
-          </motion.button>
+{/* Logo */}
+<motion.button 
+  onClick={() => handleNavClick("/", "route")}
+  className="flex items-center gap-2 hover:opacity-90 transition-opacity"
+  whileHover={{ scale: 1.02 }}
+  whileTap={{ scale: 0.98 }}
+>
+  <img
+    src={logo}
+    alt="Urban Studios Logo"
+    className="h-16 max-w-64 object-contain dark:invert dark:brightness-0"
+  />
+</motion.button>
 
           {/* Desktop navigation */}
           <nav className="hidden md:flex items-center space-x-1 flex-1 justify-center">

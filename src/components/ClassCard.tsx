@@ -472,7 +472,7 @@ const colorMap: Record<ColorName, ColorClasses> = {
                   Bli med på en prøvetime og opplev gleden ved dans. Første time er gratis for nye deltakere!
                 </p>
                 <div className="flex gap-3">
-                <Link to="/courses" className="flex-1">
+                <Link to="/registration" className="flex-1">
                   <Button className="w-full font-montserrat font-semibold bg-blue-600 hover:bg-blue-700 text-white">
                     Book prøvetime
                   </Button>

@@ -1,6 +1,8 @@
+import CoursesCarousel from "@/components/CoursesCarousel";
 import CtaSection from "@/components/CtaSection";
 import HeroSection from "@/components/HeroSection";
 import HomepageNews from "@/components/HomePageNews";
+
 import ScrollToTop from "@/helpers/ScrollToTop";
 
 export default function LandingPage() {
@@ -9,6 +11,7 @@ export default function LandingPage() {
       <ScrollToTop />
       <HeroSection />
       <CtaSection />
+      <CoursesCarousel />
       <HomepageNews />
     </>
   );
