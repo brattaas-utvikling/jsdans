@@ -211,7 +211,7 @@ export const STUDIO_INFO = {
     zip: "2208",
   },
   contact: {
-    phone: "+47 123 45 678",
+    phone: "+47 979 53 671",
     email: "kontakt@urbanstudio.no",
     hours: "Åpner høsten 2025"
   },
