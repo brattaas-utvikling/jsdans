@@ -183,7 +183,7 @@ export default function CoursesPage() {
                         age={course.age}
                         color={course.color}
                         image={course.image}
-                        schedule={course.schedule || [{ day: "TBA", time: "TBA", level: course.level || "TBA" }]}
+                        schedule={course.schedule || [{ day: "September 2025", time: "Tidspunkt kommer", level: course.level || "Nivå kommer" }]}
                         instructor={course.instructor}
                       />
                     </motion.div>
@@ -205,7 +205,7 @@ export default function CoursesPage() {
             transition={{ duration: 0.8 }}
             className="text-center max-w-3xl mx-auto"
           >
-            <h3 className="font-bebas text-bebas-xl md:text-bebas-2xl text-gray-900 dark:text-white mb-4">
+            <h3 className="font-bebas text-bebas-xl md:text-bebas-xl text-gray-900 dark:text-white mb-4">
               Ikke sikker på hvilket kurs som passer deg?
             </h3>
             <p className="text-gray-600 dark:text-gray-300 font-montserrat mb-8 text-lg">
