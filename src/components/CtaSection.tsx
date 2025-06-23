@@ -13,7 +13,7 @@ export default function CtaSection() {
       <div className="absolute inset-0 z-0">
         <img
           src="https://images.unsplash.com/photo-1646084067464-0aa782d923dc?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt="Unge dansere i bevegelse på Urban Studios, som viser energien og kreativiteten i våre danskurs"
+          alt="Danser i bevegelse på Urban Studios, som viser energien og kreativiteten i våre danskurs"
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-black/30 dark:from-black/70 dark:to-black/40" />
@@ -51,7 +51,7 @@ export default function CtaSection() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
               viewport={{ once: true }}
-              className="font-montserrat block mt-2 text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-pink-600 py-2"
+              className="font-montserrat block mt-2 text-transparent bg-clip-text bg-hero-gradient py-2"
             >
               Uttrykk deg selv gjennom dans
             </motion.span>
@@ -78,12 +78,11 @@ export default function CtaSection() {
           >
             <Button
               size="lg"
-              className="rounded-full bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 font-montserrat-medium"
+              className="rounded-full bg-brand-500 hover:bg-brand-600 text-white border-0 font-montserrat-medium"
               aria-describedby="cta-description"
             >
               Se våre kurs
             </Button>
-            
             {/* <Button
               size="lg"
               variant="outline"
@@ -94,7 +93,7 @@ export default function CtaSection() {
             </Button> */}
             
             <span id="cta-description" className="sr-only">
-              Ingen forpliktelser - prøv våre danskurs kostnadsfritt
+              Uttrykk deg selv gjennom dans
             </span>
           </motion.div>
         </div>
@@ -114,7 +113,7 @@ export default function CtaSection() {
         whileInView={{ opacity: 0.2, scale: 1 }}
         transition={{ duration: 2, delay: 1 }}
         viewport={{ once: true }}
-        className="absolute -bottom-12 -right-12 w-64 h-64 bg-blue-500/20 rounded-full blur-3xl"
+        className="absolute -bottom-12 -right-12 w-64 h-64 bg-brand-500/20 rounded-full blur-3xl"
       />
 
       <motion.div
@@ -122,7 +121,7 @@ export default function CtaSection() {
         whileInView={{ opacity: 0.1, scale: 1 }}
         transition={{ duration: 2, delay: 1.2 }}
         viewport={{ once: true }}
-        className="absolute top-1/4 -left-12 w-48 h-48 bg-pink-500/10 rounded-full blur-3xl"
+        className="absolute top-1/4 -left-12 w-48 h-48 bg-magenta-500/10 rounded-full blur-3xl"
       />
     </section>
   );

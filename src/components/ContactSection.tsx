@@ -12,8 +12,8 @@ export default function ContactSection() {
     >
       <ScrollToTop />
       {/* Subtle gradient accent */}
-      <div className="absolute inset-0 bg-gradient-to-tr from-orange-50/10 via-transparent to-orange-50/10 
-                    dark:from-orange-900/5 dark:via-transparent dark:to-orange-900/5" />
+      <div className="absolute inset-0 bg-gradient-to-tr from-primary-50/10 via-transparent to-primary-50/10 
+                    dark:from-primary-900/5 dark:via-transparent dark:to-primary-900/5" />
       
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         {/* Section header */}
@@ -35,15 +35,15 @@ export default function ContactSection() {
         <div className="relative">
           {/* Decorative elements */}
           <div className="absolute -top-10 -right-10 w-40 h-40 bg-purple-400/10 rounded-full blur-3xl" />
-          <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-orange-400/10 rounded-full blur-3xl" />
+          <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-primary-400/10 rounded-full blur-3xl" />
 
           {/* Grid med equal heights */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch relative z-10">
             
             {/* Left column: Contact info - h-full for equal height */}
             <div className="h-full flex flex-col">
-              <div className="bg-gradient-to-b lg:bg-gradient-to-r from-orange-50 to-pink-50 dark:from-orange-900/20 dark:to-pink-900/20 rounded-2xl shadow-studio p-6 md:p-8
-                                border border-gray-100 dark:border-orange-700/30 h-full flex flex-col">
+              <div className="bg-gradient-to-b lg:bg-gradient-to-r from-primary-50 to-pink-50 dark:from-primary-900/20 dark:to-pink-900/20 rounded-2xl shadow-studio p-6 md:p-8
+                                border border-gray-100 dark:border-primary-700/30 h-full flex flex-col">
                 <h3 className="font-bebas text-bebas-base font-semi mb-6 text-gray-900 dark:text-white">
                   URBAN STUDIOS
                 </h3>
@@ -114,7 +114,7 @@ export default function ContactSection() {
                 </div>
 
                 {/* Social media - pushed to bottom */}
-                <div className="mt-8 pt-6 border-t border-gray-200 dark:border-orange-700/30">
+                <div className="mt-8 pt-6 border-t border-gray-200 dark:border-primary-700/30">
                   <h4 className="font-montserrat-semibold text-gray-900 dark:text-white mb-4">
                     Følg oss på sosiale medier
                   </h4>
@@ -123,8 +123,8 @@ export default function ContactSection() {
                       href={STUDIO_INFO.social.instagram}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 via-pink-500 to-orange-400 
-                              hover:from-purple-600 hover:via-pink-600 hover:to-orange-500
+                      className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 via-pink-500 to-primary-400 
+                              hover:from-purple-600 hover:via-pink-600 hover:to-primary-500
                               text-white transition-all duration-300 hover:scale-110 
                                 flex items-center justify-center shadow-studio hover:shadow-studio"
                     >
@@ -150,8 +150,8 @@ export default function ContactSection() {
 
             {/* Right column: Contact form - h-full for equal height */}
             <div className="h-full flex flex-col">
-              <div className="bg-gradient-to-b lg:bg-gradient-to-r from-pink-50 to-orange-50 dark:from-pink-900/20 dark:to-orange-900/20 rounded-2xl shadow-studio-lg p-6 md:p-8
-                                border border-gray-100 dark:border-orange-700/30 h-full flex flex-col">
+              <div className="bg-gradient-to-b lg:bg-gradient-to-r from-pink-50 to-primary-50 dark:from-pink-900/20 dark:to-primary-900/20 rounded-2xl shadow-studio-lg p-6 md:p-8
+                                border border-gray-100 dark:border-primary-700/30 h-full flex flex-col">
                 <ContactForm />
               </div>
             </div>

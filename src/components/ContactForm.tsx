@@ -281,15 +281,15 @@ export default function SecureContactForm() {
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
-                  className="bg-orange-50 dark:bg-orange-900/30 border border-orange-200 dark:border-orange-800 rounded-lg p-4"
+                  className="bg-primary-50 dark:bg-primary-900/30 border border-primary-200 dark:border-primary-800 rounded-lg p-4"
                 >
                   <div className="flex items-center">
-                    <ClockIcon className="h-5 w-5 text-orange-600 dark:text-orange-400 mr-3 flex-shrink-0" />
+                    <ClockIcon className="h-5 w-5 text-primary-600 dark:text-primary-400 mr-3 flex-shrink-0" />
                     <div>
-                      <p className="font-medium text-orange-800 dark:text-orange-400 font-montserrat">
+                      <p className="font-medium text-primary-800 dark:text-primary-400 font-montserrat">
                         For mange forsøk
                       </p>
-                      <p className="text-sm text-orange-700 dark:text-orange-500 font-montserrat">
+                      <p className="text-sm text-primary-700 dark:text-primary-500 font-montserrat">
                         {rateLimitError}
                       </p>
                     </div>
@@ -519,8 +519,8 @@ export default function SecureContactForm() {
               <Button
                 type="submit"
                 disabled={isSubmitting || !!rateLimitError}
-                className="w-full rounded-full bg-gradient-to-r from-orange-500 to-studio-pink-500 
-                  hover:from-orange-600 hover:to-studio-pink-600 text-white border-0 
+                className="w-full rounded-full bg-gradient-to-r from-primary-500 to-studio-pink-500 
+                  hover:from-primary-600 hover:to-studio-pink-600 text-white border-0 
                   font-montserrat font-semibold transition-all duration-200 py-3
                   disabled:opacity-50 disabled:cursor-not-allowed
                   disabled:hover:scale-100"

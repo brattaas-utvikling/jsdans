@@ -58,9 +58,9 @@ export const AGE_GROUP_COLORS: { [key: string]: { bg: string; border: string; te
     text: "text-teal-600 dark:text-teal-400",
   },
   Senior: {
-    bg: "bg-orange-100 dark:bg-orange-900/20",
-    border: "border-orange-200 dark:border-orange-800",
-    text: "text-orange-600 dark:text-orange-400",
+    bg: "bg-primary-100 dark:bg-primary-900/20",
+    border: "border-primary-200 dark:border-primary-800",
+    text: "text-primary-600 dark:text-primary-400",
   },
 };
 

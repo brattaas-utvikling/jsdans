@@ -212,7 +212,7 @@ export default function Navbar() {
     }
   }, [location.pathname]);
 
-  // NavLink component
+  // NavLink component - KONSISTENT FARGESKJEMA
   const NavLink = ({ 
     item, 
     className, 
@@ -227,8 +227,8 @@ export default function Navbar() {
     const isActive = isActiveRoute(item.href, item.type);
     const finalClassName = `${className} ${
       isActive 
-        ? "text-blue-500 dark:text-pink-300 font-semibold" 
-        : "text-gray-700 dark:text-gray-200 hover:text-blue-500 dark:hover:text-pink-300"
+        ? "text-brand-600 dark:text-white font-semibold font-bold" 
+        : "text-gray-700 dark:text-white/80 hover:text-brand-600 dark:hover:text-white"
     }`;
 
     if (item.type === "route") {
@@ -262,31 +262,29 @@ export default function Navbar() {
       animate={{ y: 0 }}
       transition={{ duration: 0.3 }}
       className="fixed top-0 left-0 right-0 z-50 
-                bg-white/95 dark:bg-blue-800/95 
+                bg-white/90 dark:bg-brand-600/90
                 backdrop-blur-md 
-                shadow-studio border-b border-gray-200/20 dark:border-blue-700/30
+                shadow-studio border-b border-gray-200/30 dark:border-brand-700/30
                 transition-all duration-300 ease-in-out"
     >
       <div className="w-full max-w-7xl mx-auto px-4 overflow-hidden">
         <div className="flex items-center justify-between h-16 md:h-20">
-          
-          {/* Logo */}
-{/* Logo */}
-<motion.button 
-  onClick={() => handleNavClick("/", "route")}
-  className="flex items-center gap-2 hover:opacity-90 transition-opacity"
-  whileHover={{ scale: 1.02 }}
-  whileTap={{ scale: 0.98 }}
->
-  <img
-    src={logo}
-    alt="Urban Studios Logo"
-    className="h-16 max-w-64 object-contain dark:invert dark:brightness-0"
-  />
-</motion.button>
+
+          {/* Logo - KONSISTENT */}
+          <motion.button
+            onClick={() => handleNavClick("/", "route")}
+            className="flex items-center gap-1 md:gap-2 hover:opacity-90 transition-opacity"
+            whileTap={{ scale: 0.98 }}
+          >
+            <img
+              src={logo}
+              alt="Urban Studios Logo"
+              className="h-16 max-w-48 object-contain dark:invert dark:brightness-0"
+            />
+          </motion.button>
 
           {/* Desktop navigation */}
-          <nav className="hidden md:flex items-center space-x-1 flex-1 justify-center">
+          <nav className="hidden lg:flex items-center space-x-1 flex-1 justify-center">
             {navigationItems.map((item, index) => (
               <motion.div
                 key={item.label}
@@ -297,8 +295,8 @@ export default function Navbar() {
                 <NavLink
                   item={item}
                   className="px-4 py-2 rounded-lg text-sm font-montserrat-medium transition-all duration-200 
-                            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 
-                            dark:focus:ring-offset-blue-800"
+                            focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 
+                            dark:focus:ring-offset-brand-600"
                   onClick={() => handleNavClick(item.href, item.type)}
                   onMouseEnter={() => handleNavHover(item.href)}
                 />
@@ -306,19 +304,21 @@ export default function Navbar() {
             ))}
           </nav>
 
-          {/* Actions */}
+          {/* Actions  */}
           <div className="flex items-center gap-2">
             
             {/* Dark mode toggle */}
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <motion.div whileTap={{ scale: 0.95 }}>
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => setIsDarkMode((prev: boolean) => !prev)}
-                className="rounded-full text-blue-600 dark:text-pink-300 
-                          hover:text-blue-600 dark:hover:text-blue-400 
-                          hover:bg-blue-50 dark:hover:bg-blue-700/50
-                          transition-colors focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                className="rounded-full 
+                          text-gray-600 dark:text-white/80 
+                          hover:text-brand-600 dark:hover:text-white 
+                          hover:bg-gray-100 dark:hover:bg-brand-700/50
+                          transition-all focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 
+                          dark:focus:ring-white/50 dark:focus:ring-offset-brand-600"
                 aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
               >
                 <AnimatePresence mode="wait">
@@ -339,19 +339,20 @@ export default function Navbar() {
               </Button>
             </motion.div>
 
-            {/* CTA Button */}
+            {/* Desktop CTA Button */}
             <motion.div 
-              whileHover={{ scale: 1.02 }} 
               whileTap={{ scale: 0.98 }}
-              className="hidden md:block"
+              className="hidden lg:block"
             >
               <Button 
                 className="font-montserrat-semibold rounded-full 
-                          bg-gradient-to-r from-orange-500  to-studio-pink-500 
-                          hover:from-orange-600  hover:to-studio-pink-600 
-                          text-white border-0 shadow transition-all duration-200 
-                          hover:shadow-studio-lg 
-                          focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
+                          bg-brand-500 hover:bg-brand-600
+                          dark:bg-white dark:hover:bg-gray-50
+                          text-white dark:text-brand-600
+                          dark:hover:text-brand-700
+                          border-0 shadow hover:shadow-md transition-all duration-200 
+                          focus:ring-2 focus:ring-brand-400 focus:ring-offset-2 
+                          dark:focus:ring-brand-500 dark:focus:ring-offset-brand-600"
                 onClick={() => handleNavClick("/kurs", "route")}
                 onMouseEnter={() => handleNavHover("/kurs")}
               >
@@ -360,14 +361,16 @@ export default function Navbar() {
             </motion.div>
 
             {/* Mobile menu toggle */}
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <motion.div whileTap={{ scale: 0.95 }}>
               <Button
                 variant="ghost"
                 size="icon"
-                className="md:hidden rounded-full text-gray-600 dark:text-gray-300 
-                          hover:text-blue-600 dark:hover:text-blue-400 
-                          hover:bg-blue-50 dark:hover:bg-blue-700/50
-                          transition-colors focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                className="lg:hidden rounded-full 
+                          text-gray-600 dark:text-white/80 
+                          hover:text-brand-600 dark:hover:text-white 
+                          hover:bg-gray-100 dark:hover:bg-brand-700/50
+                          transition-colors focus:ring-2 focus:ring-brand-500 focus:ring-offset-2
+                          dark:focus:ring-white/50 dark:focus:ring-offset-brand-600"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 aria-expanded={isMenuOpen}
                 aria-controls="mobile-menu"
@@ -394,7 +397,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile menu with dynamic height */}
+      {/* Mobile menu - FIKSET BAKGRUNN OG FARGER */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
@@ -403,14 +406,14 @@ export default function Navbar() {
             animate={{ height: menuHeight, opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="md:hidden overflow-hidden"
+            className="lg:hidden overflow-hidden"
             aria-hidden={!isMenuOpen}
           >
             <div 
               ref={menuContentRef}
               className="text-center px-4 py-2 space-y-1 
-                        bg-white/95 dark:bg-blue-800/95 backdrop-blur-md 
-                          shadow-studio-lg border-t border-gray-200/20 dark:border-blue-700/30"
+                        bg-white/90 dark:bg-brand-600/90 backdrop-blur-md 
+                        shadow-studio-lg border-t border-gray-200/30 dark:border-brand-700/30"
             >
               {navigationItems.map((item, index) => (
                 <motion.div
@@ -422,27 +425,31 @@ export default function Navbar() {
                   <NavLink
                     item={item}
                     className="block px-4 py-3 rounded-lg text-base font-montserrat-medium 
-                              hover:bg-blue-50 dark:hover:bg-blue-700/50 
+                              hover:bg-gray-100 dark:hover:bg-brand-700/50 
                               transition-all duration-200 focus:outline-none focus:ring-2 
-                              focus:ring-blue-500 focus:ring-offset-2"
+                              focus:ring-brand-500 focus:ring-offset-2
+                              dark:focus:ring-white/50 dark:focus:ring-offset-brand-600"
                     onClick={() => handleNavClick(item.href, item.type)}
                     onMouseEnter={() => handleNavHover(item.href)}
                   />
                 </motion.div>
               ))}
               
-              {/* Mobile CTA */}
+              {/* Mobile CTA - KONSISTENT MED DESKTOP */}
               <motion.div 
                 className="pt-3 pb-4"
+                whileTap={{ scale: 0.99 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.2 }}
               >
                 <Button 
-                  className="w-full font-montserrat-semibold rounded-full
-                            bg-gradient-to-r from-orange-600 to-studio-pink-600 
-                            hover:from-orange-700 hover:to-studio-pink-700 
-                            text-white border-0 shadow-studio transition-all duration-200"
+                  className="w-full font-montserrat-semibold rounded-md
+                            bg-brand-500 hover:bg-brand-600
+                            dark:bg-white dark:hover:bg-gray-50
+                            dark:text-brand-600 dark:hover:text-brand-600
+                            text-white border-0 shadow hover:shadow-md 
+                            transition-all duration-200"
                   onClick={() => handleNavClick("/kurs", "route")}
                 >
                   Se våre kurs

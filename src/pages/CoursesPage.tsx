@@ -108,12 +108,12 @@ export default function CoursesPage() {
       <ScrollToTop />
 
       {/* Hero Section - Samme stil som nyheter */}
-      <section className="bg-gradient-to-br from-orange-50 via-white to-pink-50 
-                        dark:from-orange-900/20 dark:via-surface-dark dark:to-pink-900/20 
+      <section className="bg-gradient-to-br from-primary-50 via-white to-pink-50 
+                        dark:from-primary-900/20 dark:via-surface-dark dark:to-pink-900/20 
                         pt-24 pb-16 relative overflow-hidden">
         {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-pink-400/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-48 h-48 bg-orange-400/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-primary-400/10 rounded-full blur-3xl" />
         
         <div className="container mx-auto px-4 md:px-6 relative z-10">
           <motion.div

@@ -60,7 +60,7 @@ export default function Footer() {
             </div>
             
             {/* Tagline med rosa gradient */}
-            <p className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-studio-pink-300 to-studio-pink-400 mb-4 font-montserrat-medium">
+            <p className="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 via-studio-pink-300 to-studio-pink-400 mb-4 font-montserrat-medium">
               {STUDIO_INFO.tagline}
             </p> 
             
