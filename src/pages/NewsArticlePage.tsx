@@ -128,7 +128,7 @@ export default function NewsArticlePage() {
     return (
       <div className="min-h-screen bg-white dark:bg-surface-dark flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-studio-blue-500 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-500 mx-auto mb-4"></div>
           <p className="text-gray-600 dark:text-gray-300 font-montserrat">Laster artikkel...</p>
         </div>
       </div>
@@ -147,7 +147,13 @@ export default function NewsArticlePage() {
           </p>
           <Button 
             onClick={() => navigate('/nyheter')}
-            className="font-montserrat-medium rounded-full bg-studio-blue-500 hover:bg-studio-blue-600"
+            className="font-semibold rounded-full 
+                      bg-brand-500 hover:bg-brand-600
+                      dark:bg-white dark:hover:bg-brand-600/80
+                      text-white dark:text-brand-600
+                      dark:hover:text-white/90
+                      border-0 shadow hover:shadow-md 
+                      transition-all duration-200"
           >
             <ArrowLeftIcon className="mr-2 h-4 w-4" />
             Tilbake til nyheter
@@ -173,9 +179,11 @@ export default function NewsArticlePage() {
         <div className="absolute top-8 left-8 z-10">
           <Button
             onClick={() => navigate('/nyheter')}
-            variant="outline"
             size="sm"
-            className="bg-white/90 hover:bg-white text-gray-900 border-white/20 backdrop-blur-sm"
+            className="font-montserrat-semibold rounded-md overflow-hidden
+                                bg-white/20 backdrop-blur-sm text-white border border-white/30 
+                                hover:border-white/50 transition-all duration-300 px-8 py-3
+                                group-hover:border-transparent"
           >
             <ArrowLeftIcon className="mr-2 h-4 w-4" />
             Tilbake
@@ -190,13 +198,7 @@ export default function NewsArticlePage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
               className="max-w-4xl"
-            >
-              {/* <span className={`inline-block px-3 py-1 rounded-full text-sm font-montserrat-medium mb-4 ${
-                article.published ? 'bg-green-500' : 'bg-yellow-500'
-              } text-white`}>
-                {article.published ? 'Publisert' : 'Utkast'}
-              </span> */}
-              
+            >              
               <h1 className="font-bebas text-bebas-2xl md:text-bebas-3xl lg:text-bebas-4xl text-white mb-4 leading-tight">
                 {article.headlines}
               </h1>
@@ -242,7 +244,8 @@ export default function NewsArticlePage() {
                   onClick={handleShare}
                   variant="outline"
                   size="sm"
-                  className="rounded-full"
+                  className="rounded-full border-brand-300 text-brand-600 hover:bg-brand-50 hover:text-brand-600
+                            dark:border-brand-700 dark:text-brand-400 dark:hover:bg-brand-900/30 dark:hover:text-brand-400"
                 >
                   <ShareIcon className="h-4 w-4" />
                 </Button>
@@ -280,18 +283,12 @@ export default function NewsArticlePage() {
                 </div>
                 
                 <div className="flex gap-3">
-                  <Button
-                    onClick={handleShare}
-                    className="rounded-full bg-studio-blue-700 hover:bg-studio-blue-600 font-montserrat-medium"
-                  >
-                    <ShareIcon className="mr-2 h-4 w-4" />
-                    Del artikkel
-                  </Button>
-                  
+                                 
                   <Button
                     onClick={() => navigate('/nyheter')}
                     variant="outline"
-                    className="rounded-full font-montserrat-medium"
+                    className="rounded-full font-semibold border-brand-300 text-brand-600 hover:bg-brand-50 hover:text-brand-600
+                              dark:border-brand-700 dark:text-brand-400 dark:hover:bg-brand-900/30 dark:hover:text-brand-400"
                   >
                     Se flere artikler
                   </Button>

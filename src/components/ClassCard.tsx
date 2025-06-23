@@ -100,13 +100,13 @@ const colorMap: Record<ColorName, ColorClasses> = {
     buttonHover: 'hover:bg-red-50 dark:hover:bg-red-900/30 hover:text-red-800 dark:hover:text-red-200'
   },
   'orange': {
-    bg: 'bg-primary-50 dark:bg-primary-950/50',
-    text: 'text-primary-800 dark:text-primary-200',
-    border: 'border-primary-200 dark:border-primary-800',
-    hover: 'hover:bg-primary-100 dark:hover:bg-primary-900/50',
-    buttonBg: 'bg-primary-600 hover:bg-primary-700',
+    bg: 'bg-brand-50 dark:bg-brand-950/50',
+    text: 'text-brand-800 dark:text-brand-200',
+    border: 'border-brand-200 dark:border-brand-800',
+    hover: 'hover:bg-brand-100 dark:hover:bg-brand-900/50',
+    buttonBg: 'bg-brand-600 hover:bg-brand-700',
     buttonText: 'text-white',
-    buttonHover: 'hover:bg-primary-50 dark:hover:bg-primary-900/30 hover:text-primary-800 dark:hover:text-primary-200'
+    buttonHover: 'hover:bg-brand-50 dark:hover:bg-brand-900/30 hover:text-brand-800 dark:hover:text-brand-200'
   },
   'amber': {
     bg: 'bg-amber-50 dark:bg-amber-950/50',
@@ -299,35 +299,39 @@ const colorMap: Record<ColorName, ColorClasses> = {
 
   return (
     <>
-      <Card className="overflow-hidden transition-all duration-300 hover:shadow-lg border-0 group">
+      <Card className="overflow-hidden transition-all duration-300 hover:shadow-brand-lg 
+                       bg-gradient-to-br from-brand-50/80 to-surface-muted 
+                       dark:from-brand-900/10 dark:to-surface-dark-muted 
+                       border border-brand-100/50 dark:border-brand-700/30 group">
         <div className="relative h-48 overflow-hidden">
           <img
             src={image}
             alt={`${name} dance class`}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
         </div>
         <CardHeader>
-          <CardTitle className="text-xl font-bebas">{name}</CardTitle>
-          <CardDescription className="font-montserrat">{description}</CardDescription>
+          <CardTitle className="text-xl font-bebas text-gray-900 dark:text-white">{name}</CardTitle>
+          <CardDescription className="font-montserrat text-gray-600 dark:text-gray-300">{description}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-3 text-sm text-gray-700 dark:text-gray-300">
             <div className="flex items-center gap-2">
-              <User className="h-4 w-4 text-gray-500" />
+              <User className="h-4 w-4 text-gray-500 dark:text-gray-400" />
               <span className="font-montserrat">Instruktør: {instructor}</span>
             </div>
             <div className="flex items-center gap-2">
-              <Zap className="h-4 w-4 text-gray-500" />
+              <Zap className="h-4 w-4 text-brand-500" />
               <span className="font-montserrat">Nivå: {level}</span>
             </div>
             <div className="flex items-center gap-2">
-              <Calendar className="h-4 w-4 text-gray-500" />
+              <Calendar className="h-4 w-4 text-brand-500" />
               <span className="font-montserrat">Alder: {age}</span>
             </div>
             <div className="mt-3">
               <div className="flex items-center gap-2 text-sm">
-                <Calendar className="h-4 w-4 text-gray-500" />
+                <Calendar className="h-4 w-4 text-brand-500" />
                 <span className="font-montserrat">Neste kurs:</span>
               </div>
               <div className={`${colors.bg} ${colors.border} border rounded-lg p-3 text-sm mt-1`}>
@@ -336,7 +340,7 @@ const colorMap: Record<ColorName, ColorClasses> = {
                   <span className={`${colors.text} font-montserrat font-medium`}>{schedule[0]?.level || level}</span>
                 </div>
                 <div className="flex items-center gap-1 mt-1">
-                  <Clock className="h-3 w-3 text-gray-600" />
+                  <Clock className="h-3 w-3 text-gray-600 dark:text-gray-400" />
                   <span className={`font-montserrat ${colors.text}`}>{schedule[0]?.time || 'TBA'}</span>
                 </div>
               </div>
@@ -345,8 +349,7 @@ const colorMap: Record<ColorName, ColorClasses> = {
         </CardContent>
         <CardFooter>
           <Button
-            variant="outline"
-            className={`w-full rounded-full border ${colors.border} ${colors.buttonHover} ${colors.text}
+            className={`w-full rounded-full bg-transparent border-2 ${colors.border} ${colors.buttonHover} ${colors.text}
                        font-montserrat font-medium transition-all duration-200`}
             onClick={() => setIsModalOpen(true)}
           >
@@ -357,12 +360,12 @@ const colorMap: Record<ColorName, ColorClasses> = {
 
       {/* Modal */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto bg-white dark:bg-surface-dark">
           <DialogHeader>
-            <DialogTitle className="text-2xl font-bebas flex items-center gap-3">
+            <DialogTitle className="text-2xl font-bebas flex items-center gap-3 text-gray-900 dark:text-white">
               {name}
             </DialogTitle>
-            <DialogDescription className="text-base mt-2 font-montserrat">
+            <DialogDescription className="text-base mt-2 font-montserrat text-gray-600 dark:text-gray-300">
               {description}
             </DialogDescription>
           </DialogHeader>
@@ -380,32 +383,32 @@ const colorMap: Record<ColorName, ColorClasses> = {
 
             {/* Quick Info */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-zinc-800 rounded-lg">
-                <User className="h-5 w-5 text-gray-500" />
+              <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-surface-dark-muted rounded-lg border border-brand-100/50 dark:border-brand-700/30">
+                <User className="h-5 w-5 text-brand-500" />
                 <div>
-                  <div className="font-montserrat font-semibold">Instruktør</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400 font-montserrat">{instructor}</div>
+                  <div className="font-montserrat font-semibold text-gray-900 dark:text-white">Instruktør</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-300 font-montserrat">{instructor}</div>
                 </div>
               </div>
-              <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-zinc-800 rounded-lg">
-                <Zap className="h-5 w-5 text-gray-500" />
+              <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-surface-dark-muted rounded-lg border border-brand-100/50 dark:border-brand-700/30">
+                <Zap className="h-5 w-5 text-brand-500" />
                 <div>
-                  <div className="font-montserrat font-semibold">Nivå</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400 font-montserrat">{level}</div>
+                  <div className="font-montserrat font-semibold text-gray-900 dark:text-white">Nivå</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-300 font-montserrat">{level}</div>
                 </div>
               </div>
-              <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-zinc-800 rounded-lg">
-                <Users className="h-5 w-5 text-gray-500" />
+              <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-surface-dark-muted rounded-lg border border-brand-100/50 dark:border-brand-700/30">
+                <Users className="h-5 w-5 text-brand-500" />
                 <div>
-                  <div className="font-montserrat font-semibold">Alder</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400 font-montserrat">{age}</div>
+                  <div className="font-montserrat font-semibold text-gray-900 dark:text-white">Alder</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-300 font-montserrat">{age}</div>
                 </div>
               </div>
             </div>
 
             {/* Extended Description */}
             <div className="prose dark:prose-invert max-w-none">
-              <h3 className="text-lg font-bebas mb-3">Om kurset</h3>
+              <h3 className="text-lg font-bebas mb-3 text-gray-900 dark:text-white">Om kurset</h3>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed font-montserrat">
                 {name} er en fantastisk måte å uttrykke seg selv på gjennom dans. 
                 Dette kurset er designet for {age.toLowerCase()} og passer perfekt for {level.toLowerCase()}-nivå. 
@@ -413,12 +416,12 @@ const colorMap: Record<ColorName, ColorClasses> = {
                 bygge selvtillit og ha det gøy med andre som deler din lidenskap for dans.
               </p>
               
-              <div className={`mt-4 p-4 ${colors.bg} rounded-lg`}>
+              <div className={`mt-4 p-4 ${colors.bg} rounded-lg border ${colors.border}`}>
                 <div className="flex items-center gap-2 mb-2">
-                  <Heart className={`h-4 w-4 ${colors.text}`} />
-                  <span className={`font-montserrat font-semibold ${colors.text}`}>Hva du lærer:</span>
+                  <Heart className={`h-4 w-4 text-brand-500`} />
+                  <span className={`font-montserrat font-semibold text-gray-700 dark:text-gray-200`}>Hva du lærer:</span>
                 </div>
-                <ul className={`text-sm ${colors.text} space-y-1 font-montserrat`}>
+                <ul className={`text-sm text-gray-600 dark:text-gray-300 space-y-1 font-montserrat`}>
                   <li>• Grunnleggende teknikker og bevegelser</li>
                   <li>• Rytme og musikktolkning</li>
                   <li>• Selvtillit og kroppsbeherskelse</li>
@@ -429,8 +432,8 @@ const colorMap: Record<ColorName, ColorClasses> = {
 
             {/* Schedule */}
             <div>
-              <h3 className="text-lg font-bebas mb-4 flex items-center gap-2">
-                <Calendar className="h-5 w-5" />
+              <h3 className="text-lg font-bebas mb-4 flex items-center gap-2 text-gray-900 dark:text-white">
+                <Calendar className="h-5 w-5 text-brand-500" />
                 Timeplan
               </h3>
               <div className="space-y-3">
@@ -440,15 +443,15 @@ const colorMap: Record<ColorName, ColorClasses> = {
                     className={`flex justify-between items-center p-4 ${colors.bg} ${colors.border} border rounded-lg`}
                   >
                     <div className="flex items-center gap-3">
-                      <div className={`${colors.text} font-montserrat font-semibold`}>{session.day}</div>
+                      <div className={`text-gray-700 dark:text-gray-200 font-montserrat font-semibold`}>{session.day}</div>
                       <div className="flex items-center gap-1 text-gray-700 dark:text-gray-300">
                         <Clock className="h-4 w-4" />
                         <span className="font-montserrat">{session.time}</span>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <MapPin className="h-4 w-4 text-gray-500" />
-                      <span className="text-sm text-gray-600 dark:text-gray-400 font-montserrat">Studio A</span>
+                      <MapPin className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+                      <span className="text-sm text-gray-600 dark:text-gray-300 font-montserrat">Studio A</span>
                       <span className={`px-3 py-1 ${colors.buttonBg} ${colors.buttonText} rounded-full text-xs font-montserrat font-medium`}>
                         {session.level}
                       </span>
@@ -458,59 +461,44 @@ const colorMap: Record<ColorName, ColorClasses> = {
               </div>
             </div>
 
- {/* Booking Info */}
-            <div className="bg-gradient-to-br from-blue-50 via-white to-pink-50 
-                           dark:from-blue-900/20 dark:via-zinc-900 dark:to-pink-900/20 
-                           p-6 rounded-xl border border-blue-200 dark:border-blue-800 relative overflow-hidden">
+            {/* Booking Info - Standard styling */}
+            <div className="bg-gradient-to-br from-brand-50/80 to-surface-muted 
+                           dark:from-brand-900/10 dark:to-surface-dark-muted 
+                           p-6 rounded-xl border border-brand-100/50 dark:border-brand-700/30 relative overflow-hidden">
               {/* Decorative elements */}
-              <div className="absolute top-0 right-0 w-32 h-32 bg-pink-400/10 rounded-full blur-2xl" />
-              <div className="absolute bottom-0 left-0 w-24 h-24 bg-blue-400/10 rounded-full blur-2xl" />
+              <div className="absolute top-0 right-0 w-32 h-32 bg-magenta-400/10 rounded-full blur-2xl" />
+              <div className="absolute bottom-0 left-0 w-24 h-24 bg-brand-400/10 rounded-full blur-2xl" />
               
               <div className="relative z-10">
-                <h4 className="font-bebas text-lg mb-2 text-blue-900 dark:text-blue-100">Klar for å begynne?</h4>
-                <p className="text-gray-700 dark:text-gray-300 mb-4 font-montserrat">
+                <h4 className="font-bebas text-lg mb-2 text-gray-900 dark:text-white">Klar for å begynne?</h4>
+                <p className="text-gray-600 dark:text-gray-300 mb-4 font-montserrat">
                   Bli med på en prøvetime og opplev gleden ved dans. Første time er gratis for nye deltakere!
                 </p>
                 <div className="flex gap-3">
-                <Link to="/registration" className="flex-1">
-                  <Button className="w-full font-montserrat font-semibold bg-blue-600 hover:bg-blue-700 text-white">
-                    Book prøvetime
-                  </Button>
-                </Link>
+                  <Link to="/registration" className="flex-1">
+                    <Button className="w-full font-semibold bg-brand-500 hover:bg-brand-600
+                                     dark:bg-white dark:hover:bg-brand-600/80
+                                     text-white dark:text-brand-600
+                                     dark:hover:text-white/90 transition-all duration-200">
+                      Book prøvetime
+                    </Button>
+                  </Link>
                   <Link to="/kontakt" className="flex-1">
-                    <Button variant="outline" className="w-full font-montserrat font-medium border-blue-300 text-blue-700 hover:bg-blue-50 dark:border-blue-700 dark:text-blue-300 dark:hover:bg-blue-900/30">
+                    <Button className="w-full font-medium bg-transparent border-2 border-brand-300 text-brand-600 hover:bg-brand-50 hover:text-brand-600
+                                     dark:border-brand-700 dark:text-brand-400 dark:hover:bg-brand-900/30 dark:hover:text-brand-400">
                       Kontakt oss
                     </Button>
                   </Link>
                 </div>
               </div>
             </div>
-            {/* Booking Info */}
-            {/* <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-6 rounded-xl border border-purple-200 dark:border-purple-800">
-              <h4 className="font-bebas text-lg mb-2 text-purple-900 dark:text-purple-100">Klar for å begynne?</h4>
-              <p className="text-gray-700 dark:text-gray-300 mb-4 font-montserrat">
-                Bli med på en prøvetime og opplev gleden ved dans. Første time er gratis for nye deltakere!
-              </p>
-              <div className="flex gap-3">
-                <Link to="/courses" className="flex-1">
-                <Button className="w-full font-montserrat font-semibold bg-purple-600 hover:bg-purple-700 text-white">
-                  Book prøvetime
-                </Button>
-                </Link>
-                <Link to="/kontakt" className="flex-1">
-                <Button variant="outline" className="w-full font-montserrat font-medium border-purple-300 text-purple-700 hover:bg-purple-50 dark:border-purple-700 dark:text-purple-300 dark:hover:bg-purple-900/30">
-                  Kontakt oss
-                </Button>
-                </Link>
-              </div>
-            </div> */}
           </div>
 
           <DialogFooter>
             <Button 
-              variant="outline" 
+              className="w-full font-medium bg-transparent border-2 border-brand-300 text-brand-600 hover:bg-brand-50 hover:text-brand-600
+                        dark:border-brand-700 dark:text-brand-400 dark:hover:bg-brand-900/30 dark:hover:text-brand-400"
               onClick={() => setIsModalOpen(false)}
-              className="w-full font-montserrat font-medium"
             >
               Lukk
             </Button>

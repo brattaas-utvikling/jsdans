@@ -1,5 +1,6 @@
 import { STUDIO_INFO } from "@/data/dance-studio-data";
 import { useState } from "react";
+import { MapPinIcon, PhoneIcon, MailIcon } from "lucide-react";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -40,13 +41,13 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-studio-blue-900 dark:bg-studio-blue-950 text-white pt-16 pb-8 relative overflow-hidden">
-      {/* Subtle gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-studio-blue-800/50 via-transparent to-studio-pink-900/20" />
+    <footer className="bg-surface-dark dark:bg-gray-900 text-white pt-16 pb-4 relative overflow-hidden">
+      {/* Subtle gradient overlay - endret til blå/cyan-farger */}
+      <div className="absolute inset-0 bg-gradient-to-br from-cyan-900/20 via-transparent to-blue-900/30" />
       
-      {/* Decorative elements */}
-      <div className="absolute top-0 right-0 w-64 h-64 bg-studio-pink-500/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-0 left-0 w-48 h-48 bg-studio-blue-400/10 rounded-full blur-3xl" />
+      {/* Decorative elements - blå/cyan-farger */}
+      <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 left-0 w-48 h-48 bg-blue-400/10 rounded-full blur-3xl" />
       
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 mb-12">
@@ -59,48 +60,67 @@ export default function Footer() {
               </h3>
             </div>
             
-            {/* Tagline med rosa gradient */}
-            <p className="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 via-studio-pink-300 to-studio-pink-400 mb-4 font-montserrat-medium">
+            {/* Tagline med blå/cyan gradient */}
+            <p className="text-transparent bg-clip-text bg-hero-gradient dark:bg-energy-gradient mb-4 font-montserrat font-medium">
               {STUDIO_INFO.tagline}
             </p> 
             
-            <p className="text-studio-blue-200 dark:text-studio-blue-100 mb-4 max-w-xs font-montserrat leading-relaxed">
+            <p className="text-gray-300 dark:text-gray-200 mb-4 max-w-xs font-montserrat leading-relaxed">
               Vi tilbyr et bredt spekter av danseklasser for alle aldre og ferdighetsnivåer, fra nybegynnere til avanserte dansere.
             </p>
             
-            {/* Quick contact info */}
-            <div className="space-y-2 text-sm">
-              <p className="text-studio-blue-300 dark:text-studio-blue-200 font-montserrat">
-                📍 {STUDIO_INFO.address.street}
-              </p>
-              <p className="text-studio-blue-300 dark:text-studio-blue-200 font-montserrat">
-                📞 {STUDIO_INFO.contact.phone}
-              </p>
-              <p className="text-studio-blue-300 dark:text-studio-blue-200 font-montserrat">
-                ✉️ {STUDIO_INFO.contact.email}
-              </p>
+            {/* Contact info med ikoner og klikkbare lenker */}
+            <div className="space-y-3 text-sm">
+              <div className="flex items-center gap-2">
+                <MapPinIcon className="h-4 w-4 text-brand-400 flex-shrink-0" />
+                <p className="text-gray-400 dark:text-gray-300 font-montserrat">
+                  {STUDIO_INFO.address.street}
+                </p>
+              </div>
+              
+              <div className="flex items-center gap-2">
+                <PhoneIcon className="h-4 w-4 text-brand-400 flex-shrink-0" />
+                <a 
+                  href={`tel:${STUDIO_INFO.contact.phone.replace(/\s/g, '')}`}
+                  className="text-gray-400 dark:text-gray-300 hover:text-brand-400 dark:hover:text-brand-300 
+                            font-montserrat transition-colors hover:underline underline-offset-2"
+                >
+                  {STUDIO_INFO.contact.phone}
+                </a>
+              </div>
+              
+              <div className="flex items-center gap-2">
+                <MailIcon className="h-4 w-4 text-brand-400 flex-shrink-0" />
+                <a 
+                  href={`mailto:${STUDIO_INFO.contact.email}`}
+                  className="text-gray-400 dark:text-gray-300 hover:text-brand-400 dark:hover:text-brand-300 
+                            font-montserrat transition-colors hover:underline underline-offset-2"
+                >
+                  {STUDIO_INFO.contact.email}
+                </a>
+              </div>
             </div>
           </div>
 
           {/* Google Maps - spans 2 columns */}
           <div className="md:col-span-2">
-            <div className="rounded-xl overflow-hidden shadow-studio-lg h-[300px] border border-studio-blue-700/30 relative">
+            <div className="rounded-xl overflow-hidden shadow-brand-lg h-[300px] border border-gray-700/50 dark:border-gray-600/50 relative">
               
               {/* Loading state */}
               {!mapLoaded && !mapError && (
-                <div className="absolute inset-0 bg-studio-blue-800 flex items-center justify-center z-10">
+                <div className="absolute inset-0 bg-gray-800 dark:bg-gray-900 flex items-center justify-center z-10">
                   <div className="text-center">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-studio-pink-400 mx-auto mb-2"></div>
-                    <p className="text-studio-blue-200 text-sm font-montserrat">Laster kart...</p>
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-400 mx-auto mb-2"></div>
+                    <p className="text-gray-300 text-sm font-montserrat">Laster kart...</p>
                   </div>
                 </div>
               )}
 
               {/* Error state */}
               {mapError && (
-                <div className="absolute inset-0 bg-studio-blue-800 flex items-center justify-center z-10">
+                <div className="absolute inset-0 bg-gray-800 dark:bg-gray-900 flex items-center justify-center z-10">
                   <div className="text-center p-6">
-                    <p className="text-studio-blue-200 text-sm font-montserrat mb-4">
+                    <p className="text-gray-300 text-sm font-montserrat mb-4">
                       Kunne ikke laste kart
                     </p>
                     <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -108,8 +128,8 @@ export default function Footer() {
                         <button
                           onClick={retryMap}
                           className="inline-flex items-center px-4 py-2 rounded-full
-                                    bg-studio-blue-500 hover:bg-studio-blue-600
-                                    text-white font-montserrat-medium text-sm
+                                    bg-brand-500 hover:bg-brand-600
+                                    text-white font-montserrat font-medium text-sm
                                     transition-colors"
                         >
                           Prøv igjen ({3 - retryCount} forsøk igjen)
@@ -124,8 +144,8 @@ export default function Footer() {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center px-4 py-2 rounded-full
-                                  bg-studio-pink-500 hover:bg-studio-pink-600
-                                  text-white font-montserrat-medium text-sm
+                                  bg-blue-500 hover:bg-blue-600
+                                  text-white font-montserrat font-medium text-sm
                                   transition-colors"
                       >
                         Åpne i Google Maps
@@ -154,35 +174,51 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="border-t border-studio-blue-700/30 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-studio-blue-300 dark:text-studio-blue-200 text-sm mb-4 md:mb-0 font-montserrat">
+        {/* Bottom bar - eksisterende copyright og lenker */}
+        <div className="border-t border-gray-700/50 dark:border-gray-600/50 pt-8 pb-6 flex flex-col md:flex-row justify-between items-center">
+          <p className="text-gray-400 dark:text-gray-300 text-sm mb-4 md:mb-0 font-montserrat">
             &copy; {currentYear} {STUDIO_INFO.name}. Alle rettigheter reservert
           </p>
 
           <div className="flex space-x-6">
             <a
               href="#"
-              className="text-studio-blue-400 hover:text-studio-pink-400 transition-colors text-sm font-montserrat
+              className="text-gray-500 dark:text-gray-400 hover:text-brand-400 dark:hover:text-brand-300 transition-colors text-sm font-montserrat
                         hover:underline underline-offset-4"
             >
               Personvern
             </a>
             <a
               href="#"
-              className="text-studio-blue-400 hover:text-studio-pink-400 transition-colors text-sm font-montserrat
+              className="text-gray-500 dark:text-gray-400 hover:text-brand-400 dark:hover:text-brand-300 transition-colors text-sm font-montserrat
                         hover:underline underline-offset-4"
             >
               Vilkår
             </a>
             <a
               href="#"
-              className="text-studio-blue-400 hover:text-studio-pink-400 transition-colors text-sm font-montserrat
+              className="text-gray-500 dark:text-gray-400 hover:text-brand-400 dark:hover:text-brand-300 transition-colors text-sm font-montserrat
                         hover:underline underline-offset-4"
             >
               Cookies
             </a>
           </div>
+        </div>
+
+        {/* Ny linje for Brattås Utvikling */}
+        <div className="border-t border-gray-700/30 dark:border-gray-600/30 pt-4 text-center">
+          <p className="text-gray-500 dark:text-gray-400 text-xs font-montserrat">
+            Levert av{" "}
+            <a
+              href="https://brattas-utvikling.no"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-brand-500 dark:text-brand-400 hover:text-brand-400 dark:hover:text-brand-300 
+                        font-medium transition-colors hover:underline underline-offset-2"
+            >
+              Brattås Utvikling
+            </a>
+          </p>
         </div>
       </div>
     </footer>

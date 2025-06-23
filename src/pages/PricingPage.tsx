@@ -43,22 +43,22 @@ export default function PricingPage() {
   ];
 
   return (
-    <div className="bg-surface-light dark:bg-surface-dark">
+    <div className="bg-white dark:bg-surface-dark">
       <ScrollToTop />
 
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-studio-blue-50 via-white to-studio-pink-50 
-                        dark:from-studio-blue-900/20 dark:via-surface-dark dark:to-studio-pink-900/20 
+      {/* Hero Section - Standard styling */}
+      <section className="bg-gradient-to-br from-brand-50/80 to-surface-muted 
+                        dark:from-brand-900/10 dark:to-surface-dark-muted 
                         pt-24 pb-16 relative overflow-hidden">
         
-        {/* Animated background elements */}
+        {/* Animated background elements - Brand farger */}
         <motion.div 
           animate={{ 
             scale: [1, 1.1, 1],
             opacity: [0.1, 0.2, 0.1]
           }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-0 right-0 w-96 h-96 bg-studio-pink-400/10 rounded-full blur-3xl"
+          className="absolute top-0 right-0 w-96 h-96 bg-magenta-400/10 rounded-full blur-3xl"
         />
         <motion.div 
           animate={{ 
@@ -66,10 +66,10 @@ export default function PricingPage() {
             opacity: [0.15, 0.25, 0.15]
           }}
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-0 left-0 w-80 h-80 bg-studio-blue-400/10 rounded-full blur-3xl"
+          className="absolute bottom-0 left-0 w-80 h-80 bg-brand-400/10 rounded-full blur-3xl"
         />
 
-        {/* Floating elements - subtle */}
+        {/* Floating elements - Brand farger */}
         <motion.div
           animate={{ 
             y: [0, -20, 0],
@@ -78,7 +78,7 @@ export default function PricingPage() {
           transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
           className="absolute top-1/4 right-1/4 opacity-20"
         >
-          <SparklesIcon className="h-6 w-6 text-studio-pink-500" />
+          <SparklesIcon className="h-6 w-6 text-magenta-500" />
         </motion.div>
 
         <motion.div
@@ -89,7 +89,7 @@ export default function PricingPage() {
           transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 2 }}
           className="absolute bottom-1/3 left-1/4 opacity-15"
         >
-          <StarIcon className="h-8 w-8 text-studio-blue-500" />
+          <StarIcon className="h-8 w-8 text-brand-500" />
         </motion.div>
         
         <div className="container mx-auto px-4 md:px-6 relative z-10">
@@ -104,7 +104,7 @@ export default function PricingPage() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <h1 className="text-sm font-montserrat-medium text-studio-indigo-600 dark:text-studio-indigo-400 
+              <h1 className="text-sm font-medium text-brand-600 dark:text-brand-400 
                             uppercase tracking-wider mb-3">
                 Priser
               </h1>
@@ -131,8 +131,9 @@ export default function PricingPage() {
         </div>
       </section>
 
-      {/* Pricing Section */}
-      <section className="py-16 bg-surface-muted dark:bg-surface-dark-muted">
+      {/* Pricing Section - Standard styling */}
+      <section className="py-16 bg-gradient-to-br from-brand-50/80 to-surface-muted 
+                         dark:from-brand-900/10 dark:to-surface-dark-muted">
         <div className="container mx-auto px-4 md:px-6">
           <div className="max-w-4xl mx-auto">
             <div className="space-y-6">
@@ -147,15 +148,16 @@ export default function PricingPage() {
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between 
                                 bg-white dark:bg-surface-dark rounded-xl p-6 
-                                border border-gray-100 dark:border-studio-blue-700/30
-                                transition-colors duration-200 group-hover:border-studio-blue-300 dark:group-hover:border-studio-blue-500">
+                                border border-brand-100/50 dark:border-brand-700/30
+                                transition-all duration-200 group-hover:border-brand-300 dark:group-hover:border-brand-500
+                                hover:shadow-brand-lg">
                     <div className="mb-2 sm:mb-0">
-                      <h3 className="font-montserrat-semibold text-lg text-gray-900 dark:text-white 
-                                   transition-colors duration-200 group-hover:text-studio-blue-600 dark:group-hover:text-studio-blue-400">
+                      <h3 className="font-semibold text-lg text-gray-900 dark:text-white 
+                                   transition-colors duration-200 group-hover:text-brand-600 dark:group-hover:text-brand-400">
                         {option.name}
                       </h3>
                       {option.note && (
-                        <p className="text-sm text-green-600 dark:text-green-400 font-montserrat-medium">
+                        <p className="text-sm text-green-600 dark:text-green-400 font-medium">
                           {option.note}
                         </p>
                       )}
@@ -174,8 +176,8 @@ export default function PricingPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
-       <section className="py-16 bg-white dark:bg-surface-dark">
+      {/* CTA Section - Standard styling och knapp fix */}
+      <section className="py-16 bg-white dark:bg-surface-dark">
         <div className="container mx-auto px-4 md:px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -184,24 +186,23 @@ export default function PricingPage() {
             transition={{ duration: 0.8 }}
             className="text-center max-w-3xl mx-auto"
           >
-            <h3 className=" font-montserrat text-3xl md:text-4xl font-medium mb-6 text-gray-900 dark:text-white">
+            <h3 className="font-montserrat text-3xl md:text-4xl font-medium mb-6 text-gray-900 dark:text-white">
               Ikke sikker på hvilket kurs som passer deg?
             </h3>
             <p className="text-gray-600 dark:text-gray-300 font-montserrat mb-8 text-lg">
               Kontakt oss på kontakt@urbanstudios.no eller benytt vårt kontaktskjema, så hjelper vi deg med å finne det perfekte kurset basert på dine behov!
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link to="/kontakt" className="w-full sm:w-auto">
-              <Button 
-                variant="outline"
-                className="font-montserrat-semibold rounded-full border-purple-300 text-purple-600 
-                          hover:bg-purple-50 dark:border-purple-700 dark:text-purple-400 
-                          dark:hover:bg-purple-900/30"
-              >
-                Kontakt oss
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
+              <Link to="/kontakt" className="w-full sm:w-auto">
+                <Button 
+                  className="border-brand-300 text-brand-600 hover:bg-brand-50 hover:text-brand-600
+                            dark:border-brand-700 dark:text-brand-400 dark:hover:bg-brand-900/30 dark:hover:text-brand-400
+                            font-semibold rounded-full bg-transparent border-2 px-6 py-3"
+                >
+                  Kontakt oss
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
             </div>
           </motion.div>
         </div>
@@ -209,18 +210,3 @@ export default function PricingPage() {
     </div>
   );
 }
-
-// import ScrollToTop from "@/helpers/ScrollToTop";
-// import PricingSection from "../polymet/components/pricing-section";
-// // import DanceClasses from "@/database/danceclasses";
-
-// export default function PricingPage() {
-
-//   return (
-//     <>
-//       <ScrollToTop />
-//       <PricingSection /> 
-//       <DanceClasses />
-//     </>
-//   );
-// }

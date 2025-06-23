@@ -207,14 +207,14 @@ export default function SecureContactForm() {
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
       viewport={{ once: true }}
-      className="bg-transparent rounded-2xl shadow-lg p-6 md:p-8"
+      className="bg-transparent rounded-2xl p-6 md:p-8 h-full flex flex-col"
     >
       <motion.h3 
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.2 }}
         viewport={{ once: true }}
-        className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white font-montserrat"
+        className="font-bebas text-bebas-base font-semibold mb-6 text-gray-900 dark:text-white"
       >
         Kontakt oss
       </motion.h3>
@@ -227,7 +227,7 @@ export default function SecureContactForm() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.3 }}
-            className="bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-lg p-6"
+            className="bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-xl p-6"
           >
             <div className="flex items-start">
               <motion.div 
@@ -261,7 +261,7 @@ export default function SecureContactForm() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
             onSubmit={handleSubmit}
-            className="space-y-6"
+            className="space-y-6 flex-grow"
           >
             {/* Bot Detection Honeypot */}
             {(() => {
@@ -274,22 +274,22 @@ export default function SecureContactForm() {
               );
             })()}
 
-            {/* Rate Limit Error */}
+            {/* Rate Limit Error - Oppdatert med brand farger */}
             <AnimatePresence>
               {rateLimitError && (
                 <motion.div
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
-                  className="bg-primary-50 dark:bg-primary-900/30 border border-primary-200 dark:border-primary-800 rounded-lg p-4"
+                  className="bg-brand-50 dark:bg-brand-900/30 border border-brand-200 dark:border-brand-800 rounded-xl p-4"
                 >
                   <div className="flex items-center">
-                    <ClockIcon className="h-5 w-5 text-primary-600 dark:text-primary-400 mr-3 flex-shrink-0" />
+                    <ClockIcon className="h-5 w-5 text-brand-600 dark:text-brand-400 mr-3 flex-shrink-0" />
                     <div>
-                      <p className="font-medium text-primary-800 dark:text-primary-400 font-montserrat">
+                      <p className="font-medium text-brand-800 dark:text-brand-400 font-montserrat">
                         For mange forsøk
                       </p>
-                      <p className="text-sm text-primary-700 dark:text-primary-500 font-montserrat">
+                      <p className="text-sm text-brand-700 dark:text-brand-500 font-montserrat">
                         {rateLimitError}
                       </p>
                     </div>
@@ -298,14 +298,14 @@ export default function SecureContactForm() {
               )}
             </AnimatePresence>
 
-            {/* General Submit Error */}
+            {/* General Submit Error - Oppdatert styling */}
             <AnimatePresence>
               {submitError && (
                 <motion.div
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
-                  className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg p-4"
+                  className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-xl p-4"
                 >
                   <div className="flex items-center">
                     <XCircleIcon className="h-5 w-5 text-red-600 dark:text-red-400 mr-3 flex-shrink-0" />
@@ -318,7 +318,7 @@ export default function SecureContactForm() {
             </AnimatePresence>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Name Field */}
+              {/* Name Field - Oppdatert med brand styling */}
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -326,7 +326,7 @@ export default function SecureContactForm() {
                 viewport={{ once: true }}
                 className="space-y-2"
               >
-                <Label htmlFor="name" className="font-montserrat">
+                <Label htmlFor="name" className="font-montserrat font-medium text-gray-900 dark:text-white">
                   Navn <span className="text-red-500">*</span>
                 </Label>
                 <Input
@@ -340,9 +340,12 @@ export default function SecureContactForm() {
                   maxLength={100}
                   aria-invalid={!!errors.name}
                   aria-describedby={errors.name ? "name-error" : undefined}
-                  className={`rounded-lg font-montserrat transition-all duration-200 
-                    hover:border-studio-blue-300 focus:border-studio-blue-500 
-                    ${errors.name ? 'border-red-500 focus:border-red-500' : ''}`}
+                  className={`rounded-xl font-montserrat transition-all duration-200 
+                    border-gray-200 dark:border-gray-700
+                    hover:border-brand-300 dark:hover:border-brand-600 
+                    focus:border-brand-500 dark:focus:border-brand-400
+                    focus:ring-brand-500/20
+                    ${errors.name ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : ''}`}
                 />
                 <AnimatePresence>
                   {errors.name && (
@@ -360,7 +363,7 @@ export default function SecureContactForm() {
                 </AnimatePresence>
               </motion.div>
 
-              {/* Email Field */}
+              {/* Email Field - Oppdatert med brand styling */}
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -368,7 +371,7 @@ export default function SecureContactForm() {
                 viewport={{ once: true }}
                 className="space-y-2"
               >
-                <Label htmlFor="email" className="font-montserrat">
+                <Label htmlFor="email" className="font-montserrat font-medium text-gray-900 dark:text-white">
                   E-post <span className="text-red-500">*</span>
                 </Label>
                 <Input
@@ -383,9 +386,12 @@ export default function SecureContactForm() {
                   maxLength={254}
                   aria-invalid={!!errors.email}
                   aria-describedby={errors.email ? "email-error" : undefined}
-                  className={`rounded-lg font-montserrat transition-all duration-200 
-                    hover:border-studio-blue-300 focus:border-studio-blue-500 
-                    ${errors.email ? 'border-red-500 focus:border-red-500' : ''}`}
+                  className={`rounded-xl font-montserrat transition-all duration-200 
+                    border-gray-200 dark:border-gray-700
+                    hover:border-brand-300 dark:hover:border-brand-600 
+                    focus:border-brand-500 dark:focus:border-brand-400
+                    focus:ring-brand-500/20
+                    ${errors.email ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : ''}`}
                 />
                 <AnimatePresence>
                   {errors.email && (
@@ -404,7 +410,7 @@ export default function SecureContactForm() {
               </motion.div>
             </div>
 
-            {/* Phone Field */}
+            {/* Phone Field - Oppdatert med brand styling */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -412,23 +418,26 @@ export default function SecureContactForm() {
               viewport={{ once: true }}
               className="space-y-2"
             >
-              <Label htmlFor="phone" className="font-montserrat">
-                Telefon <span className="text-gray-500 text-sm">(valgfritt)</span>
+              <Label htmlFor="phone" className="font-montserrat font-medium text-gray-900 dark:text-white">
+                Telefon <span className="text-gray-500 text-sm font-normal">(valgfritt)</span>
               </Label>
               <Input
                 id="phone"
                 name="phone"
                 type="tel"
-                                  value={formData.phone || ""}
+                value={formData.phone || ""}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 placeholder="+47 123 45 678"
                 maxLength={20}
                 aria-invalid={!!errors.phone}
                 aria-describedby={errors.phone ? "phone-error" : undefined}
-                className={`rounded-lg font-montserrat transition-all duration-200 
-                  hover:border-studio-blue-300 focus:border-studio-blue-500
-                  ${errors.phone ? 'border-red-500 focus:border-red-500' : ''}`}
+                className={`rounded-xl font-montserrat transition-all duration-200 
+                  border-gray-200 dark:border-gray-700
+                  hover:border-brand-300 dark:hover:border-brand-600 
+                  focus:border-brand-500 dark:focus:border-brand-400
+                  focus:ring-brand-500/20
+                  ${errors.phone ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : ''}`}
               />
               <AnimatePresence>
                 {errors.phone && (
@@ -446,7 +455,7 @@ export default function SecureContactForm() {
               </AnimatePresence>
             </motion.div>
 
-            {/* Message Field */}
+            {/* Message Field - Oppdatert med brand styling */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -454,7 +463,7 @@ export default function SecureContactForm() {
               viewport={{ once: true }}
               className="space-y-2"
             >
-              <Label htmlFor="message" className="font-montserrat">
+              <Label htmlFor="message" className="font-montserrat font-medium text-gray-900 dark:text-white">
                 Melding <span className="text-red-500">*</span>
               </Label>
               <Textarea
@@ -468,9 +477,12 @@ export default function SecureContactForm() {
                 maxLength={2000}
                 aria-invalid={!!errors.message}
                 aria-describedby={errors.message ? "message-error" : undefined}
-                className={`min-h-[120px] rounded-lg font-montserrat transition-all duration-200 
-                  hover:border-studio-blue-300 focus:border-studio-blue-500 
-                  ${errors.message ? 'border-red-500 focus:border-red-500' : ''}`}
+                className={`min-h-[120px] rounded-xl font-montserrat transition-all duration-200 
+                  border-gray-200 dark:border-gray-700
+                  hover:border-brand-300 dark:hover:border-brand-600 
+                  focus:border-brand-500 dark:focus:border-brand-400
+                  focus:ring-brand-500/20
+                  ${errors.message ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : ''}`}
               />
               <div className="flex justify-between items-center">
                 <AnimatePresence>
@@ -487,43 +499,32 @@ export default function SecureContactForm() {
                     </motion.div>
                   )}
                 </AnimatePresence>
-                <span className="text-xs text-gray-500 font-montserrat">
+                <span className="text-xs text-gray-500 dark:text-gray-400 font-montserrat">
                   {formData.message.length}/2000
                 </span>
               </div>
             </motion.div>
 
-            {/* Security Notice */}
-            {/* <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-              viewport={{ once: true }}
-              className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3"
-            >
-              <div className="flex items-center text-sm text-blue-700 dark:text-blue-300">
-                <ShieldCheckIcon className="h-4 w-4 mr-2 flex-shrink-0" />
-                <p className="font-montserrat">
-                  Dine data er beskyttet med moderne sikkerhet og kryptering.
-                </p>
-              </div>
-            </motion.div> */}
-
-            {/* Submit Button */}
+            {/* Submit Button - Oppdatert med brand design */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.6 }}
               viewport={{ once: true }}
+              className="pt-4"
             >
-              <Button
+               <Button
                 type="submit"
                 disabled={isSubmitting || !!rateLimitError}
-                className="w-full rounded-full bg-gradient-to-r from-primary-500 to-studio-pink-500 
-                  hover:from-primary-600 hover:to-studio-pink-600 text-white border-0 
-                  font-montserrat font-semibold transition-all duration-200 py-3
-                  disabled:opacity-50 disabled:cursor-not-allowed
-                  disabled:hover:scale-100"
+                className="w-full rounded-full font-semibold bg-brand-500 hover:bg-brand-600
+                          dark:bg-white dark:hover:bg-brand-600/80
+                          text-white dark:text-brand-600
+                          dark:hover:text-white/90
+                          border-0 shadow hover:shadow-md 
+                          transition-all duration-200 py-3 h-12
+                          disabled:opacity-50 disabled:cursor-not-allowed
+                          disabled:hover:scale-100 active:scale-[0.98]
+                          focus:ring-2 focus:ring-brand-500/20 focus:ring-offset-2"
               >
                 {isSubmitting ? (
                   <div className="flex items-center justify-center space-x-2">
