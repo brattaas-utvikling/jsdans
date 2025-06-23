@@ -347,11 +347,11 @@ export default function Navbar() {
             >
               <Button 
                 className="font-montserrat-semibold rounded-full 
-                          bg-gradient-to-r from-blue-500 via-indigo-500 to-pink-500 
-                          hover:from-blue-600 hover:via-indigo-600 hover:to-pink-600 
+                          bg-gradient-to-r from-orange-500  to-studio-pink-500 
+                          hover:from-orange-600  hover:to-studio-pink-600 
                           text-white border-0 shadow transition-all duration-200 
                           hover:shadow-studio-lg 
-                          focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                          focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
                 onClick={() => handleNavClick("/kurs", "route")}
                 onMouseEnter={() => handleNavHover("/kurs")}
               >
@@ -440,8 +440,8 @@ export default function Navbar() {
               >
                 <Button 
                   className="w-full font-montserrat-semibold rounded-full
-                            bg-gradient-to-r from-blue-600 via-indigo-600 to-pink-600 
-                            hover:from-blue-700 hover:via-indigo-700 hover:to-pink-700 
+                            bg-gradient-to-r from-orange-600 to-studio-pink-600 
+                            hover:from-orange-700 hover:to-studio-pink-700 
                             text-white border-0 shadow-studio transition-all duration-200"
                   onClick={() => handleNavClick("/kurs", "route")}
                 >

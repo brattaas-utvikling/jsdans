@@ -210,10 +210,10 @@ export default function CoursesCarousel({
           transition={{ duration: 0.8 }}
           className="text-center mb-12"
         >
-          <h2 className="font-bebas text-bebas-2xl md:text-bebas-3xl text-gray-900 dark:text-white mb-4">
+          <h2 className="font-bebas font-semibold text-bebas-xl md:text-bebas-2xl mb-6 text-gray-900 dark:text-white">
             {title}
           </h2>
-          <p className="text-gray-600 dark:text-gray-300 font-montserrat max-w-2xl mx-auto">
+          <p className="text-lg text-gray-600 dark:text-gray-300 font-montserrat max-w-2xl mx-auto">
             {subtitle}
           </p>
         </motion.div>

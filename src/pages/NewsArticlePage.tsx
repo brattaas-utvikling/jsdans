@@ -197,7 +197,7 @@ export default function NewsArticlePage() {
                 {article.published ? 'Publisert' : 'Utkast'}
               </span> */}
               
-              <h1 className="font-bebas text-bebas-3xl md:text-bebas-4xl lg:text-bebas-5xl text-white mb-4 leading-tight">
+              <h1 className="font-bebas text-bebas-2xl md:text-bebas-3xl lg:text-bebas-4xl text-white mb-4 leading-tight">
                 {article.headlines}
               </h1>
               

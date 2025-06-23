@@ -214,7 +214,7 @@ export default function SecureContactForm() {
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.2 }}
         viewport={{ once: true }}
-        className="text-2xl font-bold mb-6 text-gray-900 dark:text-white font-montserrat"
+        className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white font-montserrat"
       >
         Kontakt oss
       </motion.h3>
@@ -494,7 +494,7 @@ export default function SecureContactForm() {
             </motion.div>
 
             {/* Security Notice */}
-            <motion.div
+            {/* <motion.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.5 }}
@@ -507,7 +507,7 @@ export default function SecureContactForm() {
                   Dine data er beskyttet med moderne sikkerhet og kryptering.
                 </p>
               </div>
-            </motion.div>
+            </motion.div> */}
 
             {/* Submit Button */}
             <motion.div
@@ -519,21 +519,21 @@ export default function SecureContactForm() {
               <Button
                 type="submit"
                 disabled={isSubmitting || !!rateLimitError}
-                className="w-full rounded-full bg-gradient-to-r from-studio-blue-500 to-studio-pink-500 
-                  hover:from-studio-blue-600 hover:to-studio-pink-600 text-white border-0 
+                className="w-full rounded-full bg-gradient-to-r from-orange-500 to-studio-pink-500 
+                  hover:from-orange-600 hover:to-studio-pink-600 text-white border-0 
                   font-montserrat font-semibold transition-all duration-200 py-3
-                  hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed
+                  disabled:opacity-50 disabled:cursor-not-allowed
                   disabled:hover:scale-100"
               >
                 {isSubmitting ? (
                   <div className="flex items-center justify-center space-x-2">
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                    <span>Sender sikker melding...</span>
+                    <span>Sender melding...</span>
                   </div>
                 ) : (
                   <div className="flex items-center justify-center space-x-2">
                     <ShieldCheckIcon className="h-4 w-4" />
-                    <span>Send sikker melding</span>
+                    <span>Send melding</span>
                   </div>
                 )}
               </Button>

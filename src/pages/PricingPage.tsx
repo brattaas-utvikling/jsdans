@@ -114,8 +114,7 @@ export default function PricingPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="font-bebas text-bebas-2xl md:text-bebas-4xl
-                        text-gray-900 dark:text-white mb-6"
+              className="font-bebas font-semibold text-bebas-xl md:text-bebas-2xl mb-6 text-gray-900 dark:text-white"
             >
               Våre kurs
             </motion.h2>
@@ -124,7 +123,7 @@ export default function PricingPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
-              className="text-xl text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed"
+              className="text-lg text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed"
             >
               Våre priser er laget for å være tilgjengelige for alle. Jo mer du danser, jo mer sparer du!
             </motion.p>
@@ -185,19 +184,19 @@ export default function PricingPage() {
             transition={{ duration: 0.8 }}
             className="text-center max-w-3xl mx-auto"
           >
-            <h3 className="font-bebas text-bebas-xl md:text-bebas-xl text-gray-900 dark:text-white mb-4">
+            <h3 className=" font-montserrat text-3xl md:text-4xl font-medium mb-6 text-gray-900 dark:text-white">
               Ikke sikker på hvilket kurs som passer deg?
             </h3>
             <p className="text-gray-600 dark:text-gray-300 font-montserrat mb-8 text-lg">
-              Kontakt oss på kontakt@urbanstudios.no eller benytt vårt kontaktskjema, Vi er her for å hjelpe deg finne den beste løsningen for dine behov. Kontakt oss for mer informasjon!
+              Kontakt oss på kontakt@urbanstudios.no eller benytt vårt kontaktskjema, så hjelper vi deg med å finne det perfekte kurset basert på dine behov!
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link to="/kontakt" className="w-full sm:w-auto">
               <Button 
                 variant="outline"
-                className="font-montserrat-semibold rounded-full border-studio-blue-300 text-studio-blue-600 
-                          hover:bg-studio-blue-50 dark:border-studio-blue-700 dark:text-studio-blue-400 
-                          dark:hover:bg-studio-blue-900/30"
+                className="font-montserrat-semibold rounded-full border-purple-300 text-purple-600 
+                          hover:bg-purple-50 dark:border-purple-700 dark:text-purple-400 
+                          dark:hover:bg-purple-900/30"
               >
                 Kontakt oss
                 <ArrowRight className="ml-2 h-4 w-4" />
