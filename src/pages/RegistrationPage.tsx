@@ -13,8 +13,8 @@ export default function RegistrationPage() {
       <ScrollToTop />
 
       {/* Hero Section */}
-      <section className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-pink-50 
-                        dark:from-orange-900/20 dark:via-surface-dark dark:to-pink-900/20 
+      <section className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-pink-50 
+                        dark:from-primary-900/20 dark:via-surface-dark dark:to-pink-900/20 
                         pt-24 pb-16 relative overflow-hidden">
         
         {/* Animated background elements */}
@@ -32,7 +32,7 @@ export default function RegistrationPage() {
             opacity: [0.15, 0.25, 0.15]
           }}
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-0 left-0 w-80 h-80 bg-orange-400/10 rounded-full blur-3xl"
+          className="absolute bottom-0 left-0 w-80 h-80 bg-primary-400/10 rounded-full blur-3xl"
         />
 
         {/* Floating Sparkles */}
@@ -57,7 +57,7 @@ export default function RegistrationPage() {
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
           className="absolute top-1/3 right-1/4 opacity-25"
         >
-          <SparklesIcon className="h-6 w-6 text-orange-500" />
+          <SparklesIcon className="h-6 w-6 text-primary-500" />
         </motion.div>
 
         <motion.div
@@ -106,7 +106,7 @@ export default function RegistrationPage() {
           transition={{ duration: 9, repeat: Infinity, ease: "easeInOut", delay: 4.5 }}
           className="absolute bottom-1/4 right-1/5 opacity-20"
         >
-          <StarIcon className="h-9 w-9 text-orange-500" />
+          <StarIcon className="h-9 w-9 text-primary-500" />
         </motion.div>
 
         {/* Floating Hearts */}
@@ -192,7 +192,7 @@ export default function RegistrationPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
               className="font-bebas font-semibold text-bebas-3xl md:text-bebas-4xl mb-6
-                        text-transparent bg-clip-text bg-gradient-to-r from-orange-500 dark:from-orange-600 to-pink-500 dark:to-pink-600 py-2"
+                        text-transparent bg-clip-text bg-gradient-to-r from-primary-500 dark:from-primary-600 to-pink-500 dark:to-pink-600 py-2"
             >
               Åpner høsten 2025
             </motion.h2>

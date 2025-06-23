@@ -7,7 +7,7 @@ export const DANCE_CLASSES = [
     description:
       "Hiphop er en tøff, energisk dansestil som har sin opprinnelse fra gatene i USA. Dansestilen er populær blant barn og unge, og lar dem utforske en verden full av kul musikk og rå moves. Hiphop I timene jobbes det med rytme, trinnkombinasjoner og koreografi, for ikke å snakke om attitude. Semesteret legges opp… hvor stilene varierer ut fra pedagog, og kan være alt fra old school til new school, popping, locking, wacking til moderne eller lyrisk hip hop.",
     color:
-      "bg-orange-100 border-orange-300 text-orange-600 dark:bg-orange-900/20 dark:border-orange-800 dark:text-orange-400",
+      "bg-primary-100 border-primary-300 text-primary-600 dark:bg-primary-900/20 dark:border-primary-800 dark:text-primary-400",
     icon: "radio",
     image: "https://plus.unsplash.com/premium_photo-1682089697749-f5cdd624f21e?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     schedule: [

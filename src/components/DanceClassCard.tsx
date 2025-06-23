@@ -124,7 +124,7 @@ export const DanceClassCard: React.FC<DanceClassCardProps> = ({
                     <div className="text-right">
                       <div className="flex items-center text-sm text-gray-600">
                         <Users className="w-4 h-4 mr-1" />
-                        <span className={availableSpots <= 3 ? 'text-orange-600 font-medium' : ''}>
+                        <span className={availableSpots <= 3 ? 'text-primary-600 font-medium' : ''}>
                           {availableSpots} ledige
                         </span>
                       </div>
