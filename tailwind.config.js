@@ -8,7 +8,7 @@ export default {
   theme: {
   	extend: {
 			fontFamily: {
-        'bebas': ['Bebas Neue', 'Arial Black', 'sans-serif'],
+        'bebas': ['Bebas Neue', 'sans-serif'],
         'montserrat': ['Montserrat', 'system-ui', 'sans-serif'],
         'sans': ['Montserrat', 'system-ui', 'sans-serif'], // Default sans font
       },

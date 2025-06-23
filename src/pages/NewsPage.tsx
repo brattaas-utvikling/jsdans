@@ -162,11 +162,10 @@ export default function NewsPage() {
                           uppercase tracking-wider mb-3">
               Nyheter
             </h1>
-            <h2 className="font-bebas text-bebas-4xl md:text-bebas-5xl lg:text-bebas-6xl 
-                          text-gray-900 dark:text-white mb-6">
+            <h2 className="font-bebas font-semibold text-bebas-xl md:text-bebas-2xl mb-6 text-gray-900 dark:text-white">
               Hva skjer hos oss?
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed">
+            <p className="text-lg text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed">
               Hold deg oppdatert på alt som skjer hos Urban Studios! Fra nye kurs til 
               spennende events og inspirerende danse-historier.
             </p>
@@ -188,7 +187,7 @@ export default function NewsPage() {
         <div className="max-w-6xl mx-auto">
           <Link to={`/nyheter/${featuredArticle.$id}`}>
             <div className="relative h-[500px] md:h-[600px] rounded-3xl overflow-hidden shadow-studio-xl 
-                           hover:shadow-2xl transition-all duration-500 group cursor-pointer">
+                            hover:shadow-2xl transition-all duration-500 group cursor-pointer">
               
               {/* Background Image */}
               <img

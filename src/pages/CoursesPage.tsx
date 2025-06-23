@@ -108,12 +108,12 @@ export default function CoursesPage() {
       <ScrollToTop />
 
       {/* Hero Section - Samme stil som nyheter */}
-      <section className="bg-gradient-to-br from-studio-blue-50 via-white to-studio-pink-50 
-                        dark:from-studio-blue-900/20 dark:via-surface-dark dark:to-studio-pink-900/20 
+      <section className="bg-gradient-to-br from-orange-50 via-white to-pink-50 
+                        dark:from-orange-900/20 dark:via-surface-dark dark:to-pink-900/20 
                         pt-24 pb-16 relative overflow-hidden">
         {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-studio-pink-400/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-48 h-48 bg-studio-blue-400/10 rounded-full blur-3xl" />
+        <div className="absolute top-0 right-0 w-64 h-64 bg-pink-400/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-orange-400/10 rounded-full blur-3xl" />
         
         <div className="container mx-auto px-4 md:px-6 relative z-10">
           <motion.div
@@ -122,15 +122,14 @@ export default function CoursesPage() {
             transition={{ duration: 0.8 }}
             className="text-center max-w-4xl mx-auto"
           >
-            <h1 className="text-sm font-montserrat-medium text-studio-indigo-600 dark:text-studio-indigo-400 
+            <h1 className="text-sm font-montserrat-medium text-indigo-600 dark:text-indigo-400 
                           uppercase tracking-wider mb-3">
               Våre kurs
             </h1>
-            <h2 className="font-bebas text-bebas-4xl md:text-bebas-5xl lg:text-bebas-6xl 
-                          text-gray-900 dark:text-white mb-6">
+            <h2 className="font-bebas font-semibold text-bebas-xl md:text-bebas-2xl mb-6 text-gray-900 dark:text-white">
               Finn din stil
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed">
+            <p className="text-lg text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed">
               Fra urban grooves til klassisk eleganse – vårt kursprogram er designet for å møte deg der du er og ta deg dit du vil.
             </p>
           </motion.div>
@@ -205,7 +204,7 @@ export default function CoursesPage() {
             transition={{ duration: 0.8 }}
             className="text-center max-w-3xl mx-auto"
           >
-            <h3 className="font-bebas text-bebas-xl md:text-bebas-xl text-gray-900 dark:text-white mb-4">
+            <h3 className=" font-montserrat text-3xl md:text-4xl font-medium mb-6 text-gray-900 dark:text-white">
               Ikke sikker på hvilket kurs som passer deg?
             </h3>
             <p className="text-gray-600 dark:text-gray-300 font-montserrat mb-8 text-lg">
@@ -215,9 +214,9 @@ export default function CoursesPage() {
             <Link to="/kontakt" className="w-full sm:w-auto">
               <Button 
                 variant="outline"
-                className="font-montserrat-semibold rounded-full border-studio-blue-300 text-studio-blue-600 
-                          hover:bg-studio-blue-50 dark:border-studio-blue-700 dark:text-studio-blue-400 
-                          dark:hover:bg-studio-blue-900/30"
+                className="font-montserrat-semibold rounded-full border-purple-300 text-purple-600 
+                          hover:bg-purple-50 dark:border-purple-700 dark:text-purple-400 
+                          dark:hover:bg-purple-900/30"
               >
                 Kontakt oss
                 <ArrowRight className="ml-2 h-4 w-4" />

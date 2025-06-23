@@ -31,7 +31,7 @@ export default function CtaSection() {
             viewport={{ once: true }}
             className="flex items-center gap-2 mb-4"
           >
-            <p className="text-sm font-montserrat text-white/60 uppercase tracking-wider">
+            <p className="text-sm font-bebas text-white/60 uppercase tracking-wider">
               {STUDIO_INFO.name}
             </p>
           </motion.div>
@@ -51,7 +51,7 @@ export default function CtaSection() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
               viewport={{ once: true }}
-              className="font-montserrat block mt-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-pink-400 py-1"
+              className="font-montserrat block mt-2 text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-pink-600 py-2"
             >
               Uttrykk deg selv gjennom dans
             </motion.span>
@@ -78,7 +78,7 @@ export default function CtaSection() {
           >
             <Button
               size="lg"
-              className="rounded-full bg-gradient-to-r from-blue-600 to-pink-600 hover:from-blue-700 hover:to-pink-700 text-white border-0 font-montserrat-medium"
+              className="rounded-full bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 font-montserrat-medium"
               aria-describedby="cta-description"
             >
               Se våre kurs

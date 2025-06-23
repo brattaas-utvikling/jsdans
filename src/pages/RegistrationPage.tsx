@@ -13,8 +13,8 @@ export default function RegistrationPage() {
       <ScrollToTop />
 
       {/* Hero Section */}
-      <section className="min-h-screen bg-gradient-to-br from-studio-blue-50 via-white to-studio-pink-50 
-                        dark:from-studio-blue-900/20 dark:via-surface-dark dark:to-studio-pink-900/20 
+      <section className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-pink-50 
+                        dark:from-orange-900/20 dark:via-surface-dark dark:to-pink-900/20 
                         pt-24 pb-16 relative overflow-hidden">
         
         {/* Animated background elements */}
@@ -24,7 +24,7 @@ export default function RegistrationPage() {
             opacity: [0.1, 0.2, 0.1]
           }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-0 right-0 w-96 h-96 bg-studio-pink-400/10 rounded-full blur-3xl"
+          className="absolute top-0 right-0 w-96 h-96 bg-pink-400/10 rounded-full blur-3xl"
         />
         <motion.div 
           animate={{ 
@@ -32,7 +32,7 @@ export default function RegistrationPage() {
             opacity: [0.15, 0.25, 0.15]
           }}
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-0 left-0 w-80 h-80 bg-studio-blue-400/10 rounded-full blur-3xl"
+          className="absolute bottom-0 left-0 w-80 h-80 bg-orange-400/10 rounded-full blur-3xl"
         />
 
         {/* Floating Sparkles */}
@@ -45,7 +45,7 @@ export default function RegistrationPage() {
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
           className="absolute top-1/4 left-1/4 opacity-30"
         >
-          <SparklesIcon className="h-8 w-8 text-studio-pink-500" />
+          <SparklesIcon className="h-8 w-8 text-pink-500" />
         </motion.div>
 
         <motion.div
@@ -57,7 +57,7 @@ export default function RegistrationPage() {
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
           className="absolute top-1/3 right-1/4 opacity-25"
         >
-          <SparklesIcon className="h-6 w-6 text-studio-blue-500" />
+          <SparklesIcon className="h-6 w-6 text-orange-500" />
         </motion.div>
 
         <motion.div
@@ -69,7 +69,7 @@ export default function RegistrationPage() {
           transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 2.5 }}
           className="absolute bottom-1/3 left-1/3 opacity-20"
         >
-          <SparklesIcon className="h-10 w-10 text-studio-purple-500" />
+          <SparklesIcon className="h-10 w-10 text-amber-500" />
         </motion.div>
 
         {/* Floating Stars */}
@@ -82,7 +82,7 @@ export default function RegistrationPage() {
           transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
           className="absolute top-1/2 left-1/5 opacity-25"
         >
-          <StarIcon className="h-7 w-7 text-studio-yellow-500" />
+          <StarIcon className="h-7 w-7 text-yellow-500" />
         </motion.div>
 
         <motion.div
@@ -94,7 +94,7 @@ export default function RegistrationPage() {
           transition={{ duration: 11, repeat: Infinity, ease: "easeInOut", delay: 3 }}
           className="absolute top-2/3 right-1/3 opacity-30"
         >
-          <StarIcon className="h-5 w-5 text-studio-pink-500" />
+          <StarIcon className="h-5 w-5 text-pink-500" />
         </motion.div>
 
         <motion.div
@@ -106,7 +106,7 @@ export default function RegistrationPage() {
           transition={{ duration: 9, repeat: Infinity, ease: "easeInOut", delay: 4.5 }}
           className="absolute bottom-1/4 right-1/5 opacity-20"
         >
-          <StarIcon className="h-9 w-9 text-studio-blue-500" />
+          <StarIcon className="h-9 w-9 text-orange-500" />
         </motion.div>
 
         {/* Floating Hearts */}
@@ -119,7 +119,7 @@ export default function RegistrationPage() {
           transition={{ duration: 13, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
           className="absolute top-1/3 left-1/6 opacity-25"
         >
-          <HeartIcon className="h-6 w-6 text-studio-red-500" />
+          <HeartIcon className="h-6 w-6 text-red-500" />
         </motion.div>
 
         <motion.div
@@ -131,7 +131,7 @@ export default function RegistrationPage() {
           transition={{ duration: 14, repeat: Infinity, ease: "easeInOut", delay: 2 }}
           className="absolute top-3/4 left-2/3 opacity-30"
         >
-          <HeartIcon className="h-8 w-8 text-studio-pink-500" />
+          <HeartIcon className="h-8 w-8 text-pink-500" />
         </motion.div>
 
         <motion.div
@@ -143,7 +143,7 @@ export default function RegistrationPage() {
           transition={{ duration: 16, repeat: Infinity, ease: "easeInOut", delay: 3.5 }}
           className="absolute bottom-1/2 right-1/6 opacity-20"
         >
-          <HeartIcon className="h-7 w-7 text-studio-purple-500" />
+          <HeartIcon className="h-7 w-7 text-purple-500" />
         </motion.div>
 
         {/* Additional smaller floating elements */}
@@ -155,7 +155,7 @@ export default function RegistrationPage() {
           transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 5 }}
           className="absolute top-1/5 right-1/5 opacity-15"
         >
-          <SparklesIcon className="h-4 w-4 text-studio-indigo-500" />
+          <SparklesIcon className="h-4 w-4 text-indigo-500" />
         </motion.div>
 
         <motion.div
@@ -166,7 +166,7 @@ export default function RegistrationPage() {
           transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 6 }}
           className="absolute top-1/4 right-1/6 opacity-20"
         >
-          <StarIcon className="h-4 w-4 text-studio-teal-500" />
+          <StarIcon className="h-4 w-4 text-teal-500" />
         </motion.div>
         
         <div className="container mx-auto px-4 md:px-6 relative z-10">
@@ -191,8 +191,8 @@ export default function RegistrationPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="font-bebas text-bebas-4xl md:text-bebas-5xl lg:text-bebas-6xl 
-                        text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-pink-500 mb-6 py-2"
+              className="font-bebas font-semibold text-bebas-3xl md:text-bebas-4xl mb-6
+                        text-transparent bg-clip-text bg-gradient-to-r from-orange-500 dark:from-orange-600 to-pink-500 dark:to-pink-600 py-2"
             >
               Åpner høsten 2025
             </motion.h2>

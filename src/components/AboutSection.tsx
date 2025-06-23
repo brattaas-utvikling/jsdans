@@ -149,8 +149,7 @@ export default function AboutPage() {
                     {heroSection.headlines}
                   </h1>
 
-                  <p className="font-bebas text-bebas-4xl md:text-bebas-5xl lg:text-bebas-6xl 
-                                text-gray-900 dark:text-white mb-6 leading-tight">
+                  <p className="font-bebas font-semibold text-bebas-xl md:text-bebas-2xl mb-6 text-gray-900 dark:text-white">
                     {heroSection.lead}
                   </p>
                   <div className="prose prose-lg dark:prose-invert max-w-none">
