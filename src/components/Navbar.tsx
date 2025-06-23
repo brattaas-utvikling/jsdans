@@ -20,11 +20,10 @@ function throttle<T extends (...args: unknown[]) => void>(
   };
 }
 
-// Navigation item interface
+// Simplified navigation item interface (kun routes)
 interface NavigationItem {
   label: string;
   href: string;
-  type: "route" | "anchor";
 }
 
 export default function Navbar() {
@@ -33,26 +32,24 @@ export default function Navbar() {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
     const saved = localStorage.getItem('darkMode');
     if (saved !== null) return JSON.parse(saved);
-    // Standard til lys modus hvis ingen preferanse er lagret
     return false;
   });
   const [lastScrollY, setLastScrollY] = useState(0);
-  const [activeSection, setActiveSection] = useState("");
   
   const navbarRef = useRef<HTMLElement>(null);
   const menuContentRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Navigation items configuration - memoized to prevent re-renders
+  // Simplified navigation items (kun routes)
   const navigationItems: NavigationItem[] = useMemo(() => [
-    { label: "Hjem", href: "/", type: "route" },
-    { label: "Nyheter", href: "/nyheter", type: "route" },
-    { label: "Om oss", href: "/om-oss", type: "route" },
-    { label: "Kurs", href: "/kurs", type: "route" },
-    { label: "Påmelding", href: "/registration", type: "route" },
-    { label: "Pris", href: "/priser", type: "route" },
-    { label: "Kontakt oss", href: "/kontakt", type: "route" }
+    { label: "Hjem", href: "/" },
+    { label: "Nyheter", href: "/nyheter" },
+    { label: "Om oss", href: "/om-oss" },
+    { label: "Kurs", href: "/kurs" },
+    { label: "Påmelding", href: "/registration" },
+    { label: "Pris", href: "/priser" },
+    { label: "Kontakt oss", href: "/kontakt" }
   ], []);
 
   // Dynamic menu height calculation
@@ -71,7 +68,7 @@ export default function Navbar() {
     const currentScrollY = window.scrollY;
     
     // Don't hide navbar on desktop
-    if (window.innerWidth >= 768) {
+    if (window.innerWidth >= 1024) {
       navbar.style.transform = "translateY(0)";
       return;
     }
@@ -82,7 +79,7 @@ export default function Navbar() {
     // Hide on scroll down, show on scroll up
     if (currentScrollY > lastScrollY && currentScrollY > 100) {
       navbar.style.transform = "translateY(-100%)";
-      setIsMenuOpen(false); // Close menu when hiding navbar
+      setIsMenuOpen(false);
     } else {
       navbar.style.transform = "translateY(0)";
     }
@@ -115,8 +112,15 @@ export default function Navbar() {
       }
     };
 
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && isMenuOpen) {
+        setIsMenuOpen(false);
+      }
+    };
+
     if (isMenuOpen) {
       document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
@@ -124,95 +128,38 @@ export default function Navbar() {
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "";
     };
   }, [isMenuOpen]);
 
-  // Handle escape key
-  useEffect(() => {
-    const handleEscapeKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape" && isMenuOpen) {
-        setIsMenuOpen(false);
-      }
-    };
-
-    document.addEventListener("keydown", handleEscapeKey);
-    return () => document.removeEventListener("keydown", handleEscapeKey);
-  }, [isMenuOpen]);
-
-  // Simplified navigation handler
-  const handleNavClick = useCallback((href: string, type: string) => {
+  // Simplified navigation handler (kun routes)
+  const handleNavClick = useCallback((href: string) => {
     setIsMenuOpen(false);
     
-    if (type === "route") {
-      if (href === "/" && location.pathname === "/") {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      } else {
-        navigate(href);
-      }
-    } else if (type === "anchor") {
-      // Handle anchor navigation
-      if (location.pathname !== "/") {
-        navigate("/");
-        // Wait for navigation to complete
-        setTimeout(() => {
-          const element = document.querySelector(href);
-          element?.scrollIntoView({ behavior: "smooth" });
-        }, 100);
-      } else {
-        const element = document.querySelector(href);
-        element?.scrollIntoView({ behavior: "smooth" });
-      }
+    if (href === "/" && location.pathname === "/") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      navigate(href);
     }
   }, [location.pathname, navigate]);
 
-  // Setup intersection observer for active sections
-  useEffect(() => {
-    if (location.pathname !== "/") {
-      setActiveSection("");
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
-            setActiveSection(`#${entry.target.id}`);
-          }
-        });
-      },
-      {
-        threshold: 0.5,
-        rootMargin: "-80px 0px -80px 0px"
-      }
-    );
-
-    const sections = ["hero", "about", "classes", "contact"];
-    sections.forEach((id) => {
-      const element = document.getElementById(id);
-      if (element) observer.observe(element);
-    });
-
-    return () => observer.disconnect();
+  // Check if route is active
+  const isActiveRoute = useCallback((href: string) => {
+    return location.pathname === href;
   }, [location.pathname]);
 
-  // Check if route/section is active
-  const isActiveRoute = useCallback((href: string, type: string) => {
-    if (type === "route") {
-      return location.pathname === href;
-    }
-    return location.pathname === "/" && activeSection === href;
-  }, [location.pathname, activeSection]);
-
-  // Preload route on hover (performance optimization)
+  // Preload route on hover
   const handleNavHover = useCallback((href: string) => {
     if (href.startsWith('/') && href !== location.pathname) {
-      // This would work with route-based code splitting
-      // import(`../pages${href}`).catch(() => {});
+      const link = document.createElement('link');
+      link.rel = 'prefetch';
+      link.href = href;
+      document.head.appendChild(link);
     }
   }, [location.pathname]);
 
-  // NavLink component - KONSISTENT FARGESKJEMA
+  // Simplified NavLink component
   const NavLink = ({ 
     item, 
     className, 
@@ -224,35 +171,23 @@ export default function Navbar() {
     onClick: () => void;
     onMouseEnter?: () => void;
   }) => {
-    const isActive = isActiveRoute(item.href, item.type);
+    const isActive = isActiveRoute(item.href);
     const finalClassName = `${className} ${
       isActive 
-        ? "text-brand-600 dark:text-white font-semibold font-bold" 
+        ? "text-brand-600 dark:text-white font-semibold" 
         : "text-gray-700 dark:text-white/80 hover:text-brand-600 dark:hover:text-white"
     }`;
 
-    if (item.type === "route") {
-      return (
-        <Link
-          to={item.href}
-          className={finalClassName}
-          onClick={onClick}
-          onMouseEnter={onMouseEnter}
-        >
-          {item.label}
-        </Link>
-      );
-    } else {
-      return (
-        <button
-          className={finalClassName}
-          onClick={onClick}
-          onMouseEnter={onMouseEnter}
-        >
-          {item.label}
-        </button>
-      );
-    }
+    return (
+      <Link
+        to={item.href}
+        className={finalClassName}
+        onClick={onClick}
+        onMouseEnter={onMouseEnter}
+      >
+        {item.label}
+      </Link>
+    );
   };
 
   return (
@@ -268,18 +203,20 @@ export default function Navbar() {
                 transition-all duration-300 ease-in-out"
     >
       <div className="w-full max-w-7xl mx-auto px-4 overflow-hidden">
-        <div className="flex items-center justify-between h-16 md:h-20">
+        <div className="flex items-center justify-between h-16 lg:h-20">
 
-          {/* Logo - KONSISTENT */}
+          {/* Logo */}
           <motion.button
-            onClick={() => handleNavClick("/", "route")}
-            className="flex items-center gap-1 md:gap-2 hover:opacity-90 transition-opacity"
+            onClick={() => handleNavClick("/")}
+            className="flex items-center gap-2 hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 rounded-lg"
             whileTap={{ scale: 0.98 }}
+            aria-label="Urban Studios - Gå til forsiden"
           >
             <img
               src={logo}
-              alt="Urban Studios Logo"
-              className="h-16 max-w-48 object-contain dark:invert dark:brightness-0"
+              alt="Urban Studios"
+              className="h-12 lg:h-16 max-w-48 object-contain dark:invert"
+              loading="eager"
             />
           </motion.button>
 
@@ -294,17 +231,17 @@ export default function Navbar() {
               >
                 <NavLink
                   item={item}
-                  className="px-4 py-2 rounded-lg text-sm font-montserrat-medium transition-all duration-200 
+                  className="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 
                             focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 
                             dark:focus:ring-offset-brand-600"
-                  onClick={() => handleNavClick(item.href, item.type)}
+                  onClick={() => handleNavClick(item.href)}
                   onMouseEnter={() => handleNavHover(item.href)}
                 />
               </motion.div>
             ))}
           </nav>
 
-          {/* Actions  */}
+          {/* Actions */}
           <div className="flex items-center gap-2">
             
             {/* Dark mode toggle */}
@@ -319,7 +256,7 @@ export default function Navbar() {
                           hover:bg-gray-100 dark:hover:bg-brand-700/50
                           transition-all focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 
                           dark:focus:ring-white/50 dark:focus:ring-offset-brand-600"
-                aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
+                aria-label={isDarkMode ? "Bytt til lys modus" : "Bytt til mørk modus"}
               >
                 <AnimatePresence mode="wait">
                   <motion.div
@@ -345,7 +282,7 @@ export default function Navbar() {
               className="hidden lg:block"
             >
               <Button 
-                className="font-montserrat-semibold rounded-full 
+                className="font-semibold rounded-full 
                           bg-brand-500 hover:bg-brand-600
                           dark:bg-white dark:hover:bg-gray-50
                           text-white dark:text-brand-600
@@ -353,7 +290,7 @@ export default function Navbar() {
                           border-0 shadow hover:shadow-md transition-all duration-200 
                           focus:ring-2 focus:ring-brand-400 focus:ring-offset-2 
                           dark:focus:ring-brand-500 dark:focus:ring-offset-brand-600"
-                onClick={() => handleNavClick("/kurs", "route")}
+                onClick={() => handleNavClick("/kurs")}
                 onMouseEnter={() => handleNavHover("/kurs")}
               >
                 Se våre kurs
@@ -374,7 +311,7 @@ export default function Navbar() {
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 aria-expanded={isMenuOpen}
                 aria-controls="mobile-menu"
-                aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                aria-label={isMenuOpen ? "Lukk meny" : "Åpne meny"}
               >
                 <AnimatePresence mode="wait">
                   <motion.div
@@ -397,7 +334,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile menu - FIKSET BAKGRUNN OG FARGER */}
+      {/* Mobile menu */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
@@ -406,14 +343,12 @@ export default function Navbar() {
             animate={{ height: menuHeight, opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="lg:hidden overflow-hidden"
-            aria-hidden={!isMenuOpen}
+            className="lg:hidden overflow-hidden bg-white/90 dark:bg-brand-600/90 backdrop-blur-md"
           >
             <div 
               ref={menuContentRef}
-              className="text-center px-4 py-2 space-y-1 
-                        bg-white/90 dark:bg-brand-600/90 backdrop-blur-md 
-                        shadow-studio-lg border-t border-gray-200/30 dark:border-brand-700/30"
+              className="text-center px-4 py-4 space-y-1 
+                        border-t border-gray-200/30 dark:border-brand-700/30"
             >
               {navigationItems.map((item, index) => (
                 <motion.div
@@ -424,33 +359,34 @@ export default function Navbar() {
                 >
                   <NavLink
                     item={item}
-                    className="block px-4 py-3 rounded-lg text-base font-montserrat-medium 
+                    className="block px-4 py-3 rounded-lg text-base font-medium 
                               hover:bg-gray-100 dark:hover:bg-brand-700/50 
                               transition-all duration-200 focus:outline-none focus:ring-2 
                               focus:ring-brand-500 focus:ring-offset-2
                               dark:focus:ring-white/50 dark:focus:ring-offset-brand-600"
-                    onClick={() => handleNavClick(item.href, item.type)}
+                    onClick={() => handleNavClick(item.href)}
                     onMouseEnter={() => handleNavHover(item.href)}
                   />
                 </motion.div>
               ))}
               
-              {/* Mobile CTA - KONSISTENT MED DESKTOP */}
+              {/* Mobile CTA */}
               <motion.div 
-                className="pt-3 pb-4"
-                whileTap={{ scale: 0.99 }}
+                className="pt-4 pb-2"
+                whileTap={{ scale: 0.98 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.2 }}
               >
                 <Button 
-                  className="w-full font-montserrat-semibold rounded-md
+                  className="w-full font-semibold rounded-full
                             bg-brand-500 hover:bg-brand-600
                             dark:bg-white dark:hover:bg-gray-50
-                            dark:text-brand-600 dark:hover:text-brand-600
-                            text-white border-0 shadow hover:shadow-md 
+                            text-white dark:text-brand-600
+                            dark:hover:text-brand-700
+                            border-0 shadow hover:shadow-md 
                             transition-all duration-200"
-                  onClick={() => handleNavClick("/kurs", "route")}
+                  onClick={() => handleNavClick("/kurs")}
                 >
                   Se våre kurs
                 </Button>
