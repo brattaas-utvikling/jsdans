@@ -12,7 +12,7 @@ export default function Layout({
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-black">
       <Navbar />
-      <main className="flex-grow pt-16 md:pt-20">{children}</main>
+      <main className="flex-grow pt-16 lg:pt-20">{children}</main>
       <Footer />
     </div>
   );

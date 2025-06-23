@@ -47,7 +47,7 @@ export default function CoursesPage() {
       const response = await listDocuments(
         DATABASE_ID,
         COLLECTIONS.DANCE_CLASSES,
-        COLLECTIONS.SCHEDULES        [
+        [
           Query.orderAsc('name'), // Sorter alfabetisk
           Query.limit(20) // Begrens til 20 kurs
         ]
@@ -73,7 +73,7 @@ export default function CoursesPage() {
     return (
       <div className="min-h-screen bg-white dark:bg-surface-dark flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-studio-blue-500 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-500 mx-auto mb-4"></div>
           <p className="text-gray-600 dark:text-gray-300 font-montserrat">Laster kurs...</p>
         </div>
       </div>
@@ -93,7 +93,7 @@ export default function CoursesPage() {
             </p>
             <Button 
               onClick={fetchCoursesFromAppwrite}
-              className="font-montserrat-medium bg-red-600 hover:bg-red-700 text-white"
+              className="font-semibold bg-red-600 hover:bg-red-700 text-white"
             >
               Prøv igjen
             </Button>
@@ -107,13 +107,13 @@ export default function CoursesPage() {
     <div className="min-h-screen bg-white dark:bg-surface-dark">
       <ScrollToTop />
 
-      {/* Hero Section - Samme stil som nyheter */}
-      <section className="bg-gradient-to-br from-primary-50 via-white to-pink-50 
-                        dark:from-primary-900/20 dark:via-surface-dark dark:to-pink-900/20 
+      {/* Hero Section - Standard styling */}
+      <section className="bg-gradient-to-br from-brand-50/80 to-surface-muted 
+                        dark:from-brand-900/10 dark:to-surface-dark-muted 
                         pt-24 pb-16 relative overflow-hidden">
         {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-pink-400/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-48 h-48 bg-primary-400/10 rounded-full blur-3xl" />
+        <div className="absolute top-0 right-0 w-64 h-64 bg-magenta-400/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-brand-400/10 rounded-full blur-3xl" />
         
         <div className="container mx-auto px-4 md:px-6 relative z-10">
           <motion.div
@@ -122,7 +122,7 @@ export default function CoursesPage() {
             transition={{ duration: 0.8 }}
             className="text-center max-w-4xl mx-auto"
           >
-            <h1 className="text-sm font-montserrat-medium text-indigo-600 dark:text-indigo-400 
+            <h1 className="text-sm font-medium text-brand-600 dark:text-brand-400 
                           uppercase tracking-wider mb-3">
               Våre kurs
             </h1>
@@ -136,30 +136,30 @@ export default function CoursesPage() {
         </div>
       </section>
 
-      {/* Courses Section - Samme container-stil som nyheter */}
-      <section className="py-16 bg-surface-muted dark:bg-surface-dark-muted">
+      {/* Courses Section - Standard styling */}
+      <section className="py-16 bg-gradient-to-br from-brand-50/80 to-surface-muted 
+                         dark:from-brand-900/10 dark:to-surface-dark-muted">
         <div className="container mx-auto px-4 md:px-6">
           {courses.length === 0 ? (
             <div className="text-center py-16">
-              <p className="text-gray-500 dark:text-gray-400 font-montserrat text-lg">
+              <p className="text-gray-500 dark:text-gray-400 font-montserrat text-lg mb-4">
                 Ingen kurs funnet.
               </p>
               <Button 
                 onClick={fetchCoursesFromAppwrite}
-                className="mt-4 font-montserrat-medium"
-                variant="outline"
+                className="border-brand-300 text-brand-600 hover:bg-brand-50 hover:text-brand-600
+                          dark:border-brand-700 dark:text-brand-400 dark:hover:bg-brand-900/30 dark:hover:text-brand-400
+                          font-semibold rounded-full bg-transparent border-2"
               >
                 Last på nytt
               </Button>
             </div>
           ) : (
             <>
-              
-
               {/* Decorative elements */}
               <div className="relative">
-                <div className="absolute -top-10 -left-10 w-40 h-40 bg-studio-purple-400/10 rounded-full blur-3xl" />
-                <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-studio-pink-400/10 rounded-full blur-3xl" />
+                <div className="absolute -top-10 -left-10 w-40 h-40 bg-magenta-400/10 rounded-full blur-3xl" />
+                <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-coral-400/10 rounded-full blur-3xl" />
 
                 {/* Course cards grid - SAMME som du hadde før */}
                 <motion.div
@@ -194,7 +194,7 @@ export default function CoursesPage() {
         </div>
       </section>
 
-      {/* Optional: Call to Action Section */}
+      {/* Call to Action Section - Standard styling */}
       <section className="py-16 bg-white dark:bg-surface-dark">
         <div className="container mx-auto px-4 md:px-6">
           <motion.div
@@ -204,24 +204,23 @@ export default function CoursesPage() {
             transition={{ duration: 0.8 }}
             className="text-center max-w-3xl mx-auto"
           >
-            <h3 className=" font-montserrat text-3xl md:text-4xl font-medium mb-6 text-gray-900 dark:text-white">
+            <h3 className="font-montserrat text-3xl md:text-4xl font-medium mb-6 text-gray-900 dark:text-white">
               Ikke sikker på hvilket kurs som passer deg?
             </h3>
             <p className="text-gray-600 dark:text-gray-300 font-montserrat mb-8 text-lg">
               Kontakt oss på kontakt@urbanstudios.no eller benytt vårt kontaktskjema, så hjelper vi deg med å finne det perfekte kurset basert på dine behov!
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link to="/kontakt" className="w-full sm:w-auto">
-              <Button 
-                variant="outline"
-                className="font-montserrat-semibold rounded-full border-purple-300 text-purple-600 
-                          hover:bg-purple-50 dark:border-purple-700 dark:text-purple-400 
-                          dark:hover:bg-purple-900/30"
-              >
-                Kontakt oss
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
+              <Link to="/kontakt" className="w-full sm:w-auto">
+                <Button 
+                  className="border-brand-300 text-brand-600 hover:bg-brand-50 hover:text-brand-600
+                            dark:border-brand-700 dark:text-brand-400 dark:hover:bg-brand-900/30 dark:hover:text-brand-400
+                            font-semibold rounded-full bg-transparent border-2 px-6 py-3"
+                >
+                  Kontakt oss
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
             </div>
           </motion.div>
         </div>

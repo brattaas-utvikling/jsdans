@@ -152,17 +152,21 @@ export default function HomepageNews({
             viewport={{ once: true }}
             className="mb-12"
           >
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center bg-gradient-to-br from-blue-50 to-pink-50 dark:from-blue-900/20 dark:to-pink-900/20 rounded-2xl p-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center 
+               bg-gradient-to-br from-brand-50/80 to-surface-muted 
+               dark:from-brand-900/10 dark:to-surface-dark-muted 
+               rounded-2xl p-8 border border-brand-100/50 dark:border-brand-700/30">
               
               {/* Featured Image */}
               <div className="relative rounded-xl overflow-hidden shadow-studio group">
-                <img
-                  src={featuredArticle.img}
-                  alt={featuredArticle.headlines}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                
+                <Link to={`/nyheter/${featuredArticle.$id}`}>
+                  <img
+                    src={featuredArticle.img}
+                    alt={featuredArticle.headlines}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                </Link>
               </div>
 
               {/* Featured Content */}
@@ -193,15 +197,21 @@ export default function HomepageNews({
                   </div>
                   
                   <Link to={`/nyheter/${featuredArticle.$id}`}>
-                        <Button
-                          size="sm"
-                          className="rounded-full bg-gradient-to-r from-blue-600 to-pink-600 hover:from-blue-700 hover:to-pink-700 text-white border-0 font-montserrat-medium"
-                          aria-describedby="read-more-description"
-                        >
-                          Les mer
-                          <ArrowRightIcon className="ml-2 h-4 w-4" />
-                        </Button>
-                  </Link>
+                      <Button
+                        size="sm"
+                        className="rounded-full 
+                                  bg-brand-500 hover:bg-brand-600
+                                  dark:bg-white dark:hover:bg-brand-600/80
+                                  text-white dark:text-brand-600
+                                  dark:hover:text-white/90
+                                  border-0 shadow hover:shadow-md 
+                                  font-semibold transition-all duration-200"
+                        aria-describedby="read-more-description"
+                      >
+                        Les mer
+                        <ArrowRightIcon className="ml-2 h-4 w-4" />
+                      </Button>
+                    </Link>
                 </div>
               </div>
             </div>
@@ -218,11 +228,11 @@ export default function HomepageNews({
           className="text-center mt-12"
         >
           <Link to="/nyheter">
-            <Button 
+            <Button
+              size="lg"
               variant="outline"
-              className="rounded-full border-studio-blue-300 text-studio-blue-600 hover:bg-studio-blue-50 
-                        dark:border-studio-blue-700 dark:text-studio-blue-400 dark:hover:bg-studio-blue-900/30
-                        font-montserrat-medium"
+              className="rounded-full font-semibold border-brand-300 text-brand-600 hover:bg-brand-50 hover:text-brand-600
+                              dark:border-brand-700 dark:text-brand-400 dark:hover:bg-brand-900/30 dark:hover:text-brand-400"
             >
               Se alle nyheter
               <ArrowRightIcon className="ml-2 h-4 w-4" />

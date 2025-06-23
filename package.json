@@ -1,7 +1,7 @@
 {
   "name": "urban-studios-app",
   "private": true,
-  "version": "1.6.0",
+  "version": "1.7.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -87,6 +87,7 @@
     "react-force-graph": "latest",
     "react-hook-form": "latest",
     "react-hot-toast": "latest",
+    "react-icons": "^5.5.0",
     "react-intersection-observer": "latest",
     "react-konva": "latest",
     "react-leaflet": "latest",
