@@ -158,7 +158,7 @@ export default function NewsPage() {
             transition={{ duration: 0.8 }}
             className="text-center max-w-4xl mx-auto"
           >
-            <h1 className="text-sm font-medium text-brand-600 dark:text-brand-400 
+            <h1 className="text-base font-medium text-brand-600 dark:text-brand-400 
                           uppercase tracking-wider mb-3">
               Nyheter
             </h1>

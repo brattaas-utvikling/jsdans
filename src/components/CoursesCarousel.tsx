@@ -38,7 +38,7 @@ interface DanceClass extends AppwriteDocument {
   instructor: string;
   level: string;
   age: string;
-  // Legg til andre felter du har i Appwrite
+  studio: string;
 }
 
 export default function CoursesCarousel({ 
@@ -280,6 +280,7 @@ export default function CoursesCarousel({
               image={course.image}
               schedule={course.schedule || [{ day: "September 2025", time: "Tidspunkt kommer" }]}
               instructor={course.instructor}
+              studio={course.studio}
             />
           </div>
         </div>

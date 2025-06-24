@@ -31,7 +31,7 @@ export default function CtaSection() {
             viewport={{ once: true }}
             className="flex items-center gap-2 mb-4"
           >
-            <p className="text-sm font-bebas text-white/60 uppercase tracking-wider">
+            <p className="text-base font-bebas text-white/60 uppercase tracking-wider">
               {STUDIO_INFO.name}
             </p>
           </motion.div>
