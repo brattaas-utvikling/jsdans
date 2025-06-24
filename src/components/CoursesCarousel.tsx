@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { listDocuments, DATABASE_ID, COLLECTIONS, Query } from "@/lib/appwrite";
 import ClassCard from "./ClassCard";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 
 
 
@@ -44,7 +44,7 @@ interface DanceClass extends AppwriteDocument {
 export default function CoursesCarousel({ 
   title = "Våre kurs",
   subtitle = "Utforsk vårt utvalg av danser og finn ditt perfekte kurs",
-  limit = 13,
+  limit = 10,
   className = ""
 }: CoursesCarouselProps) {
   const [courses, setCourses] = useState<DanceClass[]>([]);
@@ -100,10 +100,10 @@ export default function CoursesCarousel({
     try {
       const response = await listDocuments(
         DATABASE_ID,
-        COLLECTIONS.DANCE_CLASSES,
+        COLLECTIONS.DANCE_CLASSES_CAROUSEL,
         [
           Query.orderAsc('name'), // Sorter alfabetisk
-          Query.limit(50) // Begrens til 50 kurs
+          Query.limit(10) // Begrens til 10 kurs
         ]
       );
       
@@ -148,7 +148,7 @@ export default function CoursesCarousel({
           
           <div className="flex justify-center items-center py-20">
             <div className="text-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-500 mx-auto mb-4"></div>
               <p className="text-gray-600 dark:text-gray-300 font-montserrat">Laster kurs...</p>
             </div>
           </div>
@@ -218,92 +218,93 @@ export default function CoursesCarousel({
           </p>
         </motion.div>
 
-        {/* Carousel */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="relative"
+        
+{/* Carousel - Oppdatert layout for arrows utenfor */}
+<motion.div
+  initial={{ opacity: 0, y: 30 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true }}
+  transition={{ duration: 0.8, delay: 0.2 }}
+  className="relative px-4 lg:px-16" // Padding for arrow space
+>
+  {/* Navigation Buttons - Posisjonert helt utenfor */}
+  {courses.length > 1 && (
+    <>
+      <button
+        className="absolute -left-2 lg:-left-4 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-slate-800/90 
+                  hover:bg-white dark:hover:bg-slate-700 text-gray-800 dark:text-gray-200 
+                  p-3 rounded-full shadow-lg transition-all duration-200 hover:scale-110 z-10
+                  backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50"
+        onClick={scrollPrev}
+        aria-label="Forrige slide"
+      >
+        <ChevronLeft className="w-5 h-5" />
+      </button>
+      
+      <button
+        className="absolute -right-2 lg:-right-4 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-slate-800/90 
+                  hover:bg-white dark:hover:bg-slate-700 text-gray-800 dark:text-gray-200 
+                  p-3 rounded-full shadow-lg transition-all duration-200 hover:scale-110 z-10
+                  backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50"
+        onClick={scrollNext}
+        aria-label="Neste slide"
+      >
+        <ChevronRight className="w-5 h-5" />
+      </button>
+    </>
+  )}
+
+  {/* Carousel Container - Overflow hidden for å skjule neste kort */}
+  <div className="overflow-hidden">
+    <div 
+      className="flex transition-transform duration-500 ease-in-out"
+      style={{ 
+        transform: `translateX(-${currentIndex * (100 / slidesPerView)}%)`,
+      }}
+    >
+      {courses.map((course) => (
+        <div 
+          key={course.$id} 
+          className="px-3 flex-shrink-0"
+          style={{ 
+            width: `${100 / slidesPerView}%`
+          }}
         >
-          {/* Carousel Container */}
-          <div className="overflow-hidden">
-            <div 
-              className="flex transition-transform duration-500 ease-in-out"
-              style={{ 
-                transform: `translateX(-${currentIndex * (100 / slidesPerView)}%)`,
-              }}
-            >
-              {courses.map((course) => (
-                <div 
-                  key={course.$id} 
-                  className="px-3 flex-shrink-0"
-                  style={{ 
-                    width: `${100 / slidesPerView}%`
-                  }}
-                >
-                  <div className="h-full">
-                    <ClassCard
-                      name={course.name}
-                      description={course.description}
-                      level={course.level}
-                      age={course.age}
-                      color={course.color}
-                      image={course.image}
-                      schedule={course.schedule || [{ day: "September 2025", time: "Tidspunkt kommer", level: course.level || "Nivå kommer" }]}
-                      instructor={course.instructor}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
+          <div className="h-full">
+            <ClassCard
+              name={course.name}
+              description={course.description}
+              level={course.level}
+              age={course.age}
+              color={course.color}
+              image={course.image}
+              schedule={course.schedule || [{ day: "September 2025", time: "Tidspunkt kommer" }]}
+              instructor={course.instructor}
+            />
           </div>
+        </div>
+      ))}
+    </div>
+  </div>
 
-          {/* Navigation Buttons - Vis kun hvis det er mer enn 1 kort */}
-          {courses.length > 1 && (
-            <>
-              <button
-                className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-slate-800/90 
-                          hover:bg-white dark:hover:bg-slate-700 text-gray-800 dark:text-gray-200 
-                          p-3 rounded-full shadow-lg transition-all duration-200 hover:scale-110 z-10
-                          backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50"
-                onClick={scrollPrev}
-                aria-label="Forrige slide"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              
-              <button
-                className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-slate-800/90 
-                          hover:bg-white dark:hover:bg-slate-700 text-gray-800 dark:text-gray-200 
-                          p-3 rounded-full shadow-lg transition-all duration-200 hover:scale-110 z-10
-                          backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50"
-                onClick={scrollNext}
-                aria-label="Neste slide"
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
-            </>
-          )}
-
-          {/* Dots Indicator - Basert på mulige posisjoner */}
-          {courses.length > slidesPerView && (
-            <div className="flex justify-center mt-8 space-x-2">
-              {Array.from({ length: Math.max(1, courses.length - slidesPerView + 1) }).map((_, index) => (
-                <button
-                  key={`carousel-dot-${index}`} 
-                  className={`w-3 h-3 rounded-full transition-all duration-200 ${
-                    index === currentIndex 
-                      ? 'bg-blue-600 dark:bg-blue-400' 
-                      : 'bg-gray-300 dark:bg-gray-600 hover:bg-blue-400 dark:hover:bg-blue-500'
-                  }`}
-                  onClick={() => setCurrentIndex(index)}
-                  aria-label={`Gå til posisjon ${index + 1}`}
-                />
-              ))}
-            </div>
-          )}
-        </motion.div>
+  {/* Dots Indicator */}
+  {courses.length > slidesPerView && (
+    <div className="flex justify-center mt-8 space-x-2">
+      {Array.from({ length: Math.max(1, courses.length - slidesPerView + 1) }).map((_, index) => (
+        <button
+          key={`carousel-dot-${index}`} 
+          className={`w-3 h-3 rounded-full transition-all duration-200 ${
+            index === currentIndex 
+              ? 'bg-brand-600 dark:bg-brand-400' 
+              : 'bg-gray-300 dark:bg-gray-600 hover:bg-brand-400 dark:hover:bg-brand-500'
+          }`}
+          onClick={() => setCurrentIndex(index)}
+          aria-label={`Gå til posisjon ${index + 1}`}
+        />
+      ))}
+    </div>
+  )}
+</motion.div>
 
         {/* "Se alle kurs" knapp */}
         <motion.div
@@ -313,16 +314,15 @@ export default function CoursesCarousel({
           transition={{ duration: 0.6, delay: 0.4 }}
           className="text-center mt-12"
         >
-          <Link to="/kurs">
-            <Button
-              variant="outline"
-              className="font-montserrat-semibold rounded-full border-blue-300 text-blue-600 
-                        hover:bg-blue-50 dark:border-blue-700 dark:text-blue-400 
-                        dark:hover:bg-blue-900/30"
-            >
-              Se alle kurs
-              <ChevronRight className="w-4 h-4" />
-            </Button>
+         <Link to="/kurs" className="w-full sm:w-auto">
+                <Button 
+                  className="border-brand-300 text-brand-600 hover:bg-brand-50 hover:text-brand-600
+                            dark:border-brand-700 dark:text-brand-400 dark:hover:bg-brand-900/30 dark:hover:text-brand-400
+                            font-semibold rounded-full bg-transparent border-2 px-6 py-3"
+                >
+                  Se alle kurs
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
           </Link>
         </motion.div>
       </div>

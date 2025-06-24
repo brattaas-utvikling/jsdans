@@ -17,6 +17,7 @@ export const DATABASE_ID = import.meta.env.VITE_DATABASE_ID || 'main';
 
 export const COLLECTIONS = {
   DANCE_CLASSES: import.meta.env.VITE_DANCE_CLASSES_COLLECTION_ID || 'dance_classes',
+  DANCE_CLASSES_CAROUSEL: import.meta.env.VITE_DANCE_CLASSES_CAROUSEL_COLLECTION_ID || 'dance_classes_carousel',
   SCHEDULES: import.meta.env.VITE_SCHEDULES_COLLECTION_ID || 'schedules',
   PRICING_PACKAGES: import.meta.env.VITE_PRICING_PACKAGES_COLLECTION_ID || 'pricing_packages',
   ORDERS: import.meta.env.VITE_ORDERS_COLLECTION_ID || 'orders',
