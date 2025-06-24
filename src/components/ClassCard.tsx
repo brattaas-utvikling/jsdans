@@ -37,7 +37,7 @@ type ClassCardProps = {
     time: string;
     level: string;
   }>;
-  instructor: string;
+  instructor?: string;
   level: string;
   age: string;
 };
@@ -336,12 +336,11 @@ const colorMap: Record<ColorName, ColorClasses> = {
               </div>
               <div className={`${colors.bg} ${colors.border} border rounded-lg p-3 text-sm mt-1`}>
                 <div className="flex justify-between">
-                  <span className={`${colors.text} font-montserrat font-semibold`}>{schedule[0]?.day || 'TBA'}</span>
-                  <span className={`${colors.text} font-montserrat font-medium`}>{schedule[0]?.level || level}</span>
+                  <span className={`${colors.text} font-montserrat font-semibold`}>{schedule[0]?.day || 'September 2025'}</span>
                 </div>
                 <div className="flex items-center gap-1 mt-1">
                   <Clock className="h-3 w-3 text-gray-600 dark:text-gray-400" />
-                  <span className={`font-montserrat ${colors.text}`}>{schedule[0]?.time || 'TBA'}</span>
+                  <span className={`font-montserrat ${colors.text}`}>{schedule[0]?.time || 'Tidspunkt kommer'}</span>
                 </div>
               </div>
             </div>
