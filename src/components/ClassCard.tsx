@@ -40,6 +40,7 @@ type ClassCardProps = {
   instructor?: string;
   level: string;
   age: string;
+  studio: string;
 };
 
 export default function ClassCard({
@@ -51,6 +52,7 @@ export default function ClassCard({
   instructor,
   level,
   age,
+  studio,
 }: ClassCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -313,7 +315,7 @@ const colorMap: Record<ColorName, ColorClasses> = {
         </div>
         <CardHeader>
           <CardTitle className="text-xl font-bebas text-gray-900 dark:text-white">{name}</CardTitle>
-          <CardDescription className="font-montserrat text-gray-600 dark:text-gray-300">{description}</CardDescription>
+          <CardDescription className="font-montserrat text-gray-600 dark:text-gray-300 text-start">{description}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-3 text-sm text-gray-700 dark:text-gray-300">
@@ -364,7 +366,7 @@ const colorMap: Record<ColorName, ColorClasses> = {
             <DialogTitle className="text-2xl font-bebas flex items-center gap-3 text-gray-900 dark:text-white">
               {name}
             </DialogTitle>
-            <DialogDescription className="text-base mt-2 font-montserrat text-gray-600 dark:text-gray-300">
+            <DialogDescription className="text-base text-start mt-2 font-montserrat text-gray-600 dark:text-gray-300">
               {description}
             </DialogDescription>
           </DialogHeader>
@@ -406,15 +408,7 @@ const colorMap: Record<ColorName, ColorClasses> = {
             </div>
 
             {/* Extended Description */}
-            <div className="prose dark:prose-invert max-w-none">
-              <h3 className="text-lg font-bebas mb-3 text-gray-900 dark:text-white">Om kurset</h3>
-              <p className="text-gray-700 dark:text-gray-300 leading-relaxed font-montserrat">
-                {name} er en fantastisk måte å uttrykke seg selv på gjennom dans. 
-                Dette kurset er designet for {age.toLowerCase()} og passer perfekt for {level.toLowerCase()}-nivå. 
-                Under ledelse av vår erfarne instruktør {instructor}, vil du lære grunnleggende teknikker, 
-                bygge selvtillit og ha det gøy med andre som deler din lidenskap for dans.
-              </p>
-              
+            <div className="prose dark:prose-invert max-w-none">             
               <div className={`mt-4 p-4 ${colors.bg} rounded-lg border ${colors.border}`}>
                 <div className="flex items-center gap-2 mb-2">
                   <Heart className={`h-4 w-4 text-brand-500`} />
@@ -450,10 +444,7 @@ const colorMap: Record<ColorName, ColorClasses> = {
                     </div>
                     <div className="flex items-center gap-2">
                       <MapPin className="h-4 w-4 text-gray-500 dark:text-gray-400" />
-                      <span className="text-sm text-gray-600 dark:text-gray-300 font-montserrat">Studio A</span>
-                      <span className={`px-3 py-1 ${colors.buttonBg} ${colors.buttonText} rounded-full text-xs font-montserrat font-medium`}>
-                        {session.level}
-                      </span>
+                      <span className="text-sm text-gray-600 dark:text-gray-300 font-montserrat">{studio}</span>
                     </div>
                   </div>
                 ))}

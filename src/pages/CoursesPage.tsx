@@ -30,6 +30,7 @@ interface DanceClass extends AppwriteDocument {
   instructor: string;
   level: string;
   age: string;
+  studio: string;
   // Legg til andre felter du har i Appwrite
 }
 
@@ -184,6 +185,7 @@ export default function CoursesPage() {
                         image={course.image}
                         schedule={course.schedule || [{ day: "September 2025", time: "Tidspunkt kommer", level: course.level || "Nivå kommer" }]}
                         instructor={course.instructor}
+                        studio={course.studio}
                       />
                     </motion.div>
                   ))}
