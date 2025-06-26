@@ -11,7 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { listDocuments, DATABASE_ID, COLLECTIONS, Query } from "@/lib/appwrite";
 
-// TypeScript interface (samme som før)
+// TypeScript interface - oppdatert for nye felter
 interface AppwriteDocument {
   $id: string;
   $createdAt: string;
@@ -24,7 +24,9 @@ interface AppwriteDocument {
 interface NewsArticle extends AppwriteDocument {
   headlines: string;
   lead: string;
-  content: string;
+  'paragraph-1': string;  // Oppdatert fra 'content'
+  'paragraph-2': string;  // Nytt felt
+  'paragraph-3': string;  // Nytt felt
   img: string;
   author: string;
   published: boolean;
@@ -57,11 +59,20 @@ export default function HomepageNews({
     });
   };
 
-  // Calculate reading time
-  const calculateReadingTime = (content: string): number => {
+  // Calculate reading time - oppdatert for nye felter
+  const calculateReadingTime = (article: NewsArticle): number => {
     const wordsPerMinute = 200;
-    const words = content.split(' ').length;
-    return Math.ceil(words / wordsPerMinute);
+    
+    // Kombiner alle tekstfelter for å beregne lesetid
+    const allText = [
+      article.lead || '',
+      article['paragraph-1'] || '',
+      article['paragraph-2'] || '',
+      article['paragraph-3'] || ''
+    ].join(' ');
+    
+    const words = allText.trim().split(' ').filter(word => word.length > 0).length;
+    return Math.max(1, Math.ceil(words / wordsPerMinute)); // Minimum 1 minutt
   };
 
   // Fetch latest news from Appwrite
@@ -101,7 +112,7 @@ export default function HomepageNews({
       <section className="py-16 bg-white dark:bg-surface-dark">
         <div className="container mx-auto px-4 md:px-6">
           <div className="flex items-center justify-center py-12">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-500"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-500"></div>
           </div>
         </div>
       </section>
@@ -158,7 +169,7 @@ export default function HomepageNews({
                rounded-2xl p-8 border border-brand-100/50 dark:border-brand-700/30">
               
               {/* Featured Image */}
-              <div className="relative rounded-xl overflow-hidden shadow-studio group">
+              <div className="relative rounded-xl overflow-hidden shadow-brand group">
                 <Link to={`/nyheter/${featuredArticle.$id}`}>
                   <img
                     src={featuredArticle.img}
@@ -178,7 +189,7 @@ export default function HomepageNews({
                   </div>
                   <div className="flex items-center gap-1">
                     <ClockIcon className="h-4 w-4" />
-                    {calculateReadingTime(featuredArticle.content)} min
+                    {calculateReadingTime(featuredArticle)} min
                   </div>
                 </div>
 
@@ -217,7 +228,6 @@ export default function HomepageNews({
             </div>
           </motion.div>
         )}
-
 
         {/* Call to Action */}
         <motion.div

@@ -112,12 +112,10 @@ export default function ContactSection() {
                       <h4 className="font-semibold text-gray-900 dark:text-white">
                         Adresse
                       </h4>
-                      <p className="text-gray-600 dark:text-gray-300 font-montserrat">
-                        {STUDIO_INFO.address.street}
-                      </p>
-                      <p className="text-gray-600 dark:text-gray-300 font-montserrat">
+                      <address className="text-gray-600 dark:text-gray-300 font-montserrat not-italic">
+                        {STUDIO_INFO.address.street}<br />
                         {STUDIO_INFO.address.zip} {STUDIO_INFO.address.city}
-                      </p>
+                      </address>
                     </div>
                   </motion.div>
 
@@ -135,9 +133,18 @@ export default function ContactSection() {
                       <h4 className="font-semibold text-gray-900 dark:text-white">
                         Telefon
                       </h4>
-                      <p className="text-gray-600 dark:text-gray-300 font-montserrat">
+                      <a 
+                        href={`tel:${STUDIO_INFO.contact.phone.replace(/\s+/g, '')}`}
+                        className="text-gray-600 dark:text-gray-300 font-montserrat 
+                                 hover:text-brand-600 dark:hover:text-brand-400 
+                                 transition-colors duration-200 
+                                 focus:outline-none focus:text-brand-600 dark:focus:text-brand-400
+                                 underline decoration-transparent hover:decoration-current
+                                 focus:decoration-current transition-all"
+                        aria-label={`Ring oss på ${STUDIO_INFO.contact.phone}`}
+                      >
                         {STUDIO_INFO.contact.phone}
-                      </p>
+                      </a>
                     </div>
                   </motion.div>
 
@@ -155,9 +162,18 @@ export default function ContactSection() {
                       <h4 className="font-semibold text-gray-900 dark:text-white">
                         E-post
                       </h4>
-                      <p className="text-gray-600 dark:text-gray-300 font-montserrat">
+                      <a 
+                        href={`mailto:${STUDIO_INFO.contact.email}`}
+                        className="text-gray-600 dark:text-gray-300 font-montserrat 
+                                 hover:text-brand-600 dark:hover:text-brand-400 
+                                 transition-colors duration-200 
+                                 focus:outline-none focus:text-brand-600 dark:focus:text-brand-400
+                                 underline decoration-transparent hover:decoration-current
+                                 focus:decoration-current transition-all break-all"
+                        aria-label={`Send e-post til ${STUDIO_INFO.contact.email}`}
+                      >
                         {STUDIO_INFO.contact.email}
-                      </p>
+                      </a>
                     </div>
                   </motion.div>
 
@@ -204,9 +220,9 @@ export default function ContactSection() {
                               hover:from-purple-600 hover:via-magenta-600 hover:to-brand-600
                               text-white transition-all duration-300
                                 flex items-center justify-center shadow-brand hover:shadow-brand-lg"
+                      aria-label="Følg Urban Studios på Instagram"
                     >
                       <FaInstagram className="h-6 w-6" />
-                      <span className="sr-only">Instagram</span>
                     </motion.a>
                     <motion.a
                       href={STUDIO_INFO.social.facebook}
@@ -218,9 +234,9 @@ export default function ContactSection() {
                                 flex items-center justify-center text-white
                               hover:bg-blue-700 transition-all duration-300 
                                 shadow-brand"
+                      aria-label="Følg Urban Studios på Facebook"
                     >
                       <FaFacebookF className="h-6 w-6" />
-                      <span className="sr-only">Facebook</span>
                     </motion.a>
                   </div>
                 </motion.div>
@@ -238,7 +254,7 @@ export default function ContactSection() {
               <div className="bg-gradient-to-br from-brand-50/80 to-surface-muted 
                             dark:from-brand-900/10 dark:to-surface-dark-muted 
                             rounded-2xl shadow-brand-lg p-6 md:p-8
-                            border border-brand-100/50 dark:border-brand-700/30 h-full flex flex-col">
+                            border border-brand-100/50 dark:border-brand-700/30 h-full flex-col">
                 <ContactForm />
               </div>
             </motion.div>

@@ -102,13 +102,13 @@ const colorMap: Record<ColorName, ColorClasses> = {
     buttonHover: 'hover:bg-red-50 dark:hover:bg-red-900/30 hover:text-red-800 dark:hover:text-red-200'
   },
   'orange': {
-    bg: 'bg-brand-50 dark:bg-brand-950/50',
-    text: 'text-brand-800 dark:text-brand-200',
-    border: 'border-brand-200 dark:border-brand-800',
-    hover: 'hover:bg-brand-100 dark:hover:bg-brand-900/50',
-    buttonBg: 'bg-brand-600 hover:bg-brand-700',
+    bg: 'bg-orange-50 dark:bg-orange-950/50',
+    text: 'text-orange-800 dark:text-orange-200',
+    border: 'border-orange-200 dark:border-orange-800',
+    hover: 'hover:bg-orange-100 dark:hover:bg-orange-900/50',
+    buttonBg: 'bg-orange-600 hover:bg-orange-700',
     buttonText: 'text-white',
-    buttonHover: 'hover:bg-brand-50 dark:hover:bg-brand-900/30 hover:text-brand-800 dark:hover:text-brand-200'
+    buttonHover: 'hover:bg-orange-50 dark:hover:bg-orange-900/30 hover:text-orange-800 dark:hover:text-orange-200'
   },
   'amber': {
     bg: 'bg-amber-50 dark:bg-amber-950/50',
