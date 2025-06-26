@@ -27,6 +27,7 @@ interface AboutSection extends AppwriteDocument {
   paragraph1: string;
   paragraph2?: string; // Valgfritt
   paragraph3?: string; // Valgfritt
+  paragraph4?: string; // Valgfritt
   author: string;
   published: boolean;
   created_at: string;
@@ -70,6 +71,123 @@ export default function AboutPage() {
 
   // Finn hovedseksjon (første seksjon)
   const heroSection = aboutSections[0];
+
+  // Get non-empty paragraphs in order
+  const getParagraphs = (section: AboutSection): string[] => {
+    const paragraphs = [
+      section.paragraph1,
+      section.paragraph2,
+      section.paragraph3,
+      section.paragraph4
+    ].filter((paragraph): paragraph is string => paragraph != null && paragraph.trim() !== '');
+    
+    return paragraphs;
+  };
+
+  // Render content with pullquote positioned correctly
+  const renderContentWithPullquote = (section: AboutSection, paragraphs: string[]) => {
+    const content = [];
+    
+    // Første paragraph
+    if (paragraphs[0]) {
+      content.push(
+        <motion.div
+          key="paragraph-1"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <div className="prose prose-lg dark:prose-invert max-w-none">
+            <p className="text-gray-700 dark:text-gray-300 font-montserrat leading-relaxed text-lg">
+              {paragraphs[0]}
+            </p>
+          </div>
+        </motion.div>
+      );
+    }
+
+    // Hvis det er færre enn 4 paragraphs: pullquote etter første paragraph
+    // Hvis det er 4 paragraphs: pullquote mellom paragraph 2 og 3
+    const pullquoteAfterParagraph = paragraphs.length === 4 ? 2 : 1;
+
+    // Andre paragraph hvis den eksisterer
+    if (paragraphs[1]) {
+      content.push(
+        <motion.div
+          key="paragraph-2"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          <div className="prose prose-lg dark:prose-invert max-w-none">
+            <p className="text-gray-700 dark:text-gray-300 font-montserrat leading-relaxed text-lg">
+              {paragraphs[1]}
+            </p>
+          </div>
+        </motion.div>
+      );
+    }
+
+    // Pullquote posisjonering
+    if (pullquoteAfterParagraph === 1 || (pullquoteAfterParagraph === 2 && paragraphs.length >= 2)) {
+      content.push(
+        <motion.div
+          key="pullquote"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="text-center py-8"
+        >
+          <blockquote className="text-transparent bg-clip-text bg-hero-gradient font-bebas text-bebas-xl md:text-bebas-2xl leading-tight">
+            {section.pullQuote}
+          </blockquote>
+        </motion.div>
+      );
+    }
+
+    // Tredje paragraph hvis den eksisterer
+    if (paragraphs[2]) {
+      content.push(
+        <motion.div
+          key="paragraph-3"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+        >
+          <div className="prose prose-lg dark:prose-invert max-w-none">
+            <p className="text-gray-700 dark:text-gray-300 font-montserrat leading-relaxed text-lg">
+              {paragraphs[2]}
+            </p>
+          </div>
+        </motion.div>
+      );
+    }
+
+    // Fjerde paragraph hvis den eksisterer
+    if (paragraphs[3]) {
+      content.push(
+        <motion.div
+          key="paragraph-4"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.8 }}
+        >
+          <div className="prose prose-lg dark:prose-invert max-w-none">
+            <p className="text-gray-700 dark:text-gray-300 font-montserrat leading-relaxed text-lg">
+              {paragraphs[3]}
+            </p>
+          </div>
+        </motion.div>
+      );
+    }
+
+    return content;
+  };
 
   if (loading) {
     return (
@@ -128,6 +246,8 @@ export default function AboutPage() {
     );
   }
 
+  const paragraphs = getParagraphs(heroSection);
+
   return (
     <div className="min-h-screen bg-white dark:bg-surface-dark">
       <ScrollToTop />
@@ -183,65 +303,7 @@ export default function AboutPage() {
           
           <div className="container mx-auto px-4 md:px-6 relative z-10">
             <div className="max-w-4xl mx-auto space-y-12">
-              
-              {/* Paragraph1 */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-              >
-                <div className="prose prose-lg dark:prose-invert max-w-none">
-                  <p className="text-gray-700 dark:text-gray-300 font-montserrat leading-relaxed text-lg">
-                    {heroSection.paragraph1}
-                  </p>
-                </div>
-              </motion.div>
-
-              {/* Pull Quote mellom paragraph1 og paragraph2 */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="text-center py-8"
-              >
-                <blockquote className="text-transparent bg-clip-text bg-hero-gradient font-bebas text-bebas-xl md:text-bebas-2xl leading-tight">
-                  "{heroSection.pullQuote}"
-                </blockquote>
-              </motion.div>
-
-              {/* Paragraph2 hvis den eksisterer */}
-              {heroSection.paragraph2 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: 0.4 }}
-                >
-                  <div className="prose prose-lg dark:prose-invert max-w-none">
-                    <p className="text-gray-700 dark:text-gray-300 font-montserrat leading-relaxed text-lg">
-                      {heroSection.paragraph2}
-                    </p>
-                  </div>
-                </motion.div>
-              )}
-
-              {/* Paragraph3 hvis den eksisterer */}
-              {heroSection.paragraph3 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: 0.6 }}
-                >
-                  <div className="prose prose-lg dark:prose-invert max-w-none">
-                    <p className="text-gray-700 dark:text-gray-300 font-montserrat leading-relaxed text-lg">
-                      {heroSection.paragraph3}
-                    </p>
-                  </div>
-                </motion.div>
-              )}
+              {renderContentWithPullquote(heroSection, paragraphs)}
             </div>
           </div>
         </section>
