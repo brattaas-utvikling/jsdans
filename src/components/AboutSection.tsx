@@ -22,8 +22,15 @@ interface AppwriteDocument {
 interface AboutSection extends AppwriteDocument {
   headlines: string;
   lead: string;
-  content: string;
   img: string;
+  pullQuote: string;
+  paragraph1: string;
+  paragraph2?: string; // Valgfritt
+  paragraph3?: string; // Valgfritt
+  author: string;
+  published: boolean;
+  created_at: string;
+  updated_at: string;
 }
 
 export default function AboutPage() {
@@ -39,7 +46,7 @@ export default function AboutPage() {
     try {
       const response = await listDocuments(
         DATABASE_ID,
-        COLLECTIONS.ABOUT_US, // Anta at du har en ABOUT collection
+        COLLECTIONS.ABOUT_US,
         [
           Query.orderDesc('$createdAt'), // Sorter nyeste først
           Query.limit(1) // Begrens til 1 seksjon
@@ -61,9 +68,8 @@ export default function AboutPage() {
     fetchAboutFromAppwrite();
   }, []);
 
-  // Finn hovedseksjon (første seksjon) og andre seksjoner
+  // Finn hovedseksjon (første seksjon)
   const heroSection = aboutSections[0];
-  const contentSections = aboutSections.slice(1);
 
   if (loading) {
     return (
@@ -126,150 +132,123 @@ export default function AboutPage() {
     <div className="min-h-screen bg-white dark:bg-surface-dark">
       <ScrollToTop />
 
-      {/* Hero Section med første seksjon fra Appwrite */}
+      {/* Hero Section med fullscreen bilde og glow effekt */}
       {heroSection && (
-        <section className="bg-gradient-to-br from-brand-50/80 to-surface-muted 
-                           dark:from-brand-900/10 dark:to-surface-dark-muted 
-                           pt-24 pb-20 relative overflow-hidden">
-          {/* Decorative elements */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-magenta-400/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-48 h-48 bg-brand-400/10 rounded-full blur-3xl" />
+        <section className="relative min-h-screen overflow-hidden">
+          {/* Background Image med glow effekt */}
+          <div className="absolute inset-0">
+            <img
+              src={heroSection.img}
+              alt={heroSection.headlines}
+              className="w-full h-full object-cover"
+            />
+            {/* Glow effekt - subtil brand-farget glow */}
+            <div className="absolute inset-0 bg-gradient-to-t from-brand-500/20 via-transparent to-magenta-500/10" />
+          </div>
           
-          <div className="container mx-auto px-4 md:px-6 relative z-10">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
-              
-              {/* Text Content */}
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+          
+          {/* Content Container - nederst til venstre */}
+          <div className="absolute bottom-0 left-0 right-0 z-10 p-6 md:p-10">
+            <div className="container mx-auto">
               <motion.div
                 initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8 }}
-                className="space-y-8"
+                className="max-w-3xl"
               >
-                <div>
-                  <h1 className="text-base font-medium text-brand-600 dark:text-brand-400 
-                        uppercase tracking-wider mb-3">
-                    {heroSection.headlines}
-                  </h1>
+                <h1 className="text-base font-medium text-brand-400 
+                      uppercase tracking-wider mb-3">
+                  {heroSection.headlines}
+                </h1>
 
-                  <h2 className="font-bebas font-semibold text-bebas-xl md:text-bebas-2xl mb-6 text-gray-900 dark:text-white">
-                    {heroSection.lead}
-                  </h2>
-                  
-                  <div className="prose prose-lg dark:prose-invert max-w-none">
-                    <p className="text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed">
-                      {heroSection.content}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Stats Component Placeholder */}
-                {/* <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.4 }}
-                  className="grid grid-cols-2 gap-6 pt-8"
-                >
-                  <div className="text-center p-4 rounded-xl bg-white/50 dark:bg-surface-dark-muted/50 backdrop-blur-sm">
-                    <div className="text-2xl font-bebas text-brand-600 dark:text-brand-400">500+</div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400 font-medium">Fornøyde kunder</div>
-                  </div>
-                  <div className="text-center p-4 rounded-xl bg-white/50 dark:bg-surface-dark-muted/50 backdrop-blur-sm">
-                    <div className="text-2xl font-bebas text-brand-600 dark:text-brand-400">15+</div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400 font-medium">Kurs tilgjengelig</div>
-                  </div>
-                </motion.div> */}
-              </motion.div>
-
-              {/* Hero Image */}
-              <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="relative"
-              >
-                <div className="relative rounded-3xl overflow-hidden shadow-brand-xl border border-brand-100/50 dark:border-brand-700/30">
-                  <img
-                    src={heroSection.img}
-                    alt={heroSection.headlines}
-                    className="w-full h-[500px] object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
-                </div>
+                <h2 className="font-bebas font-semibold text-bebas-2xl md:text-bebas-3xl lg:text-bebas-4xl 
+                              text-white leading-tight">
+                  {heroSection.lead}
+                </h2>
               </motion.div>
             </div>
           </div>
         </section>
       )}
 
-      {/* Content Sections */}
-      {contentSections.length > 0 && (
-        <section className="py-20 bg-white dark:bg-surface-dark">
-          <div className="container mx-auto px-4 md:px-6">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="space-y-20"
-            >
-              {contentSections.map((section, index) => (
-                <div key={section.$id} className="max-w-6xl mx-auto">
-                  <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${
-                    index % 2 === 1 ? 'lg:grid-flow-row-dense' : ''
-                  }`}>
-                    
-                    <motion.div
-                      initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.8 }}
-                      className={`space-y-6 ${index % 2 === 1 ? 'lg:col-start-2' : ''}`}
-                    >
-                      <div className="bg-gradient-to-br from-brand-50/80 to-surface-muted 
-                                     dark:from-brand-900/10 dark:to-surface-dark-muted 
-                                     rounded-2xl p-8 border border-brand-100/50 dark:border-brand-700/30">
-                        <h3 className="font-bebas text-bebas-lg md:text-bebas-xl 
-                                      text-gray-900 dark:text-white mb-4 leading-tight">
-                          {section.headlines}
-                        </h3>
-                        <p className="text-lg text-gray-600 dark:text-gray-300 font-montserrat 
-                                    leading-relaxed mb-6">
-                          {section.lead}
-                        </p>
-                        <div className="prose dark:prose-invert max-w-none">
-                          <p className="text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed">
-                            {section.content}
-                          </p>
-                        </div>
-                      </div>
-                    </motion.div>
-
-                    <motion.div
-                      initial={{ opacity: 0, x: index % 2 === 0 ? 30 : -30 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.8, delay: 0.2 }}
-                      className={`relative ${index % 2 === 1 ? 'lg:col-start-1 lg:row-start-1' : ''}`}
-                    >
-                      <div className="relative rounded-2xl overflow-hidden shadow-brand-lg group border border-brand-100/50 dark:border-brand-700/30">
-                        <img
-                          src={section.img}
-                          alt={section.headlines}
-                          className="w-full h-[400px] object-cover transition-transform duration-500 
-                                    group-hover:scale-105"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
-                      </div>
-                    </motion.div>
-                  </div>
+      {/* Article Content Section med samme bakgrunn som andre sider */}
+      {heroSection && (
+        <section className="py-20 bg-gradient-to-br from-brand-50/80 to-surface-muted 
+                           dark:from-brand-900/10 dark:to-surface-dark-muted">
+          {/* Decorative elements som andre sider */}
+          <div className="absolute -top-10 -right-10 w-40 h-40 bg-magenta-400/10 rounded-full blur-3xl" />
+          <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-brand-400/10 rounded-full blur-3xl" />
+          
+          <div className="container mx-auto px-4 md:px-6 relative z-10">
+            <div className="max-w-4xl mx-auto space-y-12">
+              
+              {/* Paragraph1 */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+              >
+                <div className="prose prose-lg dark:prose-invert max-w-none">
+                  <p className="text-gray-700 dark:text-gray-300 font-montserrat leading-relaxed text-lg">
+                    {heroSection.paragraph1}
+                  </p>
                 </div>
-              ))}
-            </motion.div>
+              </motion.div>
+
+              {/* Pull Quote mellom paragraph1 og paragraph2 */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="text-center py-8"
+              >
+                <blockquote className="text-transparent bg-clip-text bg-hero-gradient font-bebas text-bebas-xl md:text-bebas-2xl leading-tight">
+                  "{heroSection.pullQuote}"
+                </blockquote>
+              </motion.div>
+
+              {/* Paragraph2 hvis den eksisterer */}
+              {heroSection.paragraph2 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: 0.4 }}
+                >
+                  <div className="prose prose-lg dark:prose-invert max-w-none">
+                    <p className="text-gray-700 dark:text-gray-300 font-montserrat leading-relaxed text-lg">
+                      {heroSection.paragraph2}
+                    </p>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Paragraph3 hvis den eksisterer */}
+              {heroSection.paragraph3 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: 0.6 }}
+                >
+                  <div className="prose prose-lg dark:prose-invert max-w-none">
+                    <p className="text-gray-700 dark:text-gray-300 font-montserrat leading-relaxed text-lg">
+                      {heroSection.paragraph3}
+                    </p>
+                  </div>
+                </motion.div>
+              )}
+            </div>
           </div>
         </section>
       )}
 
-      {/* Call to Action Section */}
-      <section className="py-16 bg-surface-light dark:bg-surface-dark">
+      {/* Call to Action Section - standard hvit bakgrunn */}
+      <section className="py-16 bg-white dark:bg-surface-dark">
         <div className="container mx-auto px-4 md:px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}

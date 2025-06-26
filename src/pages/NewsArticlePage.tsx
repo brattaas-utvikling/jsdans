@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { getDocument, DATABASE_ID, COLLECTIONS } from "@/lib/appwrite";
 import ScrollToTop from "@/helpers/ScrollToTop";
 
-// TypeScript interface (same as before)
+// TypeScript interface som matcher den nye databasestrukturen
 interface AppwriteDocument {
   $id: string;
   $createdAt: string;
@@ -25,8 +25,11 @@ interface AppwriteDocument {
 interface NewsArticle extends AppwriteDocument {
   headlines: string;
   lead: string;
-  content: string;
   img: string;
+  'paragraph-1': string;
+  'paragraph-2': string;
+  'paragraph-3': string;
+  pullquote?: string; // Optional pullquote field
   author: string;
   published: boolean;
   created_at: string;
@@ -53,10 +56,11 @@ export default function NewsArticlePage() {
     });
   };
 
-  // Calculate reading time
-  const calculateReadingTime = (content: string): number => {
+  // Calculate reading time based on all paragraphs
+  const calculateReadingTime = (article: NewsArticle): number => {
     const wordsPerMinute = 200;
-    const words = content.split(' ').length;
+    const allText = `${article.lead} ${article['paragraph-1']} ${article['paragraph-2']} ${article['paragraph-3']}`;
+    const words = allText.split(' ').length;
     return Math.ceil(words / wordsPerMinute);
   };
 
@@ -96,9 +100,56 @@ export default function NewsArticlePage() {
     }
   };
 
-  // Format content with line breaks
-  const formatContent = (content: string): string[] => {
-    return content.split('\n').filter(paragraph => paragraph.trim() !== '');
+  // Get non-empty paragraphs
+  const getArticleParagraphs = (article: NewsArticle): string[] => {
+    const paragraphs = [
+      article['paragraph-1'],
+      article['paragraph-2'],
+      article['paragraph-3']
+    ];
+    
+    return paragraphs.filter(paragraph => paragraph && paragraph.trim() !== '');
+  };
+
+  // Render content with pullquote positioned correctly
+  const renderArticleContent = (article: NewsArticle, paragraphs: string[]) => {
+    if (paragraphs.length === 0) {
+      return null;
+    }
+
+    const content = [];
+    
+    // Første paragraph (alltid vis)
+    content.push(
+      <p key="paragraph-1" className="text-lg leading-relaxed">
+        {paragraphs[0]}
+      </p>
+    );
+
+    // Pullquote vises ALLTID etter første paragraph hvis den eksisterer
+    // (uavhengig av hvor mange paragraphs det er)
+    if (article.pullquote && article.pullquote.trim() !== '') {
+      content.push(
+        <blockquote key="pullquote" className="my-8 p-6 bg-gradient-to-r from-brand-50/50 to-magenta-50/30 dark:from-brand-900/10 dark:to-magenta-900/10 rounded-xl border-l-4 border-brand-500 relative">
+          <div className="absolute top-4 left-4 text-brand-300 dark:text-brand-600 text-4xl font-serif">"</div>
+          <p className="text-xl font-medium text-brand-700 dark:text-brand-300 font-montserrat leading-relaxed italic text-center px-8">
+            {article.pullquote}
+          </p>
+          <div className="absolute bottom-4 right-4 text-brand-300 dark:text-brand-600 text-4xl font-serif rotate-180">"</div>
+        </blockquote>
+      );
+    }
+
+    // Resten av paragraphene (paragraph-2 og paragraph-3 hvis de eksisterer)
+    paragraphs.slice(1).forEach((paragraph, index) => {
+      content.push(
+        <p key={`paragraph-${index + 2}`} className="text-lg leading-relaxed">
+          {paragraph}
+        </p>
+      );
+    });
+
+    return content;
   };
 
   // Share functionality
@@ -139,33 +190,32 @@ export default function NewsArticlePage() {
     return (
       <div className="min-h-screen bg-white dark:bg-surface-dark flex items-center justify-center">
         <div className="text-center max-w-md mx-auto px-4">
-          <h1 className="text-2xl font-bebas text-gray-900 dark:text-white mb-4">
-            Artikkel ikke funnet
-          </h1>
-          <p className="text-gray-600 dark:text-gray-300 font-montserrat mb-6">
-            {error || 'Vi kunne ikke finne artikkelen du leter etter.'}
-          </p>
-          <Button 
-            onClick={() => navigate('/nyheter')}
-            className="font-semibold rounded-full 
-                      bg-brand-500 hover:bg-brand-600
-                      dark:bg-white dark:hover:bg-brand-600/80
-                      text-white dark:text-brand-600
-                      dark:hover:text-white/90
-                      border-0 shadow hover:shadow-md 
-                      transition-all duration-200"
-          >
-            <ArrowLeftIcon className="mr-2 h-4 w-4" />
-            Tilbake til nyheter
-          </Button>
+          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-6">
+            <h1 className="font-bebas text-bebas-lg text-red-800 dark:text-red-200 mb-2">
+              Artikkel ikke funnet
+            </h1>
+            <p className="text-red-600 dark:text-red-300 font-montserrat mb-4">
+              {error || 'Vi kunne ikke finne artikkelen du leter etter.'}
+            </p>
+            <Button 
+              onClick={() => navigate('/nyheter')}
+              className="font-semibold bg-red-600 hover:bg-red-700 text-white"
+            >
+              <ArrowLeftIcon className="mr-2 h-4 w-4" />
+              Tilbake til nyheter
+            </Button>
+          </div>
         </div>
       </div>
     );
   }
 
+  const paragraphs = getArticleParagraphs(article);
+
   return (
     <div className="min-h-screen bg-white dark:bg-surface-dark">
       <ScrollToTop />
+      
       {/* Hero Section with Image */}
       <section className="relative h-[60vh] overflow-hidden">
         <img
@@ -180,10 +230,9 @@ export default function NewsArticlePage() {
           <Button
             onClick={() => navigate('/nyheter')}
             size="sm"
-            className="font-montserrat-semibold rounded-md overflow-hidden
-                                bg-white/20 backdrop-blur-sm text-white border border-white/30 
-                                hover:border-white/50 transition-all duration-300 px-8 py-3
-                                group-hover:border-transparent"
+            className="font-montserrat font-semibold rounded-md overflow-hidden
+                      bg-white/20 backdrop-blur-sm text-white border border-white/30 
+                      hover:border-white/50 transition-all duration-300 px-4 py-2"
           >
             <ArrowLeftIcon className="mr-2 h-4 w-4" />
             Tilbake
@@ -235,7 +284,7 @@ export default function NewsArticlePage() {
               
               <div className="flex items-center gap-2">
                 <ClockIcon className="h-5 w-5" />
-                <span>{calculateReadingTime(article.content)} min lesing</span>
+                <span>{calculateReadingTime(article)} min lesing</span>
               </div>
 
               {/* Action buttons */}
@@ -260,11 +309,7 @@ export default function NewsArticlePage() {
               className="prose prose-lg dark:prose-invert max-w-none"
             >
               <div className="space-y-6 text-gray-700 dark:text-gray-300 font-montserrat leading-relaxed">
-                {formatContent(article.content).map((paragraph, index) => (
-                  <p key={index} className="text-lg leading-relaxed">
-                    {paragraph}
-                  </p>
-                ))}
+                {renderArticleContent(article, paragraphs)}
               </div>
             </motion.div>
 
@@ -283,7 +328,6 @@ export default function NewsArticlePage() {
                 </div>
                 
                 <div className="flex gap-3">
-                                 
                   <Button
                     onClick={() => navigate('/nyheter')}
                     variant="outline"

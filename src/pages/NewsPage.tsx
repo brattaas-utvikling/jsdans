@@ -24,36 +24,17 @@ interface AppwriteDocument {
 interface NewsArticle extends AppwriteDocument {
   headlines: string;
   lead: string;
-  content: string;
   img: string;
+  'paragraph-1': string;
+  'paragraph-2': string;
+  'paragraph-3': string;
   author: string;
   published: boolean;
   created_at: string;
   updated_at: string;
 }
 
-// Fallback mock data for testing
-// const mockNewsData: NewsArticle[] = [
-//   {
-//     $id: "1",
-//     $createdAt: "2025-01-15T10:00:00Z",
-//     $updatedAt: "2025-01-15T10:00:00Z",
-//     $collectionId: "news",
-//     $databaseId: "main",
-//     $permissions: [],
-//     headlines: "Nye Hip-Hop Klasser Starter i Februar",
-//     lead: "Vi utvider vårt program med spennende nye hip-hop klasser for alle aldersgrupper. Meld deg på nå!",
-//     content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
-//     img: "https://images.unsplash.com/photo-1547036967-23d11aacaee0?q=80&w=1000",
-//     author: "Maria Andersen",
-//     published: true,
-//     created_at: "2025-01-15T10:00:00Z",
-//     updated_at: "2025-01-15T10:00:00Z"
-//   }
-// ];
-
 export default function NewsPage() {
-  // const [newsData, setNewsData] = useState<NewsArticle[]>([]);
   const [filteredNews, setFilteredNews] = useState<NewsArticle[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -68,10 +49,11 @@ export default function NewsPage() {
     });
   };
 
-  // Calculate reading time
-  const calculateReadingTime = (content: string): number => {
+  // Calculate reading time based on all paragraphs
+  const calculateReadingTime = (article: NewsArticle): number => {
     const wordsPerMinute = 200;
-    const words = content.split(' ').length;
+    const allText = `${article.lead} ${article['paragraph-1']} ${article['paragraph-2']} ${article['paragraph-3']}`;
+    const words = allText.split(' ').length;
     return Math.ceil(words / wordsPerMinute);
   };
 
@@ -92,15 +74,11 @@ export default function NewsPage() {
       
       const articles = response.documents as unknown as NewsArticle[];
 
-      console.log(`Hentet ${articles.length} artikler fra Appwrite`); // Debug info
-      // setNewsData(articles); // Behold for logging/debugging
+      console.log(`Hentet ${articles.length} artikler fra Appwrite`);
       setFilteredNews(articles);
     } catch (err) {
       console.error('Error fetching news:', err);
-      setError('Kunne ikke laste nyheter. Bruker demo-data.');
-      // Fallback til mock data ved feil
-      // setNewsData(mockNewsData);
-      // setFilteredNews(mockNewsData);
+      setError('Kunne ikke laste nyheter fra databasen.');
     } finally {
       setLoading(false);
     }
@@ -126,22 +104,74 @@ export default function NewsPage() {
     );
   }
 
+  if (error) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-surface-dark flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto px-4">
+          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-6">
+            <h2 className="font-bebas text-bebas-lg text-red-800 dark:text-red-200 mb-2">
+              Kunne ikke laste nyheter
+            </h2>
+            <p className="text-red-600 dark:text-red-300 font-montserrat mb-4">
+              {error}
+            </p>
+            <Button 
+              onClick={fetchNewsFromAppwrite}
+              className="font-semibold bg-red-600 hover:bg-red-700 text-white"
+            >
+              Prøv igjen
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (filteredNews.length === 0) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-surface-dark">
+        <ScrollToTop />
+        
+        {/* Hero Section */}
+        <section className="bg-gradient-to-br from-brand-50/80 to-surface-muted 
+                          dark:from-brand-900/10 dark:to-surface-dark-muted 
+                          pt-24 pb-16 relative overflow-hidden">
+          <div className="container mx-auto px-4 md:px-6 relative z-10">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-center max-w-4xl mx-auto"
+            >
+              <h1 className="text-base font-medium text-brand-600 dark:text-brand-400 
+                            uppercase tracking-wider mb-3">
+                Nyheter
+              </h1>
+              <h2 className="font-bebas font-semibold text-bebas-xl md:text-bebas-2xl mb-6 text-gray-900 dark:text-white">
+                Ingen nyheter ennå
+              </h2>
+              <p className="text-lg text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed mb-8">
+                Vi jobber med å legge til spennende nyheter og oppdateringer. Kom tilbake snart!
+              </p>
+              <Button 
+                onClick={fetchNewsFromAppwrite}
+                className="font-semibold bg-brand-500 hover:bg-brand-600
+                          dark:bg-white dark:hover:bg-brand-600/80
+                          text-white dark:text-brand-600
+                          dark:hover:text-white/90"
+              >
+                Last på nytt
+              </Button>
+            </motion.div>
+          </div>
+        </section>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-white dark:bg-surface-dark">
       <ScrollToTop />
-      
-      {/* Error message */}
-      {error && (
-        <div className="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-400 p-4 mb-6">
-          <div className="flex">
-            <div className="ml-3">
-              <p className="text-sm text-yellow-700 dark:text-yellow-200">
-                {error}
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-brand-50/80 to-surface-muted 
@@ -212,7 +242,7 @@ export default function NewsPage() {
                             </div>
                             <div className="flex items-center gap-2 text-sm font-montserrat">
                               <ClockIcon className="h-4 w-4 text-white/80" />
-                              <span>{calculateReadingTime(featuredArticle.content)} min lesing</span>
+                              <span>{calculateReadingTime(featuredArticle)} min lesing</span>
                             </div>
                             <div className="flex items-center gap-2 text-sm font-montserrat">
                               <UserIcon className="h-4 w-4 text-white/80" />
@@ -239,7 +269,7 @@ export default function NewsPage() {
                         <div className="flex items-center gap-4">
                           <Button 
                             size="lg"
-                            className="relative font-montserrat-semibold rounded-full overflow-hidden
+                            className="relative font-montserrat font-semibold rounded-full overflow-hidden
                                 bg-white/20 backdrop-blur-sm text-white border border-white/30 
                                 hover:border-white/50 transition-all duration-300 px-8 py-3
                                 group-hover:border-transparent"
@@ -275,14 +305,16 @@ export default function NewsPage() {
           {regularArticles.length === 0 ? (
             <div className="text-center py-16">
               <p className="text-gray-500 dark:text-gray-400 font-montserrat text-lg mb-4">
-                Ingen nyheter funnet.
+                Ingen andre nyheter funnet.
               </p>
               <Button 
                 onClick={fetchNewsFromAppwrite}
                 variant="outline"
-                className="border-brand-300 text-brand-600 hover:bg-brand-50 hover:text-brand-600
-                          dark:border-brand-700 dark:text-brand-400 dark:hover:bg-brand-900/30 dark:hover:text-brand-400
-                          font-semibold rounded-full"
+                className="font-semibold rounded-full 
+                          border-brand-300 text-brand-600 
+                          hover:bg-brand-50 hover:text-brand-700
+                          dark:border-brand-700 dark:text-brand-400 
+                          dark:hover:bg-brand-900/30 dark:hover:text-brand-300"
               >
                 Last på nytt
               </Button>
@@ -337,7 +369,7 @@ export default function NewsPage() {
                             </div>
                             <div className="flex items-center gap-1.5 text-xs font-montserrat">
                               <ClockIcon className="h-3 w-3 text-white/80 flex-shrink-0" />
-                              <span>{calculateReadingTime(article.content)} min lesing</span>
+                              <span>{calculateReadingTime(article)} min lesing</span>
                             </div>
                             <div className="flex items-center gap-1.5 text-xs font-montserrat">
                               <UserIcon className="h-3 w-3 text-white/80 flex-shrink-0" />
