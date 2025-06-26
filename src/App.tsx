@@ -11,6 +11,7 @@ import NewsPage from "./pages/NewsPage";
 import NewsArticlePage from "./pages/NewsArticlePage";
 import ClassesSection from "./pages/CoursesPage";
 import RegistrationPage from "./pages/RegistrationPage";
+import TermsConditions from "./pages/TermsConditions";
 
 
 
@@ -90,6 +91,14 @@ export default function App() {
               <ContactSection />
             </Layout>
           }
+        />
+        <Route
+        path="/betingelser"
+        element={
+          <Layout>
+            <TermsConditions />
+          </Layout>
+        }
         />
         <Route
           path="*"

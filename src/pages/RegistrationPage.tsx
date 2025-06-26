@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { 
   StarIcon,
   HeartIcon,
@@ -217,10 +218,29 @@ export default function RegistrationPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="text-lg md:text-xl text-gray-700 dark:text-gray-300 font-montserrat leading-relaxed max-w-2xl mx-auto"
+            className="text-lg md:text-xl text-gray-700 dark:text-gray-300 font-montserrat leading-relaxed max-w-2xl mx-auto mb-6"
           >
             Bli en del av Urban Studios-familien allerede nå! Følg reisen vår på Instagram og gjennom våre nyheter – vi deler alt fra byggeprosessen til de første kursene.
           </motion.p>
+
+          {/* Betingelser Link - Properly styled and animated */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.7 }}
+            className="mb-8"
+          >
+            <Link 
+              to="/betingelser"
+              className="inline-flex items-center text-brand-600 dark:text-brand-400 
+                        hover:text-brand-700 dark:hover:text-brand-300 
+                        transition-all duration-200 font-montserrat font-medium
+                        hover:underline underline-offset-4 decoration-2
+                        focus:outline-none focus:ring-2 focus:ring-brand-400 focus:ring-offset-2 rounded-md px-2 py-1"
+            >
+              Les våre betingelser for kursdeltagelse
+            </Link>
+          </motion.div>
 
           {/* Instagram CTA Button - Sunset themed */}
            <motion.div

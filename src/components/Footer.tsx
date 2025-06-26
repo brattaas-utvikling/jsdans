@@ -1,6 +1,7 @@
 import { STUDIO_INFO } from "@/data/dance-studio-data";
 import { useState } from "react";
 import { MapPinIcon, PhoneIcon, MailIcon } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -188,13 +189,12 @@ export default function Footer() {
             >
               Personvern
             </a>
-            <a
-              href="#"
-              className="text-gray-500 dark:text-gray-400 hover:text-brand-400 dark:hover:text-brand-300 transition-colors text-sm font-montserrat
-                        hover:underline underline-offset-4"
+            <Link 
+              to="/betingelser"
+              className="text-gray-500 dark:text-gray-400 hover:text-brand-400 dark:hover:text-brand-300 transition-colors text-sm font-montserrat hover:underline underline-offset-4"
             >
-              Vilkår
-            </a>
+              Betingelser
+            </Link>
             <a
               href="#"
               className="text-gray-500 dark:text-gray-400 hover:text-brand-400 dark:hover:text-brand-300 transition-colors text-sm font-montserrat
@@ -210,7 +210,7 @@ export default function Footer() {
           <p className="text-gray-500 dark:text-gray-400 text-xs font-montserrat">
             Levert av{" "}
             <a
-              href="https://brattas-utvikling.no"
+              href="https://brattaasutvikling.no"
               target="_blank"
               rel="noopener noreferrer"
               className="text-brand-500 dark:text-brand-400 hover:text-brand-400 dark:hover:text-brand-300 
