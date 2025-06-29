@@ -1,5 +1,6 @@
-// services/secureContactService.ts
-import { ID, Query } from 'appwrite';
+// services/secureContactService.ts - KOMPLETT FIKSET VERSJON
+
+import { ID, Query, Functions } from 'appwrite';
 import { databases, DATABASE_ID, COLLECTIONS } from '../lib/appwrite';
 import { InputSanitizer, SecurityLogger } from '../utils/security';
 import { 
@@ -12,9 +13,9 @@ export interface ContactDocument extends ContactFormData {
   $id: string;
   status: 'new' | 'read' | 'replied' | 'spam';
   created_at: string;
-  ip_hash?: string; // Hashet IP for tracking
-  user_agent_hash?: string; // Hashet user agent
-  security_score: number; // 0-100, hvor høyere er tryggere
+  ip_hash?: string;
+  user_agent_hash?: string;
+  security_score: number;
 }
 
 export interface SubmissionResult {
@@ -26,7 +27,7 @@ export interface SubmissionResult {
 
 export class SecureContactService {
   /**
-   * Hovedfunksjon for å sende kontaktskjema med full sikkerhet
+   * Hovedfunksjon for å sende kontaktskjema
    */
   static async submitContactForm(
     formData: ContactFormData,
@@ -36,6 +37,8 @@ export class SecureContactService {
     }
   ): Promise<SubmissionResult> {
     try {
+      console.log('🚀 Starting contact form submission...');
+      
       // 1. Sanitiser input først
       const sanitizedInput = {
         name: InputSanitizer.sanitizeName(formData.name),
@@ -89,7 +92,7 @@ export class SecureContactService {
           email: validatedData.email,
           phone: validatedData.phone || null,
           message: validatedData.message,
-          status: securityScore > 70 ? 'new' : 'new', // Kan flagge som 'review' hvis lav score
+          status: 'new',
           created_at: new Date().toISOString(),
           ip_hash: ipHash,
           user_agent_hash: userAgentHash,
@@ -105,8 +108,8 @@ export class SecureContactService {
         timestamp: new Date().toISOString(),
       });
 
-      // 8. Send e-post notifikasjon (asynkront)
-      this.sendEmailNotification(validatedData, securityScore)
+      // 8. Send e-post notifikasjon (fire and forget)
+      this.sendEmailNotification(validatedData, securityScore, document.$id)
         .catch(error => console.error('Email notification failed:', error));
 
       return {
@@ -126,32 +129,121 @@ export class SecureContactService {
   }
 
   /**
-   * Beregn sikkerhetsscore basert på ulike faktorer
+   * Send e-post notifikasjon (ENKEL VERSJON UTEN STATUS POLLING)
+   */
+  private static async sendEmailNotification(
+    contactData: ContactFormData,
+    securityScore: number,
+    documentId: string
+  ): Promise<void> {
+    try {
+      console.log('📧 === EMAIL NOTIFICATION START ===');
+      
+      const { client } = await import('../lib/appwrite');
+      const functions = new Functions(client);
+      
+      // Clean payload
+      const payload = {
+        contactData: {
+          name: contactData.name,
+          email: contactData.email,
+          phone: contactData.phone || null,
+          message: contactData.message
+        },
+        securityScore: Number(securityScore),
+        documentId: String(documentId),
+        timestamp: new Date().toISOString()
+      };
+      
+      console.log('📦 Payload prepared:', payload);
+      
+      // Serialize payload
+      const payloadString = JSON.stringify(payload);
+      console.log('✅ Payload serialized successfully');
+      
+      // Execute function
+      console.log('🚀 Executing email function...');
+      const execution = await functions.createExecution(
+        'send-contact-email',
+        payloadString
+      );
+      
+      console.log('✅ Email function triggered successfully!');
+      console.log('📋 Execution ID:', execution.$id);
+      console.log('📧 Email should be sent - check your inbox!');
+      
+      // Don't try to read execution status to avoid permissions issues
+      
+    } catch (error: unknown) {
+      console.error('❌ Email notification failed:', error instanceof Error ? error.message : 'Unknown error');
+      // Don't throw - we don't want to break the form submission
+    }
+  }
+
+  /**
+   * Test function execution
+   */
+  static async testEmailFunction(): Promise<void> {
+    try {
+      console.log('🧪 Testing email function...');
+      
+      const { client } = await import('../lib/appwrite');
+      const functions = new Functions(client);
+      
+      const testPayload = {
+        debug: true,
+        contactData: {
+          name: 'Debug Test User',
+          email: 'debug@test.com',
+          message: 'This is a debug test message'
+        },
+        securityScore: 75,
+        documentId: 'debug-test-123'
+      };
+      
+      const payloadString = JSON.stringify(testPayload);
+      
+      const execution = await functions.createExecution(
+        'send-contact-email',
+        payloadString
+      );
+      
+      console.log('✅ Test function executed!');
+      console.log('📋 Execution ID:', execution.$id);
+      console.log('📧 Check your email for the test message!');
+      
+    } catch (error: unknown) {
+      console.error('❌ Test failed:', error instanceof Error ? error.message : 'Unknown error');
+    }
+  }
+
+  /**
+   * Beregn sikkerhetsscore
    */
   private static calculateSecurityScore(
     data: ContactFormData, 
     metadata?: { userAgent?: string; startTime?: number }
   ): number {
-    let score = 50; // Base score
+    let score = 50;
 
     // Positive indikatorer
-    if (data.phone && data.phone.length > 8) score += 10; // Telefon oppgitt
-    if (data.name.includes(' ')) score += 5; // Fullt navn
-    if (data.message.length > 100) score += 10; // Detaljert melding
-    if (data.message.includes('?')) score += 5; // Spørsmål indikerer ekte interesse
+    if (data.phone && data.phone.length > 8) score += 10;
+    if (data.name.includes(' ')) score += 5;
+    if (data.message.length > 100) score += 10;
+    if (data.message.includes('?')) score += 5;
     
     // Norske tegn/ord
     if (/[æøå]/i.test(data.message)) score += 10;
     if (/\b(takk|tusen|hilsen|mvh|hei|hallo)\b/i.test(data.message)) score += 5;
 
     // Negative indikatorer
-    if (data.message.length < 20) score -= 15; // For kort melding
-    if (/[A-Z]{10,}/.test(data.message)) score -= 10; // For mange store bokstaver
-    if ((data.message.match(/!/g) || []).length > 3) score -= 5; // For mange utropstegn
+    if (data.message.length < 20) score -= 15;
+    if (/[A-Z]{10,}/.test(data.message)) score -= 10;
+    if ((data.message.match(/!/g) || []).length > 3) score -= 5;
     
     // E-post kvalitet
-    if (data.email.includes('+')) score -= 5; // Plus-adressing kan være midlertidig
-    if (/\d{4,}/.test(data.email)) score -= 5; // Mange tall i e-post
+    if (data.email.includes('+')) score -= 5;
+    if (/\d{4,}/.test(data.email)) score -= 5;
     
     const emailDomain = data.email.split('@')[1];
     const trustedDomains = ['gmail.com', 'outlook.com', 'yahoo.com', 'hotmail.com', 'icloud.com'];
@@ -162,14 +254,14 @@ export class SecureContactService {
       if (metadata.userAgent.includes('bot') || metadata.userAgent.includes('crawler')) {
         score -= 30;
       }
-      if (metadata.userAgent.includes('Mobile')) score += 5; // Mobile brukere ofte ekte
+      if (metadata.userAgent.includes('Mobile')) score += 5;
     }
 
     return Math.max(0, Math.min(100, score));
   }
 
   /**
-   * Hash streng for anonym tracking
+   * Hash streng
    */
   private static async hashString(input: string): Promise<string> {
     const encoder = new TextEncoder();
@@ -180,59 +272,14 @@ export class SecureContactService {
   }
 
   /**
-   * Hent klient IP (mock i browser)
+   * Hent klient IP
    */
   private static getClientIP(): string {
-    // I en ekte implementasjon ville dette komme fra server-side
     return 'client-browser';
   }
 
   /**
-   * Send e-post notifikasjon
-   */
-  private static async sendEmailNotification(
-    contactData: ContactFormData,
-    securityScore: number
-  ): Promise<void> {
-    try {
-      const subject = `${securityScore < 60 ? '⚠️ ' : ''}Ny kontaktmelding fra ${contactData.name}`;
-      
-      const emailContent = {
-        to: 'studio@urbanstudios.no',
-        subject,
-        body: `
-          Ny kontaktmelding mottatt:
-          
-          Navn: ${contactData.name}
-          E-post: ${contactData.email}
-          Telefon: ${contactData.phone || 'Ikke oppgitt'}
-          Sikkerhetsscore: ${securityScore}/100
-          
-          Melding:
-          ${contactData.message}
-          
-          ---
-          Sendt: ${new Date().toLocaleString('no-NO')}
-          ${securityScore < 60 ? '\n⚠️ Lav sikkerhetsscore - vurder ekstra kontroll' : ''}
-        `
-      };
-
-      // I produksjon: integrer med e-post tjeneste
-      console.log('📧 E-post som ville blitt sendt:', emailContent);
-      
-      // Eksempel integrasjon:
-      // await emailService.send(emailContent);
-      // eller
-      // await functions.createExecution('sendEmail', JSON.stringify(emailContent));
-      
-    } catch (error) {
-      console.error('Failed to send email notification:', error);
-      // Ikke kast error - kontaktskjemaet er allerede lagret
-    }
-  }
-
-  /**
-   * Hent alle kontakter (admin-funksjon)
+   * Hent alle kontakter
    */
   static async getAllContacts(): Promise<ContactDocument[]> {
     try {
