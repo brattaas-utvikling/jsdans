@@ -1,46 +1,191 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { 
   StarIcon,
-  SparklesIcon
+  SparklesIcon,
+  ArrowRight
 } from "lucide-react";
 import ScrollToTop from "@/helpers/ScrollToTop";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { listDocuments, DATABASE_ID, COLLECTIONS, Query } from "@/lib/appwrite";
+
+// TypeScript interface som matcher Appwrite schema
+interface AppwriteDocument {
+  $id: string;
+  $createdAt: string;
+  $updatedAt: string;
+  $collectionId: string;
+  $databaseId: string;
+  $permissions: string[];
+}
+
+interface PricingPackage extends AppwriteDocument {
+  name: string;
+  price?: number; // Pris i øre
+  period?: string;
+  discount_amount?: number; // Rabatt i øre
+  discount_text?: string;
+  description?: string;
+  order: number;
+  is_active: boolean;
+  category?: string;
+}
 
 export default function PricingPage() {
-  const pricingOptions = [
-    {
-      name: "Toddler",
-      price: "1 200 kr per halvår"
-    },
-    {
-      name: "1 klasse",
-      price: "1 500 kr per halvår"
-    },
-    {
-      name: "2 klasser",
-      price: "2 800 kr per halvår",
-      note: "(200 kr rabatt)"
-    },
-    {
-      name: "3 eller flere klasser",
-      price: "4 000 kr per halvår",
-      note: "(500 kr rabatt)"
-    },
-    {
-      name: "Familierabatt",
-      price: "50% for danser nr 2 som danser 3 eller flere klasser"
-    },
-    {
-      name: "Kompani",
-      price: "500 kr ekstra per halvår"
-    },
-    {
-      name: "Klippekort",
-      price: "10 klipp 1 500 kr"
+  const [pricingPackages, setPricingPackages] = useState<PricingPackage[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Format price from øre to kr
+  const formatPrice = (priceInOre?: number): string => {
+    if (!priceInOre) return '';
+    return `${(priceInOre / 100).toLocaleString('no-NO')} kr`;
+  };
+
+  // Format full pricing display
+  const formatPricingDisplay = (pkg: PricingPackage): string => {
+    // Special cases with fallback descriptions
+    const fallbackDescriptions: Record<string, string> = {
+      "Familierabatt": "50% for danser nr 2 som danser 3 eller flere klasser",
+      "Kompani": "500 kr ekstra per halvår",
+      "Klippekort": "1 500 kr for 10 klipp",
+      "Prøvetime": "Gratis første time for nye deltakere"
+    };
+
+    // Check if this package has a fallback description
+    if (fallbackDescriptions[pkg.name]) {
+      return pkg.description || fallbackDescriptions[pkg.name];
     }
-  ];
+    
+    // If has description and no meaningful price, show description
+    if (pkg.description && (!pkg.price || pkg.price === 0)) {
+      return pkg.description;
+    }
+    
+    // If no price and no description
+    if ((!pkg.price || pkg.price === 0) && !pkg.description) {
+      return 'Pris kommer';
+    }
+    
+    // Standard price display
+    if (pkg.price && pkg.price > 0 && pkg.period) {
+      return `${formatPrice(pkg.price)} ${pkg.period}`;
+    }
+    
+    // Price without period
+    if (pkg.price && pkg.price > 0) {
+      return formatPrice(pkg.price);
+    }
+    
+    return 'Kontakt oss for pris';
+  };
+
+  // Fetch pricing packages from Appwrite
+  const fetchPricingFromAppwrite = async () => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const response = await listDocuments(
+        DATABASE_ID,
+        COLLECTIONS.PRICING_PACKAGES,
+        [
+          Query.equal('is_active', true), // Vis kun aktive priser
+          Query.orderAsc('order'), // Sorter etter order felt
+          Query.limit(50) // Begrens til 50 pakker
+        ]
+      );
+      
+      const packages = response.documents as unknown as PricingPackage[];
+      console.log(`Hentet ${packages.length} prispakker fra Appwrite`);
+      setPricingPackages(packages);
+    } catch (err) {
+      console.error('Error fetching pricing packages:', err);
+      setError('Kunne ikke laste priser fra databasen.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch data når komponenten laster
+  useEffect(() => {
+    fetchPricingFromAppwrite();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-surface-dark flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-500 mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-300 font-montserrat">Laster priser...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-surface-dark flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto px-4">
+          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-6">
+            <h2 className="font-bebas text-bebas-lg text-red-800 dark:text-red-200 mb-2">
+              Kunne ikke laste priser
+            </h2>
+            <p className="text-red-600 dark:text-red-300 font-montserrat mb-4">
+              {error}
+            </p>
+            <Button 
+              onClick={fetchPricingFromAppwrite}
+              className="font-semibold bg-red-600 hover:bg-red-700 text-white"
+            >
+              Prøv igjen
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (pricingPackages.length === 0) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-surface-dark">
+        <ScrollToTop />
+        
+        {/* Hero Section - samme som før */}
+        <section className="bg-gradient-to-br from-brand-50/80 to-surface-muted 
+                          dark:from-brand-900/10 dark:to-surface-dark-muted 
+                          pt-24 pb-16 relative overflow-hidden">
+          <div className="container mx-auto px-4 md:px-6 relative z-10">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-center max-w-4xl mx-auto"
+            >
+              <h1 className="text-base font-medium text-brand-600 dark:text-brand-400 
+                            uppercase tracking-wider mb-3">
+                Priser
+              </h1>
+              <h2 className="font-bebas font-semibold text-bebas-xl md:text-bebas-2xl mb-6 text-gray-900 dark:text-white">
+                Ingen priser tilgjengelig ennå
+              </h2>
+              <p className="text-lg text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed mb-8">
+                Vi jobber med å legge til våre priser. Kom tilbake snart eller kontakt oss for mer informasjon!
+              </p>
+              <Button 
+                onClick={fetchPricingFromAppwrite}
+                className="font-semibold"
+                variant="outline"
+              >
+                Last på nytt
+              </Button>
+            </motion.div>
+          </div>
+        </section>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white dark:bg-surface-dark">
@@ -131,15 +276,15 @@ export default function PricingPage() {
         </div>
       </section>
 
-      {/* Pricing Section - Standard styling */}
+      {/* Pricing Section - Standard styling med dynamisk data */}
       <section className="py-16 bg-gradient-to-br from-brand-50/80 to-surface-muted 
                          dark:from-brand-900/10 dark:to-surface-dark-muted">
         <div className="container mx-auto px-4 md:px-6">
           <div className="max-w-4xl mx-auto">
             <div className="space-y-6">
-              {pricingOptions.map((option, index) => (
+              {pricingPackages.map((pkg, index) => (
                 <motion.div
-                  key={option.name}
+                  key={pkg.$id}
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -154,18 +299,23 @@ export default function PricingPage() {
                     <div className="mb-2 sm:mb-0">
                       <h3 className="font-semibold text-lg text-gray-900 dark:text-white 
                                    transition-colors duration-200 group-hover:text-brand-600 dark:group-hover:text-brand-400">
-                        {option.name}
+                        {pkg.name}
                       </h3>
-                      {option.note && (
+                      {pkg.discount_text && (
                         <p className="text-sm text-green-600 dark:text-green-400 font-medium">
-                          {option.note}
+                          {pkg.discount_text}
+                        </p>
+                      )}
+                      {pkg.description && pkg.price && (
+                        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                          {pkg.description}
                         </p>
                       )}
                     </div>
                     <div className="text-right">
                       <p className="font-montserrat text-gray-700 dark:text-gray-300 
                                   transition-colors duration-200 group-hover:text-gray-900 dark:group-hover:text-white">
-                        {option.price}
+                        {formatPricingDisplay(pkg)}
                       </p>
                     </div>
                   </div>
@@ -176,7 +326,7 @@ export default function PricingPage() {
         </div>
       </section>
 
-      {/* CTA Section - Standard styling och knapp fix */}
+      {/* CTA Section - Standard styling */}
       <section className="py-16 bg-white dark:bg-surface-dark">
         <div className="container mx-auto px-4 md:px-6">
           <motion.div
