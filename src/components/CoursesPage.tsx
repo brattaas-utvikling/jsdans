@@ -46,14 +46,6 @@ const CoursesPage: React.FC<CoursesPageProps> = ({
     hasItems: false
   };
 
-  // Log props for debugging
-  console.log('📊 CoursesPage props:', {
-    danceClasses: danceClasses.length,
-    schedules: schedules.length,
-    packages: packages.length,
-    cartItems: safeCartSummary.itemCount,
-    hasDetectFamily: !!onDetectFamily
-  });
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">

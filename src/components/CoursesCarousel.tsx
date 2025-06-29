@@ -108,7 +108,6 @@ export default function CoursesCarousel({
       );
       
       const courseData = response.documents as unknown as DanceClass[];
-      console.log(`✅ Hentet ${courseData.length} kurs fra Appwrite`);
       setCourses(courseData);
     } catch (err) {
       console.error('Error fetching courses:', err);

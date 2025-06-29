@@ -147,8 +147,6 @@ export default function SecureContactForm() {
     setRateLimitError(null);
 
     try {
-      console.log('🚀 Starting form submission...');
-      
       const result: SubmissionResult = await SecureContactService.submitContactForm(
         formData,
         {
@@ -157,14 +155,9 @@ export default function SecureContactForm() {
         }
       );
 
-      console.log('📝 Form submission result:', result);
-
       if (result.success) {
         // Record successful submission for rate limiting
         RateLimiter.recordSubmission(identifier);
-        
-        console.log('✅ Contact form successfully submitted!');
-        console.log('📧 Email notification being sent via Appwrite Function...');
         
         // Show success
         setIsSubmitted(true);
