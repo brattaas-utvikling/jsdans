@@ -131,7 +131,7 @@ export default function CoursesPage() {
               Finn din stil
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed">
-              Fra urban grooves til klassisk eleganse – vårt kursprogram er designet for å møte deg der du er og ta deg dit du vil.
+              Fra energiske grooves til klassisk eleganse – vårt kursprogram er designet for å møte deg der du er og ta deg dit du vil.
             </p>
           </motion.div>
         </div>

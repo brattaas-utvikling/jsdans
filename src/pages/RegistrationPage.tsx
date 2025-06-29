@@ -7,6 +7,7 @@ import {
   SunIcon,
 } from "lucide-react";
 import { FaInstagram } from 'react-icons/fa'
+import ScrollToTop from "@/helpers/ScrollToTop";
 
 export default function RegistrationPage() {
   // Animation variants for better performance
@@ -37,11 +38,12 @@ export default function RegistrationPage() {
 
   return (
     <section 
-      className="min-h-screen bg-gradient-to-br from-brand-50 to-coral-50 
-                 dark:from-brand-900/20 dark:to-coral-900/20  
-                 pt-24 pb-16 relative overflow-hidden"
-      aria-label="Påmelding hero seksjon"
+    className="min-h-screen bg-gradient-to-br from-brand-50 to-coral-50 
+    dark:from-brand-900/20 dark:to-coral-900/20  
+    pt-24 pb-16 relative overflow-hidden"
+    aria-label="Påmelding hero seksjon"
     >
+    <ScrollToTop />
       {/* Optimized animated background elements - Sunset theme */}
       <motion.div 
         variants={backgroundVariants}
