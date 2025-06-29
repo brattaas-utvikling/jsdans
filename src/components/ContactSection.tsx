@@ -166,7 +166,7 @@ export default function ContactSection() {
                         href={`mailto:${STUDIO_INFO.contact.email}`}
                         className="text-gray-600 dark:text-gray-300 font-montserrat 
                                  hover:text-brand-600 dark:hover:text-brand-400 
-                                 transition-colors duration-200 
+                                 duration-200 
                                  focus:outline-none focus:text-brand-600 dark:focus:text-brand-400
                                  underline decoration-transparent hover:decoration-current
                                  focus:decoration-current transition-all break-all"
