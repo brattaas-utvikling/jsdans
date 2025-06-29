@@ -58,7 +58,6 @@ const DanceClasses: React.FC = () => {
           instructor: doc.instructor,
           schedules: doc.schedules || [], // Fra relationship
         })) as DanceClass[];
-        console.log('Fetched dance classes:', mappedClasses); // DEBUG
         
         setClasses(mappedClasses);
       } catch (error) {
