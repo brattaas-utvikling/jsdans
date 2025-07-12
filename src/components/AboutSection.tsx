@@ -278,7 +278,7 @@ export default function AboutPage() {
                 transition={{ duration: 0.8 }}
                 className="max-w-3xl"
               >
-                <h1 className="text-base font-medium text-brand-400 
+                <h1 className="text-xl font-medium text-brand-400 
                       uppercase tracking-wider mb-3">
                   {heroSection.headlines}
                 </h1>

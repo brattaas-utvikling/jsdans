@@ -249,7 +249,7 @@ export default function PricingPage() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <h1 className="text-base font-medium text-brand-600 dark:text-brand-400 
+              <h1 className="text-xl font-medium text-brand-600 dark:text-brand-400 
                             uppercase tracking-wider mb-3">
                 Priser
               </h1>
