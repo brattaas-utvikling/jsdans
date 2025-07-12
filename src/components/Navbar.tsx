@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { MenuIcon, XIcon, MoonIcon, SunIcon } from "lucide-react";
-import logo from "../assets/urban_stuidos_text.svg";
+import logo from "../assets/logo.svg";
 
 // Throttle utility function
 function throttle<T extends (...args: unknown[]) => void>(
