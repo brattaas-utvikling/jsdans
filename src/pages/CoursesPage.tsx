@@ -25,13 +25,10 @@ interface DanceClass extends AppwriteDocument {
   schedule: Array<{
     day: string;
     time: string;
-    level: string;
   }>;
   instructor: string;
-  level: string;
   age: string;
   studio: string;
-  // Legg til andre felter du har i Appwrite
 }
 
 export default function CoursesPage() {
@@ -178,11 +175,10 @@ export default function CoursesPage() {
                       <ClassCard
                         name={course.name}
                         description={course.description}
-                        level={course.level}
                         age={course.age}
                         color={course.color}
                         image={course.image}
-                        schedule={course.schedule || [{ day: "September 2025", time: "Tidspunkt kommer", level: course.level || "Nivå kommer" }]}
+                        schedule={course.schedule || [{ day: "September 2025", time: "Tidspunkt kommer" }]}
                         instructor={course.instructor}
                         studio={course.studio}
                       />
