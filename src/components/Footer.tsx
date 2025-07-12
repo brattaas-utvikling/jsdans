@@ -2,6 +2,8 @@ import { STUDIO_INFO } from "@/data/dance-studio-data";
 import { useState } from "react";
 import { MapPinIcon, PhoneIcon, MailIcon } from "lucide-react";
 import { Link } from "react-router-dom";
+import logo from "../assets/logo.svg";
+import { FaFacebookF, FaInstagram } from "react-icons/fa";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -56,9 +58,8 @@ export default function Footer() {
           {/* Studio info */}
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <h3 className="font-bebas text-bebas-lg text-white">
-                {STUDIO_INFO.name}
-              </h3>
+                <img src={logo} alt="Urban Studios Logo" className="h-8 invert" />
+
             </div>
             
             {/* Tagline med blå/cyan gradient */}
@@ -100,6 +101,36 @@ export default function Footer() {
                   {STUDIO_INFO.contact.email}
                 </a>
               </div>
+     {/* Instagram lenke - fikset */}
+<div className="flex items-center gap-2">
+  <FaInstagram className="h-4 w-4 text-brand-400 flex-shrink-0" />
+  <a 
+    href="https://instagram.com/urbanstudios.dans"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-gray-400 dark:text-gray-300 hover:text-brand-400 dark:hover:text-brand-300 
+              font-montserrat transition-colors hover:underline underline-offset-2"
+    aria-label="Følg Urban Studios på Instagram (åpnes i ny fane)"
+  >
+    Følg oss på Instagram
+  </a>
+</div>
+
+{/* Facebook lenke - fikset */}
+<div className="flex items-center gap-2">
+  <FaFacebookF className="h-4 w-4 text-brand-400 flex-shrink-0" />
+  <a 
+    href="https://facebook.com/urbanstudios.dans"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-gray-400 dark:text-gray-300 hover:text-brand-400 dark:hover:text-brand-300 
+              font-montserrat transition-colors hover:underline underline-offset-2"
+    aria-label="Følg Urban Studios på Facebook (åpnes i ny fane)"
+  >
+    Følg oss på Facebook
+  </a>
+</div>
+              
             </div>
           </div>
 

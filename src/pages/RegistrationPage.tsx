@@ -1,10 +1,13 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import { 
   StarIcon,
   HeartIcon,
   SparklesIcon,
   SunIcon,
+  MailIcon,
+  ArrowRight,
 } from "lucide-react";
 import { FaInstagram } from 'react-icons/fa'
 import ScrollToTop from "@/helpers/ScrollToTop";
@@ -244,33 +247,63 @@ export default function RegistrationPage() {
             </Link>
           </motion.div>
 
-          {/* Instagram CTA Button - Sunset themed */}
-           <motion.div
+          {/* Action Buttons */}
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
-            className="mt-8"
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
           >
+            {/* Email Registration Button - Primary action */}
+            <a 
+              href="mailto:registrer@urbanstudios.no?subject=Påmelding til Urban Studios&body=Hei! Jeg ønsker å melde meg på dansetimer hos Urban Studios når dere åpner høsten 2025.%0A%0ANavn:%0AE-post:%0ATelefon:%0AØnsket kurstype:%0AAlder:%0A%0AMvh,%0A[Navnet ditt]"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-3
+                        bg-brand-600 hover:bg-brand-700
+                        dark:bg-white dark:hover:bg-brand-600/80
+                        text-white dark:text-brand-600
+                        dark:hover:text-white/90
+                        px-8 py-4 rounded-full font-semibold text-base
+                        shadow-brand-lg hover:shadow-brand-xl transition-all duration-200
+                        transform active:scale-[0.98]
+                        focus:ring-2 focus:ring-brand-500/30 focus:ring-offset-2
+                        no-underline"
+              aria-label="Send e-post for påmelding til Urban Studios"
+            >
+              <MailIcon className="h-5 w-5" />
+              Meld deg på her!
+            </a>
+
+            {/* Instagram Follow Button - Secondary action */}
             <a 
               href="https://instagram.com/urbanstudios.dans" 
               target="_blank" 
               rel="noopener noreferrer"
+              className="w-full sm:w-auto"
               aria-label="Følg Urban Studios på Instagram"
-              className="inline-flex items-center gap-3
-                        bg-brand-500
-                        hover:bg-brand-600
-                        dark:bg-white dark:hover:bg-gray-100
-                        text-white dark:text-brand-600
-                        dark:hover:text-brand-700
-                        px-8 py-4 rounded-full font-semibold text-base
-                        shadow-brand-lg hover:shadow-brand-xl transition-all duration-200
-                        transform active:scale-[0.98]
-                        focus:ring-2 focus:ring-brand-400 focus:ring-offset-2
-                        no-underline"
             >
-              <FaInstagram className="h-6 w-6" />
-              Følg oss på Instagram
+              <Button 
+                className="w-full border-brand-300 text-brand-600 hover:bg-brand-50 hover:text-brand-600
+                          dark:border-brand-700 dark:text-brand-400 dark:hover:bg-brand-900/30 dark:hover:text-brand-400
+                          font-semibold rounded-full bg-transparent border-2 px-6 py-3
+                          transition-all duration-200 shadow-sm hover:shadow-brand-sm"
+              >
+                <FaInstagram className="mr-2 h-4 w-4" />
+                Følg oss på Instagram
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
             </a>
+          </motion.div>
+
+          {/* Additional info text */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1.0 }}
+            className="mt-6"
+          >
+            <p className="text-sm text-gray-600 dark:text-gray-400 font-montserrat">
+              E-posten åpnes automatisk med påmeldingsskjema
+            </p>
           </motion.div>
         </motion.div>
       </div>

@@ -49,7 +49,6 @@ export default function Navbar() {
     { label: "Påmelding", href: "/registration" },
     { label: "Pris", href: "/priser" },
     { label: "Nyheter", href: "/nyheter" },
-    { label: "Kontakt oss", href: "/kontakt" }
   ], []);
 
   // Dynamic menu height calculation
