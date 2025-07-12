@@ -31,7 +31,7 @@ export default function ContactSection() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-base font-medium text-brand-600 dark:text-brand-400 
+            className="text-xl font-medium text-brand-600 dark:text-brand-400 
                       uppercase tracking-wider mb-3"
           >
             Kontakt oss

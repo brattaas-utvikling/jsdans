@@ -1,44 +1,51 @@
 import { motion } from "framer-motion";
-// import { ArrowRightIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { STUDIO_INFO } from "@/data/dance-studio-data";
+import { homepageSchemaModalBased } from "@/utils/homepageSchemaModalBased";
 
 export default function CtaSection() {
   return (
     <section
       className="relative h-[90vh] min-h-[600px] flex items-center overflow-hidden"
       aria-labelledby="cta-heading"
+      itemScope
+      itemType="https://schema.org/LocalBusiness"
     >
-      {/* Background image with overlay */}
+      {/* Background image med SEO-optimalisert alt-tekst */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1646084067464-0aa782d923dc?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt="Danser i bevegelse på Urban Studios, som viser energien og kreativiteten i våre danskurs"
+          src="https://fra.cloud.appwrite.io/v1/storage/buckets/6857bb630022ef965c25/files/6857bbd2001faadf46b6/view?project=6853fb68001e82047908&mode=admin"
+          alt="Hip-hop, ballett, moderne- og barnedans ved Urban Studios Kongsvinger - profesjonell danseopplæring for alle nivåer"
           className="w-full h-full object-cover"
+          loading="eager"
+          fetchPriority="high"
+          width="1740"
+          height="600"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-black/30 dark:from-black/70 dark:to-black/40" />
       </div>
 
-      {/* Content */}
+      {/* Content - din opprinnelige struktur med SEO-forbedringer */}
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         <div className="max-w-3xl">
           
-          {/* Studio name with animation */}
-          <motion.div
+          {/* H1 - Urban Studios med SEO-optimalisering */}
+          <motion.h1
+            id="cta-heading"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
             className="flex items-center gap-2 mb-4"
+            itemProp="name"
           >
-            <p className="text-base font-bebas text-white/60 uppercase tracking-wider">
-              {STUDIO_INFO.name}
-            </p>
-          </motion.div>
+            <span className="text-base font-bebas text-white/60 uppercase tracking-wider sr-only" aria-label="Urban Studios - Dansestudio Kongsvinger">
+              URBAN STUDIOS - Dansestudio Kongsvinger
+            </span>
+          </motion.h1>
 
-          {/* Main heading with staggered animation */}
-          <motion.h1
-            id="cta-heading"
+          {/* H2 - Hovedbudskap (din opprinnelige tagline) */}
+          <motion.h2
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
@@ -55,20 +62,23 @@ export default function CtaSection() {
             >
               Uttrykk deg selv gjennom dans
             </motion.span>
-          </motion.h1>
+          </motion.h2>
 
-          {/* Description with animation */}
+          {/* P - Din opprinnelige beskrivelse med SEO-søkeord tillagt */}
           <motion.p
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.5 }}
             viewport={{ once: true }}
             className="font-montserrat text-lg text-white/80 mb-8 max-w-xl"
+            itemProp="description"
           >
-            Endelig kan vi dele dette vi har drømt om lenge! Vi åpner dørene for Urban Studios høsten 2025, et sted hvor alle kan utforske og utvikle sin dans. Enten du er nybegynner eller erfaren, har vi noe for deg.
+            Endelig kan vi dele dette vi har drømt om lenge! Vi åpner dørene for Urban Studios høsten 2025, 
+            et profesjonelt dansestudio i Kongsvinger hvor alle kan utforske hip-hop, moderne dans og breakdance. 
+            Enten du er nybegynner eller erfaren danser, har vi dansetimer for deg.
           </motion.p>
 
-          {/* CTA Buttons with staggered animation */}
+          {/* CTA Buttons - dine opprinnelige med SEO-optimaliserte labels */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -79,33 +89,59 @@ export default function CtaSection() {
             <Button
               size="lg"
               className="rounded-full bg-brand-500 hover:bg-brand-600 text-white border-0 font-montserrat-medium"
-              aria-describedby="cta-description"
+              aria-label="Se alle dansetimer og kurs hos Urban Studios Kongsvinger"
+              title="Utforsk vårt utvalg av hip-hop, moderne dans og breakdance kurs"
             >
               Se våre kurs
             </Button>
+            
+            {/* Din kommenterte ut knapp - kan aktiveres igjen */}
             {/* <Button
               size="lg"
               variant="outline"
               className="rounded-full border-white/30 text-white hover:bg-white/10 hover:text-white font-montserrat-medium"
+              aria-label="Se timeplan for dansetimer i Kongsvinger"
+              title="Oversikt over tidspunkt for alle våre dansetimer"
             >
               Timeplan
               <ArrowRightIcon className="ml-2 h-4 w-4" />
             </Button> */}
             
             <span id="cta-description" className="sr-only">
-              Uttrykk deg selv gjennom dans
+              Urban Studios - Dansestudio i Kongsvinger med hip-hop, moderne dans og breakdance for alle nivåer
             </span>
           </motion.div>
+
+          {/* Skjult SEO-informasjon for søkemotorer */}
+          <div className="sr-only">
+            <span itemProp="address" itemScope itemType="https://schema.org/PostalAddress">
+              <span itemProp="streetAddress">Storgata 42</span>
+              <span itemProp="addressLocality">Kongsvinger</span>
+              <span itemProp="postalCode">2212</span>
+              <span itemProp="addressCountry">Norge</span>
+            </span>
+            <span itemProp="telephone">+47 123 45 678</span>
+            <span itemProp="email">post@urbanstudios.no</span>
+            <span itemProp="priceRange">400-800 NOK</span>
+          </div>
         </div>
       </div>
 
-      {/* Animated decorative elements */}
+  {/* JSON-LD schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(homepageSchemaModalBased)
+        }}
+      />
+
+      {/* Dine opprinnelige animerte dekorative elementer */}
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 1.5, delay: 0.8 }}
         viewport={{ once: true }}
-        className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-white dark:from-black to-transparent z-10"
+        className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-white/90 dark:from-black to-transparent z-10"
       />
 
       <motion.div

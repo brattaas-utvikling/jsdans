@@ -21,7 +21,6 @@ import {
   Calendar,
   Clock,
   User,
-  Zap,
   MapPin,
   Users,
   Heart,
@@ -30,15 +29,13 @@ import {
 type ClassCardProps = {
   name: string;
   description: string;
-  color: string; // "pink", "blue", "indigo", etc.
+  color: string;
   image: string;
   schedule: Array<{
     day: string;
     time: string;
-    level: string;
   }>;
   instructor?: string;
-  level: string;
   age: string;
   studio: string;
 };
@@ -50,7 +47,6 @@ export default function ClassCard({
   image,
   schedule,
   instructor,
-  level,
   age,
   studio,
 }: ClassCardProps) {
@@ -324,10 +320,6 @@ const colorMap: Record<ColorName, ColorClasses> = {
               <span className="font-montserrat">Instruktør: {instructor}</span>
             </div>
             <div className="flex items-center gap-2">
-              <Zap className="h-4 w-4 text-brand-500" />
-              <span className="font-montserrat">Nivå: {level}</span>
-            </div>
-            <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4 text-brand-500" />
               <span className="font-montserrat">Alder: {age}</span>
             </div>
@@ -389,13 +381,6 @@ const colorMap: Record<ColorName, ColorClasses> = {
                 <div>
                   <div className="font-montserrat font-semibold text-gray-900 dark:text-white">Instruktør</div>
                   <div className="text-sm text-gray-600 dark:text-gray-300 font-montserrat">{instructor}</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-surface-dark-muted rounded-lg border border-brand-100/50 dark:border-brand-700/30">
-                <Zap className="h-5 w-5 text-brand-500" />
-                <div>
-                  <div className="font-montserrat font-semibold text-gray-900 dark:text-white">Nivå</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-300 font-montserrat">{level}</div>
                 </div>
               </div>
               <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-surface-dark-muted rounded-lg border border-brand-100/50 dark:border-brand-700/30">
@@ -462,7 +447,7 @@ const colorMap: Record<ColorName, ColorClasses> = {
               <div className="relative z-10">
                 <h4 className="font-bebas text-lg mb-2 text-gray-900 dark:text-white">Klar for å begynne?</h4>
                 <p className="text-gray-600 dark:text-gray-300 mb-4 font-montserrat">
-                  Bli med på en prøvetime og opplev gleden ved dans. Første time er gratis for nye deltakere!
+                  Bli med på en prøvetime og opplev gleden ved dans. Bli med på gratis prøveuker, uke 35 og 36!
                 </p>
                 <div className="flex gap-3">
                   <Link to="/registration" className="flex-1">
@@ -470,7 +455,7 @@ const colorMap: Record<ColorName, ColorClasses> = {
                                      dark:bg-white dark:hover:bg-brand-600/80
                                      text-white dark:text-brand-600
                                      dark:hover:text-white/90 transition-all duration-200">
-                      Book prøvetime
+                      Påmelding
                     </Button>
                   </Link>
                   <Link to="/kontakt" className="flex-1">

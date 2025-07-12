@@ -213,29 +213,6 @@ export default function PricingPage() {
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
           className="absolute bottom-0 left-0 w-80 h-80 bg-brand-400/10 rounded-full blur-3xl"
         />
-
-        {/* Floating elements - Brand farger */}
-        <motion.div
-          animate={{ 
-            y: [0, -20, 0],
-            rotate: [0, 180, 360]
-          }}
-          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-1/4 right-1/4 opacity-20"
-        >
-          <SparklesIcon className="h-6 w-6 text-magenta-500" />
-        </motion.div>
-
-        <motion.div
-          animate={{ 
-            y: [0, 25, 0],
-            x: [0, -15, 0]
-          }}
-          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-          className="absolute bottom-1/3 left-1/4 opacity-15"
-        >
-          <StarIcon className="h-8 w-8 text-brand-500" />
-        </motion.div>
         
         <div className="container mx-auto px-4 md:px-6 relative z-10">
           <motion.div
@@ -249,7 +226,7 @@ export default function PricingPage() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <h1 className="text-base font-medium text-brand-600 dark:text-brand-400 
+              <h1 className="text-xl font-medium text-brand-600 dark:text-brand-400 
                             uppercase tracking-wider mb-3">
                 Priser
               </h1>
