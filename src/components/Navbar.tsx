@@ -44,11 +44,11 @@ export default function Navbar() {
   // Simplified navigation items (kun routes)
   const navigationItems: NavigationItem[] = useMemo(() => [
     { label: "Hjem", href: "/" },
-    { label: "Nyheter", href: "/nyheter" },
     { label: "Om oss", href: "/om-oss" },
     { label: "Kurs", href: "/kurs" },
     { label: "Påmelding", href: "/registration" },
     { label: "Pris", href: "/priser" },
+    { label: "Nyheter", href: "/nyheter" },
     { label: "Kontakt oss", href: "/kontakt" }
   ], []);
 
