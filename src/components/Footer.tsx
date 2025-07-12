@@ -209,7 +209,7 @@ export default function Footer() {
         {/* Bottom bar - eksisterende copyright og lenker */}
         <div className="border-t border-gray-700/50 dark:border-gray-600/50 pt-8 pb-6 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 dark:text-gray-300 text-sm mb-4 md:mb-0 font-montserrat">
-            &copy; {currentYear} {STUDIO_INFO.name}. Alle rettigheter reservert
+            &copy; {currentYear} {STUDIO_INFO.name}. Alle rettigheter reservert.
           </p>
 
           <div className="flex space-x-6">

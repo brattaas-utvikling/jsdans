@@ -15,7 +15,7 @@ export default function CtaSection() {
       <div className="absolute inset-0 z-0">
         <img
           src="https://fra.cloud.appwrite.io/v1/storage/buckets/6857bb630022ef965c25/files/6857bbd2001faadf46b6/view?project=6853fb68001e82047908&mode=admin"
-          alt="Hip-hop, ballett, moderne- og barnedans ved Urban Studios Kongsvinger - profesjonell danseopplæring for alle nivåer"
+          alt="Dansestudio ved Urban Studios Kongsvinger - profesjonell danseopplæring for alle nivåer"
           className="w-full h-full object-cover"
           loading="eager"
           fetchPriority="high"

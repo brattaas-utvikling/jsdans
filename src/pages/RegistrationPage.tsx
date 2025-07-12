@@ -258,9 +258,9 @@ export default function RegistrationPage() {
             <a 
               href="mailto:registrer@urbanstudios.no?subject=Påmelding til Urban Studios&body=Hei! Jeg ønsker å melde meg på dansetimer hos Urban Studios når dere åpner høsten 2025.%0A%0ANavn:%0AE-post:%0ATelefon:%0AØnsket kurstype:%0AAlder:%0A%0AMvh,%0A[Navnet ditt]"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-3
-                        bg-brand-600 hover:bg-brand-700
-                        dark:bg-white dark:hover:bg-brand-600/80
-                        text-white dark:text-brand-600
+                        bg-brand-500 hover:bg-brand-600
+                        dark:bg-white dark:hover:bg-brand-700
+                        text-white dark:text-brand-700
                         dark:hover:text-white/90
                         px-8 py-4 rounded-full font-semibold text-base
                         shadow-brand-lg hover:shadow-brand-xl transition-all duration-200
