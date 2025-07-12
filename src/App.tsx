@@ -12,6 +12,7 @@ import NewsArticlePage from "./pages/NewsArticlePage";
 import ClassesSection from "./pages/CoursesPage";
 import RegistrationPage from "./pages/RegistrationPage";
 import TermsConditions from "./pages/TermsConditions";
+import NotFoundPage from "./pages/NotFoundPage";
 
 
 
@@ -104,7 +105,7 @@ export default function App() {
           path="*"
           element={
             <Layout>
-              <h1>404 - Page Not Found</h1>
+              <NotFoundPage />
             </Layout>
           }
         />

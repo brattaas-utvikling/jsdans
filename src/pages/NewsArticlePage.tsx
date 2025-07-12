@@ -6,7 +6,7 @@ import {
   ClockIcon, 
   UserIcon, 
   ArrowLeftIcon,
-  ShareIcon,
+  Share2Icon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getDocument, DATABASE_ID, COLLECTIONS } from "@/lib/appwrite";
@@ -43,6 +43,7 @@ export default function NewsArticlePage() {
   const [article, setArticle] = useState<NewsArticle | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [shareMessage, setShareMessage] = useState<string>('');
 
   // Format date function
   const formatDate = (dateString: string): string => {
@@ -152,28 +153,61 @@ export default function NewsArticlePage() {
     return content;
   };
 
-  // Share functionality
+  // Forbedret share functionality
   const handleShare = async () => {
-    if (navigator.share && article) {
-      try {
-        await navigator.share({
-          title: article.headlines,
-          text: article.lead,
-          url: window.location.href,
-        });
-      } catch (err) {
-        console.log('Error sharing:', err);
+    if (!article) return;
+
+    const shareData = {
+      title: article.headlines,
+      text: article.lead || 'Sjekk ut denne artikkelen fra Urban Studios',
+      url: window.location.href
+    };
+
+    try {
+      // Sjekk om Web Share API er tilgjengelig (mobil/moderne browsere)
+      if (navigator.share) {
+        await navigator.share(shareData);
+        setShareMessage('Takk for at du deler!');
+      } else {
+        // Fallback for desktop - kopier URL til clipboard
+        await navigator.clipboard.writeText(window.location.href);
+        setShareMessage('Link kopiert til utklippstavlen!');
       }
-    } else {
-      // Fallback: copy to clipboard
-      navigator.clipboard.writeText(window.location.href);
-      // You could show a toast notification here
+    } catch (error) {
+      if (error instanceof Error && error.name === 'AbortError') {
+        // Brukeren avbrøt delinga - ikke vis feilmelding
+        return;
+      }
+      
+      console.error('Kunne ikke dele:', error);
+      
+      // Fallback: Kopier URL som backup
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        setShareMessage('Link kopiert til utklippstavlen!');
+      } catch (clipboardError) {
+        console.error('Kunne ikke kopiere link:', clipboardError);
+        setShareMessage('Kunne ikke dele artikkelen');
+      }
+    }
+
+    // Fjern melding etter 3 sekunder
+    if (shareMessage) {
+      setTimeout(() => setShareMessage(''), 3000);
     }
   };
 
   useEffect(() => {
     fetchArticle();
   }, [id]);
+
+  // Fjern share message etter 3 sekunder
+  useEffect(() => {
+    if (shareMessage) {
+      const timer = setTimeout(() => setShareMessage(''), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [shareMessage]);
 
   if (loading) {
     return (
@@ -215,6 +249,18 @@ export default function NewsArticlePage() {
   return (
     <div className="min-h-screen bg-white dark:bg-surface-dark">
       <ScrollToTop />
+      
+      {/* Share message notification */}
+      {shareMessage && (
+        <motion.div
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -50 }}
+          className="fixed top-4 right-4 z-50 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg font-montserrat"
+        >
+          {shareMessage}
+        </motion.div>
+      )}
       
       {/* Hero Section with Image */}
       <section className="relative h-[60vh] overflow-hidden">
@@ -293,10 +339,12 @@ export default function NewsArticlePage() {
                   onClick={handleShare}
                   variant="outline"
                   size="sm"
-                  className="rounded-full border-brand-300 text-brand-600 hover:bg-brand-50 hover:text-brand-600
-                            dark:border-brand-700 dark:text-brand-400 dark:hover:bg-brand-900/30 dark:hover:text-brand-400"
+                  className="rounded-full border-brand-300 text-brand-700 hover:bg-brand-50 hover:text-brand-800
+                            dark:border-brand-700 dark:text-brand-400 dark:hover:bg-brand-900/30 dark:hover:text-brand-300"
+                  aria-label={`Del artikkel: ${article.headlines}`}
+                  title="Del denne artikkelen"
                 >
-                  <ShareIcon className="h-4 w-4" />
+                  <Share2Icon className="h-4 w-4" />
                 </Button>
               </div>
             </motion.div>
@@ -331,8 +379,11 @@ export default function NewsArticlePage() {
                   <Button
                     onClick={() => navigate('/nyheter')}
                     variant="outline"
-                    className="rounded-full font-semibold border-brand-300 text-brand-600 hover:bg-brand-50 hover:text-brand-600
-                              dark:border-brand-700 dark:text-brand-400 dark:hover:bg-brand-900/30 dark:hover:text-brand-400"
+                    className="font-semibold rounded-full 
+                            bg-white/80 border-brand-300 text-brand-700 
+                            hover:bg-brand-50 hover:text-brand-800
+                            dark:bg-transparent dark:border-brand-700 dark:text-brand-400 
+                            dark:hover:bg-brand-900/30 dark:hover:text-brand-300"
                   >
                     Se flere artikler
                   </Button>

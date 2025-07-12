@@ -267,7 +267,7 @@ export default function AboutPage() {
           </div>
           
           {/* Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
           
           {/* Content Container - nederst til venstre */}
           <div className="absolute bottom-0 left-0 right-0 z-10 p-6 md:p-10">
@@ -328,16 +328,16 @@ export default function AboutPage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link to="/kontakt" className="w-full sm:w-auto">
                 <Button 
-                  variant="outline"
-                  className="font-semibold rounded-full 
-                            border-brand-300 text-brand-600 
-                            hover:bg-brand-50 hover:text-brand-700
-                            dark:border-brand-700 dark:text-brand-400 
-                            dark:hover:bg-brand-900/30 dark:hover:text-brand-300"
-                >
-                  Kontakt oss
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
+  variant="outline"
+  className="font-semibold rounded-full 
+            bg-white/80 border-brand-300 text-brand-600 
+            hover:bg-brand-50 hover:text-brand-700
+            dark:bg-transparent dark:border-brand-700 dark:text-brand-400 
+            dark:hover:bg-brand-900/30 dark:hover:text-brand-300"
+>
+  Kontakt oss
+  <ArrowRight className="ml-2 h-4 w-4" />
+</Button>
               </Link>
             </div>
           </motion.div>

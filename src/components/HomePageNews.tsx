@@ -217,7 +217,7 @@ export default function HomepageNews({
                                   dark:hover:text-white/90
                                   border-0 shadow hover:shadow-md 
                                   font-semibold transition-all duration-200"
-                        aria-describedby="read-more-description"
+                        aria-label={`Les artikkel: ${featuredArticle.headlines}`}
                       >
                         Les mer
                         <ArrowRightIcon className="ml-2 h-4 w-4" />

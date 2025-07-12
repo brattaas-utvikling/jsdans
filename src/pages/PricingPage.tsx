@@ -279,7 +279,7 @@ export default function PricingPage() {
                         {pkg.name}
                       </h3>
                       {pkg.discount_text && (
-                        <p className="text-sm text-green-600 dark:text-green-400 font-medium">
+                        <p className="text-sm text-green-700 dark:text-green-400 font-medium">
                           {pkg.discount_text}
                         </p>
                       )}
@@ -322,9 +322,12 @@ export default function PricingPage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link to="/kontakt" className="w-full sm:w-auto">
                 <Button 
-                  className="border-brand-300 text-brand-600 hover:bg-brand-50 hover:text-brand-600
-                            dark:border-brand-700 dark:text-brand-400 dark:hover:bg-brand-900/30 dark:hover:text-brand-400
-                            font-semibold rounded-full bg-transparent border-2 px-6 py-3"
+                  variant="outline"
+                  className="font-semibold rounded-full 
+                            bg-white/80 border-brand-300 text-brand-600 
+                            hover:bg-brand-50 hover:text-brand-700
+                            dark:bg-transparent dark:border-brand-700 dark:text-brand-400 
+                            dark:hover:bg-brand-900/30 dark:hover:text-brand-300"
                 >
                   Kontakt oss
                   <ArrowRight className="ml-2 h-4 w-4" />

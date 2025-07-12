@@ -213,32 +213,32 @@ export default function Footer() {
           </p>
 
           <div className="flex space-x-6">
-            <a
+            {/* <a
               href="#"
               className="text-gray-500 dark:text-gray-400 hover:text-brand-400 dark:hover:text-brand-300 transition-colors text-sm font-montserrat
                         hover:underline underline-offset-4"
             >
               Personvern
-            </a>
+            </a> */}
             <Link 
               to="/betingelser"
-              className="text-gray-500 dark:text-gray-400 hover:text-brand-400 dark:hover:text-brand-300 transition-colors text-sm font-montserrat hover:underline underline-offset-4"
+              className="text-gray-400 dark:text-gray-300 hover:text-brand-400 dark:hover:text-brand-300 transition-colors text-sm font-montserrat hover:underline underline-offset-4"
             >
               Betingelser
             </Link>
-            <a
+            {/* <a
               href="#"
               className="text-gray-500 dark:text-gray-400 hover:text-brand-400 dark:hover:text-brand-300 transition-colors text-sm font-montserrat
                         hover:underline underline-offset-4"
             >
               Cookies
-            </a>
+            </a> */}
           </div>
         </div>
 
         {/* Ny linje for Brattås Utvikling */}
         <div className="border-t border-gray-700/30 dark:border-gray-600/30 pt-4 text-center">
-          <p className="text-gray-500 dark:text-gray-400 text-xs font-montserrat">
+          <p className="text-gray-400 dark:text-gray-300 text-xs font-montserrat">
             Levert av{" "}
             <a
               href="https://brattaasutvikling.no"
