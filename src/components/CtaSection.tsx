@@ -91,7 +91,7 @@ export default function CtaSection() {
           <Link to="/kurs">
             <Button
               size="lg"
-              className="rounded-full bg-brand-500 hover:bg-brand-600 text-white border-0 font-montserrat-medium z-10"
+              className="rounded-full bg-brand-500 hover:bg-brand-600 text-white border-0 font-montserrat-medium z-11"
               aria-label="Se alle dansetimer og kurs hos Urban Studios Kongsvinger"
               title="Utforsk vårt utvalg av hip-hop, moderne dans og breakdance kurs"
             >
