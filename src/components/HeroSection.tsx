@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import logo from "../assets/urban_stuidos_text.svg";
+import logo from "../assets/logo.svg";
 import dancerSvg from "../assets/urban_studio_dancer.svg";
 
 export default function HeroSection() {
