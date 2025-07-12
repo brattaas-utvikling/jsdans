@@ -21,7 +21,6 @@ import {
   Calendar,
   Clock,
   User,
-  Zap,
   MapPin,
   Users,
   Heart,
@@ -30,15 +29,13 @@ import {
 type ClassCardProps = {
   name: string;
   description: string;
-  color: string; // "pink", "blue", "indigo", etc.
+  color: string;
   image: string;
   schedule: Array<{
     day: string;
     time: string;
-    level: string;
   }>;
   instructor?: string;
-  level: string;
   age: string;
   studio: string;
 };
@@ -50,7 +47,6 @@ export default function ClassCard({
   image,
   schedule,
   instructor,
-  level,
   age,
   studio,
 }: ClassCardProps) {
@@ -324,10 +320,6 @@ const colorMap: Record<ColorName, ColorClasses> = {
               <span className="font-montserrat">Instruktør: {instructor}</span>
             </div>
             <div className="flex items-center gap-2">
-              <Zap className="h-4 w-4 text-brand-500" />
-              <span className="font-montserrat">Nivå: {level}</span>
-            </div>
-            <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4 text-brand-500" />
               <span className="font-montserrat">Alder: {age}</span>
             </div>
@@ -389,13 +381,6 @@ const colorMap: Record<ColorName, ColorClasses> = {
                 <div>
                   <div className="font-montserrat font-semibold text-gray-900 dark:text-white">Instruktør</div>
                   <div className="text-sm text-gray-600 dark:text-gray-300 font-montserrat">{instructor}</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-surface-dark-muted rounded-lg border border-brand-100/50 dark:border-brand-700/30">
-                <Zap className="h-5 w-5 text-brand-500" />
-                <div>
-                  <div className="font-montserrat font-semibold text-gray-900 dark:text-white">Nivå</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-300 font-montserrat">{level}</div>
                 </div>
               </div>
               <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-surface-dark-muted rounded-lg border border-brand-100/50 dark:border-brand-700/30">
