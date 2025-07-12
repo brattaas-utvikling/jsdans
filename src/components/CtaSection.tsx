@@ -26,8 +26,8 @@ export default function CtaSection() {
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-black/30 dark:from-black/70 dark:to-black/40" />
       </div>
 
-      {/* Content - din opprinnelige struktur med SEO-forbedringer */}
-      <div className="container mx-auto px-4 md:px-6 relative z-10">
+      {/* Content - økt z-index for hele innholdsområdet */}
+      <div className="container mx-auto px-4 md:px-6 relative z-20">
         <div className="max-w-3xl">
           
           {/* H1 - Urban Studios med SEO-optimalisering */}
@@ -79,25 +79,32 @@ export default function CtaSection() {
             Enten du er nybegynner eller erfaren danser, har vi dansetimer for deg.
           </motion.p>
 
-          {/* CTA Buttons - dine opprinnelige med SEO-optimaliserte labels */}
+          {/* CTA Buttons - forbedret z-index og touch-target */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.5 }}
             viewport={{ once: true }}
-            className="flex flex-col sm:flex-row gap-4"
+            className="flex flex-col sm:flex-row gap-4 relative z-30"
           >
-
-          <Link to="/kurs">
-            <Button
-              size="lg"
-              className="rounded-full bg-brand-500 hover:bg-brand-600 text-white border-0 font-montserrat-medium z-20"
-              aria-label="Se alle dansetimer og kurs hos Urban Studios Kongsvinger"
-              title="Utforsk vårt utvalg av hip-hop, moderne dans og breakdance kurs"
+            <Link 
+              to="/kurs" 
+              className="relative z-40 touch-manipulation"
+              style={{ touchAction: 'manipulation' }}
             >
-              Se våre kurs
-            </Button>
-          </Link>
+              <Button
+                size="lg"
+                className="w-full sm:w-auto rounded-full bg-brand-500 hover:bg-brand-600 text-white border-0 font-montserrat-medium 
+                          relative z-50 touch-manipulation min-h-[48px] px-8 py-4
+                          shadow-lg hover:shadow-xl transition-all duration-200
+                          active:scale-95 focus:ring-2 focus:ring-brand-400/50 focus:ring-offset-2"
+                aria-label="Se alle dansetimer og kurs hos Urban Studios Kongsvinger"
+                title="Utforsk vårt utvalg av hip-hop, moderne dans og breakdance kurs"
+                style={{ touchAction: 'manipulation' }}
+              >
+                Se våre kurs
+              </Button>
+            </Link>
             
             {/* Din kommenterte ut knapp - kan aktiveres igjen */}
             {/* <Button
@@ -131,7 +138,7 @@ export default function CtaSection() {
         </div>
       </div>
 
-  {/* JSON-LD schema */}
+      {/* JSON-LD schema */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -139,13 +146,13 @@ export default function CtaSection() {
         }}
       />
 
-      {/* Dine opprinnelige animerte dekorative elementer */}
+      {/* Dine opprinnelige animerte dekorative elementer - redusert z-index */}
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 1.5, delay: 0.8 }}
         viewport={{ once: true }}
-        className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-white/90 dark:from-black to-transparent z-10"
+        className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-white/90 dark:from-black to-transparent z-5"
       />
 
       <motion.div
@@ -153,7 +160,7 @@ export default function CtaSection() {
         whileInView={{ opacity: 0.2, scale: 1 }}
         transition={{ duration: 2, delay: 1 }}
         viewport={{ once: true }}
-        className="absolute -bottom-12 -right-12 w-64 h-64 bg-brand-500/20 rounded-full blur-3xl"
+        className="absolute -bottom-12 -right-12 w-64 h-64 bg-brand-500/20 rounded-full blur-3xl z-1"
       />
 
       <motion.div
@@ -161,7 +168,7 @@ export default function CtaSection() {
         whileInView={{ opacity: 0.1, scale: 1 }}
         transition={{ duration: 2, delay: 1.2 }}
         viewport={{ once: true }}
-        className="absolute top-1/4 -left-12 w-48 h-48 bg-magenta-500/10 rounded-full blur-3xl"
+        className="absolute top-1/4 -left-12 w-48 h-48 bg-magenta-500/10 rounded-full blur-3xl z-1"
       />
     </section>
   );
