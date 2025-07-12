@@ -120,7 +120,7 @@ export default function Footer() {
 <div className="flex items-center gap-2">
   <FaFacebookF className="h-4 w-4 text-brand-400 flex-shrink-0" />
   <a 
-    href="https://facebook.com/urbanstudios.dans"
+    href="https://www.facebook.com/profile.php?id=61578399712863"
     target="_blank"
     rel="noopener noreferrer"
     className="text-gray-400 dark:text-gray-300 hover:text-brand-400 dark:hover:text-brand-300 
