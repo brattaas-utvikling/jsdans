@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { STUDIO_INFO } from "@/data/dance-studio-data";
 import { homepageSchemaModalBased } from "@/utils/homepageSchemaModalBased";
+import { Link } from "react-router-dom";
 
 export default function CtaSection() {
   return (
@@ -86,14 +87,17 @@ export default function CtaSection() {
             viewport={{ once: true }}
             className="flex flex-col sm:flex-row gap-4"
           >
+
+          <Link to="/kurs">
             <Button
               size="lg"
-              className="rounded-full bg-brand-500 hover:bg-brand-600 text-white border-0 font-montserrat-medium"
+              className="rounded-full bg-brand-500 hover:bg-brand-600 text-white border-0 font-montserrat-medium mb-4 md:mb-0"
               aria-label="Se alle dansetimer og kurs hos Urban Studios Kongsvinger"
               title="Utforsk vårt utvalg av hip-hop, moderne dans og breakdance kurs"
             >
               Se våre kurs
             </Button>
+          </Link>
             
             {/* Din kommenterte ut knapp - kan aktiveres igjen */}
             {/* <Button
