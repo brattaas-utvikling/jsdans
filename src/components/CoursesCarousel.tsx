@@ -6,8 +6,6 @@ import { listDocuments, DATABASE_ID, COLLECTIONS, Query } from "@/lib/appwrite";
 import ClassCard from "./ClassCard";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 
-
-
 interface CoursesCarouselProps {
   title?: string;
   subtitle?: string;
@@ -33,12 +31,14 @@ interface DanceClass extends AppwriteDocument {
   schedule: Array<{
     day: string;
     time: string;
-    level: string;
   }>;
   instructor: string;
-  level: string;
   age: string;
   studio: string;
+  level: string;
+  availableFromYear: number;
+  type: string;
+  sorting: number; // Ny attributt for sortering
 }
 
 export default function CoursesCarousel({ 
@@ -92,25 +92,36 @@ export default function CoursesCarousel({
     }
   }, [currentIndex, courses.length, slidesPerView]);
 
-   // Fetch courses from Appwrite
+   // Fetch courses from Appwrite - Sortert etter sorting attributt
    const fetchCoursesFromAppwrite = async () => {
     setLoading(true);
     setError(null);
     
     try {
+      console.log('🔄 Fetching courses from Appwrite...');
+      
       const response = await listDocuments(
         DATABASE_ID,
         COLLECTIONS.DANCE_CLASSES_CAROUSEL,
         [
-          Query.orderAsc('name'), // Sorter alfabetisk
-          Query.limit(10) // Begrens til 10 kurs
+          Query.orderAsc('sorting'), // ✅ Sorterer etter sorting attributt (0, 1, 2, 3, 4, 5, 6, 7)
+          Query.limit(limit) // Bruk limit parameter
         ]
       );
       
+      console.log(`📊 Fetched ${response.documents.length} courses`);
+      
       const courseData = response.documents as unknown as DanceClass[];
+      
+      // Debug logging for sortering
+      console.log('📋 Courses sorted by sorting attribute:');
+      courseData.forEach((course, index) => {
+        console.log(`${index + 1}. ${course.name} (sorting: ${course.sorting})`);
+      });
+      
       setCourses(courseData);
     } catch (err) {
-      console.error('Error fetching courses:', err);
+      console.error('❌ Error fetching courses:', err);
       setError('Kunne ikke laste kurs fra databasen.');
     } finally {
       setLoading(false);
@@ -217,94 +228,92 @@ export default function CoursesCarousel({
           </p>
         </motion.div>
 
-        
-{/* Carousel - Oppdatert layout for arrows utenfor */}
-<motion.div
-  initial={{ opacity: 0, y: 30 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  viewport={{ once: true }}
-  transition={{ duration: 0.8, delay: 0.2 }}
-  className="relative px-4 lg:px-16" // Padding for arrow space
->
-  {/* Navigation Buttons - Posisjonert helt utenfor */}
-  {courses.length > 1 && (
-    <>
-      <button
-        className="absolute -left-2 lg:-left-4 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-slate-800/90 
-                  hover:bg-white dark:hover:bg-slate-700 text-gray-800 dark:text-gray-200 
-                  p-3 rounded-full shadow-lg transition-all duration-200 hover:scale-110 z-10
-                  backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50"
-        onClick={scrollPrev}
-        aria-label="Forrige slide"
-      >
-        <ChevronLeft className="w-5 h-5" />
-      </button>
-      
-      <button
-        className="absolute -right-2 lg:-right-4 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-slate-800/90 
-                  hover:bg-white dark:hover:bg-slate-700 text-gray-800 dark:text-gray-200 
-                  p-3 rounded-full shadow-lg transition-all duration-200 hover:scale-110 z-10
-                  backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50"
-        onClick={scrollNext}
-        aria-label="Neste slide"
-      >
-        <ChevronRight className="w-5 h-5" />
-      </button>
-    </>
-  )}
-
-  {/* Carousel Container - Overflow hidden for å skjule neste kort */}
-  <div className="overflow-hidden">
-    <div 
-      className="flex transition-transform duration-500 ease-in-out"
-      style={{ 
-        transform: `translateX(-${currentIndex * (100 / slidesPerView)}%)`,
-      }}
-    >
-      {courses.map((course) => (
-        <div 
-          key={course.$id} 
-          className="px-3 flex-shrink-0"
-          style={{ 
-            width: `${100 / slidesPerView}%`
-          }}
+        {/* Carousel - Oppdatert layout for arrows utenfor */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="relative px-4 lg:px-16" // Padding for arrow space
         >
-          <div className="h-full">
-            <ClassCard
-              name={course.name}
-              description={course.description}
-              level={course.level}
-              age={course.age}
-              color={course.color}
-              image={course.image}
-              schedule={course.schedule || [{ day: "September 2025", time: "Tidspunkt kommer" }]}
-              instructor={course.instructor}
-              studio={course.studio}
-            />
-          </div>
-        </div>
-      ))}
-    </div>
-  </div>
+          {/* Navigation Buttons - Posisjonert helt utenfor */}
+          {courses.length > slidesPerView && (
+            <>
+              <button
+                className="absolute -left-2 lg:-left-4 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-slate-800/90 
+                          hover:bg-white dark:hover:bg-slate-700 text-gray-800 dark:text-gray-200 
+                          p-3 rounded-full shadow-lg transition-all duration-200 hover:scale-110 z-10
+                          backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50"
+                onClick={scrollPrev}
+                aria-label="Forrige slide"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              
+              <button
+                className="absolute -right-2 lg:-right-4 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-slate-800/90 
+                          hover:bg-white dark:hover:bg-slate-700 text-gray-800 dark:text-gray-200 
+                          p-3 rounded-full shadow-lg transition-all duration-200 hover:scale-110 z-10
+                          backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50"
+                onClick={scrollNext}
+                aria-label="Neste slide"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </>
+          )}
 
-  {/* Dots Indicator */}
-  {courses.length > slidesPerView && (
-    <div className="flex justify-center mt-8 space-x-2">
-      {Array.from({ length: Math.max(1, courses.length - slidesPerView + 1) }).map((_, index) => (
-        <button
-          key={`carousel-dot-${index}`} 
-          className={`w-3 h-3 rounded-full transition-all duration-200 ${
-            index === currentIndex 
-              ? 'bg-brand-600 dark:bg-brand-400' 
-              : 'bg-gray-300 dark:bg-gray-600 hover:bg-brand-400 dark:hover:bg-brand-500'
-          }`}
-          onClick={() => setCurrentIndex(index)}
-          aria-label={`Gå til posisjon ${index + 1}`}
-        />
-      ))}
-    </div>
-  )}
-</motion.div>
+          {/* Carousel Container - Overflow hidden for å skjule neste kort */}
+          <div className="overflow-hidden">
+            <div 
+              className="flex transition-transform duration-500 ease-in-out"
+              style={{ 
+                transform: `translateX(-${currentIndex * (100 / slidesPerView)}%)`,
+              }}
+            >
+              {courses.map((course) => (
+                <div 
+                  key={course.$id} 
+                  className="px-3 flex-shrink-0"
+                  style={{ 
+                    width: `${100 / slidesPerView}%`
+                  }}
+                >
+                  <div className="h-full">
+                    <ClassCard
+                      name={course.name}
+                      description={course.description}
+                      age={course.age}
+                      color={course.color}
+                      image={course.image}
+                      schedule={course.schedule || [{ day: "September 2025", time: "Tidspunkt kommer" }]}
+                      instructor={course.instructor}
+                      studio={course.studio}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Dots Indicator */}
+          {courses.length > slidesPerView && (
+            <div className="flex justify-center mt-8 space-x-2">
+              {Array.from({ length: Math.max(1, courses.length - slidesPerView + 1) }).map((_, index) => (
+                <button
+                  key={`carousel-dot-${index}`} 
+                  className={`w-3 h-3 rounded-full transition-all duration-200 ${
+                    index === currentIndex 
+                      ? 'bg-brand-600 dark:bg-brand-400' 
+                      : 'bg-gray-300 dark:bg-gray-600 hover:bg-brand-400 dark:hover:bg-brand-500'
+                  }`}
+                  onClick={() => setCurrentIndex(index)}
+                  aria-label={`Gå til posisjon ${index + 1}`}
+                />
+              ))}
+            </div>
+          )}
+        </motion.div>
 
         {/* "Se alle kurs" knapp */}
         <motion.div
