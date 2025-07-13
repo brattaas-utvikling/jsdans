@@ -6,7 +6,6 @@ import {
   HeartIcon,
   SparklesIcon,
   SunIcon,
-  MailIcon,
   ArrowRight,
 } from "lucide-react";
 import { FaInstagram } from 'react-icons/fa'
@@ -237,10 +236,10 @@ export default function RegistrationPage() {
           >
             <Link 
               to="/betingelser"
-              className="inline-flex items-center text-brand-600 dark:text-brand-400 
+              className="inline-flex items-center underline text-brand-600 dark:text-brand-400 
                         hover:text-brand-700 dark:hover:text-brand-300 
                         transition-all duration-200 font-montserrat font-medium
-                        hover:underline underline-offset-4 decoration-2
+                        underline-offset-4 decoration-2
                         focus:outline-none focus:ring-2 focus:ring-brand-400 focus:ring-offset-2 rounded-md px-2 py-1"
             >
               Les våre betingelser for kursdeltagelse
@@ -255,8 +254,8 @@ export default function RegistrationPage() {
             className="flex flex-col sm:flex-row gap-4 justify-center items-center"
           >
             {/* Email Registration Button - Primary action */}
-            <a 
-              href="mailto:registrer@urbanstudios.no?subject=Påmelding til Urban Studios&body=Hei! Jeg ønsker å melde meg på dansetimer hos Urban Studios når dere åpner høsten 2025.%0A%0ANavn:%0AE-post:%0ATelefon:%0AØnsket kurstype:%0AAlder:%0A%0AMvh,%0A[Navnet ditt]"
+            {/* <a 
+              href="mailto:registrer@urbanstudios.no?subject=Påmelding til Urban Studios&body=Hei!%0AJeg ønsker å melde meg på dansetimer ved Urban Studios.%0A%0ANavn:%0AFødselsdato:%0ATelefon: (til foresatte hvis elev er under 16 år)%0AE-post: (til foresatte hvis elev er under 16 år)%0A%0AJeg melder meg på dette/disse kursene: (Skriv navnene slik det står i timeplanen, meld deg på det nivået du mener du tilhører)%0A%0AMvh%0A[foresattes/elevens navn]%0A%0AViktig info%0ADette er en bindene påmelding. Det gjøres oppmerksom på at instruktøren har mulighet til å flytte eleven til et annet nivå hvis det ses som nødvendig. Klassene holdes med forbehold om nok påmeldte. Ved avlysning av hele kurs, refunderes det resterende av kursavgiften regnet fra siste time."
               className="w-full sm:w-auto inline-flex items-center justify-center gap-3
                         bg-brand-500 hover:bg-brand-600
                         dark:bg-white dark:hover:bg-brand-700
@@ -271,7 +270,7 @@ export default function RegistrationPage() {
             >
               <MailIcon className="h-5 w-5" />
               Meld deg på her!
-            </a>
+            </a> */}
 
             {/* Instagram Follow Button - Secondary action */}
             <a 
@@ -295,7 +294,7 @@ export default function RegistrationPage() {
           </motion.div>
 
           {/* Additional info text */}
-          <motion.div
+          {/* <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1.0 }}
@@ -304,7 +303,7 @@ export default function RegistrationPage() {
             <p className="text-sm text-gray-600 dark:text-gray-400 font-montserrat">
               E-posten åpnes automatisk med påmeldingsskjema
             </p>
-          </motion.div>
+          </motion.div> */}
         </motion.div>
       </div>
     </section>

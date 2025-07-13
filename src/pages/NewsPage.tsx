@@ -57,7 +57,7 @@ export default function NewsPage() {
     return Math.ceil(words / wordsPerMinute);
   };
 
-  // Fetch news from Appwrite
+  // Fetch news from Appwrite - KUN PUBLISERTE ARTIKLER
   const fetchNewsFromAppwrite = async () => {
     setLoading(true);
     setError(null);
@@ -67,6 +67,7 @@ export default function NewsPage() {
         DATABASE_ID,
         COLLECTIONS.NEWS,
         [
+          Query.equal('published', true), // 🔥 FIKSET: Kun publiserte artikler
           Query.orderDesc('created_at'), // Sorter nyeste første
           Query.limit(50) // Begrens til 50 artikler
         ]
@@ -74,7 +75,7 @@ export default function NewsPage() {
       
       const articles = response.documents as unknown as NewsArticle[];
 
-      console.log(`Hentet ${articles.length} artikler fra Appwrite`);
+      console.log(`Hentet ${articles.length} publiserte artikler fra Appwrite`);
       setFilteredNews(articles);
     } catch (err) {
       console.error('Error fetching news:', err);
@@ -90,8 +91,8 @@ export default function NewsPage() {
   }, []);
 
   // Finn featured artikkel (første publiserte artikkel)
-  const featuredArticle = filteredNews.find(article => article.published) || filteredNews[0];
-  const regularArticles = filteredNews.filter(article => article.$id !== featuredArticle?.$id);
+  const featuredArticle = filteredNews[0]; // Første artikkel er automatisk publisert
+  const regularArticles = filteredNews.slice(1); // Resten av artiklene (starter fra index 1)
 
   if (loading) {
     return (
@@ -148,7 +149,7 @@ export default function NewsPage() {
                 Nyheter
               </h1>
               <h2 className="font-bebas font-semibold text-bebas-xl md:text-bebas-2xl mb-6 text-gray-900 dark:text-white">
-                Ingen nyheter ennå
+                Ingen publiserte nyheter ennå
               </h2>
               <p className="text-lg text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed mb-8">
                 Vi jobber med å legge til spennende nyheter og oppdateringer. Kom tilbake snart!
@@ -305,7 +306,7 @@ export default function NewsPage() {
           {regularArticles.length === 0 ? (
             <div className="text-center py-16">
               <p className="text-gray-500 dark:text-gray-400 font-montserrat text-lg mb-4">
-                Ingen andre nyheter funnet.
+                Ingen andre publiserte nyheter funnet.
               </p>
               <Button 
                 onClick={fetchNewsFromAppwrite}

@@ -447,7 +447,7 @@ const colorMap: Record<ColorName, ColorClasses> = {
               <div className="relative z-10">
                 <h4 className="font-bebas text-lg mb-2 text-gray-900 dark:text-white">Klar for å begynne?</h4>
                 <p className="text-gray-600 dark:text-gray-300 mb-4 font-montserrat">
-                  Bli med på en prøvetime og opplev gleden ved dans. Bli med på gratis prøveuker, uke 35 og 36!
+                  Bli med på en prøvetime og opplev gleden ved dans. I uke 35 og 36 kan du prøve så mange klasser du vil helt gratis. Ingen påmelding nødvendig. Timeplanen kommer snart!
                 </p>
                 <div className="flex gap-3">
                   <Link to="/registration" className="flex-1">
