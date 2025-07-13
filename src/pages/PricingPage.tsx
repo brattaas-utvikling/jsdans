@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { 
-  StarIcon,
-  SparklesIcon,
   ArrowRight
 } from "lucide-react";
 import ScrollToTop from "@/helpers/ScrollToTop";
@@ -43,9 +41,17 @@ export default function PricingPage() {
     return `${(priceInOre / 100).toLocaleString('no-NO')} kr`;
   };
 
+  // Calculate discounted price
+  const calculateDiscountedPrice = (pkg: PricingPackage): number => {
+    if (!pkg.price || pkg.price === 0) return 0;
+    if (!pkg.discount_amount) return pkg.price;
+    
+    return pkg.price - pkg.discount_amount;
+  };
+
   // Format full pricing display
   const formatPricingDisplay = (pkg: PricingPackage): string => {
-    // Special cases with fallback descriptions
+    // Special cases with fallback descriptions - ALLTID vis disse
     const fallbackDescriptions: Record<string, string> = {
       "Familierabatt": "50% for danser nr 2 som danser 3 eller flere klasser",
       "Kompani": "500 kr ekstra per halvår",
@@ -53,7 +59,7 @@ export default function PricingPage() {
       "Prøvetime": "Gratis første time for nye deltakere"
     };
 
-    // Check if this package has a fallback description
+    // Check if this package has a fallback description - VIS ALLTID
     if (fallbackDescriptions[pkg.name]) {
       return pkg.description || fallbackDescriptions[pkg.name];
     }
@@ -68,14 +74,17 @@ export default function PricingPage() {
       return 'Pris kommer';
     }
     
-    // Standard price display
-    if (pkg.price && pkg.price > 0 && pkg.period) {
-      return `${formatPrice(pkg.price)} ${pkg.period}`;
+    // Calculate final price (with discount if applicable)
+    const finalPrice = calculateDiscountedPrice(pkg);
+    
+    // Standard price display with period
+    if (finalPrice > 0 && pkg.period) {
+      return `${formatPrice(finalPrice)} ${pkg.period}`;
     }
     
     // Price without period
-    if (pkg.price && pkg.price > 0) {
-      return formatPrice(pkg.price);
+    if (finalPrice > 0) {
+      return formatPrice(finalPrice);
     }
     
     return 'Kontakt oss for pris';
@@ -99,6 +108,7 @@ export default function PricingPage() {
       
       const packages = response.documents as unknown as PricingPackage[];
       console.log(`Hentet ${packages.length} prispakker fra Appwrite`);
+      console.log('Packages:', packages); // Debug logging
       setPricingPackages(packages);
     } catch (err) {
       console.error('Error fetching pricing packages:', err);
@@ -259,45 +269,62 @@ export default function PricingPage() {
         <div className="container mx-auto px-4 md:px-6">
           <div className="max-w-4xl mx-auto">
             <div className="space-y-6">
-              {pricingPackages.map((pkg, index) => (
-                <motion.div
-                  key={pkg.$id}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.1 * index }}
-                  className="group"
-                >
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between 
-                                bg-white dark:bg-surface-dark rounded-xl p-6 
-                                border border-brand-100/50 dark:border-brand-700/30
-                                transition-all duration-200 group-hover:border-brand-300 dark:group-hover:border-brand-500
-                                hover:shadow-brand-lg">
-                    <div className="mb-2 sm:mb-0">
-                      <h3 className="font-semibold text-lg text-gray-900 dark:text-white 
-                                   transition-colors duration-200 group-hover:text-brand-600 dark:group-hover:text-brand-400">
-                        {pkg.name}
-                      </h3>
-                      {pkg.discount_text && (
-                        <p className="text-sm text-green-700 dark:text-green-400 font-medium">
-                          {pkg.discount_text}
-                        </p>
-                      )}
-                      {pkg.description && pkg.price && (
-                        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                          {pkg.description}
-                        </p>
-                      )}
+              {pricingPackages.map((pkg, index) => {
+                const finalPrice = calculateDiscountedPrice(pkg);
+                const hasDiscount = pkg.discount_amount && pkg.discount_amount > 0;
+                
+                return (
+                  <motion.div
+                    key={pkg.$id}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.1 * index }}
+                    className="group"
+                  >
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between 
+                                  bg-white dark:bg-surface-dark rounded-xl p-6 
+                                  border border-brand-100/50 dark:border-brand-700/30
+                                  transition-all duration-200 group-hover:border-brand-300 dark:group-hover:border-brand-500
+                                  hover:shadow-brand-lg">
+                      <div className="mb-2 sm:mb-0">
+                        <h3 className="font-semibold text-lg text-gray-900 dark:text-white 
+                                     transition-colors duration-200 group-hover:text-brand-600 dark:group-hover:text-brand-400">
+                          {pkg.name}
+                        </h3>
+                        {pkg.discount_text && (
+                          <p className="text-sm text-green-700 dark:text-green-400 font-medium">
+                            {pkg.discount_text}
+                          </p>
+                        )}
+                        {pkg.description && pkg.price && pkg.price > 0 && (
+                          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                            {pkg.description}
+                          </p>
+                        )}
+                      </div>
+                      <div className="text-right">
+                        {hasDiscount && pkg.price && pkg.price > 0 ? (
+                          <div className="space-y-1">
+                            <p className="text-sm text-gray-500 dark:text-gray-400 line-through">
+                              {formatPrice(pkg.price)} {pkg.period}
+                            </p>
+                            <p className="font-montserrat text-gray-700 dark:text-gray-300 
+                                        transition-colors duration-200 group-hover:text-gray-900 dark:group-hover:text-white">
+                              {finalPrice > 0 && pkg.period ? `${formatPrice(finalPrice)} ${pkg.period}` : formatPricingDisplay(pkg)}
+                            </p>
+                          </div>
+                        ) : (
+                          <p className="font-montserrat text-gray-700 dark:text-gray-300 
+                                      transition-colors duration-200 group-hover:text-gray-900 dark:group-hover:text-white">
+                            {formatPricingDisplay(pkg)}
+                          </p>
+                        )}
+                      </div>
                     </div>
-                    <div className="text-right">
-                      <p className="font-montserrat text-gray-700 dark:text-gray-300 
-                                  transition-colors duration-200 group-hover:text-gray-900 dark:group-hover:text-white">
-                        {formatPricingDisplay(pkg)}
-                      </p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -324,8 +351,8 @@ export default function PricingPage() {
                 <Button 
                   variant="outline"
                   className="font-semibold rounded-full 
-                            bg-white/80 border-brand-300 text-brand-600 
-                            hover:bg-brand-50 hover:text-brand-700
+                            bg-white/80 border-brand-300 text-brand-700 
+                            hover:bg-brand-50 hover:text-brand-800
                             dark:bg-transparent dark:border-brand-700 dark:text-brand-400 
                             dark:hover:bg-brand-900/30 dark:hover:text-brand-300"
                 >
