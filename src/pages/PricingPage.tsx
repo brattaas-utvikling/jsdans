@@ -107,8 +107,6 @@ export default function PricingPage() {
       );
       
       const packages = response.documents as unknown as PricingPackage[];
-      console.log(`Hentet ${packages.length} prispakker fra Appwrite`);
-      console.log('Packages:', packages); // Debug logging
       setPricingPackages(packages);
     } catch (err) {
       console.error('Error fetching pricing packages:', err);

@@ -1,4 +1,4 @@
-// services/secureContactService.ts - KOMPLETT FIKSET VERSJON
+// services/secureContactService.ts
 
 import { ID, Query, Functions } from 'appwrite';
 import { databases, DATABASE_ID, COLLECTIONS } from '../lib/appwrite';
@@ -37,8 +37,6 @@ export class SecureContactService {
     }
   ): Promise<SubmissionResult> {
     try {
-      console.log('🚀 Starting contact form submission...');
-      
       // 1. Sanitiser input først
       const sanitizedInput = {
         name: InputSanitizer.sanitizeName(formData.name),
@@ -137,8 +135,6 @@ export class SecureContactService {
     documentId: string
   ): Promise<void> {
     try {
-      console.log('📧 === EMAIL NOTIFICATION START ===');
-      
       const { client } = await import('../lib/appwrite');
       const functions = new Functions(client);
       
@@ -155,28 +151,18 @@ export class SecureContactService {
         timestamp: new Date().toISOString()
       };
       
-      console.log('📦 Payload prepared:', payload);
-      
       // Serialize payload
       const payloadString = JSON.stringify(payload);
-      console.log('✅ Payload serialized successfully');
       
       // Execute function
-      console.log('🚀 Executing email function...');
-      const execution = await functions.createExecution(
+      await functions.createExecution(
         'send-contact-email',
         payloadString
       );
       
-      console.log('✅ Email function triggered successfully!');
-      console.log('📋 Execution ID:', execution.$id);
-      console.log('📧 Email should be sent - check your inbox!');
-      
-      // Don't try to read execution status to avoid permissions issues
-      
     } catch (error: unknown) {
-      console.error('❌ Email notification failed:', error instanceof Error ? error.message : 'Unknown error');
-      // Don't throw - we don't want to break the form submission
+      // Silently fail - don't break form submission
+      console.error('Email notification failed:', error instanceof Error ? error.message : 'Unknown error');
     }
   }
 
@@ -185,8 +171,6 @@ export class SecureContactService {
    */
   static async testEmailFunction(): Promise<void> {
     try {
-      console.log('🧪 Testing email function...');
-      
       const { client } = await import('../lib/appwrite');
       const functions = new Functions(client);
       
@@ -203,17 +187,14 @@ export class SecureContactService {
       
       const payloadString = JSON.stringify(testPayload);
       
-      const execution = await functions.createExecution(
+      await functions.createExecution(
         'send-contact-email',
         payloadString
       );
       
-      console.log('✅ Test function executed!');
-      console.log('📋 Execution ID:', execution.$id);
-      console.log('📧 Check your email for the test message!');
-      
     } catch (error: unknown) {
-      console.error('❌ Test failed:', error instanceof Error ? error.message : 'Unknown error');
+      console.error('Test failed:', error instanceof Error ? error.message : 'Unknown error');
+      throw error;
     }
   }
 

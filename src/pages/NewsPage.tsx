@@ -75,7 +75,6 @@ export default function NewsPage() {
       
       const articles = response.documents as unknown as NewsArticle[];
 
-      console.log(`Hentet ${articles.length} publiserte artikler fra Appwrite`);
       setFilteredNews(articles);
     } catch (err) {
       console.error('Error fetching news:', err);

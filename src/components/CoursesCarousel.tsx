@@ -98,30 +98,19 @@ export default function CoursesCarousel({
     setError(null);
     
     try {
-      console.log('🔄 Fetching courses from Appwrite...');
-      
       const response = await listDocuments(
         DATABASE_ID,
         COLLECTIONS.DANCE_CLASSES_CAROUSEL,
         [
-          Query.orderAsc('sorting'), // ✅ Sorterer etter sorting attributt (0, 1, 2, 3, 4, 5, 6, 7)
+          Query.orderAsc('sorting'), // Sorterer etter sorting attributt (0, 1, 2, 3, 4, 5, 6, 7)
           Query.limit(limit) // Bruk limit parameter
         ]
       );
-      
-      console.log(`📊 Fetched ${response.documents.length} courses`);
-      
+
       const courseData = response.documents as unknown as DanceClass[];
-      
-      // Debug logging for sortering
-      console.log('📋 Courses sorted by sorting attribute:');
-      courseData.forEach((course, index) => {
-        console.log(`${index + 1}. ${course.name} (sorting: ${course.sorting})`);
-      });
-      
       setCourses(courseData);
     } catch (err) {
-      console.error('❌ Error fetching courses:', err);
+      console.error('Error fetching courses:', err);
       setError('Kunne ikke laste kurs fra databasen.');
     } finally {
       setLoading(false);
