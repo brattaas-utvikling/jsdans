@@ -1,7 +1,7 @@
 import { STUDIO_INFO } from "@/data/dance-studio-data";
 import { useState } from "react";
 import { MapPinIcon, PhoneIcon, MailIcon } from "lucide-react";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import logo from "../assets/logo.svg";
 import { FaFacebookF, FaInstagram } from "react-icons/fa";
 
@@ -220,12 +220,12 @@ export default function Footer() {
             >
               Personvern
             </a> */}
-            <Link 
+{/*             <Link 
               to="/betingelser"
               className="text-gray-400 dark:text-gray-300 hover:text-brand-400 dark:hover:text-brand-300 transition-colors text-sm font-montserrat hover:underline underline-offset-4"
             >
               Betingelser
-            </Link>
+            </Link> */}
             {/* <a
               href="#"
               className="text-gray-500 dark:text-gray-400 hover:text-brand-400 dark:hover:text-brand-300 transition-colors text-sm font-montserrat

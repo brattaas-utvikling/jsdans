@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { 
   StarIcon,
@@ -228,7 +228,7 @@ export default function RegistrationPage() {
           </motion.p>
 
           {/* Betingelser Link - Properly styled and animated */}
-          <motion.div
+{/*           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.7 }}
@@ -244,7 +244,7 @@ export default function RegistrationPage() {
             >
               Les våre betingelser for kursdeltagelse
             </Link>
-          </motion.div>
+          </motion.div> */}
 
           {/* Action Buttons */}
           <motion.div
