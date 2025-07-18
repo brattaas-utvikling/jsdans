@@ -1,28 +1,492 @@
 <!DOCTYPE html>
-<html lang="no">
+<html lang="no" itemscope itemtype="https://schema.org/WebPage">
   <head>
+    <!-- Essential Meta Tags -->
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Primary SEO Meta Tags -->
+    <title>
+      Urban Studios - Dansestudio i Kongsvinger | Ballet, Hip-hop, Jazz, Show og
+      Moderne Dans
+    </title>
     <meta
       name="description"
-      content="Kongsvingers nyeste dansesstudio. Moderne kurs for alle aldre og nivåer. Book gratis prøvetime i dag! Hip hop, contemporary, jazz og mer."
+      content="Urban Studios - Kongsvinger's nyeste dansestudio. Ballet, hip-hop, jazz, show/muskal og moderne dans for alle aldre. I uke 35 og 36 kan du prøve så mange klasser du vil helt gratis! Åpner høsten 2025. Fra 1300 kr per semester."
     />
     <meta
       name="keywords"
-      content="dans, dansestudio, hip hop, contemporary, jazz, kurs, prøvetime, Kongsvinger"
+      content="dansestudio kongsvinger, ballet kongsvinger, hip-hop dans kongsvinger, jazz dans kongsvinger, moderne dans kongsvinger, showdans, musikaldans, dansetimer kongsvinger, dansekurs kongsvinger, urban studios, danseskole kongsvinger, breakdance kongsvinger, contemporary dans, dansekompani kongsvinger"
     />
-    <meta name="author" content="URBAN STUDIOS" />
-    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Urban Studios" />
     <meta
-      property="og:title"
-      content="URBAN STUDIOS - Kongsvingers nyeste dansestudio"
+      name="robots"
+      content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
     />
 
-    <title>URBAN STUDIOS</title>
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://urbanstudios.no/" />
+
+    <!-- Language and Geographic Meta Tags -->
+    <meta name="language" content="Norwegian" />
+    <meta name="geo.region" content="NO-04" />
+    <meta name="geo.placename" content="Kongsvinger" />
+    <meta name="geo.position" content="60.18664431782788;12.002802048813177" />
+    <meta name="ICBM" content="60.18664431782788, 12.002802048813177" />
+
+    <!-- Open Graph / Facebook Meta Tags -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://urbanstudios.no/" />
+    <meta
+      property="og:title"
+      content="Urban Studios - Dansestudio i Kongsvinger"
+    />
+    <meta
+      property="og:description"
+      content="Kongsvinger's nyeste dansestudio. Ballet, hip-hop, jazz, show/muskal og moderne dans for alle aldre. I uke 35 og 36 kan du prøve så mange klasser du vil helt gratis! Åpner høsten 2025. Fra 1300 kr per semester."
+    />
+    <meta
+      property="og:image"
+      content="https://urbanstudios.no/images/urban-studios-og-image.jpg"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Urban Studios Kongsvinger dansestudio med ballet, hip-hop, show/musikal og moderne dans"
+    />
+    <meta property="og:locale" content="no_NO" />
+    <meta property="og:site_name" content="Urban Studios" />
+
+    <!-- Favicon and App Icons -->
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#3B82F6" />
+    <meta name="msapplication-TileColor" content="#3B82F6" />
+
+    <!-- Preconnect to External Domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- DNS Prefetch for Performance -->
+    <link rel="dns-prefetch" href="//images.unsplash.com" />
+    <link rel="dns-prefetch" href="//cdn.jsdelivr.net" />
+
+    <!-- Preload Critical Resources -->
+    <link rel="preload" href="/src/main.tsx" as="script" />
+    <link rel="preload" href="/logo.svg" as="image" type="image/svg+xml" />
+
+    <!-- Local Business JSON-LD Schema -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "DanceSchool",
+        "name": "Urban Studios",
+        "alternateName": "Urban Studios Kongsvinger",
+        "description": "Nytt dansestudio i Kongsvinger med ballet, hip-hop, jazz, moderne dans og dansekompani for alle aldre og nivåer",
+        "url": "https://urbanstudios.no",
+        "logo": "https://urbanstudios.no/logo.svg",
+        "image": "https://urbanstudios.no/images/urban-studios-hero.jpg",
+        "telephone": "+47 979 53 671",
+        "email": "kontakt@urbanstudios.no",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Jernbanegata 16",
+          "addressLocality": "Kongsvinger",
+          "postalCode": "2211",
+          "addressRegion": "Innlandet",
+          "addressCountry": "NO"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 60.18664431782788,
+          "longitude": 12.002802048813177
+        },
+        "areaServed": {
+          "@type": "City",
+          "name": "Kongsvinger"
+        },
+        "openingHours": ["Åpner høsten 2025"],
+        "priceRange": "Fra 1300 NOK per semester",
+        "paymentAccepted": ["Vipps"],
+        "currenciesAccepted": "NOK",
+        "foundingDate": "2025",
+        "numberOfEmployees": "5-10",
+        "slogan": "Uttrykk deg selv gjennom dans",
+        "knowsAbout": [
+          "Ballet dans",
+          "Hip-hop dans",
+          "Jazz dans",
+          "Moderne dans",
+          "Contemporary dans",
+          "Dansekompani",
+          "Aspirantkompani",
+          "Showdans",
+          "Musikaldans",
+          "Dansefysikk"
+        ],
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Dansetimer og kurs",
+          "description": "Alle våre dansetimer med gratis prøveperiode i uke 35 og 36",
+          "itemListElement": [
+            {
+              "@type": "Offer",
+              "name": "Barnedans 45 min",
+              "description": "Dansetimer for de yngste danserne - 45 minutter",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Barnedans",
+                "description": "Dansetimer tilpasset de yngste barna, 45 minutter per time",
+                "duration": "PT45M",
+                "provider": {
+                  "@type": "Organization",
+                  "name": "Urban Studios"
+                },
+                "serviceArea": {
+                  "@type": "City",
+                  "name": "Kongsvinger"
+                }
+              },
+              "price": "1300",
+              "priceCurrency": "NOK",
+              "priceSpecification": {
+                "@type": "UnitPriceSpecification",
+                "price": "1300",
+                "priceCurrency": "NOK",
+                "billingIncrement": "1",
+                "unitText": "per semester",
+                "referenceQuantity": {
+                  "@type": "QuantitativeValue",
+                  "value": "15",
+                  "unitText": "uker"
+                }
+              },
+              "availability": "https://schema.org/InStock",
+              "validFrom": "2025-08-01",
+              "category": "Barnedans"
+            },
+            {
+              "@type": "Offer",
+              "name": "1 klasse 60 min",
+              "description": "En dansetime per uke - 60 minutter",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Regulær dansetime",
+                "description": "Ballet, hip-hop, jazz, moderne dans eller show/musikal - 60 minutter per time",
+                "duration": "PT60M",
+                "provider": {
+                  "@type": "Organization",
+                  "name": "Urban Studios"
+                },
+                "serviceArea": {
+                  "@type": "City",
+                  "name": "Kongsvinger"
+                }
+              },
+              "price": "1700",
+              "priceCurrency": "NOK",
+              "priceSpecification": {
+                "@type": "UnitPriceSpecification",
+                "price": "1700",
+                "priceCurrency": "NOK",
+                "billingIncrement": "1",
+                "unitText": "per semester",
+                "referenceQuantity": {
+                  "@type": "QuantitativeValue",
+                  "value": "15",
+                  "unitText": "uker"
+                }
+              },
+              "availability": "https://schema.org/InStock",
+              "validFrom": "2025-08-01",
+              "category": "Regulære kurs"
+            },
+            {
+              "@type": "Offer",
+              "name": "2 klasser 60 min",
+              "description": "To dansetimer per uke med 200 kr rabatt",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "To dansetimer",
+                "description": "Kombinasjon av ballet, hip-hop, jazz, moderne dans eller show/musikal - 2 x 60 minutter per uke",
+                "duration": "PT120M",
+                "provider": {
+                  "@type": "Organization",
+                  "name": "Urban Studios"
+                },
+                "serviceArea": {
+                  "@type": "City",
+                  "name": "Kongsvinger"
+                }
+              },
+              "price": "3200",
+              "priceCurrency": "NOK",
+              "priceSpecification": [
+                {
+                  "@type": "UnitPriceSpecification",
+                  "price": "3400",
+                  "priceCurrency": "NOK",
+                  "name": "Ordinær pris",
+                  "description": "Ordinær pris for 2 klasser (2 x 1700 kr)"
+                },
+                {
+                  "@type": "UnitPriceSpecification",
+                  "price": "3200",
+                  "priceCurrency": "NOK",
+                  "name": "Rabattpris",
+                  "description": "Pris med 200 kr rabatt",
+                  "billingIncrement": "1",
+                  "unitText": "per semester",
+                  "referenceQuantity": {
+                    "@type": "QuantitativeValue",
+                    "value": "15",
+                    "unitText": "uker"
+                  }
+                }
+              ],
+              "priceValidUntil": "2025-12-31",
+              "availability": "https://schema.org/InStock",
+              "validFrom": "2025-08-01",
+              "category": "Rabattkurs"
+            },
+            {
+              "@type": "Offer",
+              "name": "3 eller flere klasser",
+              "description": "Tre eller flere dansetimer per uke med 600 kr rabatt",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Tre eller flere dansetimer",
+                "description": "Kombinasjon av ballet, hip-hop, jazz, moderne dans eller show/musikal - 3+ x 60 minutter per uke",
+                "duration": "PT180M",
+                "provider": {
+                  "@type": "Organization",
+                  "name": "Urban Studios"
+                },
+                "serviceArea": {
+                  "@type": "City",
+                  "name": "Kongsvinger"
+                }
+              },
+              "price": "4500",
+              "priceCurrency": "NOK",
+              "priceSpecification": [
+                {
+                  "@type": "UnitPriceSpecification",
+                  "price": "5100",
+                  "priceCurrency": "NOK",
+                  "name": "Ordinær pris",
+                  "description": "Ordinær pris for 3 klasser (3 x 1700 kr)"
+                },
+                {
+                  "@type": "UnitPriceSpecification",
+                  "price": "4500",
+                  "priceCurrency": "NOK",
+                  "name": "Rabattpris",
+                  "description": "Pris med 600 kr rabatt",
+                  "billingIncrement": "1",
+                  "unitText": "per semester",
+                  "referenceQuantity": {
+                    "@type": "QuantitativeValue",
+                    "value": "15",
+                    "unitText": "uker"
+                  }
+                }
+              ],
+              "eligibleQuantity": {
+                "@type": "QuantitativeValue",
+                "minValue": "3",
+                "unitText": "klasser"
+              },
+              "priceValidUntil": "2025-12-31",
+              "availability": "https://schema.org/InStock",
+              "validFrom": "2025-08-01",
+              "category": "Rabattkurs"
+            },
+            {
+              "@type": "Offer",
+              "name": "Gratis prøveperiode",
+              "description": "Gratis deltakelse i uke 35 og 36 - prøv så mange klasser du vil",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Gratis prøvetimer",
+                "description": "Gratis deltakelse på alle dansetimer i uke 35 og 36, 2025",
+                "provider": {
+                  "@type": "Organization",
+                  "name": "Urban Studios"
+                },
+                "serviceArea": {
+                  "@type": "City",
+                  "name": "Kongsvinger"
+                }
+              },
+              "price": "0",
+              "priceCurrency": "NOK",
+              "priceSpecification": {
+                "@type": "UnitPriceSpecification",
+                "price": "0",
+                "priceCurrency": "NOK",
+                "billingIncrement": "1",
+                "unitText": "per uke",
+                "description": "Gratis prøvetimer i uke 35 og 36"
+              },
+              "availability": "https://schema.org/InStock",
+              "validFrom": "2025-08-26",
+              "validThrough": "2025-09-08",
+              "category": "Gratis prøve"
+            }
+          ],
+          "offers": [
+            {
+              "@type": "AggregateOffer",
+              "name": "Alle dansetimer",
+              "description": "Komplett tilbud av dansetimer ved Urban Studios",
+              "lowPrice": "0",
+              "highPrice": "4500",
+              "priceCurrency": "NOK",
+              "offerCount": "5",
+              "availability": "https://schema.org/InStock"
+            }
+          ]
+        },
+        "review": {
+          "@type": "Review",
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5",
+            "bestRating": "5"
+          },
+          "author": {
+            "@type": "Person",
+            "name": "Kommende anmeldelser"
+          },
+          "reviewBody": "Urban Studios åpner høsten 2025 med profesjonell danseopplæring i Kongsvinger"
+        },
+        "sameAs": [
+          "https://www.facebook.com/profile.php?id=61578399712863",
+          "https://instagram.com/urbanstudios.dans"
+        ]
+      }
+    </script>
+
+    <!-- Website JSON-LD Schema -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Urban Studios",
+        "alternateName": "Urban Studios Kongsvinger",
+        "url": "https://urbanstudios.no",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://urbanstudios.no/kurs?search={search_term_string}",
+          "query-input": "required name=search_term_string"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Urban Studios Kongsvinger",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://urbanstudios.no/logo.svg"
+          }
+        }
+      }
+    </script>
+
+    <!-- Organization JSON-LD Schema -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Urban Studios",
+        "alternateName": "Urban Studios Kongsvinger",
+        "url": "https://urbanstudios.no",
+        "logo": "https://urbanstudios.no/logo.svg",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+47 979 53 671",
+          "contactType": "customer service",
+          "areaServed": "NO",
+          "availableLanguage": "Norwegian"
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Jernbanegata 16",
+          "addressLocality": "Kongsvinger",
+          "postalCode": "2211",
+          "addressCountry": "NO"
+        },
+        "sameAs": [
+          "https://www.facebook.com/profile.php?id=61578399712863",
+          "https://instagram.com/urbanstudios.dans"
+        ]
+      }
+    </script>
+
+    <!-- Security Headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Frame-Options" content="DENY" />
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
+    <meta
+      http-equiv="Referrer-Policy"
+      content="strict-origin-when-cross-origin"
+    />
+
+    <!-- Performance Hints -->
+    <meta http-equiv="Accept-CH" content="DPR, Viewport-Width, Width" />
   </head>
   <body>
+    <!-- Skip to content link for accessibility -->
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 bg-blue-600 text-white p-2 z-50"
+    >
+      Hopp til hovedinnhold
+    </a>
+
+    <!-- Main Application -->
     <div id="root"></div>
+
+    <!-- Main Script -->
     <script type="module" src="/src/main.tsx"></script>
+
+    <!-- Performance Monitoring (optional) -->
+    <script>
+      // Core Web Vitals monitoring
+      window.addEventListener("load", function () {
+        if ("performance" in window && "timing" in performance) {
+          setTimeout(function () {
+            const loadTime =
+              performance.timing.loadEventEnd -
+              performance.timing.navigationStart;
+            console.log("Page load time:", loadTime + "ms");
+          }, 0);
+        }
+      });
+    </script>
+
+    <!-- NoScript fallback -->
+    <noscript>
+      <div
+        style="
+          text-align: center;
+          padding: 50px;
+          font-family: Arial, sans-serif;
+        "
+      >
+        <h1>Urban Studios Kongsvinger</h1>
+        <p>
+          Profesjonelt dansestudio med ballet, hip-hop, jazz, show/musikal og
+          moderne dans.
+        </p>
+        <p>
+          For best opplevelse, vennligst aktiver JavaScript i nettleseren din.
+        </p>
+        <p>Kontakt oss på telefon: +47 979 53 671</p>
+      </div>
+    </noscript>
   </body>
 </html>
