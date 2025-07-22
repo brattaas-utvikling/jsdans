@@ -13,6 +13,7 @@ import ClassesSection from "./pages/CoursesPage";
 import RegistrationPage from "./pages/RegistrationPage";
 import TermsConditions from "./pages/TermsConditions";
 import NotFoundPage from "./pages/NotFoundPage";
+import SchedualPage from "./pages/SchedualPage";
 
 
 
@@ -52,7 +53,14 @@ export default function App() {
             </Layout>
           }
         />
-
+        <Route
+          path="/timeplan"
+          element={
+            <Layout>
+              <SchedualPage />
+            </Layout>
+          }
+        />
         <Route
           path="/registration"
           element={
