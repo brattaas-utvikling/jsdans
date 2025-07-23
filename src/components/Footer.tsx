@@ -241,7 +241,7 @@ export default function Footer() {
           <p className="text-gray-400 dark:text-gray-300 text-xs font-montserrat">
             Levert av{" "}
             <a
-              href="https://brattaasutvikling.no"
+              href="https://www.brattaasutvikling.no"
               target="_blank"
               rel="noopener noreferrer"
               className="text-brand-500 dark:text-brand-400 hover:text-brand-400 dark:hover:text-brand-300 
