@@ -20,7 +20,7 @@ export default function SchedualPage() {
   const [selectedDay, setSelectedDay] = useState("Mandag");
   const [themeFilter, setThemeFilter] = useState<string | null>(null);
   const [selectedRoom, setSelectedRoom] = useState<string>(STUDIO_ROOMS[0]);
-  
+  const [isInitialized, setIsInitialized] = useState(false);
   // Ny state for desktop sal-filter
   const [selectedRooms, setSelectedRooms] = useState<string[]>(STUDIO_ROOMS);
   
@@ -51,10 +51,12 @@ export default function SchedualPage() {
 
   // Initialize selected rooms when STUDIO_ROOMS changes
   useEffect(() => {
-    if (STUDIO_ROOMS.length > 0 && selectedRooms.length === 0) {
+    // Kun kjør på mount (component initialization)
+    if (STUDIO_ROOMS.length > 0 && !isInitialized) {
       setSelectedRooms(STUDIO_ROOMS.slice(0, Math.min(2, STUDIO_ROOMS.length)));
+      setIsInitialized(true);
     }
-  }, [STUDIO_ROOMS]);
+  }, [isInitialized]); // Fjern selectedRooms.length herfra
 
   // Filter schedules based on day and theme
   const filteredSchedules = useMemo(() => {
@@ -248,12 +250,12 @@ export default function SchedualPage() {
         </div>
         
         {/* Alder */}
-        <div className={`${isDesktop ? 'text-xs' : 'text-sm'} opacity-90 italic`}>
+        {/* <div className={`${isDesktop ? 'text-xs' : 'text-sm'} opacity-90 italic`}>
           {isDesktop 
             ? (schedule.dance_class.age ? schedule.dance_class.age.substring(0, 8) : '')
             : (schedule.dance_class.age ? schedule.dance_class.age : 'Alle')
           }
-        </div>
+        </div> */}
 
         {/* Kapasitet og notater - kun på desktop */}
         {isDesktop && schedule.maxStudents && schedule.maxStudents > 0 && (
