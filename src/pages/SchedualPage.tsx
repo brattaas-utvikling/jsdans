@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import ScrollToTop from "@/helpers/ScrollToTop";
+import { Download } from "lucide-react";
 import {
   fetchSchedulesWithClasses,
   getThemeFromClass,
@@ -56,7 +57,7 @@ export default function SchedualPage() {
       setSelectedRooms(STUDIO_ROOMS.slice(0, Math.min(2, STUDIO_ROOMS.length)));
       setIsInitialized(true);
     }
-  }, [isInitialized]); // Fjern selectedRooms.length herfra
+  }, [isInitialized]);
 
   // Filter schedules based on day and theme
   const filteredSchedules = useMemo(() => {
@@ -207,9 +208,9 @@ export default function SchedualPage() {
     const instructor = schedule.substitute_instructor || 
       schedule.dance_class.instructor;
 
-    // Beregn høyde basert på duration (hver slot = 96px høyde = h-24)
+    // Redusert høyde: hver slot = 64px høyde = h-16 (fra 96px = h-24)
     // Må også regne med gap mellom celler (1px)
-    const heightInPx = (duration * 96) + ((duration - 1) * 1);
+    const heightInPx = (duration * 64) + ((duration - 1) * 1);
 
     return (
       <motion.div
@@ -217,48 +218,40 @@ export default function SchedualPage() {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.3 }}
-        className={`absolute inset-0 ${isDesktop ? 'rounded-xl px-2 py-2' : 'rounded-2xl px-4 py-3'} font-montserrat
-                   ${themeColors.color} ${themeColors.textColor} 
+        className={`absolute inset-0 ${isDesktop ? 'rounded-lg px-2 py-1' : 'rounded-xl px-3 py-2'} font-montserrat
+                   ${themeColors.color} ${themeColors.textColor}
                    shadow-lg hover:shadow-xl transition-all duration-200
                    cursor-pointer hover:scale-[1.02] z-10`}
         style={{ height: `${heightInPx}px` }}
         title={`${schedule.dance_class.name} - ${schedule.start_time} til ${schedule.end_time}`}
       >
-        {/* Kursnavn - naturlig på mobil, fast høyde på desktop */}
-        <div className={`font-bold ${isDesktop ? 'text-xs' : 'text-lg'} leading-tight mb-1 ${isDesktop ? 'h-6 flex items-start' : ''}`}>
-          <span className={isDesktop ? 'line-clamp-2' : ''}>
+        {/* Kursnavn - kompakt på begge */}
+        <div className={`font-bold ${isDesktop ? 'text-xs' : 'text-sm'} leading-tight mb-1`}>
+          <span className={isDesktop ? 'line-clamp-1' : 'line-clamp-2'}>
             {schedule.dance_class.name}
           </span>
         </div>
         
-    {/* Instruktør - kun på desktop */}
-    {isDesktop && instructor && (
-          <div className="text-xs opacity-90 mb-1">
-            {instructor}
+        {/* Instruktør - kun på desktop, kompakt */}
+        {isDesktop && instructor && (
+          <div className="text-xs opacity-80 mb-1 truncate">
+            {instructor.split(' ')[0]} {/* Kun fornavn for å spare plass */}
             {schedule.substitute_instructor && (
-              <span className="text-xs block opacity-75">(V)</span>
+              <span className="text-xs opacity-75"> (V)</span>
             )}
           </div>
         )}
         
-        {/* Tid */}
-        <div className={`${isDesktop ? 'text-xs' : 'text-base'} font-medium mb-1`}>
+        {/* Tid - kompakt format */}
+        <div className={`${isDesktop ? 'text-xs' : 'text-sm'} font-medium`}>
           {isDesktop 
             ? `${schedule.start_time.substring(0,5)}-${schedule.end_time.substring(0,5)}` 
-            : `${schedule.start_time} - ${schedule.end_time}`
+            : `${schedule.start_time.substring(0,5)} - ${schedule.end_time.substring(0,5)}`
           }
         </div>
-        
-        {/* Alder */}
-        {/* <div className={`${isDesktop ? 'text-xs' : 'text-sm'} opacity-90 italic`}>
-          {isDesktop 
-            ? (schedule.dance_class.age ? schedule.dance_class.age.substring(0, 8) : '')
-            : (schedule.dance_class.age ? schedule.dance_class.age : 'Alle')
-          }
-        </div> */}
 
-        {/* Kapasitet og notater - kun på desktop */}
-        {isDesktop && schedule.maxStudents && schedule.maxStudents > 0 && (
+        {/* Kapasitet - kun på desktop hvis plass */}
+        {isDesktop && schedule.maxStudents && schedule.maxStudents > 0 && duration > 1 && (
           <div className="text-xs mt-1 font-medium text-gray-900 dark:text-white">
             {schedule.currentStudents || 0}/{schedule.maxStudents}
           </div>
@@ -425,6 +418,30 @@ export default function SchedualPage() {
           {/* Room Selector for Desktop */}
           <RoomSelector />
 
+          {/* Download Schedule Component */}
+          <div className="flex justify-center mb-4">
+            <Button
+              onClick={() => {
+                // Last ned statisk bilde av timeplan
+                const link = document.createElement('a');
+                link.href = '/Urban-Studios-Timeplan.png'; // eller .jpg
+                link.download = 'Urban-Studios-Timeplan.png';
+                link.click();
+              }}
+              variant="outline"
+              size="sm"
+              className="font-montserrat font-medium rounded-full 
+                        border-brand-300 text-brand-600 
+                        hover:bg-brand-50 hover:text-brand-700
+                        dark:border-brand-700 dark:text-brand-400 
+                        dark:hover:bg-brand-900/30 dark:hover:text-brand-300
+                        transition-all duration-200"
+            >
+              <Download className="mr-2 h-4 w-4" />
+              Last ned timeplan
+            </Button>
+          </div>
+
           {/* Schedule Grid */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -433,15 +450,15 @@ export default function SchedualPage() {
             className="bg-white dark:bg-surface-dark rounded-2xl shadow-brand-lg 
                       border border-brand-100/50 dark:border-brand-700/30 overflow-hidden"
           >
-            {/* Mobile View - Under lg */}
-            <div className="lg:hidden">
+            {/* Mobile View - Under lg (screen only) */}
+            <div className="lg:hidden print:hidden">
               <div className="bg-brand-50 dark:bg-brand-900/20 p-4 border-b border-brand-200 dark:border-brand-700">
                 <h3 className="font-bebas text-bebas-base font-semibold text-center text-gray-900 dark:text-white">
                   {selectedRoom} - {selectedDay}
                 </h3>
               </div>
               
-              <div className="grid grid-cols-[80px_1fr] gap-px bg-gray-200 dark:bg-gray-800">
+              <div className="schedule-grid grid grid-cols-[80px_1fr] gap-px bg-gray-200 dark:bg-gray-800">
                 <div className="bg-gray-100 dark:bg-gray-700 font-montserrat font-medium text-center py-2 text-sm text-gray-700 dark:text-gray-200">
                   Tid
                 </div>
@@ -454,7 +471,7 @@ export default function SchedualPage() {
                     <div className="bg-gray-50 dark:bg-gray-600 text-sm text-center py-3 font-montserrat text-gray-600 dark:text-gray-300">
                       {time}
                     </div>
-                    <div className="relative h-24 bg-white dark:bg-gray-900">
+                    <div className="relative h-16 bg-white dark:bg-gray-900">
                       {!isTimeSlotOccupied(selectedRoom, time) && renderSchedule(selectedRoom, time)}
                     </div>
                   </React.Fragment>
@@ -462,11 +479,82 @@ export default function SchedualPage() {
               </div>
             </div>
 
-            {/* Desktop View - lg og større */}
-            <div className="hidden lg:block">
+            {/* Print View - Hele uken for alle skjermstørrelser */}
+            <div className="hidden print:block print:p-2">
+              <div
+                className="schedule-table grid gap-0 bg-gray-200 dark:bg-gray-800 print:text-xs"
+                style={{
+                  gridTemplateColumns: `50px repeat(${DAYS_OF_WEEK.length}, 1fr)`,
+                }}
+              >
+                {/* Header row - Tom celle + dager */}
+                <div className="bg-gray-100 dark:bg-gray-700 font-montserrat font-bold text-center py-1 text-gray-700 dark:text-gray-200 text-xs border border-gray-300">
+                  Tid
+                </div>
+                {DAYS_OF_WEEK.map((day) => (
+                  <div
+                    key={`print-header-${day}`}
+                    className="bg-gray-100 dark:bg-gray-700 font-montserrat font-bold text-center py-1 text-gray-700 dark:text-gray-200 text-xs border border-gray-300"
+                  >
+                    {day}
+                  </div>
+                ))}
+
+                {/* Time slots */}
+                {TIME_SLOTS.map((time) => (
+                  <React.Fragment key={`print-week-row-${time}`}>
+                    <div className="bg-gray-50 dark:bg-gray-600 text-xs text-center py-1 font-montserrat text-gray-600 dark:text-gray-300 flex items-center justify-center border border-gray-300">
+                      {time.substring(0,5)}
+                    </div>
+                    {DAYS_OF_WEEK.map((day) => {
+                      return (
+                        <div
+                          key={`print-cell-${day}-${time}`}
+                          className="relative h-8 bg-white dark:bg-gray-900 border border-gray-300"
+                        >
+                          {!isTimeSlotOccupied(STUDIO_ROOMS[0], time, day) && (() => {
+                            // Bruk første sal eller selectedRoom for mobil
+                            const roomToUse = window.innerWidth < 1024 ? selectedRoom : STUDIO_ROOMS[0];
+                            const schedule = fullScheduleIndex[day]?.[roomToUse]?.[time];
+                            if (!schedule) return null;
+
+                            // Ekstra kompakt render for print
+                            const duration = getScheduleDuration(schedule);
+                            const theme = getThemeFromClass(schedule.dance_class);
+                            const themeColors = getThemeColors(theme as keyof typeof THEMES);
+                            const heightInPx = (duration * 32) + ((duration - 1) * 0);
+
+                            return (
+                              <div
+                                key={schedule.$id}
+                                className={`absolute inset-0 px-1 font-montserrat text-xs leading-tight
+                                           ${themeColors.color} ${themeColors.textColor} schedule-item
+                                           flex flex-col justify-center`}
+                                style={{ height: `${heightInPx}px` }}
+                              >
+                                <div className="font-bold course-name truncate text-xs">
+                                  {schedule.dance_class.name}
+                                </div>
+                                <div className="font-medium time text-xs">
+                                  {schedule.start_time.substring(0,5)}
+                                </div>
+                              </div>
+                            );
+                          })()}
+                        </div>
+                      );
+                    })}
+                  </React.Fragment>
+                ))}
+              </div>
+            </div>
+
+            {/* Desktop View - lg og større (screen only) */}
+            {/* Desktop View - lg og større (screen only) */}
+            <div className="hidden lg:block print:hidden">
               <div className="bg-brand-50 dark:bg-brand-900/20 p-4 border-b border-brand-200 dark:border-brand-700">
                 <h3 className="font-bebas text-bebas-base font-semibold text-center text-gray-900 dark:text-white">
-                  Timeplan - {selectedRooms.length > 0 ? selectedRooms.join(', ') : 'Ingen saler valgt'}
+                  Timeplan - {selectedRooms.length > 0 ? selectedRooms.join(' og ') : 'Ingen saler valgt'}
                 </h3>
               </div>
               
@@ -508,7 +596,7 @@ export default function SchedualPage() {
                           return (
                             <div
                               key={`cell-${day}-${room}-${time}`}
-                              className="relative h-24 bg-white dark:bg-gray-900"
+                              className="relative h-16 bg-white dark:bg-gray-900"
                             >
                               {!isTimeSlotOccupied(room, time, day) && (() => {
                                 const schedule = fullScheduleIndex[day]?.[room]?.[time];
@@ -529,7 +617,7 @@ export default function SchedualPage() {
         </div>
       </section>
 
-      {/* CTA Section - Standard styling */}
+      {/* CTA Section */}
       <section className="py-16 bg-white dark:bg-surface-dark">
         <div className="container mx-auto px-4 md:px-6">
           <motion.div
