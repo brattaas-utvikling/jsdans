@@ -3,7 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { 
   CalendarIcon, 
-  ClockIcon, 
   UserIcon, 
   ArrowLeftIcon,
   Share2Icon,
@@ -55,14 +54,6 @@ export default function NewsArticlePage() {
       hour: '2-digit',
       minute: '2-digit'
     });
-  };
-
-  // Calculate reading time based on all paragraphs
-  const calculateReadingTime = (article: NewsArticle): number => {
-    const wordsPerMinute = 200;
-    const allText = `${article.lead} ${article['paragraph-1']} ${article['paragraph-2']} ${article['paragraph-3']}`;
-    const words = allText.split(' ').length;
-    return Math.ceil(words / wordsPerMinute);
   };
 
   // Fetch single article from Appwrite
@@ -328,10 +319,6 @@ export default function NewsArticlePage() {
                 <span>{formatDate(article.created_at)}</span>
               </div>
               
-              <div className="flex items-center gap-2">
-                <ClockIcon className="h-5 w-5" />
-                <span>{calculateReadingTime(article)} min lesing</span>
-              </div>
 
               {/* Action buttons */}
               <div className="ml-auto flex gap-2">
