@@ -128,15 +128,18 @@ export default function KompaniAuditionSection() {
                 size="lg"
                 onClick={() => {
                   const subject = "Påmelding - Kompaniaudition 24. august 2025";
-                  const body = `Jeg melder meg på kompaniaudition 24. august 2025.
+                  const body = `Jeg melder meg på audition til … (skriv hvilket kompani) 24. august 2025. 
 
-Fullt navn:
+Aspirantkompani kl.16:30
+Kompani kl.17:15
+
+Oppmøte 15 minutter før. 
+
+Navn:
 Fødselsdato:
+Telefon:
 
-Denne påmeldingen er bindende.
-
-Til info:
-Du vil få en mail med mer informasjon om audition og praktiske detaljer.`;
+Denne påmeldingen er bindende.`;
                   
                   const mailtoLink = `mailto:registrer@urbanstudios.no?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
                   window.location.href = mailtoLink;
