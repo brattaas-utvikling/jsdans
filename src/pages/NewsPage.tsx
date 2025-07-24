@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { 
   CalendarIcon, 
-  ClockIcon, 
   UserIcon, 
   ArrowRightIcon,
 } from "lucide-react";
@@ -47,14 +46,6 @@ export default function NewsPage() {
       month: 'long',
       day: 'numeric'
     });
-  };
-
-  // Calculate reading time based on all paragraphs
-  const calculateReadingTime = (article: NewsArticle): number => {
-    const wordsPerMinute = 200;
-    const allText = `${article.lead} ${article['paragraph-1']} ${article['paragraph-2']} ${article['paragraph-3']}`;
-    const words = allText.split(' ').length;
-    return Math.ceil(words / wordsPerMinute);
   };
 
   // Fetch news from Appwrite - KUN PUBLISERTE ARTIKLER
@@ -241,10 +232,6 @@ export default function NewsPage() {
                               <span>{formatDate(featuredArticle.created_at)}</span>
                             </div>
                             <div className="flex items-center gap-2 text-sm font-montserrat">
-                              <ClockIcon className="h-4 w-4 text-white/80" />
-                              <span>{calculateReadingTime(featuredArticle)} min lesing</span>
-                            </div>
-                            <div className="flex items-center gap-2 text-sm font-montserrat">
                               <UserIcon className="h-4 w-4 text-white/80" />
                               <span>{featuredArticle.author}</span>
                             </div>
@@ -292,7 +279,7 @@ export default function NewsPage() {
 
       {/* Regular Articles Grid */}
       <section className="py-16 bg-gradient-to-br from-brand-50/80 to-surface-muted 
-                         dark:from-brand-900/10 dark:to-surface-dark-muted">
+                          dark:from-brand-900/10 dark:to-surface-dark-muted">
         {/* Container for title only */}
         <div className="container mx-auto px-4 md:px-6 mb-12">
           <h2 className="font-bebas text-bebas-2xl md:text-bebas-3xl text-gray-900 dark:text-white text-center">
@@ -366,10 +353,6 @@ export default function NewsPage() {
                             <div className="flex items-center gap-1.5 text-xs font-montserrat">
                               <CalendarIcon className="h-3 w-3 text-white/80 flex-shrink-0" />
                               <span className="truncate">{formatDate(article.created_at)}</span>
-                            </div>
-                            <div className="flex items-center gap-1.5 text-xs font-montserrat">
-                              <ClockIcon className="h-3 w-3 text-white/80 flex-shrink-0" />
-                              <span>{calculateReadingTime(article)} min lesing</span>
                             </div>
                             <div className="flex items-center gap-1.5 text-xs font-montserrat">
                               <UserIcon className="h-3 w-3 text-white/80 flex-shrink-0" />
