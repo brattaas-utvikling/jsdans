@@ -8,8 +8,9 @@ import {
   Trophy,
   Sparkles
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
-export default function InfoSection() {
+export default function SelmaWorkshop() {
   return (
     <section className="py-16 bg-gradient-to-br from-brand-50/80 to-surface-muted 
                        dark:from-brand-900/10 dark:to-surface-dark-muted 
@@ -213,7 +214,7 @@ Denne påmeldingen er bindende.
 Til info:
 Du vil få en mail med betalingsinfo som må betales innen fristen, følg med i spam-innboksen.`;
                   
-                  const mailtoLink = `mailto:kontakt@urbanstudios.no?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                  const mailtoLink = `mailto:registrer@urbanstudios.no?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
                   window.location.href = mailtoLink;
                 }}
                 className="bg-brand-500 hover:bg-brand-600
@@ -227,6 +228,21 @@ Du vil få en mail med betalingsinfo som må betales innen fristen, følg med i 
                 Meld deg på nå
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
+
+              <Link to="/nyheter/6872899c00367b1047ee">
+                <Button 
+                  size="lg"
+                  variant="outline"
+                  className="font-semibold rounded-full 
+                            border-brand-300 text-brand-600 
+                            hover:bg-brand-50 hover:text-brand-700
+                            dark:border-brand-700 dark:text-brand-400 
+                            dark:hover:bg-brand-900/30 dark:hover:text-brand-300
+                            px-8 py-4 text-lg transition-all duration-300"
+                >
+                  Les mer om åpningen
+                </Button>
+              </Link>
             </motion.div>
           </motion.div>
         </div>

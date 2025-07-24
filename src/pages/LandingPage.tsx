@@ -2,7 +2,9 @@ import CoursesCarousel from "@/components/CoursesCarousel";
 import CtaSection from "@/components/CtaSection";
 // import HeroSection from "@/components/HeroSection";
 import HomepageNews from "@/components/HomePageNews";
-import InfoSection from "@/components/InfoSection";
+import KompaniAuditionSection from "@/components/KompaniAuditionSection";
+import SelmaWorkshop from "@/components/SelmaWorkshop";
+
 
 import ScrollToTop from "@/helpers/ScrollToTop";
 
@@ -11,7 +13,8 @@ export default function LandingPage() {
     <>
       <ScrollToTop />
       <CtaSection />
-      <InfoSection />
+      <SelmaWorkshop />
+      <KompaniAuditionSection />
       <CoursesCarousel />
       <HomepageNews />
     </>
