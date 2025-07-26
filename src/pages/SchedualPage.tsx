@@ -424,8 +424,8 @@ export default function SchedualPage() {
               onClick={() => {
                 // Last ned statisk bilde av timeplan
                 const link = document.createElement('a');
-                link.href = '/Urban-Studios-Timeplan.png'; // eller .jpg
-                link.download = 'Urban-Studios-Timeplan.png';
+                link.href = '/Urban-Studios-Timeplan.pdf';
+                link.download = 'Urban-Studios-Timeplan.pdf';
                 link.click();
               }}
               variant="outline"
