@@ -208,9 +208,10 @@ export default function SchedualPage() {
     const instructor = schedule.substitute_instructor || 
       schedule.dance_class.instructor;
 
-    // Redusert høyde: hver slot = 64px høyde = h-16 (fra 96px = h-24)
-    // Må også regne med gap mellom celler (1px)
-    const heightInPx = (duration * 64) + ((duration - 1) * 1);
+    // Kompakt høyde: desktop 64px, mobil 40px per slot
+    const heightInPx = isDesktop 
+      ? (duration * 64) + ((duration - 1) * 1)  // Desktop: 64px per slot
+      : (duration * 40) + ((duration - 1) * 1); // Mobil: 40px per slot (kompakt)
 
     return (
       <motion.div
@@ -218,24 +219,24 @@ export default function SchedualPage() {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.3 }}
-        className={`absolute inset-0 ${isDesktop ? 'rounded-lg px-2 py-1' : 'rounded-xl px-3 py-2'} font-montserrat
-                   ${themeColors.color} ${themeColors.textColor}
-                   shadow-lg hover:shadow-xl transition-all duration-200
-                   cursor-pointer hover:scale-[1.02] z-10`}
+        className={`absolute inset-0 ${isDesktop ? 'rounded-lg px-2 py-1' : 'rounded px-1.5 py-0.5'} font-montserrat
+                   ${themeColors.color} ${themeColors.textColor} 
+                   shadow-md hover:shadow-lg transition-all duration-200
+                   cursor-pointer hover:scale-[1.01] z-10`}
         style={{ height: `${heightInPx}px` }}
         title={`${schedule.dance_class.name} - ${schedule.start_time} til ${schedule.end_time}`}
       >
-        {/* Kursnavn - kompakt på begge */}
-        <div className={`font-bold ${isDesktop ? 'text-xs' : 'text-sm'} leading-tight mb-1`}>
-          <span className={isDesktop ? 'line-clamp-1' : 'line-clamp-2'}>
+        {/* Kursnavn - kompakt */}
+        <div className={`font-bold ${isDesktop ? 'text-xs' : 'text-xs'} leading-none ${isDesktop ? 'mb-1' : 'mb-0.5'}`}>
+          <span className="line-clamp-1 truncate">
             {schedule.dance_class.name}
           </span>
         </div>
         
-        {/* Instruktør - kun på desktop, kompakt */}
+        {/* Instruktør - kun på desktop */}
         {isDesktop && instructor && (
           <div className="text-xs opacity-80 mb-1 truncate">
-            {instructor.split(' ')[0]} {/* Kun fornavn for å spare plass */}
+            {instructor}
             {schedule.substitute_instructor && (
               <span className="text-xs opacity-75"> (V)</span>
             )}
@@ -243,7 +244,7 @@ export default function SchedualPage() {
         )}
         
         {/* Tid - kompakt format */}
-        <div className={`${isDesktop ? 'text-xs' : 'text-sm'} font-medium`}>
+        <div className={`${isDesktop ? 'text-xs' : 'text-xs'} font-medium leading-none`}>
           {isDesktop 
             ? `${schedule.start_time.substring(0,5)}-${schedule.end_time.substring(0,5)}` 
             : `${schedule.start_time.substring(0,5)} - ${schedule.end_time.substring(0,5)}`
@@ -452,26 +453,26 @@ export default function SchedualPage() {
           >
             {/* Mobile View - Under lg (screen only) */}
             <div className="lg:hidden print:hidden">
-              <div className="bg-brand-50 dark:bg-brand-900/20 p-4 border-b border-brand-200 dark:border-brand-700">
+              <div className="bg-brand-50 dark:bg-brand-900/20 p-3 border-b border-brand-200 dark:border-brand-700">
                 <h3 className="font-bebas text-bebas-base font-semibold text-center text-gray-900 dark:text-white">
                   {selectedRoom} - {selectedDay}
                 </h3>
               </div>
               
-              <div className="schedule-grid grid grid-cols-[80px_1fr] gap-px bg-gray-200 dark:bg-gray-800">
-                <div className="bg-gray-100 dark:bg-gray-700 font-montserrat font-medium text-center py-2 text-sm text-gray-700 dark:text-gray-200">
+              <div className="schedule-grid grid grid-cols-[60px_1fr] gap-px bg-gray-200 dark:bg-gray-800">
+                <div className="bg-gray-100 dark:bg-gray-700 font-montserrat font-medium text-center py-1.5 text-xs text-gray-700 dark:text-gray-200">
                   Tid
                 </div>
-                <div className="bg-gray-100 dark:bg-gray-700 font-montserrat font-medium text-center py-2 text-sm text-gray-700 dark:text-gray-200">
+                <div className="bg-gray-100 dark:bg-gray-700 font-montserrat font-medium text-center py-1.5 text-xs text-gray-700 dark:text-gray-200">
                   Klasse
                 </div>
                 
                 {TIME_SLOTS.map((time) => (
                   <React.Fragment key={`mobile-${time}`}>
-                    <div className="bg-gray-50 dark:bg-gray-600 text-sm text-center py-3 font-montserrat text-gray-600 dark:text-gray-300">
-                      {time}
+                    <div className="bg-gray-50 dark:bg-gray-600 text-xs text-center py-2 font-montserrat text-gray-600 dark:text-gray-300">
+                      {time.substring(0,5)}
                     </div>
-                    <div className="relative h-16 bg-white dark:bg-gray-900">
+                    <div className="relative h-10 bg-white dark:bg-gray-900">
                       {!isTimeSlotOccupied(selectedRoom, time) && renderSchedule(selectedRoom, time)}
                     </div>
                   </React.Fragment>
@@ -549,7 +550,6 @@ export default function SchedualPage() {
               </div>
             </div>
 
-            {/* Desktop View - lg og større (screen only) */}
             {/* Desktop View - lg og større (screen only) */}
             <div className="hidden lg:block print:hidden">
               <div className="bg-brand-50 dark:bg-brand-900/20 p-4 border-b border-brand-200 dark:border-brand-700">
