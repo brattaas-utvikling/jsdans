@@ -28,7 +28,7 @@ export default function SelmaWorkshop() {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.5 }}
             className="relative order-2 lg:order-1"
           >
             {/* Main image container */}
@@ -48,7 +48,7 @@ export default function SelmaWorkshop() {
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.4 }}
+                transition={{ duration: 0.4, delay: 0.2 }}
                 className="absolute top-4 right-4 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm 
                           rounded-full px-4 py-2 shadow-brand flex items-center gap-2"
               >
@@ -63,7 +63,7 @@ export default function SelmaWorkshop() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.6 }}
+                transition={{ duration: 0.4, delay: 0.3 }}
                 className="absolute bottom-4 left-4 space-y-2"
               >
                 <div className="bg-brand-500/90 backdrop-blur-sm rounded-full px-3 py-1 text-white text-xs font-medium">
@@ -81,10 +81,10 @@ export default function SelmaWorkshop() {
 
           {/* Right column - Content */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
             className="space-y-6 order-1 lg:order-2"
           >
             {/* Header badge */}
@@ -92,7 +92,7 @@ export default function SelmaWorkshop() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.4 }}
+              transition={{ duration: 0.4, delay: 0.2 }}
               className="inline-flex items-center px-4 py-2 rounded-full 
                         bg-brand-100 dark:bg-brand-900/30 
                         border border-brand-200 dark:border-brand-700"
@@ -108,7 +108,7 @@ export default function SelmaWorkshop() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.6 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
               className="font-bebas text-bebas-2xl md:text-bebas-3xl text-gray-900 dark:text-white leading-tight"
             >
               Selma kommer hjem til Kongsvinger!
@@ -120,7 +120,7 @@ export default function SelmaWorkshop() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.8 }}
+                transition={{ duration: 0.4, delay: 0.4 }}
                 className="text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed"
               >
                 Selma Moen Embretsen danset på Jump frem til hun ble 15 år - da flyttet hun til Oslo for å satse! 
@@ -133,7 +133,7 @@ export default function SelmaWorkshop() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 1.0 }}
+                transition={{ duration: 0.4, delay: 0.5 }}
                 className="text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed"
               >
                 Selma kommer for å ha workshop når vi åpner Urban Studios <strong className="text-brand-600 dark:text-brand-400">lørdag 23. august</strong>, 
@@ -146,7 +146,7 @@ export default function SelmaWorkshop() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 1.2 }}
+                transition={{ duration: 0.4, delay: 0.6 }}
                 className="text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed"
               >
                 Selma gleder seg masse til å jobbe dynamikk, groove og showteknikk med oss på Urban. 
@@ -159,7 +159,7 @@ export default function SelmaWorkshop() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 1.4 }}
+              transition={{ duration: 0.4, delay: 0.7 }}
               className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm 
                         rounded-xl p-6 border border-brand-100/50 dark:border-brand-700/30
                         shadow-brand-sm"
@@ -196,31 +196,30 @@ export default function SelmaWorkshop() {
                 <h4 className="font-bebas text-bebas-sm text-gray-900 dark:text-white mb-3">
                   Klokkeslett & Priser
                 </h4>
-                
                 <div className="space-y-2">
-                  <div className="flex justify-between items-center py-2 px-3 bg-brand-50 dark:bg-brand-900/20 rounded-lg">
-                    <span className="font-montserrat text-sm text-gray-700 dark:text-gray-300">
+                  <div className="grid grid-cols-[1fr,auto] gap-3 items-center py-2 px-3 bg-brand-50 dark:bg-brand-900/20 rounded-lg">
+                    <span className="font-montserrat text-xs sm:text-sm text-gray-700 dark:text-gray-300">
                       <strong>Kl. 13:00-14:00</strong> • 1.-4. trinn
                     </span>
-                    <span className="font-montserrat font-semibold text-brand-600 dark:text-brand-400">
+                    <span className="font-montserrat font-semibold text-brand-600 dark:text-brand-400 whitespace-nowrap text-sm">
                       150 kr
                     </span>
                   </div>
                   
-                  <div className="flex justify-between items-center py-2 px-3 bg-magenta-50 dark:bg-magenta-900/20 rounded-lg">
-                    <span className="font-montserrat text-sm text-gray-700 dark:text-gray-300">
+                  <div className="grid grid-cols-[1fr,auto] gap-3 items-center py-2 px-3 bg-magenta-50 dark:bg-magenta-900/20 rounded-lg">
+                    <span className="font-montserrat text-xs sm:text-sm text-gray-700 dark:text-gray-300">
                       <strong>Kl. 14:00-16:00</strong> • 5.-8. trinn
                     </span>
-                    <span className="font-montserrat font-semibold text-magenta-600 dark:text-magenta-400">
+                    <span className="font-montserrat font-semibold text-magenta-600 dark:text-magenta-400 whitespace-nowrap text-sm">
                       300 kr
                     </span>
                   </div>
                   
-                  <div className="flex justify-between items-center py-2 px-3 bg-coral-50 dark:bg-coral-900/20 rounded-lg">
-                    <span className="font-montserrat text-sm text-gray-700 dark:text-gray-300">
+                  <div className="grid grid-cols-[1fr,auto] gap-3 items-center py-2 px-3 bg-coral-50 dark:bg-coral-900/20 rounded-lg">
+                    <span className="font-montserrat text-xs sm:text-sm text-gray-700 dark:text-gray-300">
                       <strong>Kl. 16:15-18:15</strong> • 8. trinn og oppover
                     </span>
-                    <span className="font-montserrat font-semibold text-coral-600 dark:text-coral-400">
+                    <span className="font-montserrat font-semibold text-coral-600 dark:text-coral-400 whitespace-nowrap text-sm">
                       300 kr
                     </span>
                   </div>
@@ -233,7 +232,7 @@ export default function SelmaWorkshop() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 1.6 }}
+              transition={{ duration: 0.4, delay: 0.8 }}
               className="flex flex-col sm:flex-row gap-4"
             >
               <Button 

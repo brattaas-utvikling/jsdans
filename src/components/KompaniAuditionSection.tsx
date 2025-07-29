@@ -25,10 +25,10 @@ export default function KompaniAuditionSection() {
           
           {/* Left column - Content */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.5 }}
             className="space-y-6 order-1"
           >
             {/* Header badge */}
@@ -36,7 +36,7 @@ export default function KompaniAuditionSection() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.4 }}
+              transition={{ duration: 0.4, delay: 0.1 }}
               className="inline-flex items-center px-4 py-2 rounded-full 
                         bg-magenta-100 dark:bg-magenta-900/30 
                         border border-magenta-200 dark:border-magenta-700"
@@ -52,7 +52,7 @@ export default function KompaniAuditionSection() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.6 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
               className="font-bebas text-bebas-2xl md:text-bebas-3xl text-gray-900 dark:text-white leading-tight"
             >
               Påmeldingen til kompaniaudition er åpen!
@@ -63,7 +63,7 @@ export default function KompaniAuditionSection() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.8 }}
+              transition={{ duration: 0.4, delay: 0.3 }}
               className="text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed text-lg"
             >
               <strong className="text-magenta-600 dark:text-magenta-400">Søndag 24. august</strong> holder vi vår første kompaniaudition. 
@@ -75,7 +75,7 @@ export default function KompaniAuditionSection() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 1.0 }}
+              transition={{ duration: 0.4, delay: 0.4 }}
               className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm 
                         rounded-xl p-6 border border-magenta-100/50 dark:border-magenta-700/30
                         shadow-brand-sm"
@@ -113,7 +113,7 @@ export default function KompaniAuditionSection() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 1.2 }}
+              transition={{ duration: 0.4, delay: 0.5 }}
               className="flex flex-col sm:flex-row gap-4"
             >
               <Button 
@@ -148,18 +148,18 @@ Denne påmeldingen er bindende.`;
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
               <Link to="/nyheter/68735f06003e7a595607">
-              <Button 
-                size="lg"
-                variant="outline"
-                className="font-semibold rounded-full 
-                          border-magenta-300 text-magenta-600 
-                          hover:bg-magenta-50 hover:text-magenta-700
-                          dark:border-magenta-700 dark:text-magenta-400 
-                          dark:hover:bg-magenta-900/30 dark:hover:text-magenta-300
-                          px-8 py-4 text-lg transition-all duration-300"
-              >
-                Les mer om kompaniet
-              </Button>
+                <Button 
+                  size="lg"
+                  variant="outline"
+                  className="font-semibold rounded-full 
+                            border-magenta-300 text-magenta-600 
+                            hover:bg-magenta-50 hover:text-magenta-700
+                            dark:border-magenta-700 dark:text-magenta-400 
+                            dark:hover:bg-magenta-900/30 dark:hover:text-magenta-300
+                            px-8 py-4 text-lg transition-all duration-300"
+                >
+                  Les mer om kompaniet
+                </Button>
               </Link>
             </motion.div>
 
@@ -168,7 +168,7 @@ Denne påmeldingen er bindende.`;
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 1.4 }}
+              transition={{ duration: 0.4, delay: 0.6 }}
               className="bg-brand-50 dark:bg-brand-900/20 border border-brand-200 dark:border-brand-700 
                         rounded-xl p-4 flex items-start gap-3"
             >
@@ -185,7 +185,7 @@ Denne påmeldingen er bindende.`;
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
             className="relative order-2"
           >
             {/* Main image container */}
@@ -205,7 +205,7 @@ Denne påmeldingen er bindende.`;
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.4 }}
+                transition={{ duration: 0.4, delay: 0.2 }}
                 className="absolute top-4 left-4 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm 
                           rounded-full px-4 py-2 shadow-brand flex items-center gap-2"
               >
@@ -220,7 +220,7 @@ Denne påmeldingen er bindende.`;
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.6 }}
+                transition={{ duration: 0.4, delay: 0.3 }}
                 className="absolute bottom-4 right-4 space-y-2"
               >
                 <div className="bg-magenta-500/90 backdrop-blur-sm rounded-full px-3 py-1 text-white text-xs font-medium">
