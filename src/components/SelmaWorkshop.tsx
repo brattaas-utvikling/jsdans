@@ -190,6 +190,42 @@ export default function SelmaWorkshop() {
                   </span>
                 </div>
               </div>
+
+              {/* Workshop tider */}
+              <div className="mt-6 pt-4 border-t border-brand-200 dark:border-brand-700/30">
+                <h4 className="font-bebas text-bebas-sm text-gray-900 dark:text-white mb-3">
+                  Klokkeslett & Priser
+                </h4>
+                
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center py-2 px-3 bg-brand-50 dark:bg-brand-900/20 rounded-lg">
+                    <span className="font-montserrat text-sm text-gray-700 dark:text-gray-300">
+                      <strong>Kl. 13:00-14:00</strong> • 1.-4. trinn
+                    </span>
+                    <span className="font-montserrat font-semibold text-brand-600 dark:text-brand-400">
+                      150 kr
+                    </span>
+                  </div>
+                  
+                  <div className="flex justify-between items-center py-2 px-3 bg-magenta-50 dark:bg-magenta-900/20 rounded-lg">
+                    <span className="font-montserrat text-sm text-gray-700 dark:text-gray-300">
+                      <strong>Kl. 14:00-16:00</strong> • 5.-8. trinn
+                    </span>
+                    <span className="font-montserrat font-semibold text-magenta-600 dark:text-magenta-400">
+                      300 kr
+                    </span>
+                  </div>
+                  
+                  <div className="flex justify-between items-center py-2 px-3 bg-coral-50 dark:bg-coral-900/20 rounded-lg">
+                    <span className="font-montserrat text-sm text-gray-700 dark:text-gray-300">
+                      <strong>Kl. 16:15-18:15</strong> • 8. trinn og oppover
+                    </span>
+                    <span className="font-montserrat font-semibold text-coral-600 dark:text-coral-400">
+                      300 kr
+                    </span>
+                  </div>
+                </div>
+              </div>
             </motion.div>
 
             {/* CTA Buttons */}
