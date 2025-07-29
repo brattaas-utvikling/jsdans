@@ -6,8 +6,7 @@ import {
   Calendar, 
   MapPin,
   Trophy,
-  Clock,
-  Users
+  Clock
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -104,13 +103,6 @@ export default function KompaniAuditionSection() {
                   <MapPin className="h-5 w-5 text-magenta-500 flex-shrink-0" />
                   <span className="font-montserrat text-gray-700 dark:text-gray-300">
                     Urban Studios, Kongsvinger
-                  </span>
-                </div>
-                
-                <div className="flex items-center gap-3">
-                  <Users className="h-5 w-5 text-magenta-500 flex-shrink-0" />
-                  <span className="font-montserrat text-gray-700 dark:text-gray-300">
-                    Bli en del av Urban Studios kompani
                   </span>
                 </div>
               </div>
@@ -236,9 +228,6 @@ Denne påmeldingen er bindende.`;
                 </div>
                 <div className="bg-brand-500/90 backdrop-blur-sm rounded-full px-3 py-1 text-white text-xs font-medium">
                   24. august
-                </div>
-                <div className="bg-coral-500/90 backdrop-blur-sm rounded-full px-3 py-1 text-white text-xs font-medium">
-                  Begrenset antall
                 </div>
               </motion.div>
             </div>
