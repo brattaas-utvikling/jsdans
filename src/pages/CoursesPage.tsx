@@ -47,7 +47,7 @@ export default function CoursesPage() {
         COLLECTIONS.DANCE_CLASSES,
         [
           Query.orderAsc('name'), // Sorter alfabetisk
-          Query.limit(20) // Begrens til 20 kurs
+          Query.limit(40) // Begrens til 40 kurs
         ]
       );
       
