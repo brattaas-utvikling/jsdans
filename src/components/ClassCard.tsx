@@ -23,7 +23,7 @@ import {
   User,
   MapPin,
   Users,
-  Heart,
+  Heart
 } from "lucide-react";
 
 type ClassCardProps = {
@@ -320,7 +320,7 @@ const colorMap: Record<ColorName, ColorClasses> = {
               <span className="font-montserrat">Instruktør: {instructor}</span>
             </div>
             <div className="flex items-center gap-2">
-              <Calendar className="h-4 w-4 text-brand-500" />
+              <Users className="h-4 w-4 text-brand-500" />
               <span className="font-montserrat">Alder: {age}</span>
             </div>
             <div className="mt-3">
