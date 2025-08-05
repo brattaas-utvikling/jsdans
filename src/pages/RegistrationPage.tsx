@@ -215,7 +215,7 @@ export default function RegistrationPage() {
             className="font-bebas font-semibold text-bebas-3xl md:text-bebas-4xl lg:text-bebas-5xl mb-6
                       text-transparent bg-clip-text bg-sunset-gradient py-2"
           >
-            Åpner høsten 2025
+            Åpner snart!
           </motion.div>
           
           <motion.p 
