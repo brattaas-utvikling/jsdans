@@ -290,10 +290,10 @@ export default function Navbar() {
                           border-0 shadow hover:shadow-md transition-all duration-200 
                           focus:ring-2 focus:ring-brand-400 focus:ring-offset-2 
                           dark:focus:ring-brand-500 dark:focus:ring-offset-brand-600"
-                onClick={() => handleNavClick("/kurs")}
-                onMouseEnter={() => handleNavHover("/kurs")}
+                onClick={() => handleNavClick("/kontakt")}
+                onMouseEnter={() => handleNavHover("/kontakt")}
               >
-                Se våre kurs
+                Kontakt oss
               </Button>
             </motion.div>
 
@@ -386,9 +386,9 @@ export default function Navbar() {
                             dark:hover:text-brand-700
                             border-0 shadow hover:shadow-md 
                             transition-all duration-200"
-                  onClick={() => handleNavClick("/kurs")}
+                  onClick={() => handleNavClick("/kontakt")}
                 >
-                  Se våre kurs
+                  Kontakt oss
                 </Button>
               </motion.div>
             </div>
