@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <!-- Hjem - Høyeste prioritet -->
+  <url>
+    <loc>https://urbanstudios.no/</loc>
+    <lastmod>2025-01-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <!-- Om oss - Viktig for tillit -->
+  <url>
+    <loc>https://urbanstudios.no/om-oss</loc>
+    <lastmod>2025-01-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Kurs - Hovedtjeneste -->
+  <url>
+    <loc>https://urbanstudios.no/kurs</loc>
+    <lastmod>2025-01-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <!-- Påmelding - Konvertering -->
+  <url>
+    <loc>https://urbanstudios.no/pamelding</loc>
+    <lastmod>2025-01-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <!-- Pris - Viktig for beslutning -->
+  <url>
+    <loc>https://urbanstudios.no/pris</loc>
+    <lastmod>2025-01-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Nyheter - Innhold og oppdateringer -->
+  <url>
+    <loc>https://urbanstudios.no/nyheter</loc>
+    <lastmod>2025-01-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <!-- Kontakt - Hvis du har denne siden -->
+  <url>
+    <loc>https://urbanstudios.no/kontakt</loc>
+    <lastmod>2025-01-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+</urlset>

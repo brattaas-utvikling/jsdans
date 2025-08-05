@@ -3,12 +3,12 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { MenuIcon, XIcon, MoonIcon, SunIcon } from "lucide-react";
-import logo from "../assets/logo.svg";
+import logo from "../assets/ny_logo.svg";
 
 // Throttle utility function
 function throttle<T extends (...args: unknown[]) => void>(
   func: T,
-  limit: number
+  limit: number,
 ): (...args: Parameters<T>) => void {
   let inThrottle: boolean;
   return function (this: ThisParameterType<T>, ...args: Parameters<T>) {
@@ -30,27 +30,30 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [menuHeight, setMenuHeight] = useState(0);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
-    const saved = localStorage.getItem('darkMode');
+    const saved = localStorage.getItem("darkMode");
     if (saved !== null) return JSON.parse(saved);
     return false;
   });
   const [lastScrollY, setLastScrollY] = useState(0);
-  
+
   const navbarRef = useRef<HTMLElement>(null);
   const menuContentRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
   const navigate = useNavigate();
 
   // Simplified navigation items (kun routes)
-  const navigationItems: NavigationItem[] = useMemo(() => [
-    { label: "Hjem", href: "/" },
-    { label: "Om oss", href: "/om-oss" },
-    { label: "Kurs", href: "/kurs" },
-    { label: "Timeplan", href: "/timeplan" },
-    { label: "Påmelding", href: "/registration" },
-    { label: "Pris", href: "/priser" },
-    { label: "Nyheter", href: "/nyheter" },
-  ], []);
+  const navigationItems: NavigationItem[] = useMemo(
+    () => [
+      { label: "Hjem", href: "/" },
+      { label: "Om oss", href: "/om-oss" },
+      { label: "Kurs", href: "/kurs" },
+      { label: "Timeplan", href: "/timeplan" },
+      { label: "Påmelding", href: "/registration" },
+      { label: "Pris", href: "/priser" },
+      { label: "Nyheter", href: "/nyheter" },
+    ],
+    [],
+  );
 
   // Dynamic menu height calculation
   useEffect(() => {
@@ -64,18 +67,18 @@ export default function Navbar() {
   const handleScroll = useCallback(() => {
     const navbar = navbarRef.current;
     if (!navbar) return;
-    
+
     const currentScrollY = window.scrollY;
-    
+
     // Don't hide navbar on desktop
     if (window.innerWidth >= 1024) {
       navbar.style.transform = "translateY(0)";
       return;
     }
-    
+
     // Avoid excessive updates
     if (Math.abs(currentScrollY - lastScrollY) < 10) return;
-    
+
     // Hide on scroll down, show on scroll up
     if (currentScrollY > lastScrollY && currentScrollY > 100) {
       navbar.style.transform = "translateY(-100%)";
@@ -83,31 +86,36 @@ export default function Navbar() {
     } else {
       navbar.style.transform = "translateY(0)";
     }
-    
+
     setLastScrollY(currentScrollY);
   }, [lastScrollY]);
 
   const throttledScrollHandler = useCallback(
     () => throttle(handleScroll, 16),
-    [handleScroll]
+    [handleScroll],
   );
 
   // Setup scroll listener
   useEffect(() => {
-    window.addEventListener("scroll", throttledScrollHandler, { passive: true });
+    window.addEventListener("scroll", throttledScrollHandler, {
+      passive: true,
+    });
     return () => window.removeEventListener("scroll", throttledScrollHandler);
   }, [throttledScrollHandler]);
 
   // Handle dark mode changes
   useEffect(() => {
-    localStorage.setItem('darkMode', JSON.stringify(isDarkMode));
+    localStorage.setItem("darkMode", JSON.stringify(isDarkMode));
     document.documentElement.classList.toggle("dark", isDarkMode);
   }, [isDarkMode]);
 
   // Handle click outside and body scroll lock
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (navbarRef.current && !navbarRef.current.contains(event.target as Node)) {
+      if (
+        navbarRef.current &&
+        !navbarRef.current.contains(event.target as Node)
+      ) {
         setIsMenuOpen(false);
       }
     };
@@ -134,38 +142,47 @@ export default function Navbar() {
   }, [isMenuOpen]);
 
   // Simplified navigation handler (kun routes)
-  const handleNavClick = useCallback((href: string) => {
-    setIsMenuOpen(false);
-    
-    if (href === "/" && location.pathname === "/") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    } else {
-      navigate(href);
-    }
-  }, [location.pathname, navigate]);
+  const handleNavClick = useCallback(
+    (href: string) => {
+      setIsMenuOpen(false);
+
+      if (href === "/" && location.pathname === "/") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        navigate(href);
+      }
+    },
+    [location.pathname, navigate],
+  );
 
   // Check if route is active
-  const isActiveRoute = useCallback((href: string) => {
-    return location.pathname === href;
-  }, [location.pathname]);
+  const isActiveRoute = useCallback(
+    (href: string) => {
+      return location.pathname === href;
+    },
+    [location.pathname],
+  );
 
   // Preload route on hover
-  const handleNavHover = useCallback((href: string) => {
-    if (href.startsWith('/') && href !== location.pathname) {
-      const link = document.createElement('link');
-      link.rel = 'prefetch';
-      link.href = href;
-      document.head.appendChild(link);
-    }
-  }, [location.pathname]);
+  const handleNavHover = useCallback(
+    (href: string) => {
+      if (href.startsWith("/") && href !== location.pathname) {
+        const link = document.createElement("link");
+        link.rel = "prefetch";
+        link.href = href;
+        document.head.appendChild(link);
+      }
+    },
+    [location.pathname],
+  );
 
   // Simplified NavLink component
-  const NavLink = ({ 
-    item, 
-    className, 
+  const NavLink = ({
+    item,
+    className,
     onClick,
-    onMouseEnter 
-  }: { 
+    onMouseEnter,
+  }: {
     item: NavigationItem;
     className: string;
     onClick: () => void;
@@ -173,8 +190,8 @@ export default function Navbar() {
   }) => {
     const isActive = isActiveRoute(item.href);
     const finalClassName = `${className} ${
-      isActive 
-        ? "text-brand-600 dark:text-white font-semibold" 
+      isActive
+        ? "text-brand-600 dark:text-white font-semibold"
         : "text-gray-700 dark:text-white/80 hover:text-brand-600 dark:hover:text-white"
     }`;
 
@@ -204,7 +221,6 @@ export default function Navbar() {
     >
       <div className="w-full max-w-7xl mx-auto px-4 overflow-hidden">
         <div className="flex items-center justify-between h-16 lg:h-20">
-
           {/* Logo */}
           <motion.button
             onClick={() => handleNavClick("/")}
@@ -243,7 +259,6 @@ export default function Navbar() {
 
           {/* Actions */}
           <div className="flex items-center gap-2">
-            
             {/* Dark mode toggle */}
             <motion.div whileTap={{ scale: 0.95 }}>
               <Button
@@ -256,7 +271,9 @@ export default function Navbar() {
                           hover:bg-gray-100 dark:hover:bg-brand-700/50
                           transition-all focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 
                           dark:focus:ring-white/50 dark:focus:ring-offset-brand-600"
-                aria-label={isDarkMode ? "Bytt til lys modus" : "Bytt til mørk modus"}
+                aria-label={
+                  isDarkMode ? "Bytt til lys modus" : "Bytt til mørk modus"
+                }
               >
                 <AnimatePresence mode="wait">
                   <motion.div
@@ -277,11 +294,8 @@ export default function Navbar() {
             </motion.div>
 
             {/* Desktop CTA Button */}
-            <motion.div 
-              whileTap={{ scale: 0.98 }}
-              className="hidden lg:block"
-            >
-              <Button 
+            <motion.div whileTap={{ scale: 0.98 }} className="hidden lg:block">
+              <Button
                 className="font-semibold rounded-full 
                           bg-brand-500 hover:bg-brand-600
                           dark:bg-white dark:hover:bg-gray-50
@@ -345,7 +359,7 @@ export default function Navbar() {
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="lg:hidden overflow-hidden bg-white/90 dark:bg-brand-600/90 backdrop-blur-md"
           >
-            <div 
+            <div
               ref={menuContentRef}
               className="text-center px-4 py-4 space-y-1 
                         border-t border-gray-200/30 dark:border-brand-700/30"
@@ -369,16 +383,16 @@ export default function Navbar() {
                   />
                 </motion.div>
               ))}
-              
+
               {/* Mobile CTA */}
-              <motion.div 
+              <motion.div
                 className="pt-4 pb-2"
                 whileTap={{ scale: 0.98 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.2 }}
               >
-                <Button 
+                <Button
                   className="w-full font-semibold rounded-full
                             bg-brand-500 hover:bg-brand-600
                             dark:bg-white dark:hover:bg-gray-50

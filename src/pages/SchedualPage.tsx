@@ -12,7 +12,7 @@ import {
   DAYS_OF_WEEK,
   TIME_SLOTS,
   THEMES,
-  type ScheduleWithClass
+  type ScheduleWithClass,
 } from "../services/scheduleServices";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
@@ -24,7 +24,7 @@ export default function SchedualPage() {
   const [isInitialized, setIsInitialized] = useState(false);
   // Ny state for desktop sal-filter
   const [selectedRooms, setSelectedRooms] = useState<string[]>(STUDIO_ROOMS);
-  
+
   const [schedules, setSchedules] = useState<ScheduleWithClass[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -33,13 +33,13 @@ export default function SchedualPage() {
   const fetchSchedules = async () => {
     setLoading(true);
     setError(null);
-    
+
     try {
       const data = await fetchSchedulesWithClasses();
       setSchedules(data);
     } catch (err) {
-      console.error('Error fetching schedules:', err);
-      setError('Kunne ikke laste timeplan fra databasen.');
+      console.error("Error fetching schedules:", err);
+      setError("Kunne ikke laste timeplan fra databasen.");
     } finally {
       setLoading(false);
     }
@@ -63,9 +63,9 @@ export default function SchedualPage() {
   const filteredSchedules = useMemo(() => {
     return schedules.filter((schedule) => {
       const dayMatch = schedule.day === selectedDay;
-      const themeMatch = !themeFilter || 
-        getThemeFromClass(schedule.dance_class) === themeFilter;
-      
+      const themeMatch =
+        !themeFilter || getThemeFromClass(schedule.dance_class) === themeFilter;
+
       return dayMatch && themeMatch;
     });
   }, [schedules, selectedDay, themeFilter]);
@@ -73,31 +73,35 @@ export default function SchedualPage() {
   // Create schedule index for efficient lookup - mobile (filtered by day)
   const scheduleIndex = useMemo(() => {
     const map: Record<string, Record<string, ScheduleWithClass>> = {};
-    
+
     filteredSchedules.forEach((schedule) => {
       if (!map[schedule.room]) map[schedule.room] = {};
       map[schedule.room][schedule.start_time] = schedule;
     });
-    
+
     return map;
   }, [filteredSchedules]);
 
   // Create full schedule index for desktop (all days, only theme filtered)
   const fullScheduleIndex = useMemo(() => {
     const allSchedules = schedules.filter((schedule) => {
-      const themeMatch = !themeFilter || 
-        getThemeFromClass(schedule.dance_class) === themeFilter;
+      const themeMatch =
+        !themeFilter || getThemeFromClass(schedule.dance_class) === themeFilter;
       return themeMatch;
     });
 
-    const map: Record<string, Record<string, Record<string, ScheduleWithClass>>> = {};
-    
+    const map: Record<
+      string,
+      Record<string, Record<string, ScheduleWithClass>>
+    > = {};
+
     allSchedules.forEach((schedule) => {
       if (!map[schedule.day]) map[schedule.day] = {};
-      if (!map[schedule.day][schedule.room]) map[schedule.day][schedule.room] = {};
+      if (!map[schedule.day][schedule.room])
+        map[schedule.day][schedule.room] = {};
       map[schedule.day][schedule.room][schedule.start_time] = schedule;
     });
-    
+
     return map;
   }, [schedules, themeFilter]);
 
@@ -138,15 +142,15 @@ export default function SchedualPage() {
               onClick={() => {
                 const isSelected = selectedRooms.includes(room);
                 setSelectedRooms(
-                  isSelected 
-                    ? selectedRooms.filter(r => r !== room)
-                    : [...selectedRooms, room]
+                  isSelected
+                    ? selectedRooms.filter((r) => r !== room)
+                    : [...selectedRooms, room],
                 );
               }}
               size="sm"
               className={`font-montserrat font-medium rounded-full transition-all duration-200 ${
                 selectedRooms.includes(room)
-                  ? 'bg-magenta-500 text-white shadow-lg shadow-magenta-500/25'
+                  ? "bg-magenta-500 text-white shadow-lg shadow-magenta-500/25"
                   : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
               }`}
             >
@@ -159,15 +163,19 @@ export default function SchedualPage() {
   );
 
   // Helper function to check if a time slot is occupied by a longer schedule
-  const isTimeSlotOccupied = (room: string, time: string, day?: string): boolean => {
+  const isTimeSlotOccupied = (
+    room: string,
+    time: string,
+    day?: string,
+  ): boolean => {
     const timeIndex = TIME_SLOTS.indexOf(time);
     if (timeIndex === 0) return false; // First slot can't be occupied by previous
-    
+
     // Check previous time slots for schedules that extend into this one
     for (let i = timeIndex - 1; i >= 0; i--) {
       const previousTime = TIME_SLOTS[i];
       let schedule;
-      
+
       if (day) {
         // Desktop: check fullScheduleIndex
         schedule = fullScheduleIndex[day]?.[room]?.[previousTime];
@@ -175,7 +183,7 @@ export default function SchedualPage() {
         // Mobile: check scheduleIndex
         schedule = scheduleIndex[room]?.[previousTime];
       }
-      
+
       if (schedule) {
         const duration = getScheduleDuration(schedule);
         const endSlotIndex = i + duration;
@@ -187,9 +195,14 @@ export default function SchedualPage() {
     return false;
   };
 
-  const renderSchedule = (room: string, time: string, isDesktop: boolean = false, day?: string) => {
+  const renderSchedule = (
+    room: string,
+    time: string,
+    isDesktop: boolean = false,
+    day?: string,
+  ) => {
     let schedule;
-    
+
     if (isDesktop && day) {
       // For desktop: bruk fullScheduleIndex med spesifikk dag
       schedule = fullScheduleIndex[day]?.[room]?.[time];
@@ -197,21 +210,21 @@ export default function SchedualPage() {
       // For mobil: bruk scheduleIndex (filtrert på selectedDay)
       schedule = scheduleIndex[room]?.[time];
     }
-    
+
     if (!schedule) return null;
 
     const duration = getScheduleDuration(schedule);
     const theme = getThemeFromClass(schedule.dance_class);
     const themeColors = getThemeColors(theme as keyof typeof THEMES);
-    
+
     // Bruk substitute_instructor hvis den finnes
-    const instructor = schedule.substitute_instructor || 
-      schedule.dance_class.instructor;
+    const instructor =
+      schedule.substitute_instructor || schedule.dance_class.instructor;
 
     // Kompakt høyde: desktop 64px, mobil 40px per slot
-    const heightInPx = isDesktop 
-      ? (duration * 64) + ((duration - 1) * 1)  // Desktop: 64px per slot
-      : (duration * 40) + ((duration - 1) * 1); // Mobil: 40px per slot (kompakt)
+    const heightInPx = isDesktop
+      ? duration * 64 + (duration - 1) * 1 // Desktop: 64px per slot
+      : duration * 40 + (duration - 1) * 1; // Mobil: 40px per slot (kompakt)
 
     return (
       <motion.div
@@ -219,7 +232,7 @@ export default function SchedualPage() {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.3 }}
-        className={`absolute inset-0 ${isDesktop ? 'rounded-lg px-2 py-1' : 'rounded px-1.5 py-0.5'} font-montserrat
+        className={`absolute inset-0 ${isDesktop ? "rounded-lg px-2 py-1" : "rounded px-1.5 py-0.5"} font-montserrat
                    ${themeColors.color} ${themeColors.textColor} 
                    shadow-md hover:shadow-lg transition-all duration-200
                    cursor-pointer hover:scale-[1.01] z-10`}
@@ -227,12 +240,14 @@ export default function SchedualPage() {
         title={`${schedule.dance_class.name} - ${schedule.start_time} til ${schedule.end_time}`}
       >
         {/* Kursnavn - kompakt */}
-        <div className={`font-bold ${isDesktop ? 'text-xs' : 'text-xs'} leading-none ${isDesktop ? 'mb-1' : 'mb-0.5'}`}>
+        <div
+          className={`font-bold ${isDesktop ? "text-xs" : "text-xs"} leading-none ${isDesktop ? "mb-1" : "mb-0.5"}`}
+        >
           <span className="line-clamp-1 truncate">
             {schedule.dance_class.name}
           </span>
         </div>
-        
+
         {/* Instruktør - kun på desktop */}
         {isDesktop && instructor && (
           <div className="text-xs opacity-80 mb-1 truncate">
@@ -242,21 +257,25 @@ export default function SchedualPage() {
             )}
           </div>
         )}
-        
+
         {/* Tid - kompakt format */}
-        <div className={`${isDesktop ? 'text-xs' : 'text-xs'} font-medium leading-none`}>
-          {isDesktop 
-            ? `${schedule.start_time.substring(0,5)}-${schedule.end_time.substring(0,5)}` 
-            : `${schedule.start_time.substring(0,5)} - ${schedule.end_time.substring(0,5)}`
-          }
+        <div
+          className={`${isDesktop ? "text-xs" : "text-xs"} font-medium leading-none`}
+        >
+          {isDesktop
+            ? `${schedule.start_time.substring(0, 5)}-${schedule.end_time.substring(0, 5)}`
+            : `${schedule.start_time.substring(0, 5)} - ${schedule.end_time.substring(0, 5)}`}
         </div>
 
         {/* Kapasitet - kun på desktop hvis plass */}
-        {isDesktop && schedule.maxStudents && schedule.maxStudents > 0 && duration > 1 && (
-          <div className="text-xs mt-1 font-medium text-gray-900 dark:text-white">
-            {schedule.currentStudents || 0}/{schedule.maxStudents}
-          </div>
-        )}
+        {isDesktop &&
+          schedule.maxStudents &&
+          schedule.maxStudents > 0 &&
+          duration > 1 && (
+            <div className="text-xs mt-1 font-medium text-gray-900 dark:text-white">
+              {schedule.currentStudents || 0}/{schedule.maxStudents}
+            </div>
+          )}
       </motion.div>
     );
   };
@@ -266,7 +285,9 @@ export default function SchedualPage() {
       <div className="min-h-screen bg-white dark:bg-surface-dark flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-500 mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-300 font-montserrat">Laster timeplan...</p>
+          <p className="text-gray-600 dark:text-gray-300 font-montserrat">
+            Laster timeplan...
+          </p>
         </div>
       </div>
     );
@@ -283,7 +304,7 @@ export default function SchedualPage() {
             <p className="text-red-600 dark:text-red-300 font-montserrat mb-4">
               {error}
             </p>
-            <Button 
+            <Button
               onClick={fetchSchedules}
               className="font-semibold bg-red-600 hover:bg-red-700 text-white"
             >
@@ -300,12 +321,14 @@ export default function SchedualPage() {
       <ScrollToTop />
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-brand-50/80 to-surface-muted 
+      <section
+        className="bg-gradient-to-br from-brand-50/80 to-surface-muted 
                         dark:from-brand-900/10 dark:to-surface-dark-muted 
-                        pt-24 pb-16 relative overflow-hidden">
+                        pt-24 pb-16 relative overflow-hidden"
+      >
         <div className="absolute top-0 right-0 w-64 h-64 bg-magenta-400/10 rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-brand-400/10 rounded-full blur-3xl" />
-        
+
         <div className="container mx-auto px-4 md:px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -313,25 +336,29 @@ export default function SchedualPage() {
             transition={{ duration: 0.8 }}
             className="text-center max-w-4xl mx-auto"
           >
-            <h1 className="text-xl font-medium text-brand-600 dark:text-brand-400 
-                          uppercase tracking-wider mb-3">
+            <h1
+              className="text-xl font-medium text-brand-600 dark:text-brand-400 
+                          uppercase tracking-wider mb-3"
+            >
               Timeplan
             </h1>
             <h2 className="font-bebas font-semibold text-bebas-xl md:text-bebas-2xl mb-6 text-gray-900 dark:text-white">
               Våre dansetimer
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed">
-              Se når dine favorittklasser går og finn den perfekte tiden for deg.
+              Se når dine favorittklasser går og finn den perfekte tiden for
+              deg.
             </p>
           </motion.div>
         </div>
       </section>
 
       {/* Timeplan Section */}
-      <section className="py-16 bg-gradient-to-br from-brand-50/80 to-surface-muted 
-                         dark:from-brand-900/10 dark:to-surface-dark-muted">
+      <section
+        className="py-16 bg-gradient-to-br from-brand-50/80 to-surface-muted 
+                         dark:from-brand-900/10 dark:to-surface-dark-muted"
+      >
         <div className="container mx-auto px-4 md:px-6">
-          
           {/* Controls */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -424,9 +451,9 @@ export default function SchedualPage() {
             <Button
               onClick={() => {
                 // Last ned statisk bilde av timeplan
-                const link = document.createElement('a');
-                link.href = '/Urban-Studios-Timeplan.pdf';
-                link.download = 'Urban-Studios-Timeplan.pdf';
+                const link = document.createElement("a");
+                link.href = "/Urban-Studios-Timeplan.pdf";
+                link.download = "Urban-Studios-Timeplan.pdf";
                 link.click();
               }}
               variant="outline"
@@ -458,7 +485,7 @@ export default function SchedualPage() {
                   {selectedRoom} - {selectedDay}
                 </h3>
               </div>
-              
+
               <div className="schedule-grid grid grid-cols-[60px_1fr] gap-px bg-gray-200 dark:bg-gray-800">
                 <div className="bg-gray-100 dark:bg-gray-700 font-montserrat font-medium text-center py-1.5 text-xs text-gray-700 dark:text-gray-200">
                   Tid
@@ -466,14 +493,15 @@ export default function SchedualPage() {
                 <div className="bg-gray-100 dark:bg-gray-700 font-montserrat font-medium text-center py-1.5 text-xs text-gray-700 dark:text-gray-200">
                   Klasse
                 </div>
-                
+
                 {TIME_SLOTS.map((time) => (
                   <React.Fragment key={`mobile-${time}`}>
                     <div className="bg-gray-50 dark:bg-gray-600 text-xs text-center py-2 font-montserrat text-gray-600 dark:text-gray-300">
-                      {time.substring(0,5)}
+                      {time.substring(0, 5)}
                     </div>
                     <div className="relative h-10 bg-white dark:bg-gray-900">
-                      {!isTimeSlotOccupied(selectedRoom, time) && renderSchedule(selectedRoom, time)}
+                      {!isTimeSlotOccupied(selectedRoom, time) &&
+                        renderSchedule(selectedRoom, time)}
                     </div>
                   </React.Fragment>
                 ))}
@@ -505,7 +533,7 @@ export default function SchedualPage() {
                 {TIME_SLOTS.map((time) => (
                   <React.Fragment key={`print-week-row-${time}`}>
                     <div className="bg-gray-50 dark:bg-gray-600 text-xs text-center py-1 font-montserrat text-gray-600 dark:text-gray-300 flex items-center justify-center border border-gray-300">
-                      {time.substring(0,5)}
+                      {time.substring(0, 5)}
                     </div>
                     {DAYS_OF_WEEK.map((day) => {
                       return (
@@ -513,35 +541,45 @@ export default function SchedualPage() {
                           key={`print-cell-${day}-${time}`}
                           className="relative h-8 bg-white dark:bg-gray-900 border border-gray-300"
                         >
-                          {!isTimeSlotOccupied(STUDIO_ROOMS[0], time, day) && (() => {
-                            // Bruk første sal eller selectedRoom for mobil
-                            const roomToUse = window.innerWidth < 1024 ? selectedRoom : STUDIO_ROOMS[0];
-                            const schedule = fullScheduleIndex[day]?.[roomToUse]?.[time];
-                            if (!schedule) return null;
+                          {!isTimeSlotOccupied(STUDIO_ROOMS[0], time, day) &&
+                            (() => {
+                              // Bruk første sal eller selectedRoom for mobil
+                              const roomToUse =
+                                window.innerWidth < 1024
+                                  ? selectedRoom
+                                  : STUDIO_ROOMS[0];
+                              const schedule =
+                                fullScheduleIndex[day]?.[roomToUse]?.[time];
+                              if (!schedule) return null;
 
-                            // Ekstra kompakt render for print
-                            const duration = getScheduleDuration(schedule);
-                            const theme = getThemeFromClass(schedule.dance_class);
-                            const themeColors = getThemeColors(theme as keyof typeof THEMES);
-                            const heightInPx = (duration * 32) + ((duration - 1) * 0);
+                              // Ekstra kompakt render for print
+                              const duration = getScheduleDuration(schedule);
+                              const theme = getThemeFromClass(
+                                schedule.dance_class,
+                              );
+                              const themeColors = getThemeColors(
+                                theme as keyof typeof THEMES,
+                              );
+                              const heightInPx =
+                                duration * 32 + (duration - 1) * 0;
 
-                            return (
-                              <div
-                                key={schedule.$id}
-                                className={`absolute inset-0 px-1 font-montserrat text-xs leading-tight
+                              return (
+                                <div
+                                  key={schedule.$id}
+                                  className={`absolute inset-0 px-1 font-montserrat text-xs leading-tight
                                            ${themeColors.color} ${themeColors.textColor} schedule-item
                                            flex flex-col justify-center`}
-                                style={{ height: `${heightInPx}px` }}
-                              >
-                                <div className="font-bold course-name truncate text-xs">
-                                  {schedule.dance_class.name}
+                                  style={{ height: `${heightInPx}px` }}
+                                >
+                                  <div className="font-bold course-name truncate text-xs">
+                                    {schedule.dance_class.name}
+                                  </div>
+                                  <div className="font-medium time text-xs">
+                                    {schedule.start_time.substring(0, 5)}
+                                  </div>
                                 </div>
-                                <div className="font-medium time text-xs">
-                                  {schedule.start_time.substring(0,5)}
-                                </div>
-                              </div>
-                            );
-                          })()}
+                              );
+                            })()}
                         </div>
                       );
                     })}
@@ -554,13 +592,18 @@ export default function SchedualPage() {
             <div className="hidden lg:block print:hidden">
               <div className="bg-brand-50 dark:bg-brand-900/20 p-4 border-b border-brand-200 dark:border-brand-700">
                 <h3 className="font-bebas text-bebas-base font-semibold text-center text-gray-900 dark:text-white">
-                  Timeplan - {selectedRooms.length > 0 ? selectedRooms.join(' og ') : 'Ingen saler valgt'}
+                  Timeplan -{" "}
+                  {selectedRooms.length > 0
+                    ? selectedRooms.join(" og ")
+                    : "Ingen saler valgt"}
                 </h3>
               </div>
-              
+
               {selectedRooms.length === 0 ? (
                 <div className="p-8 text-center text-gray-500 dark:text-gray-400">
-                  <p className="font-montserrat">Velg minst en sal for å vise timeplanen</p>
+                  <p className="font-montserrat">
+                    Velg minst en sal for å vise timeplanen
+                  </p>
                 </div>
               ) : (
                 <div
@@ -582,7 +625,7 @@ export default function SchedualPage() {
                         <div className="font-semibold text-xs">{day}</div>
                         <div className="text-xs opacity-75">{room}</div>
                       </div>
-                    ))
+                    )),
                   )}
 
                   {/* Time slots */}
@@ -598,15 +641,17 @@ export default function SchedualPage() {
                               key={`cell-${day}-${room}-${time}`}
                               className="relative h-16 bg-white dark:bg-gray-900"
                             >
-                              {!isTimeSlotOccupied(room, time, day) && (() => {
-                                const schedule = fullScheduleIndex[day]?.[room]?.[time];
-                                if (!schedule) return null;
+                              {!isTimeSlotOccupied(room, time, day) &&
+                                (() => {
+                                  const schedule =
+                                    fullScheduleIndex[day]?.[room]?.[time];
+                                  if (!schedule) return null;
 
-                                return renderSchedule(room, time, true, day);
-                              })()}
+                                  return renderSchedule(room, time, true, day);
+                                })()}
                             </div>
                           );
-                        })
+                        }),
                       )}
                     </React.Fragment>
                   ))}
@@ -631,11 +676,13 @@ export default function SchedualPage() {
               Ikke sikker på hvilket kurs som passer deg?
             </h3>
             <p className="text-gray-600 dark:text-gray-300 font-montserrat mb-8 text-lg">
-              Kontakt oss på kontakt@urbanstudios.no eller benytt vårt kontaktskjema, så hjelper vi deg med å finne det perfekte kurset basert på dine behov!
+              Kontakt oss på kontakt@urbanstudios.no eller benytt vårt
+              kontaktskjema, så hjelper vi deg med å finne det perfekte kurset
+              basert på dine behov!
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link to="/kontakt" className="w-full sm:w-auto">
-                <Button 
+                <Button
                   variant="outline"
                   className="font-semibold rounded-full 
                             bg-white/80 border-brand-300 text-brand-700 

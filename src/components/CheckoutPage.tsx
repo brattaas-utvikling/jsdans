@@ -1,13 +1,21 @@
 // src/pages/CheckoutPage.tsx
-import React, { useState } from 'react';
-import { ArrowLeft, CreditCard, User, Mail, Phone, AlertCircle, Shield } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardHeader, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { formatPrice } from '../utils/pricing';
-import { databases, DATABASE_ID, COLLECTIONS } from '../lib/appwrite';
-import { vipps } from '../lib/mockVipps';
-import type { CartSummary, Schedule, CustomerData } from '../types';
+import React, { useState } from "react";
+import {
+  ArrowLeft,
+  CreditCard,
+  User,
+  Mail,
+  Phone,
+  AlertCircle,
+  Shield,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { formatPrice } from "../utils/pricing";
+import { databases, DATABASE_ID, COLLECTIONS } from "../lib/appwrite";
+import { vipps } from "../lib/mockVipps";
+import type { CartSummary, Schedule, CustomerData } from "../types";
 
 interface CheckoutPageProps {
   cartSummary: CartSummary;
@@ -22,15 +30,15 @@ interface FormErrors {
   payment?: string;
 }
 
-export const CheckoutPage: React.FC<CheckoutPageProps> = ({ 
-  cartSummary, 
+export const CheckoutPage: React.FC<CheckoutPageProps> = ({
+  cartSummary,
   schedules = [],
-  onClearCart 
+  onClearCart,
 }) => {
   const [customerData, setCustomerData] = useState<CustomerData>({
-    name: '',
-    email: '',
-    phone: ''
+    name: "",
+    email: "",
+    phone: "",
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [processing, setProcessing] = useState(false);
@@ -39,19 +47,19 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
     const newErrors: FormErrors = {};
 
     if (!customerData.name.trim()) {
-      newErrors.name = 'Navn er påkrevd';
+      newErrors.name = "Navn er påkrevd";
     }
 
     if (!customerData.email.trim()) {
-      newErrors.email = 'E-post er påkrevd';
+      newErrors.email = "E-post er påkrevd";
     } else if (!/\S+@\S+\.\S+/.test(customerData.email)) {
-      newErrors.email = 'Ugyldig e-postadresse';
+      newErrors.email = "Ugyldig e-postadresse";
     }
 
     if (!customerData.phone.trim()) {
-      newErrors.phone = 'Telefonnummer er påkrevd';
-    } else if (!/^\d{8}$/.test(customerData.phone.replace(/\s/g, ''))) {
-      newErrors.phone = 'Telefonnummer må være 8 siffer';
+      newErrors.phone = "Telefonnummer er påkrevd";
+    } else if (!/^\d{8}$/.test(customerData.phone.replace(/\s/g, ""))) {
+      newErrors.phone = "Telefonnummer må være 8 siffer";
     }
 
     setErrors(newErrors);
@@ -66,47 +74,49 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
     try {
       // Create order in database
       const orderData = {
-        status: 'reserved' as const,
+        status: "reserved" as const,
         totalAmountInOre: cartSummary.total,
         originalAmountInOre: cartSummary.originalTotal,
         discountAmountInOre: cartSummary.totalDiscount,
-        semester: 'fall2025',
+        semester: "fall2025",
         customerName: customerData.name,
         customerEmail: customerData.email,
         customerPhone: customerData.phone,
         reservedAt: new Date().toISOString(),
-        expiresAt: new Date(Date.now() + 15 * 60 * 1000).toISOString() // 15 minutes
+        expiresAt: new Date(Date.now() + 15 * 60 * 1000).toISOString(), // 15 minutes
       };
 
-      console.log('Creating order:', orderData);
+      console.log("Creating order:", orderData);
 
       const order = await databases.createDocument(
         DATABASE_ID,
         COLLECTIONS.ORDERS,
-        'unique()',
-        orderData
+        "unique()",
+        orderData,
       );
 
-      console.log('Order created:', order);
+      console.log("Order created:", order);
 
       // Create order items
       for (const item of cartSummary.items) {
         const orderItem = {
           orderId: order.$id,
-          type: 'package' as const,
-          packageId: item.pricing.packageId || '',
+          type: "package" as const,
+          packageId: item.pricing.packageId || "",
           studentName: item.studentName,
           studentAge: item.studentAge,
           priceInOre: item.pricing.total,
           selectedSchedules: item.selectedSchedules,
-          discountApplied: item.isSecondDancerInFamily ? 'family_discount' : undefined
+          discountApplied: item.isSecondDancerInFamily
+            ? "family_discount"
+            : undefined,
         };
 
         await databases.createDocument(
           DATABASE_ID,
           COLLECTIONS.ORDER_ITEMS,
-          'unique()',
-          orderItem
+          "unique()",
+          orderItem,
         );
       }
 
@@ -114,10 +124,10 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
       const paymentData = {
         orderId: order.$id,
         amount: cartSummary.total,
-        customerInfo: customerData
+        customerInfo: customerData,
       };
 
-      console.log('Initiating Vipps payment:', paymentData);
+      console.log("Initiating Vipps payment:", paymentData);
 
       const vippsResponse = await vipps.initiatePayment(paymentData);
 
@@ -128,8 +138,8 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
           COLLECTIONS.ORDERS,
           order.$id,
           {
-            vippsOrderId: vippsResponse.orderId
-          }
+            vippsOrderId: vippsResponse.orderId,
+          },
         );
 
         // Clear cart
@@ -138,19 +148,18 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
         // Redirect to Vipps (or mock payment page)
         window.location.href = vippsResponse.url;
       } else {
-        throw new Error('Failed to initiate payment');
+        throw new Error("Failed to initiate payment");
       }
-
     } catch (error) {
-      console.error('Payment initiation failed:', error);
-      setErrors({ payment: 'Kunne ikke starte betaling. Prøv igjen.' });
+      console.error("Payment initiation failed:", error);
+      setErrors({ payment: "Kunne ikke starte betaling. Prøv igjen." });
     } finally {
       setProcessing(false);
     }
   };
 
   const getScheduleDetails = (scheduleId: string): Schedule | undefined => {
-    return schedules.find(s => s.$id === scheduleId);
+    return schedules.find((s) => s.$id === scheduleId);
   };
 
   const navigateBack = (): void => {
@@ -164,7 +173,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
           <Card className="text-center py-12">
             <CardContent>
               <p className="text-gray-500 mb-4">Handlekurven er tom</p>
-              <Button onClick={() => window.location.href = '/courses'}>
+              <Button onClick={() => (window.location.href = "/courses")}>
                 Gå til kurs
               </Button>
             </CardContent>
@@ -179,11 +188,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
       <div className="max-w-4xl mx-auto px-4">
         {/* Header */}
         <div className="flex items-center mb-8">
-          <Button
-            variant="ghost"
-            onClick={navigateBack}
-            className="mr-4"
-          >
+          <Button variant="ghost" onClick={navigateBack} className="mr-4">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Tilbake
           </Button>
@@ -211,7 +216,12 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
                   <input
                     type="text"
                     value={customerData.name}
-                    onChange={(e) => setCustomerData(prev => ({ ...prev, name: e.target.value }))}
+                    onChange={(e) =>
+                      setCustomerData((prev) => ({
+                        ...prev,
+                        name: e.target.value,
+                      }))
+                    }
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     placeholder="Ditt fulle navn"
                   />
@@ -230,7 +240,12 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
                   <input
                     type="email"
                     value={customerData.email}
-                    onChange={(e) => setCustomerData(prev => ({ ...prev, email: e.target.value }))}
+                    onChange={(e) =>
+                      setCustomerData((prev) => ({
+                        ...prev,
+                        email: e.target.value,
+                      }))
+                    }
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     placeholder="din@email.no"
                   />
@@ -249,7 +264,12 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
                   <input
                     type="tel"
                     value={customerData.phone}
-                    onChange={(e) => setCustomerData(prev => ({ ...prev, phone: e.target.value }))}
+                    onChange={(e) =>
+                      setCustomerData((prev) => ({
+                        ...prev,
+                        phone: e.target.value,
+                      }))
+                    }
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     placeholder="12345678"
                   />
@@ -265,8 +285,13 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
                   <div className="flex items-start space-x-2">
                     <Mail className="w-5 h-5 text-blue-600 mt-0.5" />
                     <div className="text-sm text-blue-800">
-                      <p className="font-medium">Vi sender bekreftelse på e-post</p>
-                      <p>Du vil motta kursdetaljer og påminnelser på den oppgitte e-postadressen.</p>
+                      <p className="font-medium">
+                        Vi sender bekreftelse på e-post
+                      </p>
+                      <p>
+                        Du vil motta kursdetaljer og påminnelser på den oppgitte
+                        e-postadressen.
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -290,7 +315,9 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
                       </div>
                       <div>
                         <p className="font-medium text-gray-900">Vipps</p>
-                        <p className="text-sm text-gray-600">Trygg og rask betaling</p>
+                        <p className="text-sm text-gray-600">
+                          Trygg og rask betaling
+                        </p>
                       </div>
                     </div>
                     <Badge variant="primary">Anbefalt</Badge>
@@ -300,7 +327,8 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
                 <div className="mt-4 flex items-start space-x-2 text-sm text-gray-600">
                   <Shield className="w-4 h-4 mt-0.5" />
                   <p>
-                    Betaling behandles sikkert av Vipps. Vi lagrer ikke betalingsinformasjon.
+                    Betaling behandles sikkert av Vipps. Vi lagrer ikke
+                    betalingsinformasjon.
                   </p>
                 </div>
 
@@ -326,8 +354,12 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
                   <div key={item.id} className="border-b pb-4 last:border-b-0">
                     <div className="flex justify-between items-start mb-2">
                       <div>
-                        <h4 className="font-medium text-gray-900">{item.studentName}</h4>
-                        <p className="text-sm text-gray-600">{item.studentAge} år</p>
+                        <h4 className="font-medium text-gray-900">
+                          {item.studentName}
+                        </h4>
+                        <p className="text-sm text-gray-600">
+                          {item.studentAge} år
+                        </p>
                         {item.isSecondDancerInFamily && (
                           <Badge variant="info" className="mt-1">
                             Familierabatt
@@ -335,7 +367,9 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
                         )}
                       </div>
                       <div className="text-right">
-                        <p className="font-medium">{formatPrice(item.pricing.total)}</p>
+                        <p className="font-medium">
+                          {formatPrice(item.pricing.total)}
+                        </p>
                         {item.pricing.discount > 0 && (
                           <p className="text-sm text-gray-500 line-through">
                             {formatPrice(item.pricing.originalPrice || 0)}
@@ -345,17 +379,18 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
                     </div>
 
                     <div className="space-y-1">
-                      {item.selectedClasses.map(cls => {
+                      {item.selectedClasses.map((cls) => {
                         const schedule = item.selectedSchedules
-                          .map(scheduleId => getScheduleDetails(scheduleId))
-                          .find(s => s?.danceClassId === cls.$id);
+                          .map((scheduleId) => getScheduleDetails(scheduleId))
+                          .find((s) => s?.danceClassId === cls.$id);
 
                         return (
                           <div key={cls.$id} className="text-sm text-gray-600">
                             <span className="font-medium">{cls.name}</span>
                             {schedule && (
                               <span className="ml-2">
-                                • {schedule.day} {schedule.startTime}-{schedule.endTime}
+                                • {schedule.day} {schedule.startTime}-
+                                {schedule.endTime}
                               </span>
                             )}
                           </div>
@@ -383,7 +418,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
                       </div>
                     </>
                   )}
-                  
+
                   <div className="flex justify-between text-lg font-bold text-gray-900 pt-2 border-t">
                     <span>Totalt:</span>
                     <span>{formatPrice(cartSummary.total)}</span>
@@ -398,12 +433,18 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
                   className="w-full bg-green-600 hover:bg-green-700"
                   size="lg"
                 >
-                  {processing ? 'Behandler...' : `Betal ${formatPrice(cartSummary.total)} med Vipps`}
+                  {processing
+                    ? "Behandler..."
+                    : `Betal ${formatPrice(cartSummary.total)} med Vipps`}
                 </Button>
 
                 <div className="text-xs text-gray-500 text-center space-y-1">
-                  <p>Ved å fullføre kjøpet godtar du våre vilkår og betingelser</p>
-                  <p>Du vil få en bekreftelse på e-post etter vellykket betaling</p>
+                  <p>
+                    Ved å fullføre kjøpet godtar du våre vilkår og betingelser
+                  </p>
+                  <p>
+                    Du vil få en bekreftelse på e-post etter vellykket betaling
+                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -411,7 +452,9 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
             {/* Additional Info */}
             <Card>
               <CardContent className="text-sm text-gray-600 space-y-2">
-                <h3 className="font-medium text-gray-900 mb-3">Viktig informasjon</h3>
+                <h3 className="font-medium text-gray-900 mb-3">
+                  Viktig informasjon
+                </h3>
                 <ul className="space-y-1 list-disc list-inside">
                   <li>Prisene gjelder for hele høstsemesteret 2025</li>
                   <li>Du kan ikke refundere etter påmeldingsfristen</li>

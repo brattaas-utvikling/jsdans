@@ -82,7 +82,10 @@ body {
 
   /* Default heading styles */
   h1 {
-    font-family: "Bebas Neue", Arial Black, sans-serif;
+    font-family:
+      "Bebas Neue",
+      Arial Black,
+      sans-serif;
     font-weight: 400;
     letter-spacing: 0.025em;
     line-height: 1.1;
@@ -109,7 +112,10 @@ body {
 @layer components {
   /* Bebas Neue utility class */
   .font-bebas {
-    font-family: "Bebas Neue", Arial Black, sans-serif;
+    font-family:
+      "Bebas Neue",
+      Arial Black,
+      sans-serif;
     font-weight: 400;
     letter-spacing: 0.025em;
     line-height: 1.1;

@@ -1,28 +1,28 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { 
-  ArrowRight, 
-  Star, 
-  Calendar, 
+import {
+  ArrowRight,
+  Star,
+  Calendar,
   MapPin,
   Trophy,
-  Sparkles
+  Sparkles,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function SelmaWorkshop() {
   return (
-    <section className="py-16 bg-gradient-to-br from-brand-50/80 to-surface-muted 
+    <section
+      className="py-16 bg-gradient-to-br from-brand-50/80 to-surface-muted 
                        dark:from-brand-900/10 dark:to-surface-dark-muted 
-                       relative overflow-hidden">
-      
+                       relative overflow-hidden"
+    >
       {/* Decorative background elements */}
       <div className="absolute top-0 right-0 w-64 h-64 bg-magenta-400/10 rounded-full blur-3xl" />
       <div className="absolute bottom-0 left-0 w-48 h-48 bg-brand-400/10 rounded-full blur-3xl" />
-      
+
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          
           {/* Left column - Image */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -40,7 +40,6 @@ export default function SelmaWorkshop() {
                   alt="Selma - profesjonell danser og Jump Crew medlem"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-               
               </div>
 
               {/* Floating badge */}
@@ -123,10 +122,12 @@ export default function SelmaWorkshop() {
                 transition={{ duration: 0.4, delay: 0.4 }}
                 className="text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed"
               >
-                Selma Moen Embretsen danset på Jump frem til hun ble 15 år - da flyttet hun til Oslo for å satse! 
-                Hun har fullført tre år på danselinjen på Otto Treider vgs, og jobber idag som 
-                proff utøvende danser. Hun er med i Jump Crew, som blant annet har vunnet Norske Talenter, 
-                deltatt i Britains Got Talent og danset på VG-lista!
+                Selma Moen Embretsen danset på Jump frem til hun ble 15 år - da
+                flyttet hun til Oslo for å satse! Hun har fullført tre år på
+                danselinjen på Otto Treider vgs, og jobber idag som proff
+                utøvende danser. Hun er med i Jump Crew, som blant annet har
+                vunnet Norske Talenter, deltatt i Britains Got Talent og danset
+                på VG-lista!
               </motion.p>
 
               <motion.p
@@ -136,10 +137,14 @@ export default function SelmaWorkshop() {
                 transition={{ duration: 0.4, delay: 0.5 }}
                 className="text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed"
               >
-                Selma kommer for å ha workshop når vi åpner Urban Studios <strong className="text-brand-600 dark:text-brand-400">lørdag 23. august</strong>, 
-                da blir det hiphop commercial VG-lista style! Workshopen inneholder danseglede og energi, 
-                vi skal jobbe med grunnteknikk i street og lære en superkul koreografi som kan vises frem 
-                på åpningen til studioet lørdag kveld.
+                Selma kommer for å ha workshop når vi åpner Urban Studios{" "}
+                <strong className="text-brand-600 dark:text-brand-400">
+                  lørdag 23. august
+                </strong>
+                , da blir det hiphop commercial VG-lista style! Workshopen
+                inneholder danseglede og energi, vi skal jobbe med grunnteknikk
+                i street og lære en superkul koreografi som kan vises frem på
+                åpningen til studioet lørdag kveld.
               </motion.p>
 
               <motion.p
@@ -149,8 +154,9 @@ export default function SelmaWorkshop() {
                 transition={{ duration: 0.4, delay: 0.6 }}
                 className="text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed"
               >
-                Selma gleder seg masse til å jobbe dynamikk, groove og showteknikk med oss på Urban. 
-                Påmeldingen er nå åpen, vær rask da dette er en populær workshop som fylles opp raskt!
+                Selma gleder seg masse til å jobbe dynamikk, groove og
+                showteknikk med oss på Urban. Påmeldingen er nå åpen, vær rask
+                da dette er en populær workshop som fylles opp raskt!
               </motion.p>
             </div>
 
@@ -167,7 +173,7 @@ export default function SelmaWorkshop() {
               <h3 className="font-bebas text-bebas-base text-gray-900 dark:text-white mb-4">
                 Workshop Detaljer
               </h3>
-              
+
               <div className="space-y-3">
                 <div className="flex items-center gap-3">
                   <Calendar className="h-5 w-5 text-brand-500 flex-shrink-0" />
@@ -175,14 +181,14 @@ export default function SelmaWorkshop() {
                     <strong>Lørdag 23. august</strong> - Åpningsdag
                   </span>
                 </div>
-                
+
                 <div className="flex items-center gap-3">
                   <MapPin className="h-5 w-5 text-brand-500 flex-shrink-0" />
                   <span className="font-montserrat text-gray-700 dark:text-gray-300">
                     Urban Studios, Kongsvinger
                   </span>
                 </div>
-                
+
                 <div className="flex items-center gap-3">
                   <Sparkles className="h-5 w-5 text-brand-500 flex-shrink-0" />
                   <span className="font-montserrat text-gray-700 dark:text-gray-300">
@@ -205,7 +211,7 @@ export default function SelmaWorkshop() {
                       150 kr
                     </span>
                   </div>
-                  
+
                   <div className="grid grid-cols-[1fr,auto] gap-3 items-center py-2 px-3 bg-magenta-50 dark:bg-magenta-900/20 rounded-lg">
                     <span className="font-montserrat text-xs sm:text-sm text-gray-700 dark:text-gray-300">
                       <strong>Kl. 14:00-16:00</strong> • 5.-8. trinn
@@ -214,7 +220,7 @@ export default function SelmaWorkshop() {
                       300 kr
                     </span>
                   </div>
-                  
+
                   <div className="grid grid-cols-[1fr,auto] gap-3 items-center py-2 px-3 bg-coral-50 dark:bg-coral-900/20 rounded-lg">
                     <span className="font-montserrat text-xs sm:text-sm text-gray-700 dark:text-gray-300">
                       <strong>Kl. 16:15-18:15</strong> • 8. trinn og oppover
@@ -235,10 +241,11 @@ export default function SelmaWorkshop() {
               transition={{ duration: 0.4, delay: 0.8 }}
               className="flex flex-col sm:flex-row gap-4"
             >
-              <Button 
+              <Button
                 size="lg"
                 onClick={() => {
-                  const subject = "Påmelding - Workshop med Selma 23. august 2025";
+                  const subject =
+                    "Påmelding - Workshop med Selma 23. august 2025";
                   const body = `Jeg melder meg på workshop med Selma 23. august 2025.
 
 Fullt navn:
@@ -248,7 +255,7 @@ Denne påmeldingen er bindende.
 
 Til info:
 Du vil få en mail med betalingsinfo som må betales innen fristen, følg med i spam-innboksen.`;
-                  
+
                   const mailtoLink = `mailto:registrer@urbanstudios.no?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
                   window.location.href = mailtoLink;
                 }}
@@ -265,7 +272,7 @@ Du vil få en mail med betalingsinfo som må betales innen fristen, følg med i 
               </Button>
 
               <Link to="/nyheter/6872899c00367b1047ee">
-                <Button 
+                <Button
                   size="lg"
                   variant="outline"
                   className="font-semibold rounded-full 

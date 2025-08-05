@@ -1,21 +1,22 @@
-import React, { useEffect } from 'react';
-import { useDanceClasses } from '../hooks/useDanceClasses';
-import { usePricingPackages } from '../hooks/usePricingPackages';
-import { useCart } from '../hooks/useCart';
-import { CheckoutPage } from './CheckoutPage';
-import { PageLoading } from '../components/ui/loading';
-import { Button } from '../components/ui/button';
-import { Card, CardContent } from '../components/ui/card';
-import { ShoppingCart } from 'lucide-react';
+import React, { useEffect } from "react";
+import { useDanceClasses } from "../hooks/useDanceClasses";
+import { usePricingPackages } from "../hooks/usePricingPackages";
+import { useCart } from "../hooks/useCart";
+import { CheckoutPage } from "./CheckoutPage";
+import { PageLoading } from "../components/ui/loading";
+import { Button } from "../components/ui/button";
+import { Card, CardContent } from "../components/ui/card";
+import { ShoppingCart } from "lucide-react";
 
 const CheckoutPageContainer: React.FC = () => {
-  const { schedules, loading: schedulesLoading, error: schedulesError } = useDanceClasses();
+  const {
+    schedules,
+    loading: schedulesLoading,
+    error: schedulesError,
+  } = useDanceClasses();
   const { packages, loading: packagesLoading } = usePricingPackages();
 
-  const {
-    getCartSummary,
-    clearCart
-  } = useCart(packages);
+  const { getCartSummary, clearCart } = useCart(packages);
 
   const cartSummary = getCartSummary();
   const loading = schedulesLoading || packagesLoading;
@@ -23,7 +24,7 @@ const CheckoutPageContainer: React.FC = () => {
   useEffect(() => {
     if (!loading && !cartSummary.hasItems) {
       const timeout = setTimeout(() => {
-        window.location.href = '/courses';
+        window.location.href = "/courses";
       }, 2000);
 
       return () => clearTimeout(timeout);
@@ -32,7 +33,7 @@ const CheckoutPageContainer: React.FC = () => {
 
   if (loading) {
     return (
-      <PageLoading 
+      <PageLoading
         title="Laster checkout..."
         subtitle="Forbereder bestillingen din"
       />
@@ -43,9 +44,14 @@ const CheckoutPageContainer: React.FC = () => {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center space-y-4">
-          <h2 className="text-2xl font-bold text-red-600">Kunne ikke laste checkout</h2>
+          <h2 className="text-2xl font-bold text-red-600">
+            Kunne ikke laste checkout
+          </h2>
           <p className="text-gray-600">{schedulesError}</p>
-          <Button onClick={() => window.location.href = '/courses'} className="bg-purple-600 hover:bg-purple-700">
+          <Button
+            onClick={() => (window.location.href = "/courses")}
+            className="bg-purple-600 hover:bg-purple-700"
+          >
             Tilbake til kurs
           </Button>
         </div>
@@ -61,12 +67,17 @@ const CheckoutPageContainer: React.FC = () => {
             <CardContent className="space-y-6">
               <ShoppingCart className="w-16 h-16 mx-auto text-gray-300" />
               <div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">Handlekurven er tom</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                  Handlekurven er tom
+                </h2>
                 <p className="text-gray-600 mb-6">
                   Du blir omdirigert til kurs-siden om kort tid...
                 </p>
               </div>
-              <Button onClick={() => window.location.href = '/courses'} className="bg-purple-600 hover:bg-purple-700">
+              <Button
+                onClick={() => (window.location.href = "/courses")}
+                className="bg-purple-600 hover:bg-purple-700"
+              >
                 Gå til kurs nå
               </Button>
             </CardContent>
@@ -80,7 +91,7 @@ const CheckoutPageContainer: React.FC = () => {
     try {
       clearCart();
     } catch (error) {
-      console.error('❌ Failed to clear cart:', error);
+      console.error("❌ Failed to clear cart:", error);
     }
   };
 

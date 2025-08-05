@@ -9,13 +9,13 @@
 //     const [name, setName] = useState<string>('');
 //     const [isLogin, setIsLogin] = useState<boolean>(true);
 //     const [error, setError] = useState<string>('');
-    
+
 //     const { login, register, logout, user, loading } = useAuth();
 
 //     const handleSubmit = async (e: React.FormEvent) => {
 //         e.preventDefault();
 //         setError('');
-        
+
 //         try {
 //             if (isLogin) {
 //                 await login(email, password);
@@ -49,7 +49,7 @@
 //     return (
 //         <form onSubmit={handleSubmit}>
 //             <h2 className="text-sm font-medium text-indigo-600 dark:text-indigo-400 uppercase tracking-wider mb-3">{isLogin ? 'Logg inn' : 'Registrer deg'}</h2>
-            
+
 //             {!isLogin && (
 //                 <Input
 //                     type="text"
@@ -59,7 +59,7 @@
 //                     required
 //                 />
 //             )}
-            
+
 //             <Input
 //                 type="email"
 //                 value={email}
@@ -67,7 +67,7 @@
 //                 placeholder="Email"
 //                 required
 //             />
-            
+
 //             <Input
 //                 type="password"
 //                 value={password}
@@ -75,15 +75,15 @@
 //                 placeholder="Passord"
 //                 required
 //             />
-            
+
 //             <Button type="submit">
 //                 {isLogin ? 'Logg inn' : 'Registrer'}
 //             </Button>
-            
+
 //             <Button type="button" onClick={() => setIsLogin(!isLogin)}>
 //                 {isLogin ? 'Trenger konto? Registrer deg' : 'Har konto? Logg inn'}
 //             </Button>
-            
+
 //             {error && <p style={{color: 'red'}}>{error}</p>}
 //         </form>
 //     );

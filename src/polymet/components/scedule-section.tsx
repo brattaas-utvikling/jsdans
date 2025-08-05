@@ -42,7 +42,7 @@ export default function ScheduleSection() {
     const selectedClass = WEEKLY_SCHEDULE.find((c) => c.id === classId);
     if (selectedClass) {
       alert(
-        `Kurs: ${selectedClass.className}\nInstruktør: ${selectedClass.instructor}\nNivå: ${selectedClass.level}\nTime: ${selectedClass.startTime} - ${selectedClass.endTime}`
+        `Kurs: ${selectedClass.className}\nInstruktør: ${selectedClass.instructor}\nNivå: ${selectedClass.level}\nTime: ${selectedClass.startTime} - ${selectedClass.endTime}`,
       );
       // In a real application, this would navigate to a class details page
     }
@@ -82,7 +82,7 @@ export default function ScheduleSection() {
               {/* Days Columns */}
               {DAYS_OF_WEEK.map((day) => {
                 const classesInSlot = filteredClasses.filter(
-                  (c) => c.day === day && c.startTime === timeSlot
+                  (c) => c.day === day && c.startTime === timeSlot,
                 );
 
                 return (
@@ -191,7 +191,7 @@ export default function ScheduleSection() {
                 (c) =>
                   c.day === selectedDay &&
                   c.startTime === timeSlot &&
-                  c.room === room
+                  c.room === room,
               );
 
               return (

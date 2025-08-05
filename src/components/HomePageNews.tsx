@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { 
-  CalendarIcon, 
-  ClockIcon, 
-  UserIcon, 
+import {
+  CalendarIcon,
+  ClockIcon,
+  UserIcon,
   ArrowRightIcon,
-  NewspaperIcon
+  NewspaperIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { listDocuments, DATABASE_ID, COLLECTIONS, Query } from "@/lib/appwrite";
@@ -24,9 +24,9 @@ interface AppwriteDocument {
 interface NewsArticle extends AppwriteDocument {
   headlines: string;
   lead: string;
-  'paragraph-1': string;  // Oppdatert fra 'content'
-  'paragraph-2': string;  // Nytt felt
-  'paragraph-3': string;  // Nytt felt
+  "paragraph-1": string; // Oppdatert fra 'content'
+  "paragraph-2": string; // Nytt felt
+  "paragraph-3": string; // Nytt felt
   img: string;
   author: string;
   published: boolean;
@@ -40,10 +40,10 @@ interface HomepageNewsProps {
   compact?: boolean; // Kompakt layout for mindre plass
 }
 
-export default function HomepageNews({ 
-  maxArticles = 3, 
-  showFeatured = true, 
-  compact = false 
+export default function HomepageNews({
+  maxArticles = 3,
+  showFeatured = true,
+  compact = false,
 }: HomepageNewsProps) {
   const [newsData, setNewsData] = useState<NewsArticle[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -52,26 +52,29 @@ export default function HomepageNews({
   // Format date function
   const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('no-NO', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric'
+    return date.toLocaleDateString("no-NO", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
     });
   };
 
   // Calculate reading time - oppdatert for nye felter
   const calculateReadingTime = (article: NewsArticle): number => {
     const wordsPerMinute = 200;
-    
+
     // Kombiner alle tekstfelter for å beregne lesetid
     const allText = [
-      article.lead || '',
-      article['paragraph-1'] || '',
-      article['paragraph-2'] || '',
-      article['paragraph-3'] || ''
-    ].join(' ');
-    
-    const words = allText.trim().split(' ').filter(word => word.length > 0).length;
+      article.lead || "",
+      article["paragraph-1"] || "",
+      article["paragraph-2"] || "",
+      article["paragraph-3"] || "",
+    ].join(" ");
+
+    const words = allText
+      .trim()
+      .split(" ")
+      .filter((word) => word.length > 0).length;
     return Math.max(1, Math.ceil(words / wordsPerMinute)); // Minimum 1 minutt
   };
 
@@ -79,23 +82,19 @@ export default function HomepageNews({
   const fetchLatestNews = async () => {
     setLoading(true);
     setError(null);
-    
+
     try {
-      const response = await listDocuments(
-        DATABASE_ID,
-        COLLECTIONS.NEWS,
-        [
-          Query.equal('published', true), // Kun publiserte artikler
-          Query.orderDesc('created_at'), // Sorter nyeste først
-          Query.limit(maxArticles + (showFeatured ? 1 : 0)) // Hent ekstra hvis featured
-        ]
-      );
-      
+      const response = await listDocuments(DATABASE_ID, COLLECTIONS.NEWS, [
+        Query.equal("published", true), // Kun publiserte artikler
+        Query.orderDesc("created_at"), // Sorter nyeste først
+        Query.limit(maxArticles + (showFeatured ? 1 : 0)), // Hent ekstra hvis featured
+      ]);
+
       const articles = response.documents as unknown as NewsArticle[];
       setNewsData(articles);
     } catch (err) {
-      console.error('Error fetching news:', err);
-      setError('Kunne ikke laste nyheter.');
+      console.error("Error fetching news:", err);
+      setError("Kunne ikke laste nyheter.");
     } finally {
       setLoading(false);
     }
@@ -126,7 +125,7 @@ export default function HomepageNews({
           <div className="text-center py-12">
             <NewspaperIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
             <p className="text-gray-500 dark:text-gray-400 font-montserrat">
-              {error || 'Ingen nyheter tilgjengelig for øyeblikket.'}
+              {error || "Ingen nyheter tilgjengelig for øyeblikket."}
             </p>
           </div>
         </div>
@@ -137,7 +136,6 @@ export default function HomepageNews({
   return (
     <section className="py-16 bg-white dark:bg-surface-dark">
       <div className="container mx-auto px-4 md:px-6">
-        
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -163,11 +161,12 @@ export default function HomepageNews({
             viewport={{ once: true }}
             className="mb-12"
           >
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center 
+            <div
+              className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center 
                bg-gradient-to-br from-brand-50/80 to-surface-muted 
                dark:from-brand-900/10 dark:to-surface-dark-muted 
-               rounded-2xl p-8 border border-brand-100/50 dark:border-brand-700/30">
-              
+               rounded-2xl p-8 border border-brand-100/50 dark:border-brand-700/30"
+            >
               {/* Featured Image */}
               <div className="relative rounded-xl overflow-hidden shadow-brand group">
                 <Link to={`/nyheter/${featuredArticle.$id}`}>
@@ -206,23 +205,23 @@ export default function HomepageNews({
                     <UserIcon className="h-4 w-4" />
                     {featuredArticle.author}
                   </div>
-                  
+
                   <Link to={`/nyheter/${featuredArticle.$id}`}>
-                      <Button
-                        size="sm"
-                        className="rounded-full 
+                    <Button
+                      size="sm"
+                      className="rounded-full 
                                   bg-brand-500 hover:bg-brand-600
                                   dark:bg-white dark:hover:bg-brand-600/80
                                   text-white dark:text-brand-600
                                   dark:hover:text-white/90
                                   border-0 shadow hover:shadow-md 
                                   font-semibold transition-all duration-200"
-                        aria-label={`Les artikkel: ${featuredArticle.headlines}`}
-                      >
-                        Les mer
-                        <ArrowRightIcon className="ml-2 h-4 w-4" />
-                      </Button>
-                    </Link>
+                      aria-label={`Les artikkel: ${featuredArticle.headlines}`}
+                    >
+                      Les mer
+                      <ArrowRightIcon className="ml-2 h-4 w-4" />
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </div>

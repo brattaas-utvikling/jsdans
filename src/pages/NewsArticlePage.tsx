@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { 
-  CalendarIcon, 
-  UserIcon, 
+import {
+  CalendarIcon,
+  UserIcon,
   ArrowLeftIcon,
   Share2Icon,
 } from "lucide-react";
@@ -25,9 +25,9 @@ interface NewsArticle extends AppwriteDocument {
   headlines: string;
   lead: string;
   img: string;
-  'paragraph-1': string;
-  'paragraph-2': string;
-  'paragraph-3': string;
+  "paragraph-1": string;
+  "paragraph-2": string;
+  "paragraph-3": string;
   pullquote?: string; // Optional pullquote field
   author: string;
   published: boolean;
@@ -38,55 +38,51 @@ interface NewsArticle extends AppwriteDocument {
 export default function NewsArticlePage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  
+
   const [article, setArticle] = useState<NewsArticle | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [shareMessage, setShareMessage] = useState<string>('');
+  const [shareMessage, setShareMessage] = useState<string>("");
 
   // Format date function
   const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('no-NO', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+    return date.toLocaleDateString("no-NO", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
   // Fetch single article from Appwrite
   const fetchArticle = async () => {
     if (!id) {
-      setError('Ingen artikkel ID funnet');
+      setError("Ingen artikkel ID funnet");
       setLoading(false);
       return;
     }
 
     setLoading(true);
     setError(null);
-    
+
     try {
-      const response = await getDocument(
-        DATABASE_ID,
-        COLLECTIONS.NEWS,
-        id
-      );
-      
+      const response = await getDocument(DATABASE_ID, COLLECTIONS.NEWS, id);
+
       const articleData = response as unknown as NewsArticle;
-      
+
       // Sjekk om artikkel er publisert (optional: fjern hvis du vil vise upubliserte også)
       if (!articleData.published) {
-        setError('Denne artikkelen er ikke publisert ennå.');
+        setError("Denne artikkelen er ikke publisert ennå.");
         setLoading(false);
         return;
       }
-      
+
       setArticle(articleData);
     } catch (err) {
-      console.error('Error fetching article:', err);
-      setError('Kunne ikke laste artikkelen. Den finnes kanskje ikke.');
+      console.error("Error fetching article:", err);
+      setError("Kunne ikke laste artikkelen. Den finnes kanskje ikke.");
     } finally {
       setLoading(false);
     }
@@ -95,12 +91,14 @@ export default function NewsArticlePage() {
   // Get non-empty paragraphs
   const getArticleParagraphs = (article: NewsArticle): string[] => {
     const paragraphs = [
-      article['paragraph-1'],
-      article['paragraph-2'],
-      article['paragraph-3']
+      article["paragraph-1"],
+      article["paragraph-2"],
+      article["paragraph-3"],
     ];
-    
-    return paragraphs.filter(paragraph => paragraph && paragraph.trim() !== '');
+
+    return paragraphs.filter(
+      (paragraph) => paragraph && paragraph.trim() !== "",
+    );
   };
 
   // Render content with pullquote positioned correctly
@@ -110,25 +108,32 @@ export default function NewsArticlePage() {
     }
 
     const content = [];
-    
+
     // Første paragraph (alltid vis)
     content.push(
       <p key="paragraph-1" className="text-lg leading-relaxed">
         {paragraphs[0]}
-      </p>
+      </p>,
     );
 
     // Pullquote vises ALLTID etter første paragraph hvis den eksisterer
     // (uavhengig av hvor mange paragraphs det er)
-    if (article.pullquote && article.pullquote.trim() !== '') {
+    if (article.pullquote && article.pullquote.trim() !== "") {
       content.push(
-        <blockquote key="pullquote" className="my-8 p-6 bg-gradient-to-r from-brand-50/50 to-magenta-50/30 dark:from-brand-900/10 dark:to-magenta-900/10 rounded-xl border-l-4 border-brand-500 relative">
-          <div className="absolute top-4 left-4 text-brand-300 dark:text-brand-600 text-4xl font-serif">"</div>
+        <blockquote
+          key="pullquote"
+          className="my-8 p-6 bg-gradient-to-r from-brand-50/50 to-magenta-50/30 dark:from-brand-900/10 dark:to-magenta-900/10 rounded-xl border-l-4 border-brand-500 relative"
+        >
+          <div className="absolute top-4 left-4 text-brand-300 dark:text-brand-600 text-4xl font-serif">
+            "
+          </div>
           <p className="text-xl font-medium text-brand-700 dark:text-brand-300 font-montserrat leading-relaxed italic text-center px-8">
             {article.pullquote}
           </p>
-          <div className="absolute bottom-4 right-4 text-brand-300 dark:text-brand-600 text-4xl font-serif rotate-180">"</div>
-        </blockquote>
+          <div className="absolute bottom-4 right-4 text-brand-300 dark:text-brand-600 text-4xl font-serif rotate-180">
+            "
+          </div>
+        </blockquote>,
       );
     }
 
@@ -137,7 +142,7 @@ export default function NewsArticlePage() {
       content.push(
         <p key={`paragraph-${index + 2}`} className="text-lg leading-relaxed">
           {paragraph}
-        </p>
+        </p>,
       );
     });
 
@@ -150,41 +155,41 @@ export default function NewsArticlePage() {
 
     const shareData = {
       title: article.headlines,
-      text: article.lead || 'Sjekk ut denne artikkelen fra Urban Studios',
-      url: window.location.href
+      text: article.lead || "Sjekk ut denne artikkelen fra Urban Studios",
+      url: window.location.href,
     };
 
     try {
       // Sjekk om Web Share API er tilgjengelig (mobil/moderne browsere)
       if (navigator.share) {
         await navigator.share(shareData);
-        setShareMessage('Takk for at du deler!');
+        setShareMessage("Takk for at du deler!");
       } else {
         // Fallback for desktop - kopier URL til clipboard
         await navigator.clipboard.writeText(window.location.href);
-        setShareMessage('Link kopiert til utklippstavlen!');
+        setShareMessage("Link kopiert til utklippstavlen!");
       }
     } catch (error) {
-      if (error instanceof Error && error.name === 'AbortError') {
+      if (error instanceof Error && error.name === "AbortError") {
         // Brukeren avbrøt delinga - ikke vis feilmelding
         return;
       }
-      
-      console.error('Kunne ikke dele:', error);
-      
+
+      console.error("Kunne ikke dele:", error);
+
       // Fallback: Kopier URL som backup
       try {
         await navigator.clipboard.writeText(window.location.href);
-        setShareMessage('Link kopiert til utklippstavlen!');
+        setShareMessage("Link kopiert til utklippstavlen!");
       } catch (clipboardError) {
-        console.error('Kunne ikke kopiere link:', clipboardError);
-        setShareMessage('Kunne ikke dele artikkelen');
+        console.error("Kunne ikke kopiere link:", clipboardError);
+        setShareMessage("Kunne ikke dele artikkelen");
       }
     }
 
     // Fjern melding etter 3 sekunder
     if (shareMessage) {
-      setTimeout(() => setShareMessage(''), 3000);
+      setTimeout(() => setShareMessage(""), 3000);
     }
   };
 
@@ -195,7 +200,7 @@ export default function NewsArticlePage() {
   // Fjern share message etter 3 sekunder
   useEffect(() => {
     if (shareMessage) {
-      const timer = setTimeout(() => setShareMessage(''), 3000);
+      const timer = setTimeout(() => setShareMessage(""), 3000);
       return () => clearTimeout(timer);
     }
   }, [shareMessage]);
@@ -205,7 +210,9 @@ export default function NewsArticlePage() {
       <div className="min-h-screen bg-white dark:bg-surface-dark flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-500 mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-300 font-montserrat">Laster artikkel...</p>
+          <p className="text-gray-600 dark:text-gray-300 font-montserrat">
+            Laster artikkel...
+          </p>
         </div>
       </div>
     );
@@ -220,10 +227,10 @@ export default function NewsArticlePage() {
               Artikkel ikke funnet
             </h1>
             <p className="text-red-600 dark:text-red-300 font-montserrat mb-4">
-              {error || 'Vi kunne ikke finne artikkelen du leter etter.'}
+              {error || "Vi kunne ikke finne artikkelen du leter etter."}
             </p>
-            <Button 
-              onClick={() => navigate('/nyheter')}
+            <Button
+              onClick={() => navigate("/nyheter")}
               className="font-semibold bg-red-600 hover:bg-red-700 text-white"
             >
               <ArrowLeftIcon className="mr-2 h-4 w-4" />
@@ -240,7 +247,7 @@ export default function NewsArticlePage() {
   return (
     <div className="min-h-screen bg-white dark:bg-surface-dark">
       <ScrollToTop />
-      
+
       {/* Share message notification */}
       {shareMessage && (
         <motion.div
@@ -252,7 +259,7 @@ export default function NewsArticlePage() {
           {shareMessage}
         </motion.div>
       )}
-      
+
       {/* Hero Section with Image */}
       <section className="relative h-[60vh] overflow-hidden">
         <img
@@ -261,11 +268,11 @@ export default function NewsArticlePage() {
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent" />
-        
+
         {/* Back button */}
         <div className="absolute top-8 left-8 z-10">
           <Button
-            onClick={() => navigate('/nyheter')}
+            onClick={() => navigate("/nyheter")}
             size="sm"
             className="font-montserrat font-semibold rounded-md overflow-hidden
                       bg-white/20 backdrop-blur-sm text-white border border-white/30 
@@ -284,11 +291,11 @@ export default function NewsArticlePage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
               className="max-w-4xl"
-            >              
+            >
               <h1 className="font-bebas text-bebas-2xl md:text-bebas-3xl lg:text-bebas-4xl text-white mb-4 leading-tight">
                 {article.headlines}
               </h1>
-              
+
               <p className="text-xl text-gray-200 font-montserrat leading-relaxed max-w-2xl">
                 {article.lead}
               </p>
@@ -301,7 +308,6 @@ export default function NewsArticlePage() {
       <section className="py-16">
         <div className="container mx-auto px-4 md:px-6">
           <div className="max-w-4xl mx-auto">
-            
             {/* Article Meta */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -313,12 +319,11 @@ export default function NewsArticlePage() {
                 <UserIcon className="h-5 w-5" />
                 <span>Av {article.author}</span>
               </div>
-              
+
               <div className="flex items-center gap-2">
                 <CalendarIcon className="h-5 w-5" />
                 <span>{formatDate(article.created_at)}</span>
               </div>
-              
 
               {/* Action buttons */}
               <div className="ml-auto flex gap-2">
@@ -361,10 +366,10 @@ export default function NewsArticlePage() {
                     Sist oppdatert: {formatDate(article.updated_at)}
                   </p>
                 </div>
-                
+
                 <div className="flex gap-3">
                   <Button
-                    onClick={() => navigate('/nyheter')}
+                    onClick={() => navigate("/nyheter")}
                     variant="outline"
                     className="font-semibold rounded-full 
                             bg-white/80 border-brand-300 text-brand-700 

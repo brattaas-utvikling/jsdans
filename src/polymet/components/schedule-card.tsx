@@ -47,7 +47,7 @@ export default function ScheduleCard({
         colorScheme.bg,
         colorScheme.border,
         gridRowSpan,
-        "hover:shadow-md hover:scale-[1.02] cursor-pointer"
+        "hover:shadow-md hover:scale-[1.02] cursor-pointer",
       )}
       onClick={onClick}
     >
@@ -86,7 +86,7 @@ export default function ScheduleCard({
                 "text-xs",
                 isAlmostFull
                   ? "text-coral-600 dark:text-coral-400"
-                  : "text-gray-500 dark:text-gray-400"
+                  : "text-gray-500 dark:text-gray-400",
               )}
             >
               {isAlmostFull

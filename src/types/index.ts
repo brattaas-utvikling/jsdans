@@ -1,7 +1,17 @@
-// src/types/index.ts - Fixed with consistent first/last name support
+// src/types/index.ts - Updated with enrollment compatibility
 
-export interface DanceClass {
+// Base Appwrite document interface
+export interface AppwriteDocument {
   $id: string;
+  $createdAt: string;
+  $updatedAt: string;
+  $collectionId: string;
+  $databaseId: string;
+  $permissions: string[];
+}
+
+// DanceClass interface - Updated to be compatible with enrollment
+export interface DanceClass extends AppwriteDocument {
   name: string;
   type: string;
   level: string;
@@ -13,8 +23,12 @@ export interface DanceClass {
   icon: string;
   image: string;
   availableFromYear: number;
-  $createdAt?: string;
-  $updatedAt?: string;
+  studio?: string; // Made optional for backward compatibility
+  // Support both old and new schedule formats
+  schedule?: Array<{
+    day: string;
+    time: string;
+  }>;
   schedules?: Schedule[]; // Optional schedules for this class
 }
 
@@ -36,7 +50,7 @@ export interface Schedule {
 export interface PricingPackage {
   $id: string;
   name: string;
-  type: 'semester' | 'addon' | 'clipcard';
+  type: "semester" | "addon" | "clipcard";
   priceInOre: number;
   classCount?: number;
   discountAmount: number;
@@ -53,7 +67,7 @@ export interface PricingPackage {
 export interface Order {
   $id: string;
   userId?: string;
-  status: 'cart' | 'reserved' | 'paid' | 'cancelled' | 'expired';
+  status: "cart" | "reserved" | "paid" | "cancelled" | "expired";
   totalAmountInOre: number;
   originalAmountInOre: number;
   discountAmountInOre: number;
@@ -73,7 +87,7 @@ export interface Order {
 export interface OrderItem {
   $id: string;
   orderId: string;
-  type: 'package' | 'addon' | 'clipcard';
+  type: "package" | "addon" | "clipcard";
   packageId: string;
   studentName: string;
   studentAge?: number;
@@ -97,7 +111,7 @@ export interface FamilyGroup {
   $updatedAt?: string;
 }
 
-// FIXED: Consistent CartItem with proper name handling
+// Cart interfaces
 export interface CartItem {
   id: string;
   studentFirstName: string;
@@ -106,14 +120,13 @@ export interface CartItem {
   selectedClasses: DanceClass[];
   selectedSchedules: string[];
   isSecondDancerInFamily: boolean;
-  familyDiscountOverride?: boolean; // Manual override flag
+  familyDiscountOverride?: boolean;
   addedAt: string;
 }
 
-// Helper computed properties for CartItem
 export interface CartItemWithHelpers extends CartItem {
-  fullName: string;  // Computed: firstName + lastName
-  displayName: string; // For UI display
+  fullName: string;
+  displayName: string;
 }
 
 export interface CartItemWithPricing extends CartItemWithHelpers {
@@ -150,7 +163,7 @@ export interface CustomerData {
   phone: string;
 }
 
-// NEW: StudentFormData for form input
+// Student form data
 export interface StudentFormData {
   studentFirstName: string;
   studentLastName: string;
@@ -161,7 +174,7 @@ export interface StudentFormData {
   familyDiscountOverride?: boolean;
 }
 
-// NEW: Family detection result
+// Family detection
 export interface FamilyDetectionResult {
   isLikelyFamily: boolean;
   confidence: number;
@@ -170,7 +183,6 @@ export interface FamilyDetectionResult {
   existingFamilyMembers: CartItemWithHelpers[];
 }
 
-// NEW: StudentData interface for useCart (bridges form to cart)
 export interface StudentData {
   studentFirstName: string;
   studentLastName: string;
@@ -181,6 +193,7 @@ export interface StudentData {
   familyDiscountOverride?: boolean;
 }
 
+// Vipps payment interfaces
 export interface VippsPaymentData {
   orderId: string;
   amount: number;
@@ -196,20 +209,11 @@ export interface VippsResponse {
 export interface VippsStatusResponse {
   orderId: string;
   transactionInfo: {
-    status: 'RESERVED' | 'PENDING' | 'CANCELLED' | 'FAILED';
+    status: "RESERVED" | "PENDING" | "CANCELLED" | "FAILED";
     amount: number;
     transactionId: string;
   };
   success: boolean;
-}
-
-export interface AppwriteDocument {
-  $id: string;
-  $createdAt: string;
-  $updatedAt: string;
-  $permissions: string[];
-  $collectionId: string;
-  $databaseId: string;
 }
 
 export interface AppwriteListResponse<T> {
@@ -218,8 +222,24 @@ export interface AppwriteListResponse<T> {
 }
 
 // Utility types
-export type PaymentStatus = 'checking' | 'success' | 'cancelled' | 'timeout' | 'error';
-export type NavigationPage = '/' | '/courses' | '/checkout' | '/payment-result';
-export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
-export type ButtonSize = 'sm' | 'md' | 'lg';
-export type BadgeVariant = 'default' | 'primary' | 'success' | 'warning' | 'danger' | 'info';
+export type PaymentStatus =
+  | "checking"
+  | "success"
+  | "cancelled"
+  | "timeout"
+  | "error";
+export type NavigationPage = "/" | "/courses" | "/checkout" | "/payment-result";
+export type ButtonVariant =
+  | "primary"
+  | "secondary"
+  | "outline"
+  | "ghost"
+  | "danger";
+export type ButtonSize = "sm" | "md" | "lg";
+export type BadgeVariant =
+  | "default"
+  | "primary"
+  | "success"
+  | "warning"
+  | "danger"
+  | "info";

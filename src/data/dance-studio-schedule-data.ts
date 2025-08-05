@@ -18,7 +18,9 @@ export const TIME_SLOTS = [
   "21:00",
 ];
 
-export const LEVEL_COLORS: { [key: string]: { bg: string; border: string; text: string } } = {
+export const LEVEL_COLORS: {
+  [key: string]: { bg: string; border: string; text: string };
+} = {
   Nybegynner: {
     bg: "bg-blue-100 dark:bg-blue-900/20",
     border: "border-blue-200 dark:border-blue-800",
@@ -41,7 +43,9 @@ export const LEVEL_COLORS: { [key: string]: { bg: string; border: string; text: 
   },
 };
 
-export const AGE_GROUP_COLORS: { [key: string]: { bg: string; border: string; text: string } } = {
+export const AGE_GROUP_COLORS: {
+  [key: string]: { bg: string; border: string; text: string };
+} = {
   Barn: {
     bg: "bg-yellow-100 dark:bg-yellow-900/20",
     border: "border-yellow-200 dark:border-yellow-800",
@@ -63,9 +67,6 @@ export const AGE_GROUP_COLORS: { [key: string]: { bg: string; border: string; te
     text: "text-primary-600 dark:text-primary-400",
   },
 };
-
-
-
 
 export const WEEKLY_SCHEDULE = [
   // ============ MANDAG ============
@@ -570,7 +571,7 @@ export const WEEKLY_SCHEDULE = [
     className: "Jazz",
     day: "Onsdag",
     startTime: "17:00",
-    endTime: "18:00",  
+    endTime: "18:00",
     level: "Erfaren",
     ageGroup: "Ungdom",
     instructor: "Emma Wilson",
@@ -631,7 +632,7 @@ export const WEEKLY_SCHEDULE = [
     currentEnrollment: 20,
   },
 
-  // Sal B  
+  // Sal B
   {
     id: 43,
     className: "Hip Hop",
@@ -1515,19 +1516,21 @@ export const WEEKLY_SCHEDULE = [
   },
 ];
 
-
 // Helper function to get classes for a specific day and time slot
 export function getClassesForTimeSlot(day: string, timeSlot: string) {
   return WEEKLY_SCHEDULE.filter(
     (classItem) =>
       classItem.day === day &&
       ((timeSlot >= classItem.startTime && timeSlot < classItem.endTime) ||
-        timeSlot === classItem.startTime)
+        timeSlot === classItem.startTime),
   );
 }
 
 // Helper function to check if a class spans multiple time slots
-export function getClassDuration(classItem: { startTime: string; endTime: string }) {
+export function getClassDuration(classItem: {
+  startTime: string;
+  endTime: string;
+}) {
   const startIndex = TIME_SLOTS.indexOf(classItem.startTime);
   const endIndex = TIME_SLOTS.indexOf(classItem.endTime);
 
@@ -1550,8 +1553,10 @@ export function getClassColorScheme(classItem: {
   level: string;
   ageGroup: string;
 }): { bg: string; border: string; text: string } {
-  const levelColor = LEVEL_COLORS[classItem.level] || LEVEL_COLORS["Alle nivåer"];
-  const ageGroupColor = AGE_GROUP_COLORS[classItem.ageGroup] || AGE_GROUP_COLORS["Voksne"];
+  const levelColor =
+    LEVEL_COLORS[classItem.level] || LEVEL_COLORS["Alle nivåer"];
+  const ageGroupColor =
+    AGE_GROUP_COLORS[classItem.ageGroup] || AGE_GROUP_COLORS["Voksne"];
 
   return {
     bg: `${levelColor.bg} ${ageGroupColor.bg}`,

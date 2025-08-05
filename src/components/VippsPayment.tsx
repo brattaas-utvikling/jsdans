@@ -24,7 +24,7 @@
 //             // Sjekk om execution var vellykket
 //             if (response.responseStatusCode === 200) {
 //                 const result = JSON.parse(response.responseBody);
-                
+
 //                 if (result.url) {
 //                     window.location.href = result.url;
 //                 } else {
@@ -55,7 +55,7 @@
 //                 placeholder="Beløp (NOK)"
 //                 min="1"
 //             />
-//             <button 
+//             <button
 //                 onClick={initiateVippsPayment}
 //                 disabled={loading || !amount}
 //                 className="vipps-button"

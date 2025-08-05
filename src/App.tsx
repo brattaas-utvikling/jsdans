@@ -10,15 +10,16 @@ import ContactSection from "./components/ContactSection";
 import NewsPage from "./pages/NewsPage";
 import NewsArticlePage from "./pages/NewsArticlePage";
 import ClassesSection from "./pages/CoursesPage";
-import RegistrationPage from "./pages/RegistrationPage";
+// import RegistrationPage from "./pages/RegistrationPage";
 import TermsConditions from "./pages/TermsConditions";
 import NotFoundPage from "./pages/NotFoundPage";
 import SchedualPage from "./pages/SchedualPage";
-
-
+import { EnrollmentProvider } from "./contexts/EnrollmentContext";
+import EnrollmentWizard from "./components/enrollment/EnrollmentWizard";
 
 export default function App() {
   return (
+    <EnrollmentProvider> 
     <Router>
       <Routes>
         <Route
@@ -65,7 +66,7 @@ export default function App() {
           path="/registration"
           element={
             <Layout>
-              <RegistrationPage />
+              <EnrollmentWizard />
             </Layout>
           }
         />
@@ -102,12 +103,12 @@ export default function App() {
           }
         />
         <Route
-        path="/betingelser"
-        element={
-          <Layout>
-            <TermsConditions />
-          </Layout>
-        }
+          path="/betingelser"
+          element={
+            <Layout>
+              <TermsConditions />
+            </Layout>
+          }
         />
         <Route
           path="*"
@@ -119,5 +120,6 @@ export default function App() {
         />
       </Routes>
     </Router>
+    </EnrollmentProvider>
   );
 }

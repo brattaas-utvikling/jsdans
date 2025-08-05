@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { 
+import {
   Home,
   ArrowLeft,
   Search,
@@ -23,8 +23,8 @@ export default function NotFoundPage() {
         duration: 8,
         repeat: Infinity,
         ease: "easeInOut",
-      }
-    }
+      },
+    },
   };
 
   const backgroundVariants = {
@@ -34,45 +34,50 @@ export default function NotFoundPage() {
       transition: {
         duration: 8,
         repeat: Infinity,
-        ease: "easeInOut"
-      }
-    }
+        ease: "easeInOut",
+      },
+    },
   };
 
   return (
-    <section 
+    <section
       className="min-h-screen bg-gradient-to-br from-brand-50 to-coral-50 
                 dark:from-brand-900/20 dark:to-coral-900/20  
                 pt-24 pb-16 relative overflow-hidden flex items-center"
       aria-label="404 - Side ikke funnet"
     >
       <ScrollToTop />
-      
+
       {/* Animated background elements - Brand themed */}
-      <motion.div 
+      <motion.div
         variants={backgroundVariants}
         animate="animate"
-        style={{ willChange: 'transform' }}
+        style={{ willChange: "transform" }}
         className="absolute top-0 right-0 w-96 h-96 bg-coral-400/10 rounded-full blur-3xl"
       />
-      <motion.div 
-        animate={{ 
+      <motion.div
+        animate={{
           scale: [1.1, 1, 1.1],
-          opacity: [0.15, 0.25, 0.15]
+          opacity: [0.15, 0.25, 0.15],
         }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        style={{ willChange: 'transform' }}
+        style={{ willChange: "transform" }}
         className="absolute bottom-0 left-0 w-80 h-80 bg-brand-400/10 rounded-full blur-3xl"
       />
 
       {/* Additional warm glow */}
-      <motion.div 
-        animate={{ 
+      <motion.div
+        animate={{
           scale: [1, 1.2, 1],
-          opacity: [0.05, 0.15, 0.05]
+          opacity: [0.05, 0.15, 0.05],
         }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-        style={{ willChange: 'transform' }}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 2,
+        }}
+        style={{ willChange: "transform" }}
         className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-amber-300/10 rounded-full blur-3xl"
       />
 
@@ -80,72 +85,97 @@ export default function NotFoundPage() {
       <motion.div
         variants={floatingVariants}
         animate="animate"
-        style={{ willChange: 'transform' }}
+        style={{ willChange: "transform" }}
         className="absolute top-1/4 left-1/4 opacity-20 hidden md:block"
       >
         <Music className="h-8 w-8 text-brand-500" />
       </motion.div>
 
       <motion.div
-        animate={{ 
+        animate={{
           y: [0, 25, 0],
           x: [0, -20, 0],
-          rotate: [0, -180, -360]
+          rotate: [0, -180, -360],
         }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-        style={{ willChange: 'transform' }}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 1,
+        }}
+        style={{ willChange: "transform" }}
         className="absolute top-1/3 right-1/4 opacity-25 hidden lg:block"
       >
         <SparklesIcon className="h-6 w-6 text-coral-500" />
       </motion.div>
 
       <motion.div
-        animate={{ 
+        animate={{
           y: [0, -40, 0],
           x: [0, 25, 0],
-          rotate: [0, 360, 720]
+          rotate: [0, 360, 720],
         }}
-        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-        style={{ willChange: 'transform' }}
+        transition={{
+          duration: 15,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 0.5,
+        }}
+        style={{ willChange: "transform" }}
         className="absolute top-1/2 left-1/5 opacity-25 hidden md:block"
       >
         <StarIcon className="h-7 w-7 text-brand-600" />
       </motion.div>
 
       <motion.div
-        animate={{ 
+        animate={{
           y: [0, 35, 0],
           x: [0, -15, 0],
-          scale: [1, 1.2, 1]
+          scale: [1, 1.2, 1],
         }}
-        transition={{ duration: 11, repeat: Infinity, ease: "easeInOut", delay: 3 }}
-        style={{ willChange: 'transform' }}
+        transition={{
+          duration: 11,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 3,
+        }}
+        style={{ willChange: "transform" }}
         className="absolute top-2/3 right-1/3 opacity-30 hidden lg:block"
       >
         <HeartIcon className="h-6 w-6 text-coral-500" />
       </motion.div>
 
       <motion.div
-        animate={{ 
+        animate={{
           y: [0, -25, 0],
           x: [0, 20, 0],
-          rotate: [0, 90, 180]
+          rotate: [0, 90, 180],
         }}
-        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut", delay: 4 }}
-        style={{ willChange: 'transform' }}
+        transition={{
+          duration: 9,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 4,
+        }}
+        style={{ willChange: "transform" }}
         className="absolute top-1/5 right-1/5 opacity-20 hidden lg:block"
       >
         <Music className="h-5 w-5 text-amber-500" />
       </motion.div>
 
       <motion.div
-        animate={{ 
+        animate={{
           y: [0, 40, 0],
           x: [0, -30, 0],
-          scale: [1, 1.3, 1]
+          scale: [1, 1.3, 1],
         }}
-        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
-        style={{ willChange: 'transform' }}
+        transition={{
+          duration: 12,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 0.8,
+        }}
+        style={{ willChange: "transform" }}
         className="absolute bottom-1/4 right-1/6 opacity-25 hidden md:block"
       >
         <StarIcon className="h-7 w-7 text-brand-500" />
@@ -166,9 +196,11 @@ export default function NotFoundPage() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="mb-8"
           >
-            <h1 className="font-bebas text-[120px] md:text-[180px] lg:text-[220px] leading-none
+            <h1
+              className="font-bebas text-[120px] md:text-[180px] lg:text-[220px] leading-none
                           text-transparent bg-clip-text bg-brand-gradient py-4
-                          select-none pointer-events-none">
+                          select-none pointer-events-none"
+            >
               404
             </h1>
           </motion.div>
@@ -183,16 +215,16 @@ export default function NotFoundPage() {
               Oops! Siden ble ikke funnet
             </h2>
           </motion.div>
-          
-          <motion.p 
+
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
             className="text-lg md:text-xl text-gray-700 dark:text-gray-300 font-montserrat 
                       leading-relaxed max-w-2xl mx-auto mb-8"
           >
-            Det ser ut som dansegulvet du leter etter ikke eksisterer. 
-            Ingen fare – la oss hjelpe deg tilbake til rytmen!
+            Det ser ut som dansegulvet du leter etter ikke eksisterer. Ingen
+            fare – la oss hjelpe deg tilbake til rytmen!
           </motion.p>
 
           {/* Helpful suggestions */}
@@ -207,11 +239,13 @@ export default function NotFoundPage() {
             <h3 className="font-bebas text-bebas-base mb-4 text-gray-900 dark:text-white">
               Prøv dette i stedet:
             </h3>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 bg-brand-100 dark:bg-brand-900/30 rounded-full 
-                              flex items-center justify-center flex-shrink-0 mt-1">
+                <div
+                  className="w-8 h-8 bg-brand-100 dark:bg-brand-900/30 rounded-full 
+                              flex items-center justify-center flex-shrink-0 mt-1"
+                >
                   <Home className="h-4 w-4 text-brand-600 dark:text-brand-400" />
                 </div>
                 <div>
@@ -225,8 +259,10 @@ export default function NotFoundPage() {
               </div>
 
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 bg-brand-100 dark:bg-brand-900/30 rounded-full 
-                              flex items-center justify-center flex-shrink-0 mt-1">
+                <div
+                  className="w-8 h-8 bg-brand-100 dark:bg-brand-900/30 rounded-full 
+                              flex items-center justify-center flex-shrink-0 mt-1"
+                >
                   <Music className="h-4 w-4 text-brand-600 dark:text-brand-400" />
                 </div>
                 <div>
@@ -240,8 +276,10 @@ export default function NotFoundPage() {
               </div>
 
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 bg-brand-100 dark:bg-brand-900/30 rounded-full 
-                              flex items-center justify-center flex-shrink-0 mt-1">
+                <div
+                  className="w-8 h-8 bg-brand-100 dark:bg-brand-900/30 rounded-full 
+                              flex items-center justify-center flex-shrink-0 mt-1"
+                >
                   <Search className="h-4 w-4 text-brand-600 dark:text-brand-400" />
                 </div>
                 <div>
@@ -265,7 +303,7 @@ export default function NotFoundPage() {
           >
             {/* Primary action - Home */}
             <Link to="/" className="w-full sm:w-auto">
-              <Button 
+              <Button
                 className="w-full bg-brand-600 hover:bg-brand-700
                           dark:bg-white dark:hover:bg-brand-600/80
                           text-white dark:text-brand-600
@@ -281,7 +319,7 @@ export default function NotFoundPage() {
 
             {/* Secondary actions */}
             <Link to="/kurs" className="w-full sm:w-auto">
-              <Button 
+              <Button
                 className="w-full border-brand-300 text-brand-600 hover:bg-brand-50 hover:text-brand-600
                           dark:border-brand-700 dark:text-brand-400 dark:hover:bg-brand-900/30 dark:hover:text-brand-400
                           font-montserrat-medium rounded-full bg-transparent border-2 px-6 py-3
@@ -292,7 +330,7 @@ export default function NotFoundPage() {
             </Link>
 
             <Link to="/kontakt" className="w-full sm:w-auto">
-              <Button 
+              <Button
                 className="w-full border-brand-300 text-brand-600 hover:bg-brand-50 hover:text-brand-600
                           dark:border-brand-700 dark:text-brand-400 dark:hover:bg-brand-900/30 dark:hover:text-brand-400
                           font-montserrat-medium rounded-full bg-transparent border-2 px-6 py-3

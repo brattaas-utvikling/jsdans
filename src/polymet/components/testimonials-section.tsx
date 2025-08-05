@@ -10,13 +10,13 @@ export default function TestimonialsSection() {
 
   const nextSlide = useCallback(() => {
     setActiveIndex((current) =>
-      current === TESTIMONIALS.length - 1 ? 0 : current + 1
+      current === TESTIMONIALS.length - 1 ? 0 : current + 1,
     );
   }, []);
 
   const prevSlide = useCallback(() => {
     setActiveIndex((current) =>
-      current === 0 ? TESTIMONIALS.length - 1 : current - 1
+      current === 0 ? TESTIMONIALS.length - 1 : current - 1,
     );
   }, []);
 
