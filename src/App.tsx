@@ -14,6 +14,7 @@ import RegistrationPage from "./pages/RegistrationPage";
 import TermsConditions from "./pages/TermsConditions";
 import NotFoundPage from "./pages/NotFoundPage";
 import SchedualPage from "./pages/SchedualPage";
+import CoursesPageContainer from "./pages/CoursesPageContainer";
 
 
 
@@ -108,6 +109,14 @@ export default function App() {
             <TermsConditions />
           </Layout>
         }
+        />
+        <Route
+          path="/courses"
+          element={
+            <Layout>
+              <CoursesPageContainer />
+            </Layout>
+          }
         />
         <Route
           path="*"

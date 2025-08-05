@@ -1,0 +1,17 @@
+{
+  "name": "vipps-payment-function",
+  "version": "1.0.0",
+  "description": "Vipps payment integration for Urban Studios",
+  "main": "src/main.js",
+  "type": "module",
+  "scripts": {
+    "build": "echo 'No build step required'",
+    "start": "node src/main.js"
+  },
+  "dependencies": {
+    "node-appwrite": "^13.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
