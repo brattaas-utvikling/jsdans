@@ -3,43 +3,15 @@ import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEnrollment } from '../../contexts/EnrollmentContext';
 import { listDocuments, DATABASE_ID, COLLECTIONS, Query } from '../../lib/appwrite';
+import { usePricing } from '../../hooks/usePricing';
 import ScrollToTop from '../../helpers/ScrollToTop';
 import StepIndicator from './StepIndicator';
 import ContactInfoStep from './steps/ContactInfoStep';
-// import CourseSelectionStep from './steps/CourseSelectionStep';
-// import SummaryStep from './steps/SummaryStep';
-// import ConfirmationStep from './steps/ConfirmationStep';
-import type { DanceClass, PricingPackage } from '../../types';
+import CourseSelectionStep from './steps/CourseSelectionStep';
+import SummaryStep from './steps/SummaryStep';
+import type { DanceClass } from '../../types';
 
-// Temporary placeholder components
-const CourseSelectionStep = ({ packages }: { packages: PricingPackage[] }) => (
-  <div className="p-8 text-center">
-    <h2 className="font-bebas text-bebas-xl text-gray-900 dark:text-white mb-4">
-      Kursvalg kommer snart
-    </h2>
-    <p className="text-gray-600 dark:text-gray-300 font-montserrat mb-2">
-      Dette steget er under utvikling...
-    </p>
-    <p className="text-sm text-gray-500 dark:text-gray-400 font-montserrat">
-      {packages.length} prispakker lastet
-    </p>
-  </div>
-);
-
-const SummaryStep = ({ packages }: { packages: PricingPackage[] }) => (
-  <div className="p-8 text-center">
-    <h2 className="font-bebas text-bebas-xl text-gray-900 dark:text-white mb-4">
-      Sammendrag kommer snart
-    </h2>
-    <p className="text-gray-600 dark:text-gray-300 font-montserrat mb-2">
-      Dette steget er under utvikling...
-    </p>
-    <p className="text-sm text-gray-500 dark:text-gray-400 font-montserrat">
-      {packages.length} prispakker tilgjengelig for beregning
-    </p>
-  </div>
-);
-
+// Temporary placeholder components for remaining steps
 const ConfirmationStep = () => (
   <div className="p-8 text-center">
     <h2 className="font-bebas text-bebas-xl text-gray-900 dark:text-white mb-4">
@@ -53,13 +25,13 @@ const ConfirmationStep = () => (
 
 export default function EnrollmentWizard() {
   const { state, dispatch } = useEnrollment();
-  const [packages, setPackages] = useState<PricingPackage[]>([]);
+  const { pricingPackages, loading: loadingPricing } = usePricing();
   const [loadingCourses, setLoadingCourses] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch courses and packages on component mount
+  // Fetch courses on component mount
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchCourses = async () => {
       setLoadingCourses(true);
       setError(null);
 
@@ -74,42 +46,47 @@ export default function EnrollmentWizard() {
           ]
         );
 
-        // Fetch pricing packages
-        const packagesResponse = await listDocuments(
-          DATABASE_ID,
-          COLLECTIONS.PRICING_PACKAGES,
-          [
-            Query.orderAsc('name'),
-            Query.limit(20)
-          ]
-        );
-
         const courseData = coursesResponse.documents as unknown as DanceClass[];
-        const packageData = packagesResponse.documents as unknown as PricingPackage[];
-
         dispatch({ type: 'SET_AVAILABLE_COURSES', payload: courseData });
-        setPackages(packageData);
+
+        console.log('✅ Lastet kurs:', courseData.length);
 
       } catch (err) {
-        console.error('Error fetching data:', err);
+        console.error('Error fetching courses:', err);
         setError('Kunne ikke laste kursdata. Prøv å oppdatere siden.');
       } finally {
         setLoadingCourses(false);
       }
     };
 
-    fetchData();
+    fetchCourses();
   }, [dispatch]);
 
+  // Debug logging for pricing packages
+  useEffect(() => {
+    console.log('📊 Pricing packages oppdatert:', {
+      count: pricingPackages.length,
+      packages: pricingPackages.map(p => ({ name: p.name, price: p.price }))
+    });
+  }, [pricingPackages]);
+
+  // Combined loading state
+  const isLoading = loadingCourses || loadingPricing;
+
   // Loading state
-  if (loadingCourses) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-brand-50/80 to-surface-muted 
                      dark:from-brand-900/10 dark:to-surface-dark-muted 
                      pt-24 pb-16 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-500 mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-300 font-montserrat">Laster påmeldingsskjema...</p>
+          <p className="text-gray-600 dark:text-gray-300 font-montserrat">
+            Laster påmeldingsskjema...
+            {loadingCourses && !loadingPricing && ' (laster kurs)'}
+            {!loadingCourses && loadingPricing && ' (laster priser)'}
+            {loadingCourses && loadingPricing && ' (laster data)'}
+          </p>
         </div>
       </div>
     );
@@ -141,6 +118,11 @@ export default function EnrollmentWizard() {
     );
   }
 
+  // Warning if no pricing packages are available
+  if (pricingPackages.length === 0) {
+    console.warn('⚠️ Ingen pricing packages lastet - prisberegning vil ikke fungere');
+  }
+
   // Animation variants for step transitions
   const stepVariants = {
     enter: {
@@ -163,9 +145,9 @@ export default function EnrollmentWizard() {
       case 'contact':
         return <ContactInfoStep key="contact" />;
       case 'courses':
-        return <CourseSelectionStep key="courses" packages={packages} />;
+        return <CourseSelectionStep key="courses" packages={pricingPackages} />;
       case 'summary':
-        return <SummaryStep key="summary" packages={packages} />;
+        return <SummaryStep key="summary" packages={pricingPackages} />;
       case 'confirmation':
         return <ConfirmationStep key="confirmation" />;
       default:

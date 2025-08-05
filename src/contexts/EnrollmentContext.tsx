@@ -8,8 +8,9 @@ import type {
   Guardian,
   EnrollmentErrors
 } from '../types/enrollment';
-import type { DanceClass, PricingPackage } from '../types';
-import { calculateSmartPackagePrice } from '../utils/smartPricing';
+import type { DanceClass } from '../types';
+import type { PricingPackage } from '@/types';
+import { calculateEnhancedSmartPackagePrice, SmartPricingResult } from '../utils/enchancedSmartPricing';
 import { validateStudentAge } from '../utils/pricing';
 
 // Initial state
@@ -214,13 +215,30 @@ export function EnrollmentProvider({ children }: EnrollmentProviderProps) {
   const calculatePricing = useCallback((packages: PricingPackage[]) => {
     const { selectedCourses, isSecondDancerInFamily } = state.enrollmentData;
     
+    console.log('🧮 Starter prisberegning:', {
+      courseCount: selectedCourses.length,
+      courses: selectedCourses.map(c => c.name),
+      isSecondDancerInFamily,
+      packageCount: packages.length
+    });
+    
     if (selectedCourses.length > 0 && packages.length > 0) {
-      const pricing = calculateSmartPackagePrice(
+      const pricing = calculateEnhancedSmartPackagePrice(
         selectedCourses,
         packages,
         isSecondDancerInFamily
       );
-      dispatch({ type: 'SET_PRICING', payload: pricing });
+      
+      if (pricing) {
+        console.log('✅ Prisberegning ferdig:', pricing);
+        dispatch({ type: 'SET_PRICING', payload: pricing });
+      } else {
+        console.warn('⚠️ Prisberegning returnerte null');
+        dispatch({ type: 'SET_PRICING', payload: null });
+      }
+    } else {
+      console.warn('⚠️ Kan ikke beregne pris - mangler kurs eller pakker');
+      dispatch({ type: 'SET_PRICING', payload: null });
     }
   }, [state.enrollmentData]);
 

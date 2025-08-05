@@ -5,28 +5,9 @@ import ScrollToTop from "@/helpers/ScrollToTop";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { listDocuments, DATABASE_ID, COLLECTIONS, Query } from "@/lib/appwrite";
+import { PricingPackage } from "@/types";
 
-// TypeScript interface som matcher Appwrite schema
-interface AppwriteDocument {
-  $id: string;
-  $createdAt: string;
-  $updatedAt: string;
-  $collectionId: string;
-  $databaseId: string;
-  $permissions: string[];
-}
 
-interface PricingPackage extends AppwriteDocument {
-  name: string;
-  price?: number; // Pris i øre
-  period?: string;
-  discount_amount?: number; // Rabatt i øre
-  discount_text?: string;
-  description?: string;
-  order: number;
-  is_active: boolean;
-  category?: string;
-}
 
 export default function PricingPage() {
   const [pricingPackages, setPricingPackages] = useState<PricingPackage[]>([]);

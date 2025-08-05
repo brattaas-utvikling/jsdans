@@ -47,173 +47,41 @@ export interface Schedule {
   $updatedAt?: string;
 }
 
-export interface PricingPackage {
+// TypeScript interface som matcher Appwrite schema
+export interface AppwriteDocument {
   $id: string;
+  $createdAt: string;
+  $updatedAt: string;
+  $collectionId: string;
+  $databaseId: string;
+  $permissions: string[];
+}
+
+export interface PricingPackage extends AppwriteDocument {
   name: string;
-  type: "semester" | "addon" | "clipcard";
-  priceInOre: number;
-  classCount?: number;
-  discountAmount: number;
-  minAge?: number;
-  maxAge?: number;
-  description: string;
-  isActive: boolean;
-  validFrom: string;
-  validTo?: string;
-  $createdAt?: string;
-  $updatedAt?: string;
+  price?: number; // Pris i øre
+  period?: string;
+  discount_amount?: number; // Rabatt i øre
+  discount_text?: string;
+  description?: string;
+  order: number;
+  is_active: boolean;
+  category?: string;
 }
 
-export interface Order {
-  $id: string;
-  userId?: string;
-  status: "cart" | "reserved" | "paid" | "cancelled" | "expired";
-  totalAmountInOre: number;
-  originalAmountInOre: number;
-  discountAmountInOre: number;
-  vippsOrderId?: string;
-  reservedAt?: string;
-  expiresAt?: string;
-  paidAt?: string;
-  semester: string;
-  customerName: string;
-  customerEmail: string;
-  customerPhone?: string;
-  familyGroupId?: string;
-  $createdAt?: string;
-  $updatedAt?: string;
-}
-
-export interface OrderItem {
-  $id: string;
-  orderId: string;
-  type: "package" | "addon" | "clipcard";
-  packageId: string;
-  studentName: string;
-  studentAge?: number;
-  priceInOre: number;
-  selectedSchedules: string[];
-  discountApplied?: string;
-  $createdAt?: string;
-  $updatedAt?: string;
-}
-
-export interface FamilyGroup {
-  $id: string;
-  parentEmail: string;
-  parentName: string;
-  parentPhone?: string;
-  students: string[];
-  discountEligible: boolean;
-  createdAt: string;
-  semester: string;
-  $createdAt?: string;
-  $updatedAt?: string;
-}
-
-// Cart interfaces
-export interface CartItem {
-  id: string;
-  studentFirstName: string;
-  studentLastName: string;
-  studentAge: number;
-  selectedClasses: DanceClass[];
-  selectedSchedules: string[];
-  isSecondDancerInFamily: boolean;
-  familyDiscountOverride?: boolean;
-  addedAt: string;
-}
-
-export interface CartItemWithHelpers extends CartItem {
-  fullName: string;
-  displayName: string;
-}
-
-export interface CartItemWithPricing extends CartItemWithHelpers {
-  pricing: PricingCalculation;
-}
-
-export interface PricingCalculation {
-  total: number;
-  originalPrice?: number;
-  discount: number;
-  packageId: string | null;
+export interface SmartPricingResult {
   packageName: string;
-}
-
-export interface CartSummary {
-  itemCount: number;
-  total: number;
-  totalDiscount: number;
-  originalTotal: number;
-  items: CartItemWithPricing[];
-  hasItems: boolean;
-  familyGroups?: FamilyGroup[];
-}
-
-export interface ValidationResult {
-  valid: boolean;
-  errors?: string[];
-  message?: string;
-}
-
-export interface CustomerData {
-  name: string;
-  email: string;
-  phone: string;
-}
-
-// Student form data
-export interface StudentFormData {
-  studentFirstName: string;
-  studentLastName: string;
-  studentAge: string;
-  selectedClasses: DanceClass[];
-  selectedSchedules: string[];
-  isSecondDancerInFamily?: boolean;
-  familyDiscountOverride?: boolean;
-}
-
-// Family detection
-export interface FamilyDetectionResult {
-  isLikelyFamily: boolean;
-  confidence: number;
-  reason: string;
-  suggestedLastName?: string;
-  existingFamilyMembers: CartItemWithHelpers[];
-}
-
-export interface StudentData {
-  studentFirstName: string;
-  studentLastName: string;
-  studentAge: number;
-  selectedClasses: DanceClass[];
-  selectedSchedules?: string[];
-  isSecondDancerInFamily?: boolean;
-  familyDiscountOverride?: boolean;
-}
-
-// Vipps payment interfaces
-export interface VippsPaymentData {
-  orderId: string;
-  amount: number;
-  customerInfo: CustomerData;
-}
-
-export interface VippsResponse {
-  orderId: string;
-  url: string;
-  success: boolean;
-}
-
-export interface VippsStatusResponse {
-  orderId: string;
-  transactionInfo: {
-    status: "RESERVED" | "PENDING" | "CANCELLED" | "FAILED";
-    amount: number;
-    transactionId: string;
+  total: number; // Total pris i øre
+  originalPrice?: number; // Originalpris før rabatt i øre
+  discount: number; // Total rabatt i øre
+  appliedFamilyDiscount?: number; // Familierabatt i øre
+  isToddlerPricing: boolean;
+  breakdown: {
+    basePrice: number; // Grunnpris i øre
+    packageDiscount: number; // Pakkerabatt i øre
+    familyDiscount: number; // Familierabatt i øre
+    finalPrice: number; // Endelig pris i øre
   };
-  success: boolean;
 }
 
 export interface AppwriteListResponse<T> {

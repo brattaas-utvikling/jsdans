@@ -3,8 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "@/components/Layout";
 import LandingPage from "@/pages/LandingPage";
 import PricingPage from "./pages/PricingPage";
-// import CoursesPageContainer from "./pages/CoursesPageContainer";
-import CheckoutPageContainer from "./pages/CheckoutPageContainer";
 import AboutSection from "./components/AboutSection";
 import ContactSection from "./components/ContactSection";
 import NewsPage from "./pages/NewsPage";
@@ -75,14 +73,6 @@ export default function App() {
           element={
             <Layout>
               <PricingPage />
-            </Layout>
-          }
-        />
-        <Route
-          path="/checkout"
-          element={
-            <Layout>
-              <CheckoutPageContainer />
             </Layout>
           }
         />

@@ -1,5 +1,5 @@
 // src/types/enrollment.ts - Cleaned up and compatible with existing types
-import type { SmartPricingResult } from "../utils/smartPricing";
+import type { SmartPricingResult } from "@/types/index";
 import type { DanceClass, AppwriteDocument } from "./index";
 
 // Student information for enrollment
