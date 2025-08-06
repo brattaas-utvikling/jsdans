@@ -17,12 +17,22 @@ export interface Guardian {
   phone: string;
 }
 
+// ✨ Søsken informasjon
+export interface Sibling {
+  firstName: string;
+  lastName: string;
+}
+
+// ✨ VIKTIG: Komplett EnrollmentData med alle felter
 export interface EnrollmentData {
   student: Student;
   guardian: Guardian;
   selectedCourses: DanceClass[];
   pricing: SimplePricingResult | null;
   isSecondDancerInFamily: boolean;
+  // Søsken-relaterte felter
+  hasSiblings: boolean;
+  siblings: Sibling[];
 }
 
 export interface EnrollmentErrors {
@@ -38,6 +48,13 @@ export interface EnrollmentErrors {
     phone?: string;
   };
   courses?: string;
+  // Søsken feilmeldinger
+  siblings?: {
+    [index: number]: {
+      firstName?: string;
+      lastName?: string;
+    };
+  };
   general?: string;
 }
 
@@ -61,11 +78,17 @@ export type EnrollmentAction =
   | { type: 'SET_LOADING'; payload: boolean }
   | { type: 'SET_SUBMITTING'; payload: boolean }
   | { type: 'SET_AVAILABLE_COURSES'; payload: DanceClass[] }
+  // Søsken actions
+  | { type: 'SET_HAS_SIBLINGS'; payload: boolean }
+  | { type: 'SET_SIBLINGS'; payload: Sibling[] }
+  | { type: 'ADD_SIBLING'; payload: Sibling }
+  | { type: 'REMOVE_SIBLING'; payload: number } // index
+  | { type: 'UPDATE_SIBLING'; payload: { index: number; sibling: Sibling } }
   | { type: 'GO_TO_NEXT_STEP' }
   | { type: 'GO_TO_PREVIOUS_STEP' }
   | { type: 'RESET_ENROLLMENT' };
 
-// Database schema for enrollments collection
+// Database schema for enrollments collection - oppdatert med søsken
 export interface EnrollmentDocument {
   student: {
     firstName: string;
@@ -101,6 +124,12 @@ export interface EnrollmentDocument {
       kompaniPrice: number;
     };
   };
+  // Søsken felter i database
+  hasSiblings: boolean;
+  siblings: Array<{
+    firstName: string;
+    lastName: string;
+  }>;
   submittedAt: string;
   status: 'pending' | 'confirmed' | 'paid' | 'cancelled';
 }

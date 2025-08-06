@@ -13,6 +13,7 @@ import {
   Phone,
   CheckCircle,
   Edit3,
+  UserPlus, // ✨ NY: Ikon for søsken
 } from 'lucide-react';
 import ScrollToTop from '@/helpers/ScrollToTop';
 
@@ -133,6 +134,60 @@ export default function SummaryStep() {
             </div>
           </div>
         </motion.div>
+
+        {/* ✨ NY: Søsken Information (hvis det finnes søsken) */}
+        {state.enrollmentData.hasSiblings && state.enrollmentData.siblings.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ 
+              duration: 0.4, 
+              delay: 0.15,
+              ease: "easeOut"
+            }}
+            style={{ willChange: 'transform, opacity' }}
+            className="bg-gradient-to-br from-purple-50/50 to-pink-50/30 dark:from-purple-900/20 dark:to-pink-900/10 p-6 rounded-xl border border-purple-100/50 dark:border-purple-700/30"
+          >
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <UserPlus className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                <h3 className="font-bebas text-bebas-base text-gray-900 dark:text-white">
+                  Søsken ({state.enrollmentData.siblings.length})
+                </h3>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => handleEditSection('contact')}
+                className="text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300 text-xs"
+              >
+                <Edit3 className="h-3 w-3 mr-1" />
+                Endre
+              </Button>
+            </div>
+
+            <div className="space-y-3">
+              <p className="text-sm text-purple-600 dark:text-purple-300 font-montserrat mb-3">
+                Søskenrabatt aktiveres ved fakturering
+              </p>
+              {state.enrollmentData.siblings.map((sibling, index) => (
+                <div key={index} className="flex items-center gap-3 p-3 bg-white dark:bg-surface-dark rounded-lg">
+                  <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center">
+                    <UserPlus className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                  </div>
+                  <div>
+                    <p className="font-montserrat font-medium text-gray-900 dark:text-white">
+                      {sibling.firstName} {sibling.lastName}
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 font-montserrat">
+                      Søsken {index + 1}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        )}
 
         {/* Guardian Information */}
         <motion.div
@@ -263,6 +318,10 @@ export default function SummaryStep() {
               )}
               {!currentPricing && (
                 <li>• Prisberegning mangler</li>
+              )}
+              {/* ✨ NY: Søsken validering */}
+              {state.enrollmentData.hasSiblings && state.enrollmentData.siblings.some(s => !s.firstName.trim() || !s.lastName.trim()) && (
+                <li>• Søskeninformasjon er ikke fullstendig</li>
               )}
             </ul>
           </div>

@@ -15,6 +15,7 @@ import {
   RefreshCw
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import ScrollToTop from '@/helpers/ScrollToTop';
 
 type SubmissionState = 'submitting' | 'success' | 'error' | 'idle';
 
@@ -163,6 +164,7 @@ export default function ConfirmationStep() {
   if (submissionState === 'success') {
     return (
       <div className="p-8 md:p-12">
+        <ScrollToTop />
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

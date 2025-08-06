@@ -10,9 +10,13 @@ import {
   Phone,
   ArrowRight,
   AlertCircle,
+  Users,
+  Plus,
+  Trash2,
 } from "lucide-react";
 import { useEnrollment } from "@/contexts/EnrollmentContext";
 import ScrollToTop from "@/helpers/ScrollToTop";
+import type { Sibling } from "@/types/enrollment";
 
 interface ValidationErrors {
   firstName?: string;
@@ -21,6 +25,12 @@ interface ValidationErrors {
   guardianName?: string;
   email?: string;
   phone?: string;
+  siblings?: {
+    [index: number]: {
+      firstName?: string;
+      lastName?: string;
+    };
+  };
 }
 
 export default function ContactInfoStep() {
@@ -30,6 +40,7 @@ export default function ContactInfoStep() {
     setGuardianData,
     goToNextStep,
     validateCurrentStep,
+    dispatch,
   } = useEnrollment();
 
   // Local form state
@@ -45,11 +56,19 @@ export default function ContactInfoStep() {
     phone: state.enrollmentData.guardian.phone || "",
   });
 
+  // ✨ NY: Søsken state
+  const [hasSiblings, setHasSiblings] = useState(state.enrollmentData.hasSiblings || false);
+  const [siblings, setSiblings] = useState<Sibling[]>(
+    state.enrollmentData.siblings.length > 0 
+      ? state.enrollmentData.siblings 
+      : [{ firstName: "", lastName: "" }]
+  );
+
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
   const [isFormValid, setIsFormValid] = useState(false);
   const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
 
-  // Validation functions
+  // Validation functions (existing ones stay the same)
   const validateFirstName = (value: string): string | undefined => {
     if (!value.trim()) return "Fornavn er påkrevd";
     if (value.trim().length < 2) return "Fornavn må være minst 2 tegn";
@@ -128,16 +147,49 @@ const validateBirthDate = (value: string): string | undefined => {
     return undefined;
   };
 
+  // ✨ NY: Søsken validering
+  const validateSiblings = (): { [index: number]: { firstName?: string; lastName?: string } } => {
+    if (!hasSiblings) return {};
+    
+    const errors: { [index: number]: { firstName?: string; lastName?: string } } = {};
+    
+    siblings.forEach((sibling, index) => {
+      const siblingErrors: { firstName?: string; lastName?: string } = {};
+      
+      const firstNameError = validateFirstName(sibling.firstName);
+      if (firstNameError) siblingErrors.firstName = firstNameError;
+      
+      const lastNameError = validateLastName(sibling.lastName);
+      if (lastNameError) siblingErrors.lastName = lastNameError;
+      
+      if (Object.keys(siblingErrors).length > 0) {
+        errors[index] = siblingErrors;
+      }
+    });
+    
+    return errors;
+  };
+
   // Validate all fields
   const validateAllFields = (): ValidationErrors => {
-    return {
+    const errors: ValidationErrors = {
       firstName: validateFirstName(studentForm.firstName),
       lastName: validateLastName(studentForm.lastName),
       birthDate: validateBirthDate(studentForm.birthDate),
       guardianName: validateGuardianName(guardianForm.name),
       email: validateEmail(guardianForm.email),
       phone: validatePhone(guardianForm.phone),
+      siblings: validateSiblings(),
     };
+    
+    // Remove undefined errors
+    Object.keys(errors).forEach(key => {
+      if (errors[key as keyof ValidationErrors] === undefined) {
+        delete errors[key as keyof ValidationErrors];
+      }
+    });
+    
+    return errors;
   };
 
   // Update context when form changes
@@ -149,13 +201,29 @@ const validateBirthDate = (value: string): string | undefined => {
     setGuardianData(guardianForm);
   }, [guardianForm, setGuardianData]);
 
+  // ✨ NY: Update søsken i context
+  useEffect(() => {
+    dispatch({ type: 'SET_HAS_SIBLINGS', payload: hasSiblings });
+    if (hasSiblings) {
+      dispatch({ type: 'SET_SIBLINGS', payload: siblings });
+    } else {
+      dispatch({ type: 'SET_SIBLINGS', payload: [] });
+    }
+  }, [hasSiblings, siblings, dispatch]);
+
   // Validate on form changes
   useEffect(() => {
     if (hasAttemptedSubmit) {
       const errors = validateAllFields();
       setValidationErrors(errors);
       
-      const hasErrors = Object.values(errors).some(error => error !== undefined);
+      const hasErrors = Object.values(errors).some(error => {
+        if (typeof error === 'object' && error !== null) {
+          return Object.values(error).some(nestedError => nestedError !== undefined);
+        }
+        return error !== undefined;
+      });
+      
       setIsFormValid(!hasErrors);
     } else {
       // Basic check for form completion
@@ -165,11 +233,12 @@ const validateBirthDate = (value: string): string | undefined => {
         studentForm.birthDate !== "" &&
         guardianForm.name.trim() !== "" &&
         guardianForm.email.trim() !== "" &&
-        guardianForm.phone.trim() !== "";
+        guardianForm.phone.trim() !== "" &&
+        (!hasSiblings || siblings.every(s => s.firstName.trim() !== "" && s.lastName.trim() !== ""));
       
       setIsFormValid(isComplete);
     }
-  }, [studentForm, guardianForm, hasAttemptedSubmit]);
+  }, [studentForm, guardianForm, hasSiblings, siblings, hasAttemptedSubmit]);
 
   const handleNext = () => {
     setHasAttemptedSubmit(true);
@@ -177,7 +246,12 @@ const validateBirthDate = (value: string): string | undefined => {
     const errors = validateAllFields();
     setValidationErrors(errors);
     
-    const hasErrors = Object.values(errors).some(error => error !== undefined);
+    const hasErrors = Object.values(errors).some(error => {
+      if (typeof error === 'object' && error !== null) {
+        return Object.values(error).some(nestedError => nestedError !== undefined);
+      }
+      return error !== undefined;
+    });
     
     if (!hasErrors && validateCurrentStep()) {
       goToNextStep();
@@ -200,6 +274,58 @@ const validateBirthDate = (value: string): string | undefined => {
     const errorKey = field === 'name' ? 'guardianName' : field;
     if (hasAttemptedSubmit && validationErrors[errorKey as keyof ValidationErrors]) {
       setValidationErrors(prev => ({ ...prev, [errorKey]: undefined }));
+    }
+  };
+
+  // ✨ NYE: Søsken handlers
+  const handleSiblingsToggle = (checked: boolean) => {
+    setHasSiblings(checked);
+    if (checked && siblings.length === 0) {
+      setSiblings([{ firstName: "", lastName: "" }]);
+    }
+    
+    // Clear siblings errors
+    if (hasAttemptedSubmit) {
+      setValidationErrors(prev => ({ ...prev, siblings: {} }));
+    }
+  };
+
+  const handleSiblingChange = (index: number, field: 'firstName' | 'lastName', value: string) => {
+    const updatedSiblings = [...siblings];
+    updatedSiblings[index] = { ...updatedSiblings[index], [field]: value };
+    setSiblings(updatedSiblings);
+    
+    // Clear specific sibling error
+    if (hasAttemptedSubmit && validationErrors.siblings?.[index]?.[field]) {
+      setValidationErrors(prev => ({
+        ...prev,
+        siblings: {
+          ...prev.siblings,
+          [index]: {
+            ...prev.siblings?.[index],
+            [field]: undefined
+          }
+        }
+      }));
+    }
+  };
+
+  const addSibling = () => {
+    setSiblings([...siblings, { firstName: "", lastName: "" }]);
+  };
+
+  const removeSibling = (index: number) => {
+    if (siblings.length > 1) {
+      const updatedSiblings = siblings.filter((_, i) => i !== index);
+      setSiblings(updatedSiblings);
+      
+      // Clear errors for removed sibling
+      if (hasAttemptedSubmit && validationErrors.siblings?.[index]) {
+        const remainingErrors = Object.fromEntries(
+        Object.entries(validationErrors.siblings).filter(([key]) => key !== index.toString())
+      );
+        setValidationErrors(prev => ({ ...prev, siblings: remainingErrors }));
+      }
     }
   };
 
@@ -236,7 +362,7 @@ const validateBirthDate = (value: string): string | undefined => {
             <User className="h-6 w-6 text-brand-600 dark:text-brand-400" />
           </div>
         </div>
-        <h2 className="font-bebas text-bebas-sm md:text-bebas-lg lg:text-bebas-xl text-gray-900 dark:text-white mb-2 break-words max-w-prose">
+        <h2 className="font-bebas text-bebas-base md:text-bebas-lg lg:text-bebas-xl text-gray-900 dark:text-white mb-2 break-words max-w-prose">
           Kontaktinformasjon
         </h2>
         <p className="text-gray-600 dark:text-gray-300 font-montserrat">
@@ -353,6 +479,141 @@ const validateBirthDate = (value: string): string | undefined => {
               )}
             </div>
           </div>
+        </motion.div>
+
+        {/* ✨ NY: Søsken Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.15 }}
+          className="bg-gradient-to-br from-purple-50/50 to-pink-50/30 
+                     dark:from-purple-900/20 dark:to-pink-900/10 
+                     p-6 rounded-xl border border-purple-100/50 dark:border-purple-700/30"
+        >
+          <div className="flex items-center gap-3 mb-4">
+            <Users className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+            <h3 className="font-bebas text-bebas-base text-gray-900 dark:text-white">
+              Familiemedlem som danser på Urban
+            </h3>
+          </div>
+
+          {/* Søsken checkbox */}
+          <div className="flex items-center gap-3 mb-4">
+            <input
+              type="checkbox"
+              id="hasSiblings"
+              checked={hasSiblings}
+              onChange={(e) => handleSiblingsToggle(e.target.checked)}
+              className="w-4 h-4 text-brand-600 bg-gray-100 border-gray-300 rounded focus:ring-brand-500 focus:ring-2"
+            />
+            <label 
+              htmlFor="hasSiblings" 
+              className="text-sm font-montserrat font-medium text-gray-700 dark:text-gray-300 cursor-pointer"
+            >
+              Eleven har søsken som også skal meldes på (familierabatt)
+            </label>
+          </div>
+
+          {hasSiblings && (
+            <div className="space-y-4">
+              <p className="text-sm text-purple-600 dark:text-purple-300 font-montserrat mb-4">
+                Skriv inn navn på søsken som også skal meldes på kurs. Rabatten aktiveres ved fakturering.
+              </p>
+              <div className="mt-3 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200 dark:border-purple-700">
+  <div className="text-sm">
+    <p className="font-semibold text-purple-700 dark:text-purple-300 mb-1 text-left">Rabatter tilgjengelig:</p>
+    <ul className="list-disc list-inside space-y-1 text-purple-600 dark:text-purple-400 text-left">
+      <li>Søskenrabatt 200kr avslag for kurs 60 min</li>
+      <li>Familierabatt 20% for dansepakke nr. 2</li>
+      <li>Familierabatt 50% for dansepakke nr. 3+</li>
+    </ul>
+  </div>
+</div>
+
+              {siblings.map((sibling, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-white dark:bg-surface-dark rounded-lg border border-purple-200/50 dark:border-purple-700/30"
+                >
+                  <div>
+                    <label className="block text-sm font-montserrat font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Fornavn *
+                    </label>
+                    <input
+                      type="text"
+                      value={sibling.firstName}
+                      onChange={(e) => handleSiblingChange(index, 'firstName', e.target.value)}
+                      className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent
+                                bg-white dark:bg-surface-dark text-gray-900 dark:text-white
+                                font-montserrat transition-colors ${
+                                  validationErrors.siblings?.[index]?.firstName
+                                    ? "border-red-500 dark:border-red-500"
+                                    : "border-gray-300 dark:border-gray-600"
+                                }`}
+                      placeholder="Søsknets fornavn"
+                    />
+                    {validationErrors.siblings?.[index]?.firstName && (
+                      <div className="flex items-center gap-2 mt-2 text-red-600 dark:text-red-400 text-sm">
+                        <AlertCircle className="h-4 w-4" />
+                        <span className="font-montserrat">{validationErrors.siblings[index].firstName}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="relative">
+                    <label className="block text-sm font-montserrat font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Etternavn *
+                    </label>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={sibling.lastName}
+                        onChange={(e) => handleSiblingChange(index, 'lastName', e.target.value)}
+                        className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent
+                                  bg-white dark:bg-surface-dark text-gray-900 dark:text-white
+                                  font-montserrat transition-colors ${
+                                    validationErrors.siblings?.[index]?.lastName
+                                      ? "border-red-500 dark:border-red-500"
+                                      : "border-gray-300 dark:border-gray-600"
+                                  }`}
+                        placeholder="Søsknets etternavn"
+                      />
+                      
+                    </div>
+                    {validationErrors.siblings?.[index]?.lastName && (
+                      <div className="flex items-center gap-2 mt-2 text-red-600 dark:text-red-400 text-sm">
+                        <AlertCircle className="h-4 w-4" />
+                        <span className="font-montserrat">{validationErrors.siblings[index].lastName}</span>
+                      </div>
+                    )}
+                    {siblings.length > 1 && (
+                        <Button
+                          type="button"
+                          onClick={() => removeSibling(index)}
+                          variant="ghost"
+                          size="icon"
+                          className="mt-2 px-3 py-3 text-red-600 hover:text-red-700 float-right"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      )}
+                  </div>
+                </motion.div>
+              ))}
+
+              <Button
+                type="button"
+                onClick={addSibling}
+                variant="outline"
+                className="w-full py-3 border-purple-300 text-purple-600 hover:bg-purple-50 font-montserrat"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Legg til søsken
+              </Button>
+            </div>
+          )}
         </motion.div>
 
         {/* Guardian Information */}

@@ -22,6 +22,11 @@ export interface FlatEnrollmentSubmission {
   selectedCourses_ages: string[];
   selectedCourses_schedules: string[]; // JSON strings av schedule arrays
   
+  // ✨ NYE: Søsken felter
+  hasSiblings: boolean;
+  siblings_firstNames: string[];
+  siblings_lastNames: string[];
+  
   // Pricing fields
   pricing_totalPrice: number;
   pricing_basePrice: number;
@@ -58,6 +63,12 @@ export interface EnrollmentRecord {
     ages: string[];
     schedules: Array<Array<{ day: string; time: string }>>;
   };
+  // ✨ NYE: Søsken felter
+  hasSiblings: boolean;
+  siblings: Array<{
+    firstName: string;
+    lastName: string;
+  }>;
   pricing: {
     totalPrice: number;
     basePrice: number;
@@ -98,6 +109,20 @@ export class EnrollmentService {
         };
       }
 
+      // ✨ NY: Valider søsken hvis aktivert
+      if (enrollmentData.hasSiblings) {
+        const invalidSiblings = enrollmentData.siblings.some(sibling => 
+          !sibling.firstName.trim() || !sibling.lastName.trim()
+        );
+        
+        if (invalidSiblings) {
+          return {
+            success: false,
+            error: 'Søskeninformasjon er ikke fullstendig',
+          };
+        }
+      }
+
       // 2. Forbered data for Appwrite (som arrays, ikke JSON strings)
       const flatEnrollmentDoc: FlatEnrollmentSubmission = {
         // Student fields
@@ -120,6 +145,11 @@ export class EnrollmentService {
           JSON.stringify(c.schedule || [])
         ),
         
+        // ✨ NYE: Søsken felter
+        hasSiblings: enrollmentData.hasSiblings,
+        siblings_firstNames: enrollmentData.siblings.map(s => s.firstName.trim()),
+        siblings_lastNames: enrollmentData.siblings.map(s => s.lastName.trim()),
+        
         // Pricing fields
         pricing_totalPrice: enrollmentData.pricing.totalPrice,
         pricing_basePrice: enrollmentData.pricing.basePrice,
@@ -137,6 +167,12 @@ export class EnrollmentService {
       };
 
       // 3. Lagre i database
+      console.log('💾 Saving enrollment to database with siblings info:', {
+        hasSiblings: flatEnrollmentDoc.hasSiblings,
+        siblingsCount: flatEnrollmentDoc.siblings_firstNames.length,
+        studentName: `${flatEnrollmentDoc.student_firstName} ${flatEnrollmentDoc.student_lastName}`
+      });
+
       const document = await databases.createDocument(
         DATABASE_ID,
         COLLECTIONS.ENROLLMENTS,
@@ -176,7 +212,7 @@ export class EnrollmentService {
     try {
       const functions = new Functions(client);
 
-      // Clean payload - fjernet securityScore siden den ikke brukes
+      // Clean payload - inkluder søsken informasjon
       const payload = {
         enrollmentData: {
           student: {
@@ -196,6 +232,9 @@ export class EnrollmentService {
             age: course.age,
             schedule: course.schedule,
           })),
+          // ✨ NY: Inkluder søsken i e-post payload
+          hasSiblings: enrollmentData.hasSiblings,
+          siblings: enrollmentData.siblings,
           pricing: enrollmentData.pricing,
         },
         documentId: String(documentId),
@@ -205,10 +244,12 @@ export class EnrollmentService {
       // Serialize payload
       const payloadString = JSON.stringify(payload);
 
-      console.log('📧 Sending email with payload:', {
+      console.log('📧 Sending email with payload (including siblings):', {
         studentName: `${enrollmentData.student.firstName} ${enrollmentData.student.lastName}`,
         guardianEmail: enrollmentData.guardian.email,
         coursesCount: enrollmentData.selectedCourses.length,
+        hasSiblings: enrollmentData.hasSiblings,
+        siblingsCount: enrollmentData.siblings.length,
         documentId: documentId,
         payloadSize: payloadString.length
       });
@@ -255,6 +296,12 @@ export class EnrollmentService {
               age: '8-10 år',
             },
           ],
+          // ✨ NY: Test søsken
+          hasSiblings: true,
+          siblings: [
+            { firstName: 'Test', lastName: 'Søsken1' },
+            { firstName: 'Test', lastName: 'Søsken2' }
+          ],
           pricing: {
             totalPrice: 1700,
             basePrice: 1700,
@@ -285,7 +332,7 @@ export class EnrollmentService {
   }
 
   /**
-   * Hent påmeldinger fra database (for admin)
+   * Hent påmeldinger fra database (for admin) - oppdatert med søsken
    */
   static async getEnrollments(): Promise<EnrollmentRecord[]> {
     try {
@@ -318,6 +365,12 @@ export class EnrollmentService {
             JSON.parse(scheduleStr)
           ),
         },
+        // ✨ NYE: Rekonstruer søsken fra arrays
+        hasSiblings: doc.hasSiblings as boolean,
+        siblings: (doc.siblings_firstNames as string[] || []).map((firstName, index) => ({
+          firstName,
+          lastName: (doc.siblings_lastNames as string[])[index] || ''
+        })),
         pricing: {
           totalPrice: doc.pricing_totalPrice as number,
           basePrice: doc.pricing_basePrice as number,

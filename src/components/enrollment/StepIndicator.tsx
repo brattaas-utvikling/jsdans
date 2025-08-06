@@ -18,7 +18,7 @@ const steps: StepInfo[] = [
   {
     key: 'contact',
     title: 'Kontaktinfo',
-    description: 'Student og foresatt',
+    description: 'Elev og foresatt',
     icon: User,
   },
   {

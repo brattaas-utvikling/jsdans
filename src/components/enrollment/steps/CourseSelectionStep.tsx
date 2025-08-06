@@ -30,6 +30,7 @@ import {
   Loader2
 } from 'lucide-react';
 import type { DanceClass } from '../../../types';
+import ScrollToTop from '@/helpers/ScrollToTop';
 
 export default function CourseSelectionStep() {
   const { 
@@ -365,6 +366,7 @@ export default function CourseSelectionStep() {
 
   return (
     <div className="p-8 md:p-12">
+      <ScrollToTop />
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -388,22 +390,8 @@ export default function CourseSelectionStep() {
           Velg de kursene <span className="font-bold text-brand-600 dark:text-brand-400">{state.enrollmentData.student.firstName}</span> ønsker å delta på
         </p>
           <p className="text-sm text-brand-600 dark:text-brand-400 font-montserrat mt-1">
-            NB! Hvis du har søsken og kan oppnå "søskenrabatt", vennligst kontakt oss direkte for å få rabatten lagt til manuelt.
+            NB! Hvis du har søsken og kan oppnå "søskenrabatt", vennligst legg inn navn på søsken i <span className="font-semibold">"Kontaktinformasjon - steget"</span>.
           </p>
-
-<div className="mt-3 p-3 bg-brand-50 dark:bg-brand-900/20 rounded-lg border border-brand-200 dark:border-brand-700">
-  <div className="text-sm">
-    <p className="font-semibold text-brand-700 dark:text-brand-300 mb-1 text-left">Rabatter tilgjengelig:</p>
-    <ul className="list-disc list-inside space-y-1 text-brand-600 dark:text-brand-400 text-left">
-      <li>Søskenrabatt 200kr avslag for kurs 60 min</li>
-      <li>Familierabatt 20% for dansepakke nr. 2</li>
-      <li>Familierabatt 50% for dansepakke nr. 3+</li>
-    </ul>
-    <p className="text-xs text-gray-600 dark:text-gray-400 mt-2 text-left">
-      Rabatten aktiveres ved fakturering, husk derfor å oppgi navn på søsken ved påmelding.
-    </p>
-  </div>
-</div>
 
       </motion.div>
 

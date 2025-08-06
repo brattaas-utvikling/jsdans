@@ -6,13 +6,14 @@ import type {
   EnrollmentStep, 
   Student, 
   Guardian,
-  EnrollmentErrors
+  EnrollmentErrors,
+  Sibling // ✨ NY: Import søsken type
 } from '../types/enrollment';
 import type { DanceClass } from '../types';
 import { calculateSimplePrice, SimplePricingResult } from '../utils/simplePricing';
 import { validateStudentAge } from '../utils/pricing';
 
-// Initial state
+// ✨ OPPDATERT: Initial state med søsken-felter
 const initialState: EnrollmentState = {
   currentStep: 'contact',
   enrollmentData: {
@@ -29,6 +30,9 @@ const initialState: EnrollmentState = {
     selectedCourses: [],
     pricing: null,
     isSecondDancerInFamily: false,
+    // ✨ NYE: Søsken-felter
+    hasSiblings: false,
+    siblings: [],
   },
   errors: {},
   isLoading: false,
@@ -36,7 +40,7 @@ const initialState: EnrollmentState = {
   availableCourses: [],
 };
 
-// Reducer function
+// ✨ OPPDATERT: Reducer function med søsken-actions
 function enrollmentReducer(state: EnrollmentState, action: EnrollmentAction): EnrollmentState {
   switch (action.type) {
     case 'SET_STEP':
@@ -115,6 +119,56 @@ function enrollmentReducer(state: EnrollmentState, action: EnrollmentAction): En
         availableCourses: action.payload,
       };
 
+    // ✨ NYE: Søsken actions
+    case 'SET_HAS_SIBLINGS':
+      return {
+        ...state,
+        enrollmentData: {
+          ...state.enrollmentData,
+          hasSiblings: action.payload,
+          // Hvis deaktivert, clear siblings
+          siblings: action.payload ? state.enrollmentData.siblings : []
+        }
+      };
+
+    case 'SET_SIBLINGS':
+      return {
+        ...state,
+        enrollmentData: {
+          ...state.enrollmentData,
+          siblings: action.payload
+        }
+      };
+
+    case 'ADD_SIBLING':
+      return {
+        ...state,
+        enrollmentData: {
+          ...state.enrollmentData,
+          siblings: [...state.enrollmentData.siblings, action.payload]
+        }
+      };
+
+    case 'REMOVE_SIBLING':
+      return {
+        ...state,
+        enrollmentData: {
+          ...state.enrollmentData,
+          siblings: state.enrollmentData.siblings.filter((_, index) => index !== action.payload)
+        }
+      };
+
+    case 'UPDATE_SIBLING':
+      return {
+        ...state,
+        enrollmentData: {
+          ...state.enrollmentData,
+          siblings: state.enrollmentData.siblings.map((sibling, index) =>
+            index === action.payload.index ? action.payload.sibling : sibling
+          )
+        }
+      };
+
     case 'GO_TO_NEXT_STEP': {
       const stepOrder: EnrollmentStep[] = ['contact', 'courses', 'summary', 'confirmation'];
       const currentIndex = stepOrder.indexOf(state.currentStep);
@@ -140,19 +194,22 @@ function enrollmentReducer(state: EnrollmentState, action: EnrollmentAction): En
     }
 
     case 'RESET_ENROLLMENT':
-      return initialState;
+      return {
+        ...initialState,
+        availableCourses: state.availableCourses, // Keep loaded courses
+      };
 
     default:
       return state;
   }
 }
 
-// Context interface
+// ✨ OPPDATERT: Context interface med søsken-metoder
 interface EnrollmentContextType {
   state: EnrollmentState;
   dispatch: React.Dispatch<EnrollmentAction>;
   
-  // Convenience methods
+  // Existing convenience methods
   setStep: (step: EnrollmentStep) => void;
   setStudentData: (student: Student) => void;
   setGuardianData: (guardian: Guardian) => void;
@@ -162,6 +219,13 @@ interface EnrollmentContextType {
   goToPreviousStep: () => void;
   validateCurrentStep: () => boolean;
   resetEnrollment: () => void;
+  
+  // ✨ NYE: Søsken convenience methods
+  setSiblingsEnabled: (enabled: boolean) => void;
+  setSiblings: (siblings: Sibling[]) => void;
+  addSibling: (sibling: Sibling) => void;
+  removeSibling: (index: number) => void;
+  updateSibling: (index: number, sibling: Sibling) => void;
   
   // Memoized values
   currentPricing: SimplePricingResult | null;
@@ -190,7 +254,9 @@ export function EnrollmentProvider({ children }: EnrollmentProviderProps) {
     console.log('🧮 Beregner priser (useMemo):', {
       courseCount: selectedCourses.length,
       courses: selectedCourses.map(c => c.name),
-      isSecondDancerInFamily
+      isSecondDancerInFamily,
+      hasSiblings: state.enrollmentData.hasSiblings, // ✨ NY: Log søsken-info
+      siblingsCount: state.enrollmentData.siblings.length
     });
     
     const pricing = calculateSimplePrice(selectedCourses, isSecondDancerInFamily);
@@ -201,11 +267,11 @@ export function EnrollmentProvider({ children }: EnrollmentProviderProps) {
     }
     
     return pricing;
-  }, [state.enrollmentData.selectedCourses, state.enrollmentData.isSecondDancerInFamily]);
+  }, [state.enrollmentData.selectedCourses, state.enrollmentData.isSecondDancerInFamily, state.enrollmentData.hasSiblings, state.enrollmentData.siblings]);
 
-  // Memoized form validation
+  // ✨ OPPDATERT: Memoized form validation inkluderer søsken
   const isFormValid = useMemo(() => {
-    const { student, guardian, selectedCourses } = state.enrollmentData;
+    const { student, guardian, selectedCourses, hasSiblings, siblings } = state.enrollmentData;
     
     const hasStudentInfo = !!student.firstName.trim() && 
                           !!student.lastName.trim() && 
@@ -217,10 +283,15 @@ export function EnrollmentProvider({ children }: EnrollmentProviderProps) {
     const hasCourses = selectedCourses.length > 0;
     const hasPricing = currentPricing !== null;
     
-    return hasStudentInfo && hasGuardianInfo && hasCourses && hasPricing;
+    // ✨ NY: Valider søsken hvis aktivert
+    const hasSiblingsValid = !hasSiblings || siblings.every(sibling => 
+      sibling.firstName.trim().length > 0 && sibling.lastName.trim().length > 0
+    );
+    
+    return hasStudentInfo && hasGuardianInfo && hasCourses && hasPricing && hasSiblingsValid;
   }, [state.enrollmentData, currentPricing]);
 
-  // Convenience methods
+  // Existing convenience methods
   const setStep = useCallback((step: EnrollmentStep) => {
     dispatch({ type: 'SET_STEP', payload: step });
   }, []);
@@ -255,7 +326,28 @@ export function EnrollmentProvider({ children }: EnrollmentProviderProps) {
     dispatch({ type: 'GO_TO_PREVIOUS_STEP' });
   }, []);
 
-  // Validation for current step
+  // ✨ NYE: Søsken convenience methods
+  const setSiblingsEnabled = useCallback((enabled: boolean) => {
+    dispatch({ type: 'SET_HAS_SIBLINGS', payload: enabled });
+  }, []);
+
+  const setSiblings = useCallback((siblings: Sibling[]) => {
+    dispatch({ type: 'SET_SIBLINGS', payload: siblings });
+  }, []);
+
+  const addSibling = useCallback((sibling: Sibling) => {
+    dispatch({ type: 'ADD_SIBLING', payload: sibling });
+  }, []);
+
+  const removeSibling = useCallback((index: number) => {
+    dispatch({ type: 'REMOVE_SIBLING', payload: index });
+  }, []);
+
+  const updateSibling = useCallback((index: number, sibling: Sibling) => {
+    dispatch({ type: 'UPDATE_SIBLING', payload: { index, sibling } });
+  }, []);
+
+  // ✨ OPPDATERT: Validation for current step inkluderer søsken
   const validateCurrentStep = useCallback((): boolean => {
     const errors: EnrollmentErrors = {};
     let isValid = true;
@@ -292,6 +384,32 @@ export function EnrollmentProvider({ children }: EnrollmentProviderProps) {
           errors.guardian = { ...errors.guardian, phone: 'Telefonnummer er påkrevd' };
           isValid = false;
         }
+
+        // ✨ NY: Validate søsken data
+        if (state.enrollmentData.hasSiblings) {
+          const siblingsErrors: { [index: number]: { firstName?: string; lastName?: string } } = {};
+          
+          state.enrollmentData.siblings.forEach((sibling, index) => {
+            const siblingErrors: { firstName?: string; lastName?: string } = {};
+            
+            if (!sibling.firstName.trim()) {
+              siblingErrors.firstName = 'Fornavn er påkrevd';
+              isValid = false;
+            }
+            if (!sibling.lastName.trim()) {
+              siblingErrors.lastName = 'Etternavn er påkrevd';
+              isValid = false;
+            }
+            
+            if (Object.keys(siblingErrors).length > 0) {
+              siblingsErrors[index] = siblingErrors;
+            }
+          });
+          
+          if (Object.keys(siblingsErrors).length > 0) {
+            errors.siblings = siblingsErrors;
+          }
+        }
         break;
 
       case 'courses':
@@ -319,6 +437,20 @@ export function EnrollmentProvider({ children }: EnrollmentProviderProps) {
           errors.general = 'Prisberegning mangler';
           isValid = false;
         }
+        
+        // ✨ NY: Final søsken validation
+        if (state.enrollmentData.hasSiblings) {
+          const incompleteSiblings = state.enrollmentData.siblings.some(sibling =>
+            !sibling.firstName.trim() || !sibling.lastName.trim()
+          );
+          
+          if (incompleteSiblings) {
+            errors.general = errors.general ? 
+              `${errors.general}. Søskeninformasjon er ikke fullstendig` :
+              'Søskeninformasjon er ikke fullstendig';
+            isValid = false;
+          }
+        }
         break;
     }
 
@@ -335,6 +467,7 @@ export function EnrollmentProvider({ children }: EnrollmentProviderProps) {
     dispatch({ type: 'RESET_ENROLLMENT' });
   }, []);
 
+  // ✨ OPPDATERT: Context value med søsken-metoder
   const contextValue: EnrollmentContextType = {
     state,
     dispatch,
@@ -347,6 +480,12 @@ export function EnrollmentProvider({ children }: EnrollmentProviderProps) {
     goToPreviousStep,
     validateCurrentStep,
     resetEnrollment,
+    // ✨ NYE: Søsken methods
+    setSiblingsEnabled,
+    setSiblings,
+    addSibling,
+    removeSibling,
+    updateSibling,
     currentPricing,
     isFormValid,
   };
