@@ -237,7 +237,7 @@ export default function ContactInfoStep() {
             <User className="h-6 w-6 text-brand-600 dark:text-brand-400" />
           </div>
         </div>
-        <h2 className="font-bebas text-bebas-xl text-gray-900 dark:text-white mb-2">
+        <h2 className="font-bebas text-bebas-lg md:text-bebas-xl text-gray-900 dark:text-white mb-2 break-words max-w-prose">
           Kontaktinformasjon
         </h2>
         <p className="text-gray-600 dark:text-gray-300 font-montserrat">
