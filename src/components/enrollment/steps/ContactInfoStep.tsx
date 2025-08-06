@@ -70,25 +70,24 @@ export default function ContactInfoStep() {
     return undefined;
   };
 
-  const validateBirthDate = (value: string): string | undefined => {
-    if (!value) return "Fødselsdato er påkrevd";
-    
-    const birthDate = new Date(value);
-    const today = new Date();
-    const age = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
-    
-    let actualAge = age;
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-      actualAge--;
-    }
+const validateBirthDate = (value: string): string | undefined => {
+  if (!value) return "Fødselsdato er påkrevd";
 
-    if (birthDate > today) return "Fødselsdato kan ikke være i fremtiden";
-    if (actualAge < 3) return "Eleven må være minst 3 år gammel";
-    if (actualAge > 18) return "Eleven kan ikke være eldre enn 18 år";
-    
-    return undefined;
-  };
+  const birthDate = new Date(value);
+  const today = new Date();
+  const age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+
+  let actualAge = age;
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    actualAge--;
+  }
+
+  if (birthDate > today) return "Fødselsdato kan ikke være i fremtiden";
+  if (actualAge < 3) return "Eleven må være minst 3 år gammel";
+
+  return undefined;
+};
 
   const validateGuardianName = (value: string): string | undefined => {
     if (!value.trim()) return "Navn på foresatt er påkrevd";
@@ -122,8 +121,8 @@ export default function ContactInfoStep() {
     const cleanPhone = value.replace(/[\s\-+()]/g, "");
     
     // Norsk telefonnummer: 8 siffer eller +47 + 8 siffer
-    if (!/^(\+47)?[4-9]\d{7}$/.test(cleanPhone)) {
-      return "Ugyldig norsk telefonnummer (8 siffer som starter med 4-9)";
+    if (!/^[2-9]\d{7}$/.test(cleanPhone)) {
+      return "Ugyldig telefonnummer (må være 8 siffer som starter med 2, 4, 6, 7, 8 eller 9)";
     }
     
     return undefined;
@@ -451,7 +450,7 @@ export default function ContactInfoStep() {
                                   ? "border-red-500 dark:border-red-500"
                                   : "border-gray-300 dark:border-gray-600"
                               }`}
-                    placeholder="12345678"
+                    placeholder="98765432"
                   />
                 </div>
                 {validationErrors.phone && (

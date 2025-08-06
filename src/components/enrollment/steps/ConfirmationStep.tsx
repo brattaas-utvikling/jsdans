@@ -186,7 +186,7 @@ export default function ConfirmationStep() {
             transition={{ delay: 0.4 }}
             className="font-bebas text-bebas-2xl text-gray-900 dark:text-white mb-4"
           >
-            Påmelding fullført! 🎉
+            Påmelding fullført!
           </motion.h2>
           
           <motion.p
@@ -195,7 +195,7 @@ export default function ConfirmationStep() {
             transition={{ delay: 0.6 }}
             className="text-lg text-gray-600 dark:text-gray-300 font-montserrat mb-6"
           >
-            Takk for at du meldte deg på våre kurs, {state.enrollmentData.student.firstName}!
+            Takk for at du meldte deg på våre kurs, <span className='font-bold text-brand-600 dark:text-brand-400'>{state.enrollmentData.student.firstName}!</span>
           </motion.p>
 
           {/* Success details */}
@@ -255,26 +255,19 @@ export default function ConfirmationStep() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1 }}
-            className="max-w-md mx-auto mb-8"
+            className="max-w-2xl mb-8 mx-auto"
           >
             <div className="bg-white dark:bg-surface-dark p-4 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
               <h4 className="font-bebas text-bebas-sm text-gray-900 dark:text-white mb-2">
                 Påmeldt til
               </h4>
-              <div className="space-y-1">
+              <ul className="space-y-1">
                 {state.enrollmentData.selectedCourses.map(course => (
-                  <p key={course.$id} className="text-sm font-montserrat text-gray-600 dark:text-gray-300">
-                    • {course.name}
-                  </p>
+                  <li key={course.$id} className="text-sm font-montserrat text-gray-600 dark:text-gray-300">
+                    {course.name}
+                  </li>
                 ))}
-              </div>
-              {state.enrollmentData.pricing && (
-                <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
-                  <p className="text-sm font-montserrat text-gray-900 dark:text-white">
-                    <strong>Total: {state.enrollmentData.pricing.totalPrice.toLocaleString('no-NO')} kr</strong>
-                  </p>
-                </div>
-              )}
+              </ul>
             </div>
           </motion.div>
 

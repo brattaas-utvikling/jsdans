@@ -2,7 +2,6 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { useEnrollment } from '../../../contexts/EnrollmentContext';
-import { formatPrice } from '../../../utils/simplePricing';
 import { 
   CreditCard, 
   ArrowRight, 
@@ -12,10 +11,8 @@ import {
   Calendar,
   Mail,
   Phone,
-  Gift,
   CheckCircle,
   Edit3,
-  Tag
 } from 'lucide-react';
 import ScrollToTop from '@/helpers/ScrollToTop';
 
@@ -240,9 +237,6 @@ export default function SummaryStep() {
                   <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400 font-montserrat mt-1">
                     <span>Alder: {course.age}</span>
                     <span>Instruktør: {course.instructor}</span>
-                    {course.schedule && course.schedule[0] && (
-                      <span>{course.schedule[0].day} - {course.schedule[0].time}</span>
-                    )}
                   </div>
                 </div>
                 <CheckCircle className="h-5 w-5 text-green-500 ml-4" />
@@ -250,136 +244,6 @@ export default function SummaryStep() {
             ))}
           </div>
         </motion.div>
-
-        {/* Pricing Summary */}
-        {currentPricing ? (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ 
-              duration: 0.4, 
-              delay: 0.4,
-              ease: "easeOut"
-            }}
-            style={{ willChange: 'transform, opacity' }}
-            className="bg-gradient-to-br from-green-50/50 to-emerald-50/30 dark:from-green-900/20 dark:to-emerald-900/10 p-6 rounded-xl border border-green-100/50 dark:border-green-700/30"
-          >
-            <div className="flex items-center gap-3 mb-4">
-              <CreditCard className="h-5 w-5 text-green-600 dark:text-green-400" />
-              <h3 className="font-bebas text-bebas-base text-gray-900 dark:text-white">
-                Prissammendrag
-              </h3>
-            </div>
-
-            <div className="space-y-3">
-              {/* Course breakdown */}
-              {currentPricing.breakdown.barnedansCount > 0 && (
-                <div className="flex items-center justify-between text-sm">
-                  <span className="font-montserrat text-gray-700 dark:text-gray-300 flex items-center gap-2">
-                    <Tag className="h-3 w-3 text-purple-500" />
-                    Barnedans ({currentPricing.breakdown.barnedansCount} kurs):
-                  </span>
-                  <span className="font-montserrat text-gray-900 dark:text-white">
-                    {formatPrice(currentPricing.breakdown.barnedansPrice)}
-                  </span>
-                </div>
-              )}
-
-              {currentPricing.breakdown.vanligCount > 0 && (
-                <div className="flex items-center justify-between text-sm">
-                  <span className="font-montserrat text-gray-700 dark:text-gray-300 flex items-center gap-2">
-                    <Tag className="h-3 w-3 text-blue-500" />
-                    Vanlige kurs ({currentPricing.breakdown.vanligCount} kurs):
-                  </span>
-                  <span className="font-montserrat text-gray-900 dark:text-white">
-                    {formatPrice(currentPricing.breakdown.vanligPrice)}
-                  </span>
-                </div>
-              )}
-
-              {currentPricing.breakdown.kompaniCount > 0 && (
-                <div className="flex items-center justify-between text-sm">
-                  <span className="font-montserrat text-gray-700 dark:text-gray-300 flex items-center gap-2">
-                    <Tag className="h-3 w-3 text-orange-500" />
-                    Kompani ({currentPricing.breakdown.kompaniCount} kurs):
-                  </span>
-                  <span className="font-montserrat text-gray-900 dark:text-white">
-                    {formatPrice(currentPricing.breakdown.kompaniPrice)}
-                  </span>
-                </div>
-              )}
-
-              {/* Subtotal if there's discount */}
-              {(currentPricing.discount > 0) && (
-                <div className="flex items-center justify-between text-sm border-t border-green-200/50 dark:border-green-700/50 pt-3">
-                  <span className="font-montserrat text-gray-700 dark:text-gray-300">
-                    Delsum:
-                  </span>
-                  <span className="font-montserrat text-gray-900 dark:text-white">
-                    {formatPrice(currentPricing.basePrice)}
-                  </span>
-                </div>
-              )}
-
-              {/* Volume discount */}
-              {currentPricing.discount > 0 && (
-                <div className="flex items-center justify-between text-sm">
-                  <span className="font-montserrat text-green-700 dark:text-green-400 flex items-center gap-2">
-                    <Gift className="h-3 w-3" />
-                    Volumrabatt:
-                  </span>
-                  <span className="font-montserrat text-green-700 dark:text-green-400">
-                    -{formatPrice(currentPricing.discount)}
-                  </span>
-                </div>
-              )}
-
-              {/* Total */}
-              <div className="border-t border-green-200 dark:border-green-700/50 pt-3 mt-3">
-                <div className="flex items-center justify-between">
-                  <span className="font-bebas text-bebas-sm text-gray-900 dark:text-white">
-                    Totalt å betale:
-                  </span>
-                  <span className="font-bebas text-bebas-base text-green-700 dark:text-green-400">
-                    {formatPrice(currentPricing.totalPrice)}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Family discount info */}
-            {state.enrollmentData.isSecondDancerInFamily && (
-              <div className="mt-4 p-3 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg">
-                <p className="text-xs text-purple-700 dark:text-purple-300 font-montserrat flex items-center gap-2">
-                  <Users className="h-3 w-3" />
-                  Familierabatt er aktivert for barn nummer 2+ i familien
-                </p>
-              </div>
-            )}
-          </motion.div>
-        ) : (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ 
-              duration: 0.4, 
-              delay: 0.4,
-              ease: "easeOut"
-            }}
-            style={{ willChange: 'transform, opacity' }}
-            className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-6"
-          >
-            <div className="flex items-center gap-3 mb-3">
-              <CreditCard className="h-5 w-5 text-amber-600 dark:text-amber-400" />
-              <h3 className="font-bebas text-bebas-base text-amber-800 dark:text-amber-200">
-                Prisberegning mangler
-              </h3>
-            </div>
-            <p className="text-amber-700 dark:text-amber-300 font-montserrat text-sm">
-              Kunne ikke beregne prisen. Gå tilbake til kursvalg og velg kurs på nytt.
-            </p>
-          </motion.div>
-        )}
 
         {/* Error display */}
         {!isFormValid && (

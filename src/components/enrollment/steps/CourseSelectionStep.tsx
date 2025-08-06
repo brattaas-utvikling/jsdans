@@ -21,8 +21,7 @@ import {
   Users, 
   Calendar, 
   Clock, 
-  MapPin, 
-  Heart,
+  MapPin,
   User,
   CheckCircle,
   AlertCircle,
@@ -39,7 +38,6 @@ export default function CourseSelectionStep() {
     goToNextStep, 
     goToPreviousStep,
     validateCurrentStep,
-    currentPricing,
     dispatch
   } = useEnrollment();
 
@@ -265,22 +263,6 @@ export default function CourseSelectionStep() {
     return { valid: true, warning, message, isAgeMatch };
   };
 
-  // Get color classes for course card
-  const getColorClasses = (color: string) => {
-    const colorMap: Record<string, string> = {
-      red: 'bg-red-50 border-red-200 text-red-800 dark:bg-red-950/50 dark:border-red-800 dark:text-red-200',
-      orange: 'bg-orange-50 border-orange-200 text-orange-800 dark:bg-orange-950/50 dark:border-orange-800 dark:text-orange-200',
-      yellow: 'bg-yellow-50 border-yellow-200 text-yellow-800 dark:bg-yellow-950/50 dark:border-yellow-800 dark:text-yellow-200',
-      green: 'bg-green-50 border-green-200 text-green-800 dark:bg-green-950/50 dark:border-green-800 dark:text-green-200',
-      blue: 'bg-blue-50 border-blue-200 text-blue-800 dark:bg-blue-950/50 dark:border-blue-800 dark:text-blue-200',
-      purple: 'bg-purple-50 border-purple-200 text-purple-800 dark:bg-purple-950/50 dark:border-purple-800 dark:text-purple-200',
-      pink: 'bg-pink-50 border-pink-200 text-pink-800 dark:bg-pink-950/50 dark:border-pink-800 dark:text-pink-200',
-      emerald: 'bg-emerald-50 border-emerald-200 text-emerald-800 dark:bg-emerald-950/50 dark:border-emerald-800 dark:text-emerald-200',
-    };
-    
-    return colorMap[color.toLowerCase()] || colorMap.purple;
-  };
-
   // Get course type label and color for display
   const getCourseTypeInfo = (course: DanceClass) => {
     const type = identifyCourseType(course);
@@ -402,55 +384,14 @@ export default function CourseSelectionStep() {
         <h2 className="font-bebas text-bebas-xl text-gray-900 dark:text-white mb-2">
           Velg kurs
         </h2>
-        <p className="text-gray-600 dark:text-gray-300 font-montserrat">
-          Velg de kursene <span className="font-bold text-brand-600 dark:text-brand-400">{state.enrollmentData.student.firstName}</span> ønsker å delta på:
+        <p className="text-gray-600 dark:text-gray-300 font-montserrat mb-2">
+          Velg de kursene <span className="font-bold text-brand-600 dark:text-brand-400">{state.enrollmentData.student.firstName}</span> ønsker å delta på
         </p>
-        {studentAge > 0 && (
           <p className="text-sm text-brand-600 dark:text-brand-400 font-montserrat mt-1">
-            Viser kurs passende for {studentAge} år
+            NB! Hvis du har søsken og kan oppnå "søskenrabatt", vennligst kontakt oss direkte for å få rabatten lagt til manuelt.
           </p>
-        )}
-      </motion.div>
 
-      {/* Price preview */}
-      {currentPricing && selectedCourseIds.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ 
-            duration: 0.4, 
-            delay: 0.1,
-            ease: "easeOut"
-          }}
-          style={{ willChange: 'transform, opacity' }}
-          className="mb-6"
-        >
-          <div className="bg-gradient-to-br from-green-50/50 to-emerald-50/30 dark:from-green-900/20 dark:to-emerald-900/10 p-4 rounded-xl border border-green-100/50 dark:border-green-700/30">
-            <div className="flex items-center justify-between">
-              <div>
-                <h4 className="font-bebas text-bebas-sm text-gray-900 dark:text-white mb-1">
-                  Estimert pris
-                </h4>
-                <p className="text-sm text-gray-600 dark:text-gray-300 font-montserrat">
-                  {currentPricing.breakdown.barnedansCount > 0 && `${currentPricing.breakdown.barnedansCount} barnedans, `}
-                  {currentPricing.breakdown.vanligCount > 0 && `${currentPricing.breakdown.vanligCount} vanlig kurs, `}
-                  {currentPricing.breakdown.kompaniCount > 0 && `${currentPricing.breakdown.kompaniCount} kompani`}
-                </p>
-              </div>
-              <div className="text-right">
-                <div className="font-bebas text-bebas-base text-green-700 dark:text-green-400">
-                  {currentPricing.totalPrice.toLocaleString('no-NO')} kr
-                </div>
-                {(currentPricing.discount > 0) && (
-                    <div className="text-xs text-green-600 dark:text-green-400">
-                    Besparelse: {currentPricing.discount.toLocaleString('no-NO')} kr
-                    </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      )}
+      </motion.div>
 
       {/* Course selection */}
       <div className="space-y-6">
@@ -475,10 +416,9 @@ export default function CourseSelectionStep() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {state.availableCourses.map((course, index) => {
+            {state.availableCourses.map((course) => {
               const isSelected = selectedCourseIds.includes(course.$id);
               const ageValidation = getCourseAgeValidation(course);
-              const colorClasses = getColorClasses(course.color);
               const typeInfo = getCourseTypeInfo(course);
               
               return (
@@ -488,7 +428,7 @@ export default function CourseSelectionStep() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ 
                     duration: 0.3, 
-                    delay: 0.05 * index,
+                    delay: 0.05,
                     ease: "easeOut"
                   }}
                   style={{ willChange: 'transform, opacity' }}
@@ -512,9 +452,6 @@ export default function CourseSelectionStep() {
                         <h4 className="font-bebas text-bebas-sm text-gray-900 dark:text-white">
                           {course.name}
                         </h4>
-                        {ageValidation.warning && (
-                          <AlertCircle className="h-4 w-4 text-amber-500" />
-                        )}
                       </div>
 
                       {/* Course type badge */}
@@ -549,37 +486,25 @@ export default function CourseSelectionStep() {
                         </div>
                       )}
                     </div>
-
+                    
+                    {/* Course info button */}
                     <Button
-                      variant="outline"
-                      size="sm"
+                      variant="ghost" // Eller "ghost" for en mer subtil effekt
+                      size="icon"
                       onClick={(e) => {
                         e.stopPropagation();
                         openCourseModal(course);
                       }}
-                      className="ml-3 text-xs"
+                      className="h-auto hover:text-white"
                     >
-                      <Info className="h-3 w-3 mr-1" />
-                      Info
+                      <Info className="h-5 w-5 text-brand-500" /> {/* Juster størrelse etter behov */}
                     </Button>
                   </div>
-
-                  {/* Course schedule preview */}
-                  {course.schedule && course.schedule.length > 0 && (
-                    <div className={`mt-3 p-2 rounded border ${colorClasses}`}>
-                      <div className="flex items-center gap-2 text-xs">
-                        <Calendar className="h-3 w-3" />
-                        <span className="font-medium">{course.schedule[0].day}</span>
-                        <Clock className="h-3 w-3 ml-2" />
-                        <span>{course.schedule[0].time}</span>
-                      </div>
-                    </div>
-                  )}
                 </motion.div>
               );
             })}
           </div>
-        </div>
+        </div>                          
 
         {/* Selected courses summary */}
         {selectedCourseIds.length > 0 && (
@@ -713,20 +638,6 @@ export default function CourseSelectionStep() {
                       </div>
                     </div>
                   </div>
-                </div>
-
-                {/* What you learn */}
-                <div className="bg-gradient-to-br from-brand-50/50 to-coral-50/30 dark:from-brand-900/20 dark:to-coral-900/10 p-4 rounded-lg">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Heart className="h-4 w-4 text-brand-500" />
-                    <span className="font-montserrat font-semibold text-gray-700 dark:text-gray-200">Hva du lærer:</span>
-                  </div>
-                  <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1 font-montserrat">
-                    <li>• Grunnleggende teknikker og bevegelser</li>
-                    <li>• Rytme og musikktolkning</li>
-                    <li>• Selvtillit og kroppsbeherskelse</li>
-                    <li>• Kreativt uttrykk og improvisasjon</li>
-                  </ul>
                 </div>
 
                 {/* Schedule */}
