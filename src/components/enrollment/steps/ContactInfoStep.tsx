@@ -348,7 +348,7 @@ const validateBirthDate = (value: string): string | undefined => {
   const studentAge = calculateAge(studentForm.birthDate);
 
   return (
-    <div className="p-8 md:p-12">
+    <div className="px-2 py-4 md:p-12">
       <ScrollToTop />
       {/* Header */}
       <motion.div
@@ -378,7 +378,7 @@ const validateBirthDate = (value: string): string | undefined => {
           transition={{ duration: 0.6, delay: 0.1 }}
           className="bg-gradient-to-br from-brand-50/50 to-coral-50/30 
                      dark:from-brand-900/20 dark:to-coral-900/10 
-                     p-6 rounded-xl border border-brand-100/50 dark:border-brand-700/30"
+                     px-3 py-6 rounded-xl border border-brand-100/50 dark:border-brand-700/30"
         >
           <div className="flex items-center gap-3 mb-4">
             <User className="h-5 w-5 text-brand-600 dark:text-brand-400" />
@@ -488,7 +488,7 @@ const validateBirthDate = (value: string): string | undefined => {
           transition={{ duration: 0.6, delay: 0.15 }}
           className="bg-gradient-to-br from-purple-50/50 to-pink-50/30 
                      dark:from-purple-900/20 dark:to-pink-900/10 
-                     p-6 rounded-xl border border-purple-100/50 dark:border-purple-700/30"
+                     px-3 py-6 rounded-xl border border-purple-100/50 dark:border-purple-700/30"
         >
           <div className="flex items-center gap-3 mb-4">
             <Users className="h-5 w-5 text-purple-600 dark:text-purple-400" />
@@ -520,22 +520,22 @@ const validateBirthDate = (value: string): string | undefined => {
                 Skriv inn navn på søsken som også skal meldes på kurs. Rabatten aktiveres ved fakturering.
               </p>
               <div className="mt-3 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200 dark:border-purple-700">
-  <div className="text-sm">
-    <p className="font-semibold text-purple-700 dark:text-purple-300 mb-1 text-left">Rabatter tilgjengelig:</p>
-    <ul className="list-disc list-inside space-y-1 text-purple-600 dark:text-purple-400 text-left">
-      <li>Søskenrabatt 200kr avslag for kurs 60 min</li>
-      <li>Familierabatt 20% for dansepakke nr. 2</li>
-      <li>Familierabatt 50% for dansepakke nr. 3+</li>
-    </ul>
-  </div>
-</div>
+                <div className="text-sm">
+                  <p className="font-semibold text-purple-700 dark:text-purple-300 mb-1 text-left">Rabatter tilgjengelig:</p>
+                  <ul className="list-disc list-inside space-y-1 text-purple-600 dark:text-purple-400 text-left">
+                    <li>Søskenrabatt 200kr avslag for kurs 60 min</li>
+                    <li>Familierabatt 20% for dansepakke nr. 2</li>
+                    <li>Familierabatt 50% for dansepakke nr. 3+</li>
+                  </ul>
+                </div>
+              </div>
 
               {siblings.map((sibling, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-white dark:bg-surface-dark rounded-lg border border-purple-200/50 dark:border-purple-700/30"
+                  className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-white dark:bg-transparent rounded-lg border border-purple-200/50 dark:border-purple-700/30"
                 >
                   <div>
                     <label className="block text-sm font-montserrat font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -623,12 +623,12 @@ const validateBirthDate = (value: string): string | undefined => {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="bg-gradient-to-br from-magenta-50/50 to-coral-50/30 
                      dark:from-magenta-900/20 dark:to-coral-900/10 
-                     p-6 rounded-xl border border-magenta-100/50 dark:border-magenta-700/30"
+                     px-3 py-6 rounded-xl border border-magenta-100/50 dark:border-magenta-700/30"
         >
           <div className="flex items-center gap-3 mb-4">
             <UserCheck className="h-5 w-5 text-magenta-600 dark:text-magenta-400" />
-            <h3 className="font-bebas text-bebas-base text-gray-900 dark:text-white">
-              Foresatt/Kontaktperson
+            <h3 className="font-bebas text-bebas-base  text-gray-900 dark:text-white">
+              Foresatt / Kontaktperson
             </h3>
           </div>
 

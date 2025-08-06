@@ -163,7 +163,7 @@ export default function ConfirmationStep() {
   // Success state
   if (submissionState === 'success') {
     return (
-      <div className="p-8 md:p-12">
+      <div className="px-2 py-4 md:p-12">
         <ScrollToTop />
         <motion.div
           initial={{ opacity: 0, y: 20 }}

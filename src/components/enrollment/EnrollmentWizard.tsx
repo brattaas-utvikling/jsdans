@@ -197,7 +197,7 @@ export default function EnrollmentWizard() {
 
       {/* Main Content - Step Content */}
       <section className="pb-16">
-        <div className="container mx-auto px-4 md:px-6">
+        <div className="container mx-auto px-1 md:px-6">
           <div className="max-w-4xl mx-auto">
             <AnimatePresence mode="wait">
               <motion.div

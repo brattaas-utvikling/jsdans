@@ -365,7 +365,7 @@ export default function CourseSelectionStep() {
   }
 
   return (
-    <div className="p-8 md:p-12">
+    <div className="px-2 py-4 md:p-12">
       <ScrollToTop />
       {/* Header */}
       <motion.div
@@ -412,7 +412,7 @@ export default function CourseSelectionStep() {
               size="sm"
               className="text-xs"
             >
-              <RefreshCw className={`h-3 w-3 mr-1 ${isReloading ? 'animate-spin' : ''}`} />
+              <RefreshCw className={`float-right h-3 w-3 mr-1 ${isReloading ? 'animate-spin' : ''}`} />
               Oppdater
             </Button>
           </div>
@@ -429,7 +429,7 @@ export default function CourseSelectionStep() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ 
-                    duration: 0.3, 
+                    duration: 0.1, 
                     delay: 0.05,
                     ease: "easeOut"
                   }}

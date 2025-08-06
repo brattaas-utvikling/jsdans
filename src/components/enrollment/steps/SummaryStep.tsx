@@ -50,7 +50,7 @@ export default function SummaryStep() {
   const studentAge = calculateAge(state.enrollmentData.student.birthDate);
 
   return (
-    <div className="p-8 md:p-12">
+    <div className="px-2 py-4 md:p-12">
       <ScrollToTop />
       {/* Header */}
       <motion.div
@@ -87,7 +87,7 @@ export default function SummaryStep() {
             ease: "easeOut"
           }}
           style={{ willChange: 'transform, opacity' }}
-          className="bg-gradient-to-br from-brand-50/50 to-coral-50/30 dark:from-brand-900/20 dark:to-coral-900/10 p-6 rounded-xl border border-brand-100/50 dark:border-brand-700/30"
+          className="bg-gradient-to-br from-brand-50/50 to-coral-50/30 dark:from-brand-900/20 dark:to-coral-900/10 p-6 rounded-xl border border-brand-100/50 dark:border-brand-700/30 relative"
         >
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
@@ -100,7 +100,7 @@ export default function SummaryStep() {
               variant="ghost"
               size="sm"
               onClick={() => handleEditSection('contact')}
-              className="text-brand-600 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300 text-xs"
+              className="text-brand-600 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300 text-xs absolute right-0 top-0"
             >
               <Edit3 className="h-3 w-3 mr-1" />
               Endre
@@ -146,7 +146,7 @@ export default function SummaryStep() {
               ease: "easeOut"
             }}
             style={{ willChange: 'transform, opacity' }}
-            className="bg-gradient-to-br from-purple-50/50 to-pink-50/30 dark:from-purple-900/20 dark:to-pink-900/10 p-6 rounded-xl border border-purple-100/50 dark:border-purple-700/30"
+            className="bg-gradient-to-br from-purple-50/50 to-pink-50/30 dark:from-purple-900/20 dark:to-pink-900/10 p-6 rounded-xl border border-purple-100/50 dark:border-purple-700/30 relative"
           >
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
@@ -159,7 +159,7 @@ export default function SummaryStep() {
                 variant="ghost"
                 size="sm"
                 onClick={() => handleEditSection('contact')}
-                className="text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300 text-xs"
+                className="text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300 text-xs absolute right-0 top-0"
               >
                 <Edit3 className="h-3 w-3 mr-1" />
                 Endre
@@ -171,7 +171,7 @@ export default function SummaryStep() {
                 Søskenrabatt aktiveres ved fakturering
               </p>
               {state.enrollmentData.siblings.map((sibling, index) => (
-                <div key={index} className="flex items-center gap-3 p-3 bg-white dark:bg-surface-dark rounded-lg">
+                <div key={index} className="flex items-center gap-3 p-3 bg-white dark:bg-surface-dark/70 rounded-lg">
                   <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center">
                     <UserPlus className="h-4 w-4 text-purple-600 dark:text-purple-400" />
                   </div>
@@ -199,7 +199,7 @@ export default function SummaryStep() {
             ease: "easeOut"
           }}
           style={{ willChange: 'transform, opacity' }}
-          className="bg-gradient-to-br from-magenta-50/50 to-coral-50/30 dark:from-magenta-900/20 dark:to-coral-900/10 p-6 rounded-xl border border-magenta-100/50 dark:border-magenta-700/30"
+          className="bg-gradient-to-br from-magenta-50/50 to-coral-50/30 dark:from-magenta-900/20 dark:to-coral-900/10 p-6 rounded-xl border border-magenta-100/50 dark:border-magenta-700/30 relative"
         >
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
@@ -212,7 +212,7 @@ export default function SummaryStep() {
               variant="ghost"
               size="sm"
               onClick={() => handleEditSection('contact')}
-              className="text-magenta-600 hover:text-magenta-700 dark:text-magenta-400 dark:hover:text-magenta-300 text-xs"
+              className="text-magenta-600 hover:text-magenta-700 dark:text-magenta-400 dark:hover:text-magenta-300 text-xs absolute right-0 top-0"
             >
               <Edit3 className="h-3 w-3 mr-1" />
               Endre
@@ -259,7 +259,7 @@ export default function SummaryStep() {
             ease: "easeOut"
           }}
           style={{ willChange: 'transform, opacity' }}
-          className="bg-white dark:bg-surface-dark p-6 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm"
+          className="bg-white dark:bg-surface-dark p-6 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm relative"
         >
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
@@ -272,7 +272,7 @@ export default function SummaryStep() {
               variant="ghost"
               size="sm"
               onClick={() => handleEditSection('courses')}
-              className="text-brand-600 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300 text-xs"
+              className="text-brand-600 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300 text-xs absolute right-0 top-0"
             >
               <Edit3 className="h-3 w-3 mr-1" />
               Endre
@@ -354,7 +354,7 @@ export default function SummaryStep() {
           disabled={!isFormValid}
           className={
             isFormValid 
-              ? 'bg-green-600 hover:bg-green-700 text-white shadow-lg hover:shadow-xl transform hover:scale-[1.02] px-8 py-3 rounded-full font-semibold font-montserrat text-base transition-all duration-200 flex items-center gap-2' 
+              ? 'bg-green-600 hover:bg-green-700 text-white shadow-lg hover:shadow-xl transform hover:scale-[1.01]  md:px-8 md:py-3 rounded-full font-semibold font-montserrat text-sm md:text-base transition-all duration-200 flex items-center gap-2' 
               : 'bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed px-8 py-3 rounded-full font-semibold font-montserrat text-base transition-all duration-200 flex items-center gap-2'
           }
         >
