@@ -31,7 +31,6 @@ import {
   Loader2
 } from 'lucide-react';
 import type { DanceClass } from '../../../types';
-import ScrollToTop from '@/helpers/ScrollToTop';
 
 export default function CourseSelectionStep() {
   const { 
@@ -250,6 +249,13 @@ export default function CourseSelectionStep() {
         warning = true;
         message = `Dette kurset er for ungdom/voksne 16+ år. Eleven din er ${studentAge} år og kan være for ung.`;
       }
+    } else if (ageRange.includes("trinn") || ageRange.includes("Trinn")) {
+      // Handle "fra 5. trinn" format - assume it's appropriate for older students
+      isAgeMatch = studentAge >= 10; // 5. trinn = ca 10-11 år
+      if (studentAge < 10) {
+        warning = true;
+        message = `Dette kurset er for elever fra 5. trinn. Eleven din er ${studentAge} år og kan være for ung.`;
+      }
     } else {
       console.log(`⚠️ Ukjent aldersformat: "${ageRange}" for klasse ${course.name}`);
       // Allow selection for unknown formats, just don't show warning
@@ -377,7 +383,6 @@ export default function CourseSelectionStep() {
 
   return (
     <div className="p-8 md:p-12">
-      <ScrollToTop />
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -398,7 +403,7 @@ export default function CourseSelectionStep() {
           Velg kurs
         </h2>
         <p className="text-gray-600 dark:text-gray-300 font-montserrat">
-          Velg de kursene {state.enrollmentData.student.firstName} ønsker å delta på
+          Velg de kursene <span className="font-bold text-brand-600 dark:text-brand-400">{state.enrollmentData.student.firstName}</span> ønsker å delta på:
         </p>
         {studentAge > 0 && (
           <p className="text-sm text-brand-600 dark:text-brand-400 font-montserrat mt-1">

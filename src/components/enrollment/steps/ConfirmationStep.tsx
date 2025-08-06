@@ -12,15 +12,15 @@ import {
   Database,
   ArrowRight,
   Home,
-  RefreshCw,
+  RefreshCw
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import ScrollToTop from '@/helpers/ScrollToTop';
+import { Link, useNavigate } from 'react-router-dom';
 
 type SubmissionState = 'submitting' | 'success' | 'error' | 'idle';
 
 export default function ConfirmationStep() {
   const { state, resetEnrollment, dispatch } = useEnrollment();
+  const navigate = useNavigate();
   const [submissionState, setSubmissionState] = useState<SubmissionState>('idle');
   const [enrollmentId, setEnrollmentId] = useState<string>('');
   const [error, setError] = useState<string>('');
@@ -99,6 +99,12 @@ export default function ConfirmationStep() {
     resetEnrollment();
   };
 
+  const handleGoHome = () => {
+    console.log('🏠 Going home and resetting enrollment...');
+    handleNewEnrollment(); // Reset state first
+    navigate('/', { replace: true }); // Navigate programmatically
+  };
+
   // Submitting state
   if (submissionState === 'submitting') {
     return (
@@ -157,7 +163,6 @@ export default function ConfirmationStep() {
   if (submissionState === 'success') {
     return (
       <div className="p-8 md:p-12">
-        <ScrollToTop />
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -181,7 +186,7 @@ export default function ConfirmationStep() {
             transition={{ delay: 0.4 }}
             className="font-bebas text-bebas-2xl text-gray-900 dark:text-white mb-4"
           >
-            Påmelding fullført!
+            Påmelding fullført! 🎉
           </motion.h2>
           
           <motion.p
@@ -280,15 +285,14 @@ export default function ConfirmationStep() {
             transition={{ delay: 1.2 }}
             className="flex flex-col sm:flex-row gap-4 justify-center items-center"
           >
-            <Link to="/" className="w-full sm:w-auto">
-              <Button
-                variant="outline"
-                className="w-full px-6 py-3 rounded-full font-montserrat font-medium"
-              >
-                <Home className="h-4 w-4 mr-2" />
-                Tilbake til forsiden
-              </Button>
-            </Link>
+            <Button
+              onClick={handleGoHome}
+              variant="outline"
+              className="w-full sm:w-auto px-6 py-3 rounded-full font-montserrat font-medium"
+            >
+              <Home className="h-4 w-4 mr-2" />
+              Tilbake til forsiden
+            </Button>
             
             <Button
               onClick={handleNewEnrollment}
@@ -363,4 +367,4 @@ export default function ConfirmationStep() {
 
   // This should not be reached, but just in case
   return null;
-} 
+}
