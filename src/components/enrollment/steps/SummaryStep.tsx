@@ -1,10 +1,8 @@
 // src/components/enrollment/steps/SummaryStep.tsx
-import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { useEnrollment } from '../../../contexts/EnrollmentContext';
-import { formatSmartPrice } from '../../../utils/enchancedSmartPricing';
-
+import { formatPrice } from '../../../utils/simplePricing';
 import { 
   CreditCard, 
   ArrowRight, 
@@ -15,65 +13,21 @@ import {
   Mail,
   Phone,
   Gift,
-  AlertTriangle,
   CheckCircle,
-  Edit3
+  Edit3,
+  Tag
 } from 'lucide-react';
-import { PricingPackage } from '@/types';
+import ScrollToTop from '@/helpers/ScrollToTop';
 
-interface SummaryStepProps {
-  packages: PricingPackage[];
-}
-
-export default function SummaryStep({ packages }: SummaryStepProps) {
+export default function SummaryStep() {
   const { 
     state, 
     goToNextStep, 
     goToPreviousStep,
-    calculatePricing,
-    setStep
+    setStep,
+    currentPricing,
+    isFormValid
   } = useEnrollment();
-
-  const [isFormValid, setIsFormValid] = useState(false);
-
-  // Calculate pricing when component mounts or data changes
-  useEffect(() => {
-    if (state.enrollmentData.selectedCourses.length > 0 && packages.length > 0) {
-      console.log('🧮 SummaryStep: Beregner priser automatisk');
-      calculatePricing(packages);
-    } else {
-      console.warn('⚠️ SummaryStep: Kan ikke beregne priser', {
-        courses: state.enrollmentData.selectedCourses.length,
-        packages: packages.length
-      });
-    }
-  }, [state.enrollmentData.selectedCourses, state.enrollmentData.isSecondDancerInFamily, packages, calculatePricing]);
-
-  // Check if all required data is present
-  useEffect(() => {
-    const hasStudentInfo = !!state.enrollmentData.student.firstName && 
-                          !!state.enrollmentData.student.lastName && 
-                          !!state.enrollmentData.student.birthDate;
-    const hasGuardianInfo = !!state.enrollmentData.guardian.name && 
-                           !!state.enrollmentData.guardian.email && 
-                           !!state.enrollmentData.guardian.phone;
-    const hasCourses = state.enrollmentData.selectedCourses.length > 0;
-    const hasPricing = state.enrollmentData.pricing !== null;
-
-    // Debug logging
-    console.log('🔍 Validation check:', {
-      hasStudentInfo,
-      hasGuardianInfo, 
-      hasCourses,
-      hasPricing,
-      studentData: state.enrollmentData.student,
-      guardianData: state.enrollmentData.guardian,
-      coursesCount: state.enrollmentData.selectedCourses.length,
-      pricing: state.enrollmentData.pricing
-    });
-
-    setIsFormValid(hasStudentInfo && hasGuardianInfo && hasCourses && hasPricing);
-  }, [state.enrollmentData]);
 
   const handleNext = () => {
     goToNextStep();
@@ -96,10 +50,10 @@ export default function SummaryStep({ packages }: SummaryStepProps) {
   };
 
   const studentAge = calculateAge(state.enrollmentData.student.birthDate);
-  const pricing = state.enrollmentData.pricing;
 
   return (
     <div className="p-8 md:p-12">
+      <ScrollToTop />
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -297,8 +251,8 @@ export default function SummaryStep({ packages }: SummaryStepProps) {
           </div>
         </motion.div>
 
-        {/* Pricing Summary or No Pricing Message */}
-        {pricing ? (
+        {/* Pricing Summary */}
+        {currentPricing ? (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -318,62 +272,82 @@ export default function SummaryStep({ packages }: SummaryStepProps) {
             </div>
 
             <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="font-montserrat text-gray-700 dark:text-gray-300">
-                  Pakke: {pricing.packageName}
-                </span>
-                <span className="font-montserrat text-gray-900 dark:text-white">
-                  {pricing.isToddlerPricing && <span className="text-xs text-purple-600 dark:text-purple-400 mr-2">(Småbarn)</span>}
-                </span>
-              </div>
-
-              {pricing.originalPrice && pricing.originalPrice > pricing.total && (
+              {/* Course breakdown */}
+              {currentPricing.breakdown.barnedansCount > 0 && (
                 <div className="flex items-center justify-between text-sm">
-                  <span className="font-montserrat text-gray-500 dark:text-gray-400 line-through">
-                    Ordinær pris:
+                  <span className="font-montserrat text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                    <Tag className="h-3 w-3 text-purple-500" />
+                    Barnedans ({currentPricing.breakdown.barnedansCount} kurs):
                   </span>
-                  <span className="font-montserrat text-gray-500 dark:text-gray-400 line-through">
-                    {formatSmartPrice(pricing.originalPrice)}
+                  <span className="font-montserrat text-gray-900 dark:text-white">
+                    {formatPrice(currentPricing.breakdown.barnedansPrice)}
                   </span>
                 </div>
               )}
 
-              {pricing.breakdown.packageDiscount > 0 && (
+              {currentPricing.breakdown.vanligCount > 0 && (
+                <div className="flex items-center justify-between text-sm">
+                  <span className="font-montserrat text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                    <Tag className="h-3 w-3 text-blue-500" />
+                    Vanlige kurs ({currentPricing.breakdown.vanligCount} kurs):
+                  </span>
+                  <span className="font-montserrat text-gray-900 dark:text-white">
+                    {formatPrice(currentPricing.breakdown.vanligPrice)}
+                  </span>
+                </div>
+              )}
+
+              {currentPricing.breakdown.kompaniCount > 0 && (
+                <div className="flex items-center justify-between text-sm">
+                  <span className="font-montserrat text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                    <Tag className="h-3 w-3 text-orange-500" />
+                    Kompani ({currentPricing.breakdown.kompaniCount} kurs):
+                  </span>
+                  <span className="font-montserrat text-gray-900 dark:text-white">
+                    {formatPrice(currentPricing.breakdown.kompaniPrice)}
+                  </span>
+                </div>
+              )}
+
+              {/* Subtotal if there's discount */}
+              {(currentPricing.discount > 0) && (
+                <div className="flex items-center justify-between text-sm border-t border-green-200/50 dark:border-green-700/50 pt-3">
+                  <span className="font-montserrat text-gray-700 dark:text-gray-300">
+                    Delsum:
+                  </span>
+                  <span className="font-montserrat text-gray-900 dark:text-white">
+                    {formatPrice(currentPricing.basePrice)}
+                  </span>
+                </div>
+              )}
+
+              {/* Volume discount */}
+              {currentPricing.discount > 0 && (
                 <div className="flex items-center justify-between text-sm">
                   <span className="font-montserrat text-green-700 dark:text-green-400 flex items-center gap-2">
                     <Gift className="h-3 w-3" />
-                    Pakkerabatt:
+                    Volumrabatt:
                   </span>
                   <span className="font-montserrat text-green-700 dark:text-green-400">
-                    -{formatSmartPrice(pricing.breakdown.packageDiscount)}
+                    -{formatPrice(currentPricing.discount)}
                   </span>
                 </div>
               )}
 
-              {state.enrollmentData.isSecondDancerInFamily && pricing.appliedFamilyDiscount && (
-                <div className="flex items-center justify-between text-sm">
-                  <span className="font-montserrat text-purple-700 dark:text-purple-400 flex items-center gap-2">
-                    <Users className="h-3 w-3" />
-                    Familierabatt:
-                  </span>
-                  <span className="font-montserrat text-purple-700 dark:text-purple-400">
-                    -{formatSmartPrice(pricing.appliedFamilyDiscount)}
-                  </span>
-                </div>
-              )}
-
+              {/* Total */}
               <div className="border-t border-green-200 dark:border-green-700/50 pt-3 mt-3">
                 <div className="flex items-center justify-between">
                   <span className="font-bebas text-bebas-sm text-gray-900 dark:text-white">
                     Totalt å betale:
                   </span>
                   <span className="font-bebas text-bebas-base text-green-700 dark:text-green-400">
-                    {formatSmartPrice(pricing.total)}
+                    {formatPrice(currentPricing.totalPrice)}
                   </span>
                 </div>
               </div>
             </div>
 
+            {/* Family discount info */}
             {state.enrollmentData.isSecondDancerInFamily && (
               <div className="mt-4 p-3 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg">
                 <p className="text-xs text-purple-700 dark:text-purple-300 font-montserrat flex items-center gap-2">
@@ -396,78 +370,75 @@ export default function SummaryStep({ packages }: SummaryStepProps) {
             className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-6"
           >
             <div className="flex items-center gap-3 mb-3">
-              <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+              <CreditCard className="h-5 w-5 text-amber-600 dark:text-amber-400" />
               <h3 className="font-bebas text-bebas-base text-amber-800 dark:text-amber-200">
                 Prisberegning mangler
               </h3>
             </div>
-            <p className="text-amber-700 dark:text-amber-300 font-montserrat text-sm mb-3">
-              Vi kunne ikke beregne prisen for dine valgte kurs. Dette kan skje hvis:
+            <p className="text-amber-700 dark:text-amber-300 font-montserrat text-sm">
+              Kunne ikke beregne prisen. Gå tilbake til kursvalg og velg kurs på nytt.
             </p>
-            <ul className="text-amber-700 dark:text-amber-300 font-montserrat text-sm space-y-1 ml-4">
-              <li>• Prispakkene ikke er lastet enda ({packages.length} pakker tilgjengelig)</li>
-              <li>• Kurs er ikke valgt ({state.enrollmentData.selectedCourses.length} kurs valgt)</li>
-              <li>• Det er en teknisk feil i prisberegningen</li>
-            </ul>
-            <p className="text-amber-700 dark:text-amber-300 font-montserrat text-sm mt-3">
-              <strong>Løsning:</strong> Gå tilbake til kursvalg-steget og velg kursene på nytt.
-            </p>
-            <Button
-              onClick={() => calculatePricing(packages)}
-              variant="outline"
-              size="sm"
-              className="mt-3 text-amber-700 border-amber-300 hover:bg-amber-100"
-            >
-              Prøv å beregne på nytt
-            </Button>
           </motion.div>
         )}
 
-        {/* Important Notice */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ 
-            duration: 0.4, 
-            delay: 0.5,
-            ease: "easeOut"
-          }}
-          style={{ willChange: 'transform, opacity' }}
-          className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4"
-        >
-          <div className="flex items-start gap-3">
-            <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400 mt-0.5" />
-            <div>
-              <h4 className="font-bebas text-bebas-sm text-amber-800 dark:text-amber-200 mb-1">
-                Viktig informasjon
-              </h4>
-              <p className="text-sm text-amber-700 dark:text-amber-300">
-                Vennligst les nøye gjennom all informasjon før du fullfører påmeldingen.
-              </p>
-            </div>
+        {/* Error display */}
+        {!isFormValid && (
+          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+            <h4 className="font-montserrat font-semibold text-red-800 dark:text-red-200 mb-2">
+              Noe mangler i påmeldingen:
+            </h4>
+            <ul className="text-red-600 dark:text-red-300 font-montserrat text-sm space-y-1">
+              {(!state.enrollmentData.student.firstName || !state.enrollmentData.student.lastName || !state.enrollmentData.student.birthDate) && (
+                <li>• Elevens informasjon er ikke fullstendig</li>
+              )}
+              {(!state.enrollmentData.guardian.name || !state.enrollmentData.guardian.email || !state.enrollmentData.guardian.phone) && (
+                <li>• Kontaktpersonens informasjon er ikke fullstendig</li>
+              )}
+              {state.enrollmentData.selectedCourses.length === 0 && (
+                <li>• Ingen kurs er valgt</li>
+              )}
+              {!currentPricing && (
+                <li>• Prisberegning mangler</li>
+              )}
+            </ul>
           </div>
-        </motion.div>
-        {/* Action Buttons */}
-        <div className="flex justify-between mt-8">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={goToPreviousStep}
-            className="text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Tilbake
-          </Button>
-          <Button
-            onClick={handleNext}
-            disabled={!isFormValid}
-            className={`font-semibold ${isFormValid ? 'bg-brand-600 hover:bg-brand-700 text-white' : 'bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed'}`}
-          >
-            Fullfør påmelding
-            <ArrowRight className="h-4 w-4 ml-2" />
-          </Button>
-        </div>
+        )}
       </div>
+
+      {/* Navigation */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ 
+          duration: 0.4, 
+          delay: 0.6,
+          ease: "easeOut"
+        }}
+        style={{ willChange: 'transform, opacity' }}
+        className="flex justify-between items-center pt-8 mt-8 border-t border-gray-200 dark:border-gray-700"
+      >
+        <Button
+          onClick={goToPreviousStep}
+          variant="outline"
+          className="px-6 py-3 rounded-full font-montserrat font-medium"
+        >
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Tilbake
+        </Button>
+
+        <Button
+          onClick={handleNext}
+          disabled={!isFormValid}
+          className={
+            isFormValid 
+              ? 'bg-green-600 hover:bg-green-700 text-white shadow-lg hover:shadow-xl transform hover:scale-[1.02] px-8 py-3 rounded-full font-semibold font-montserrat text-base transition-all duration-200 flex items-center gap-2' 
+              : 'bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed px-8 py-3 rounded-full font-semibold font-montserrat text-base transition-all duration-200 flex items-center gap-2'
+          }
+        >
+          Fullfør påmelding
+          <ArrowRight className="h-4 w-4" />
+        </Button>
+      </motion.div>
     </div>
   );
 }

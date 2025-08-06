@@ -3,40 +3,27 @@ import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEnrollment } from '../../contexts/EnrollmentContext';
 import { listDocuments, DATABASE_ID, COLLECTIONS, Query } from '../../lib/appwrite';
-import { usePricing } from '../../hooks/usePricing';
 import ScrollToTop from '../../helpers/ScrollToTop';
 import StepIndicator from './StepIndicator';
 import ContactInfoStep from './steps/ContactInfoStep';
 import CourseSelectionStep from './steps/CourseSelectionStep';
 import SummaryStep from './steps/SummaryStep';
+import ConfirmationStep from './steps/ConfirmationStep';
 import type { DanceClass } from '../../types';
-
-// Temporary placeholder components for remaining steps
-const ConfirmationStep = () => (
-  <div className="p-8 text-center">
-    <h2 className="font-bebas text-bebas-xl text-gray-900 dark:text-white mb-4">
-      Bekreftelse kommer snart
-    </h2>
-    <p className="text-gray-600 dark:text-gray-300 font-montserrat">
-      Dette steget er under utvikling...
-    </p>
-  </div>
-);
 
 export default function EnrollmentWizard() {
   const { state, dispatch } = useEnrollment();
-  const { pricingPackages, loading: loadingPricing } = usePricing();
-  const [loadingCourses, setLoadingCourses] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   // Fetch courses on component mount
   useEffect(() => {
     const fetchCourses = async () => {
-      setLoadingCourses(true);
+      setLoading(true);
       setError(null);
 
       try {
-        // Fetch courses
+        // Fetch courses only - no pricing packages needed
         const coursesResponse = await listDocuments(
           DATABASE_ID,
           COLLECTIONS.DANCE_CLASSES,
@@ -55,26 +42,15 @@ export default function EnrollmentWizard() {
         console.error('Error fetching courses:', err);
         setError('Kunne ikke laste kursdata. Prøv å oppdatere siden.');
       } finally {
-        setLoadingCourses(false);
+        setLoading(false);
       }
     };
 
     fetchCourses();
   }, [dispatch]);
 
-  // Debug logging for pricing packages
-  useEffect(() => {
-    console.log('📊 Pricing packages oppdatert:', {
-      count: pricingPackages.length,
-      packages: pricingPackages.map(p => ({ name: p.name, price: p.price }))
-    });
-  }, [pricingPackages]);
-
-  // Combined loading state
-  const isLoading = loadingCourses || loadingPricing;
-
   // Loading state
-  if (isLoading) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-brand-50/80 to-surface-muted 
                      dark:from-brand-900/10 dark:to-surface-dark-muted 
@@ -83,9 +59,6 @@ export default function EnrollmentWizard() {
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-500 mx-auto mb-4"></div>
           <p className="text-gray-600 dark:text-gray-300 font-montserrat">
             Laster påmeldingsskjema...
-            {loadingCourses && !loadingPricing && ' (laster kurs)'}
-            {!loadingCourses && loadingPricing && ' (laster priser)'}
-            {loadingCourses && loadingPricing && ' (laster data)'}
           </p>
         </div>
       </div>
@@ -118,11 +91,6 @@ export default function EnrollmentWizard() {
     );
   }
 
-  // Warning if no pricing packages are available
-  if (pricingPackages.length === 0) {
-    console.warn('⚠️ Ingen pricing packages lastet - prisberegning vil ikke fungere');
-  }
-
   // Animation variants for step transitions
   const stepVariants = {
     enter: {
@@ -145,9 +113,9 @@ export default function EnrollmentWizard() {
       case 'contact':
         return <ContactInfoStep key="contact" />;
       case 'courses':
-        return <CourseSelectionStep key="courses" packages={pricingPackages} />;
+        return <CourseSelectionStep key="courses" />;
       case 'summary':
-        return <SummaryStep key="summary" packages={pricingPackages} />;
+        return <SummaryStep key="summary" />;
       case 'confirmation':
         return <ConfirmationStep key="confirmation" />;
       default:

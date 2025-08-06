@@ -32,10 +32,10 @@ export default function PricingPage() {
   const formatPricingDisplay = (pkg: PricingPackage): string => {
     // Special cases with fallback descriptions - ALLTID vis disse
     const fallbackDescriptions: Record<string, string> = {
-      Familierabatt: "50% for danser nr 2 som danser 3 eller flere klasser",
-      Kompani: "500 kr ekstra per halvår",
-      Klippekort: "1 500 kr for 10 klipp",
-      Prøvetime: "Gratis første time for nye deltakere",
+      "Barnedans": "1300kr per halvår",
+      "1 Klasse": "1700kr per halvår",
+      "2 Klasser": "3200kr per halvår",
+      "3 eller flere klasser": "4500kr per halvår",
     };
 
     // Check if this package has a fallback description - VIS ALLTID

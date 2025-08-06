@@ -1,5 +1,5 @@
 // src/contexts/EnrollmentContext.tsx
-import React, { createContext, useContext, useReducer, useCallback, ReactNode } from 'react';
+import React, { createContext, useContext, useReducer, useCallback, useMemo, ReactNode } from 'react';
 import type { 
   EnrollmentState, 
   EnrollmentAction, 
@@ -9,8 +9,7 @@ import type {
   EnrollmentErrors
 } from '../types/enrollment';
 import type { DanceClass } from '../types';
-import type { PricingPackage } from '@/types';
-import { calculateEnhancedSmartPackagePrice, SmartPricingResult } from '../utils/enchancedSmartPricing';
+import { calculateSimplePrice, SimplePricingResult } from '../utils/simplePricing';
 import { validateStudentAge } from '../utils/pricing';
 
 // Initial state
@@ -161,9 +160,12 @@ interface EnrollmentContextType {
   setFamilyDiscount: (isFamily: boolean) => void;
   goToNextStep: () => void;
   goToPreviousStep: () => void;
-  calculatePricing: (packages: PricingPackage[]) => void;
   validateCurrentStep: () => boolean;
   resetEnrollment: () => void;
+  
+  // Memoized values
+  currentPricing: SimplePricingResult | null;
+  isFormValid: boolean;
 }
 
 // Create context
@@ -176,6 +178,47 @@ interface EnrollmentProviderProps {
 
 export function EnrollmentProvider({ children }: EnrollmentProviderProps) {
   const [state, dispatch] = useReducer(enrollmentReducer, initialState);
+
+  // Memoized pricing calculation - recalculates whenever courses or family discount changes
+  const currentPricing = useMemo(() => {
+    const { selectedCourses, isSecondDancerInFamily } = state.enrollmentData;
+    
+    if (selectedCourses.length === 0) {
+      return null;
+    }
+    
+    console.log('🧮 Beregner priser (useMemo):', {
+      courseCount: selectedCourses.length,
+      courses: selectedCourses.map(c => c.name),
+      isSecondDancerInFamily
+    });
+    
+    const pricing = calculateSimplePrice(selectedCourses, isSecondDancerInFamily);
+    
+    // Update state if pricing changed
+    if (JSON.stringify(pricing) !== JSON.stringify(state.enrollmentData.pricing)) {
+      dispatch({ type: 'SET_PRICING', payload: pricing });
+    }
+    
+    return pricing;
+  }, [state.enrollmentData.selectedCourses, state.enrollmentData.isSecondDancerInFamily]);
+
+  // Memoized form validation
+  const isFormValid = useMemo(() => {
+    const { student, guardian, selectedCourses } = state.enrollmentData;
+    
+    const hasStudentInfo = !!student.firstName.trim() && 
+                          !!student.lastName.trim() && 
+                          !!student.birthDate;
+    const hasGuardianInfo = !!guardian.name.trim() && 
+                           !!guardian.email.trim() && 
+                           !!guardian.phone.trim() &&
+                           /\S+@\S+\.\S+/.test(guardian.email);
+    const hasCourses = selectedCourses.length > 0;
+    const hasPricing = currentPricing !== null;
+    
+    return hasStudentInfo && hasGuardianInfo && hasCourses && hasPricing;
+  }, [state.enrollmentData, currentPricing]);
 
   // Convenience methods
   const setStep = useCallback((step: EnrollmentStep) => {
@@ -211,36 +254,6 @@ export function EnrollmentProvider({ children }: EnrollmentProviderProps) {
   const goToPreviousStep = useCallback(() => {
     dispatch({ type: 'GO_TO_PREVIOUS_STEP' });
   }, []);
-
-  const calculatePricing = useCallback((packages: PricingPackage[]) => {
-    const { selectedCourses, isSecondDancerInFamily } = state.enrollmentData;
-    
-    console.log('🧮 Starter prisberegning:', {
-      courseCount: selectedCourses.length,
-      courses: selectedCourses.map(c => c.name),
-      isSecondDancerInFamily,
-      packageCount: packages.length
-    });
-    
-    if (selectedCourses.length > 0 && packages.length > 0) {
-      const pricing = calculateEnhancedSmartPackagePrice(
-        selectedCourses,
-        packages,
-        isSecondDancerInFamily
-      );
-      
-      if (pricing) {
-        console.log('✅ Prisberegning ferdig:', pricing);
-        dispatch({ type: 'SET_PRICING', payload: pricing });
-      } else {
-        console.warn('⚠️ Prisberegning returnerte null');
-        dispatch({ type: 'SET_PRICING', payload: null });
-      }
-    } else {
-      console.warn('⚠️ Kan ikke beregne pris - mangler kurs eller pakker');
-      dispatch({ type: 'SET_PRICING', payload: null });
-    }
-  }, [state.enrollmentData]);
 
   // Validation for current step
   const validateCurrentStep = useCallback((): boolean => {
@@ -287,22 +300,22 @@ export function EnrollmentProvider({ children }: EnrollmentProviderProps) {
           isValid = false;
         }
 
-        // Validate age against selected courses
+        // Validate age against selected courses (optional - only show warning)
         if (state.enrollmentData.student.age && state.enrollmentData.selectedCourses.length > 0) {
           const ageValidation = validateStudentAge(
             state.enrollmentData.student.age,
             state.enrollmentData.selectedCourses
           );
           if (!ageValidation.valid) {
-            errors.courses = ageValidation.message;
-            isValid = false;
+            // Only show warning, don't block progression
+            console.warn('Age validation warning:', ageValidation.message);
           }
         }
         break;
 
       case 'summary':
         // All previous validations should pass
-        if (!state.enrollmentData.pricing) {
+        if (!currentPricing) {
           errors.general = 'Prisberegning mangler';
           isValid = false;
         }
@@ -316,7 +329,7 @@ export function EnrollmentProvider({ children }: EnrollmentProviderProps) {
     }
 
     return isValid;
-  }, [state.currentStep, state.enrollmentData]);
+  }, [state.currentStep, state.enrollmentData, currentPricing]);
 
   const resetEnrollment = useCallback(() => {
     dispatch({ type: 'RESET_ENROLLMENT' });
@@ -332,9 +345,10 @@ export function EnrollmentProvider({ children }: EnrollmentProviderProps) {
     setFamilyDiscount,
     goToNextStep,
     goToPreviousStep,
-    calculatePricing,
     validateCurrentStep,
     resetEnrollment,
+    currentPricing,
+    isFormValid,
   };
 
   return (

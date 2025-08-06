@@ -34,6 +34,7 @@ export const COLLECTIONS = {
   NEWS: import.meta.env.VITE_NEWS_COLLECTION_ID || "news",
   ABOUT_US: import.meta.env.VITE_ABOUT_US_COLLECTION_ID || "about_us",
   CONTACTS: import.meta.env.VITE_CONTACTS_COLLECTION_ID || "contacts",
+  ENROLLMENTS: import.meta.env.VITE_ENROLLMENTS_COLLECTION_ID || "enrollments",
 } as const;
 
 // Export Query for filtering (Appwrite v18)

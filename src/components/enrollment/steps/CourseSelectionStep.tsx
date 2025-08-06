@@ -11,6 +11,8 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog';
 import { useEnrollment } from '../../../contexts/EnrollmentContext';
+import { coursesService } from '../../../services/coursesService';
+import { identifyCourseType } from '../../../utils/simplePricing';
 import { 
   BookOpen, 
   ArrowRight, 
@@ -23,23 +25,23 @@ import {
   Heart,
   User,
   CheckCircle,
-  AlertCircle
+  AlertCircle,
+  Tag,
+  RefreshCw,
+  Loader2
 } from 'lucide-react';
-import type { DanceClass, PricingPackage } from '../../../types';
+import type { DanceClass } from '../../../types';
+import ScrollToTop from '@/helpers/ScrollToTop';
 
-interface CourseSelectionStepProps {
-  packages: PricingPackage[];
-}
-
-export default function CourseSelectionStep({ packages }: CourseSelectionStepProps) {
+export default function CourseSelectionStep() {
   const { 
     state, 
     setSelectedCourses, 
-    setFamilyDiscount,
     goToNextStep, 
     goToPreviousStep,
     validateCurrentStep,
-    calculatePricing
+    currentPricing,
+    dispatch
   } = useEnrollment();
 
   const [selectedCourseIds, setSelectedCourseIds] = useState<string[]>(
@@ -48,9 +50,79 @@ export default function CourseSelectionStep({ packages }: CourseSelectionStepPro
   const [modalCourse, setModalCourse] = useState<DanceClass | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
+  const [isReloading, setIsReloading] = useState(false);
 
   // Calculate student age for validation
   const studentAge = state.enrollmentData.student.age || 0;
+
+  // 🔄 Backup: Re-load courses if they're missing
+  useEffect(() => {
+    const ensureCoursesLoaded = async () => {
+      // If no courses available and not already loading, try to reload them
+      if (state.availableCourses.length === 0 && !state.isLoading && !isReloading) {
+        console.log('🚨 No courses available in CourseSelection, attempting to reload...');
+        setIsReloading(true);
+        dispatch({ type: 'SET_LOADING', payload: true });
+        
+        try {
+          const courses = await coursesService.getAllCourses();
+          console.log(`🔄 Re-loaded courses in CourseSelection: ${courses.length}`);
+          dispatch({ type: 'SET_AVAILABLE_COURSES', payload: courses });
+          
+          // Clear any previous error
+          if (state.errors.courses) {
+            dispatch({ 
+              type: 'SET_ERRORS', 
+              payload: { ...state.errors, courses: undefined } 
+            });
+          }
+        } catch (error) {
+          console.error('❌ Failed to reload courses in CourseSelection:', error);
+          dispatch({ 
+            type: 'SET_ERRORS', 
+            payload: { 
+              ...state.errors,
+              courses: 'Kunne ikke laste kurs. Prøv å oppdatere siden eller gå tilbake og frem igjen.' 
+            } 
+          });
+        } finally {
+          dispatch({ type: 'SET_LOADING', payload: false });
+          setIsReloading(false);
+        }
+      }
+    };
+
+    ensureCoursesLoaded();
+  }, [state.availableCourses.length, state.isLoading, isReloading, dispatch, state.errors]);
+
+  // Manual reload function
+  const handleReloadCourses = async () => {
+    console.log('🔄 Manual course reload triggered...');
+    setIsReloading(true);
+    dispatch({ type: 'SET_LOADING', payload: true });
+    
+    try {
+      const courses = await coursesService.getAllCourses();
+      console.log(`✅ Manually reloaded courses: ${courses.length}`);
+      dispatch({ type: 'SET_AVAILABLE_COURSES', payload: courses });
+      dispatch({ 
+        type: 'SET_ERRORS', 
+        payload: { ...state.errors, courses: undefined } 
+      });
+    } catch (error) {
+      console.error('❌ Manual course reload failed:', error);
+      dispatch({ 
+        type: 'SET_ERRORS', 
+        payload: { 
+          ...state.errors,
+          courses: 'Kunne ikke laste kurs. Sjekk internettforbindelsen og prøv igjen.' 
+        } 
+      });
+    } finally {
+      dispatch({ type: 'SET_LOADING', payload: false });
+      setIsReloading(false);
+    }
+  };
 
   // Update selected courses when selection changes
   useEffect(() => {
@@ -81,11 +153,6 @@ export default function CourseSelectionStep({ packages }: CourseSelectionStepPro
   };
 
   const handleNext = () => {
-    // Calculate pricing before validating and moving to next step
-    if (state.enrollmentData.selectedCourses.length > 0 && packages.length > 0) {
-      calculatePricing(packages);
-    }
-    
     if (validateCurrentStep()) {
       goToNextStep();
     }
@@ -208,8 +275,109 @@ export default function CourseSelectionStep({ packages }: CourseSelectionStepPro
     return colorMap[color.toLowerCase()] || colorMap.purple;
   };
 
+  // Get course type label and color for display
+  const getCourseTypeInfo = (course: DanceClass) => {
+    const type = identifyCourseType(course);
+    
+    switch (type) {
+      case 'barnedans':
+        return { label: 'Barnedans', color: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-200' };
+      case 'kompani':
+        return { label: 'Kompani', color: 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-200' };
+      case 'vanlig':
+        return { label: 'Vanlig kurs', color: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-200' };
+      default:
+        return { label: 'Ukjent', color: 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-200' };
+    }
+  };
+
+  // 🔄 Show loading state when courses are being loaded/reloaded
+  if (state.isLoading || isReloading) {
+    return (
+      <div className="p-8 md:p-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center"
+        >
+          <div className="flex items-center justify-center mb-6">
+            <div className="bg-brand-100 dark:bg-brand-900/30 p-4 rounded-full">
+              <Loader2 className="h-8 w-8 text-brand-600 dark:text-brand-400 animate-spin" />
+            </div>
+          </div>
+          
+          <h2 className="font-bebas text-bebas-xl text-gray-900 dark:text-white mb-4">
+            {isReloading ? 'Laster kurs på nytt...' : 'Laster kurs...'}
+          </h2>
+          
+          <p className="text-gray-600 dark:text-gray-300 font-montserrat">
+            Henter tilgjengelige dansetimer for deg
+          </p>
+        </motion.div>
+      </div>
+    );
+  }
+
+  // 🚨 Show error if no courses and not loading
+  if (state.availableCourses.length === 0) {
+    return (
+      <div className="p-8 md:p-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center"
+        >
+          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-6 max-w-md mx-auto">
+            <AlertCircle className="h-12 w-12 text-red-600 dark:text-red-400 mx-auto mb-4" />
+            
+            <h3 className="font-bebas text-bebas-base text-red-800 dark:text-red-200 mb-2">
+              Kunne ikke laste kurs
+            </h3>
+            
+            <p className="text-red-600 dark:text-red-300 font-montserrat mb-4 text-sm">
+              {state.errors.courses || 'Noe gikk galt ved innlasting av kurs. Dette kan skyldes nettverksproblemer.'}
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Button
+                onClick={handleReloadCourses}
+                disabled={isReloading}
+                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-montserrat"
+              >
+                <RefreshCw className={`h-4 w-4 mr-2 ${isReloading ? 'animate-spin' : ''}`} />
+                Prøv igjen
+              </Button>
+              
+              <Button
+                onClick={() => window.location.reload()}
+                variant="outline"
+                className="px-4 py-2 rounded-lg font-montserrat border-red-300 text-red-600 hover:bg-red-50"
+              >
+                Oppdater siden
+              </Button>
+            </div>
+
+            <div className="mt-4 pt-4 border-t border-red-200 dark:border-red-800">
+              <Button
+                onClick={goToPreviousStep}
+                variant="ghost"
+                className="text-gray-600 hover:text-gray-800 text-sm"
+              >
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Gå tilbake til kontaktinfo
+              </Button>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
+
   return (
     <div className="p-8 md:p-12">
+      <ScrollToTop />
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -239,150 +407,173 @@ export default function CourseSelectionStep({ packages }: CourseSelectionStepPro
         )}
       </motion.div>
 
-      {/* Family discount option */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ 
-          duration: 0.4, 
-          delay: 0.1,
-          ease: "easeOut"
-        }}
-        style={{ willChange: 'transform, opacity' }}
-        className="mb-8"
-      >
-        <div className="bg-gradient-to-br from-magenta-50/50 to-coral-50/30 dark:from-magenta-900/20 dark:to-coral-900/10 p-4 rounded-xl border border-magenta-100/50 dark:border-magenta-700/30">
-          <label className="flex items-center gap-3 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={state.enrollmentData.isSecondDancerInFamily}
-              onChange={(e) => setFamilyDiscount(e.target.checked)}
-              className="w-4 h-4 text-brand-600 bg-gray-100 border-gray-300 rounded focus:ring-brand-500 dark:focus:ring-brand-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-            />
-            <div>
-              <span className="font-montserrat font-medium text-gray-900 dark:text-white">
-                Dette er barn nummer 2+ i familien
-              </span>
-              <p className="text-sm text-gray-600 dark:text-gray-300 font-montserrat">
-                Få familierabatt! 15% for 1 kurs, 30% for 2 kurs, 50% for 3+ kurs
-              </p>
+      {/* Price preview */}
+      {currentPricing && selectedCourseIds.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ 
+            duration: 0.4, 
+            delay: 0.1,
+            ease: "easeOut"
+          }}
+          style={{ willChange: 'transform, opacity' }}
+          className="mb-6"
+        >
+          <div className="bg-gradient-to-br from-green-50/50 to-emerald-50/30 dark:from-green-900/20 dark:to-emerald-900/10 p-4 rounded-xl border border-green-100/50 dark:border-green-700/30">
+            <div className="flex items-center justify-between">
+              <div>
+                <h4 className="font-bebas text-bebas-sm text-gray-900 dark:text-white mb-1">
+                  Estimert pris
+                </h4>
+                <p className="text-sm text-gray-600 dark:text-gray-300 font-montserrat">
+                  {currentPricing.breakdown.barnedansCount > 0 && `${currentPricing.breakdown.barnedansCount} barnedans, `}
+                  {currentPricing.breakdown.vanligCount > 0 && `${currentPricing.breakdown.vanligCount} vanlig kurs, `}
+                  {currentPricing.breakdown.kompaniCount > 0 && `${currentPricing.breakdown.kompaniCount} kompani`}
+                </p>
+              </div>
+              <div className="text-right">
+                <div className="font-bebas text-bebas-base text-green-700 dark:text-green-400">
+                  {currentPricing.totalPrice.toLocaleString('no-NO')} kr
+                </div>
+                {(currentPricing.discount > 0) && (
+                    <div className="text-xs text-green-600 dark:text-green-400">
+                    Besparelse: {currentPricing.discount.toLocaleString('no-NO')} kr
+                    </div>
+                )}
+              </div>
             </div>
-          </label>
-        </div>
-      </motion.div>
+          </div>
+        </motion.div>
+      )}
 
       {/* Course selection */}
       <div className="space-y-6">
         {/* Available courses */}
         <div>
-          <h3 className="font-bebas text-bebas-base text-gray-900 dark:text-white mb-4">
-            Tilgjengelige kurs ({state.availableCourses.length})
-          </h3>
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-bebas text-bebas-base text-gray-900 dark:text-white">
+              Tilgjengelige kurs ({state.availableCourses.length})
+            </h3>
+            
+            {/* Manual reload button */}
+            <Button
+              onClick={handleReloadCourses}
+              disabled={isReloading}
+              variant="outline"
+              size="sm"
+              className="text-xs"
+            >
+              <RefreshCw className={`h-3 w-3 mr-1 ${isReloading ? 'animate-spin' : ''}`} />
+              Oppdater
+            </Button>
+          </div>
           
-          {state.availableCourses.length === 0 ? (
-            <div className="text-center py-8">
-              <p className="text-gray-500 dark:text-gray-400 font-montserrat">
-                Ingen kurs tilgjengelig for øyeblikket
-              </p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {state.availableCourses.map((course, index) => {
-                const isSelected = selectedCourseIds.includes(course.$id);
-                const ageValidation = getCourseAgeValidation(course);
-                const colorClasses = getColorClasses(course.color);
-                
-                return (
-                  <motion.div
-                    key={course.$id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ 
-                      duration: 0.3, 
-                      delay: 0.05 * index,
-                      ease: "easeOut"
-                    }}
-                    style={{ willChange: 'transform, opacity' }}
-                    className={
-                      isSelected 
-                        ? 'border-brand-500 bg-brand-50 dark:bg-brand-900/20 border-2 rounded-xl p-4 transition-all duration-200 cursor-pointer' 
-                        : 'border-gray-200 dark:border-gray-700 hover:border-brand-300 dark:hover:border-brand-600 border-2 rounded-xl p-4 transition-all duration-200 cursor-pointer'
-                    }
-                    onClick={() => handleCourseToggle(course.$id)}
-                  >
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <div className={
-                            isSelected 
-                              ? 'bg-brand-500 border-brand-500 w-4 h-4 rounded border-2 flex items-center justify-center' 
-                              : 'border-gray-300 dark:border-gray-600 w-4 h-4 rounded border-2 flex items-center justify-center'
-                          }>
-                            {isSelected && <CheckCircle className="h-3 w-3 text-white" />}
-                          </div>
-                          <h4 className="font-bebas text-bebas-sm text-gray-900 dark:text-white">
-                            {course.name}
-                          </h4>
-                          {ageValidation.warning && (
-                            <AlertCircle className="h-4 w-4 text-amber-500" />
-                          )}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {state.availableCourses.map((course, index) => {
+              const isSelected = selectedCourseIds.includes(course.$id);
+              const ageValidation = getCourseAgeValidation(course);
+              const colorClasses = getColorClasses(course.color);
+              const typeInfo = getCourseTypeInfo(course);
+              
+              return (
+                <motion.div
+                  key={course.$id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ 
+                    duration: 0.3, 
+                    delay: 0.05 * index,
+                    ease: "easeOut"
+                  }}
+                  style={{ willChange: 'transform, opacity' }}
+                  className={
+                    isSelected 
+                      ? 'border-brand-500 bg-brand-50 dark:bg-brand-900/20 border-2 rounded-xl p-4 transition-all duration-200 cursor-pointer' 
+                      : 'border-gray-200 dark:border-gray-700 hover:border-brand-300 dark:hover:border-brand-600 border-2 rounded-xl p-4 transition-all duration-200 cursor-pointer'
+                  }
+                  onClick={() => handleCourseToggle(course.$id)}
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className={
+                          isSelected 
+                            ? 'bg-brand-500 border-brand-500 w-4 h-4 rounded border-2 flex items-center justify-center' 
+                            : 'border-gray-300 dark:border-gray-600 w-4 h-4 rounded border-2 flex items-center justify-center'
+                        }>
+                          {isSelected && <CheckCircle className="h-3 w-3 text-white" />}
                         </div>
-
-                        <p className="text-sm text-gray-600 dark:text-gray-300 font-montserrat mb-3 line-clamp-2">
-                          {course.description}
-                        </p>
-
-                        <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400 font-montserrat">
-                          <div className="flex items-center gap-1">
-                            <Users className="h-3 w-3" />
-                            <span>{course.age}</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <User className="h-3 w-3" />
-                            <span>{course.instructor}</span>
-                          </div>
-                        </div>
-
+                        <h4 className="font-bebas text-bebas-sm text-gray-900 dark:text-white">
+                          {course.name}
+                        </h4>
                         {ageValidation.warning && (
-                          <div className="mt-2 p-2 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded">
-                            <p className="text-xs text-amber-700 dark:text-amber-300 font-montserrat">
-                              <AlertCircle className="h-3 w-3 inline mr-1" />
-                              {ageValidation.message}
-                            </p>
-                          </div>
+                          <AlertCircle className="h-4 w-4 text-amber-500" />
                         )}
                       </div>
 
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          openCourseModal(course);
-                        }}
-                        className="ml-3 text-xs"
-                      >
-                        <Info className="h-3 w-3 mr-1" />
-                        Info
-                      </Button>
-                    </div>
+                      {/* Course type badge */}
+                      <div className="mb-2">
+                        <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${typeInfo.color}`}>
+                          <Tag className="h-3 w-3" />
+                          {typeInfo.label}
+                        </span>
+                      </div>
 
-                    {/* Course schedule preview */}
-                    {course.schedule && course.schedule.length > 0 && (
-                      <div className={`mt-3 p-2 rounded border ${colorClasses}`}>
-                        <div className="flex items-center gap-2 text-xs">
-                          <Calendar className="h-3 w-3" />
-                          <span className="font-medium">{course.schedule[0].day}</span>
-                          <Clock className="h-3 w-3 ml-2" />
-                          <span>{course.schedule[0].time}</span>
+                      <p className="text-sm text-gray-600 dark:text-gray-300 font-montserrat mb-3 line-clamp-2">
+                        {course.description}
+                      </p>
+
+                      <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400 font-montserrat">
+                        <div className="flex items-center gap-1">
+                          <Users className="h-3 w-3" />
+                          <span>{course.age}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <User className="h-3 w-3" />
+                          <span>{course.instructor}</span>
                         </div>
                       </div>
-                    )}
-                  </motion.div>
-                );
-              })}
-            </div>
-          )}
+
+                      {ageValidation.warning && (
+                        <div className="mt-2 p-2 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded">
+                          <p className="text-xs text-amber-700 dark:text-amber-300 font-montserrat">
+                            <AlertCircle className="h-3 w-3 inline mr-1" />
+                            {ageValidation.message}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openCourseModal(course);
+                      }}
+                      className="ml-3 text-xs"
+                    >
+                      <Info className="h-3 w-3 mr-1" />
+                      Info
+                    </Button>
+                  </div>
+
+                  {/* Course schedule preview */}
+                  {course.schedule && course.schedule.length > 0 && (
+                    <div className={`mt-3 p-2 rounded border ${colorClasses}`}>
+                      <div className="flex items-center gap-2 text-xs">
+                        <Calendar className="h-3 w-3" />
+                        <span className="font-medium">{course.schedule[0].day}</span>
+                        <Clock className="h-3 w-3 ml-2" />
+                        <span>{course.schedule[0].time}</span>
+                      </div>
+                    </div>
+                  )}
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
 
         {/* Selected courses summary */}
@@ -506,6 +697,15 @@ export default function CourseSelectionStep({ packages }: CourseSelectionStepPro
                     <div>
                       <div className="font-montserrat font-semibold text-gray-900 dark:text-white">Alder</div>
                       <div className="text-sm text-gray-600 dark:text-gray-300 font-montserrat">{modalCourse.age}</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-surface-dark-muted rounded-lg">
+                    <Tag className="h-5 w-5 text-brand-500" />
+                    <div>
+                      <div className="font-montserrat font-semibold text-gray-900 dark:text-white">Type</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-300 font-montserrat">
+                        {getCourseTypeInfo(modalCourse).label}
+                      </div>
                     </div>
                   </div>
                 </div>

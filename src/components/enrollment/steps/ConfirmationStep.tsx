@@ -1,333 +1,366 @@
-
 // src/components/enrollment/steps/ConfirmationStep.tsx
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { useEnrollment } from '@/contexts/EnrollmentContext';
-import { createDocument, DATABASE_ID, COLLECTIONS } from '@/lib/appwrite';
-import { CheckCircle, AlertTriangle, Loader2, ArrowLeft } from 'lucide-react';
-import { formatSmartPrice } from '@/utils/enchancedSmartPricing';
-import type { EnrollmentRecord, EnrollmentEmailData } from '@/types/enrollment';
+import { useEnrollment } from '../../../contexts/EnrollmentContext';
+import { submitEnrollment } from '../../../services/enrollmentService';
+import { 
+  CheckCircle, 
+  AlertTriangle, 
+  Loader2,
+  Mail,
+  Database,
+  ArrowRight,
+  Home,
+  RefreshCw,
+} from 'lucide-react';
+import { Link } from 'react-router-dom';
+import ScrollToTop from '@/helpers/ScrollToTop';
+
+type SubmissionState = 'submitting' | 'success' | 'error' | 'idle';
 
 export default function ConfirmationStep() {
-  const { state, resetEnrollment, setStep } = useEnrollment();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
+  const { state, resetEnrollment, dispatch } = useEnrollment();
+  const [submissionState, setSubmissionState] = useState<SubmissionState>('idle');
+  const [enrollmentId, setEnrollmentId] = useState<string>('');
+  const [error, setError] = useState<string>('');
+  
+  // Prevent double submissions with ref
+  const submissionAttempted = useRef(false);
+  const abortController = useRef<AbortController | null>(null);
 
+  // Auto-submit when component mounts (only once)
   useEffect(() => {
-    const submitEnrollment = async () => {
-      if (isSubmitting || success) return;
+    if (!submissionAttempted.current && submissionState === 'idle') {
+      console.log('🚀 Auto-submitting enrollment...');
+      submissionAttempted.current = true;
+      handleSubmission();
+    }
 
-      setIsSubmitting(true);
-      setError(null);
-
-      try {
-        // Valider at alle nødvendige data er tilstede
-        if (
-          !state.enrollmentData.student.firstName ||
-          !state.enrollmentData.student.lastName ||
-          !state.enrollmentData.student.birthDate ||
-          !state.enrollmentData.guardian.name ||
-          !state.enrollmentData.guardian.email ||
-          !state.enrollmentData.guardian.phone ||
-          state.enrollmentData.selectedCourses.length === 0 ||
-          !state.enrollmentData.pricing
-        ) {
-          throw new Error('Ufullstendig påmeldingsdata');
-        }
-
-        // Beregn alder
-        const calculateAge = (birthDate: string): number => {
-          const birth = new Date(birthDate);
-          const today = new Date();
-          let age = today.getFullYear() - birth.getFullYear();
-          const monthDiff = today.getMonth() - birth.getMonth();
-          if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
-            age--;
-          }
-          return age;
-        };
-
-        const studentAge = calculateAge(state.enrollmentData.student.birthDate);
-
-        // Forbered EnrollmentRecord
-        const enrollmentRecord: EnrollmentRecord = {
-          $id: 'unique()', // Appwrite genererer unik ID
-          studentFirstName: state.enrollmentData.student.firstName,
-          studentLastName: state.enrollmentData.student.lastName,
-          studentBirthDate: state.enrollmentData.student.birthDate,
-          studentAge,
-          guardianName: state.enrollmentData.guardian.name,
-          guardianEmail: state.enrollmentData.guardian.email,
-          guardianPhone: state.enrollmentData.guardian.phone,
-          selectedCourseIds: state.enrollmentData.selectedCourses.map(course => course.$id),
-          selectedCourseNames: state.enrollmentData.selectedCourses.map(course => course.name),
-          totalPrice: state.enrollmentData.pricing.total,
-          originalPrice: state.enrollmentData.pricing.originalPrice,
-          discount: state.enrollmentData.pricing.discount,
-          packageId: null, // Sett til faktisk packageId hvis tilgjengelig
-          packageName: state.enrollmentData.pricing.packageName,
-          isSecondDancerInFamily: state.enrollmentData.isSecondDancerInFamily,
-          appliedFamilyDiscount: state.enrollmentData.pricing.appliedFamilyDiscount,
-          status: 'pending',
-          emailSent: false,
-          $createdAt: new Date().toISOString(),
-          $updatedAt: new Date().toISOString(),
-          $collectionId: COLLECTIONS.ENROLLMENTS,
-          $databaseId: DATABASE_ID,
-          $permissions: [],
-        };
-
-        // Lagre student i students collection
-        const studentDoc = await createDocument(
-          DATABASE_ID,
-          COLLECTIONS.STUDENTS,
-          'unique()',
-          {
-            firstName: state.enrollmentData.student.firstName,
-            lastName: state.enrollmentData.student.lastName,
-            birthDate: state.enrollmentData.student.birthDate,
-            age: studentAge,
-            guardianEmail: state.enrollmentData.guardian.email, // For å koble til guardian
-          }
-        );
-
-        // Lagre guardian i guardians collection
-        const guardianDoc = await createDocument(
-          DATABASE_ID,
-          COLLECTIONS.GUARDIANS,
-          'unique()',
-          {
-            name: state.enrollmentData.guardian.name,
-            email: state.enrollmentData.guardian.email,
-            phone: state.enrollmentData.guardian.phone,
-          }
-        );
-
-        // Lagre påmelding i enrollments collection
-        const enrollmentDoc = await createDocument(
-          DATABASE_ID,
-          COLLECTIONS.ENROLLMENTS,
-          'unique()',
-          enrollmentRecord
-        );
-
-        // Forbered e-postdata
-        const emailData: EnrollmentEmailData = {
-          student: state.enrollmentData.student,
-          guardian: state.enrollmentData.guardian,
-          courses: state.enrollmentData.selectedCourses,
-          pricing: state.enrollmentData.pricing,
-          enrollmentId: enrollmentDoc.$id,
-          submissionDate: new Date().toISOString(),
-        };
-
-        // Send e-post via Appwrite Function (eller ekstern tjeneste)
-        try {
-          const response = await fetch(
-            `${import.meta.env.VITE_APPWRITE_ENDPOINT}/functions/execute`,
-            {
-              method: 'POST',
-              headers: {
-                'X-Appwrite-Project': import.meta.env.VITE_APPWRITE_PROJECT_ID,
-                'X-Appwrite-Key': import.meta.env.VITE_APPWRITE_API_KEY,
-              },
-              body: JSON.stringify({
-                functionId: 'sendEnrollmentEmail',
-                data: JSON.stringify({
-                  to: 'registrer@urbanstudios.no',
-                  subject: `Ny påmelding: ${state.enrollmentData.student.firstName} ${state.enrollmentData.student.lastName}`,
-                  body: `
-                    Ny påmelding mottatt\n\n
-                    Elev: ${state.enrollmentData.student.firstName} ${state.enrollmentData.student.lastName}\n
-                    Fødselsdato: ${new Date(state.enrollmentData.student.birthDate).toLocaleDateString('no-NO')}\n
-                    Alder: ${studentAge} år\n
-                    Foresatt: ${state.enrollmentData.guardian.name}\n
-                    E-post: ${state.enrollmentData.guardian.email}\n
-                    Telefon: ${state.enrollmentData.guardian.phone}\n
-                    Valgte kurs:\n${state.enrollmentData.selectedCourses.map(course => `- ${course.name} (${course.age})`).join('\n')}\n
-                    Total pris: ${formatSmartPrice(state.enrollmentData.pricing.total)}\n
-                    ${state.enrollmentData.pricing.originalPrice ? `Original pris: ${formatSmartPrice(state.enrollmentData.pricing.originalPrice)}\n` : ''}
-                    ${state.enrollmentData.pricing.discount ? `Rabatt: ${formatSmartPrice(state.enrollmentData.pricing.discount)}\n` : ''}
-                    ${state.enrollmentData.isSecondDancerInFamily ? `Familierabatt: ${formatSmartPrice(state.enrollmentData.pricing.appliedFamilyDiscount || 0)}\n` : ''}
-                    Påmeldings-ID: ${enrollmentDoc.$id}\n
-                    Innsendt: ${new Date().toLocaleString('no-NO')}
-                  `,
-                }),
-              }),
-            }
-          );
-
-          if (!response.ok) throw new Error('Feil ved sending av e-post');
-          
-          // Oppdater enrollment med emailSent = true
-          await updateDocument(
-            DATABASE_ID,
-            COLLECTIONS.ENROLLMENTS,
-            enrollmentDoc.$id,
-            { emailSent: true }
-          );
-        } catch (emailError) {
-          console.warn('⚠️ Kunne ikke sende e-post, men påmelding er lagret:', emailError);
-          // Fortsett selv om e-post feiler
-        }
-
-        setSuccess(true);
-        console.log('✅ Påmelding fullført:', enrollmentDoc.$id);
-      } catch (err) {
-        console.error('🚫 Feil ved innsending av påmelding:', err);
-        setError('Kunne ikke fullføre påmeldingen. Prøv igjen senere.');
-      } finally {
-        setIsSubmitting(false);
+    // Cleanup on unmount
+    return () => {
+      if (abortController.current) {
+        abortController.current.abort();
       }
     };
+  }, []); // Empty dependency array - only run once on mount
 
-    submitEnrollment();
-  }, [state.enrollmentData, isSubmitting, success]);
-
-  if (isSubmitting) {
-    return (
-      <div className="p-8 md:p-12 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <Loader2 className="h-12 w-12 animate-spin text-brand-600 mx-auto mb-4" />
-          <h2 className="font-bebas text-bebas-xl text-gray-900 dark:text-white mb-2">
-            Fullfører påmelding...
-          </h2>
-          <p className="text-gray-600 dark:text-gray-300 font-montserrat">
-            Vennligst vent mens vi behandler din påmelding.
-          </p>
-        </motion.div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="p-8 md:p-12 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <AlertTriangle className="h-12 w-12 text-red-600 mx-auto mb-4" />
-          <h2 className="font-bebas text-bebas-xl text-red-800 dark:text-red-200 mb-2">
-            Noe gikk galt
-          </h2>
-          <p className="text-red-600 dark:text-red-300 font-montserrat mb-4">
-            {error}
-          </p>
-          <div className="flex justify-center gap-4">
-            <Button
-              onClick={() => setStep('summary')}
-              variant="outline"
-              className="font-montserrat"
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Gå tilbake
-            </Button>
-            <Button
-              onClick={() => {
-                setError(null);
-                setIsSubmitting(false);
-                setSuccess(false);
-              }}
-              className="font-montserrat bg-red-600 hover:bg-red-700 text-white"
-            >
-              Prøv igjen
-            </Button>
-          </div>
-        </motion.div>
-      </div>
-    );
-  }
-
-  if (success) {
-    return (
-      <div className="p-8 md:p-12 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <CheckCircle className="h-12 w-12 text-green-600 mx-auto mb-4" />
-          <h2 className="font-bebas text-bebas-xl text-gray-900 dark:text-white mb-2">
-            Påmelding fullført!
-          </h2>
-          <p className="text-gray-600 dark:text-gray-300 font-montserrat mb-6">
-            Takk for din påmelding! Du vil motta en bekreftelse på e-post til{' '}
-            <strong>{state.enrollmentData.guardian.email}</strong> og til{' '}
-            <strong>registrer@urbanstudios.no</strong> med alle detaljer.
-          </p>
-          <div className="space-y-4">
-            <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-xl border border-green-200 dark:border-green-800">
-              <h3 className="font-bebas text-bebas-base text-gray-900 dark:text-white mb-2">
-                Oppsummering
-              </h3>
-              <p className="text-gray-700 dark:text-gray-300 font-montserrat">
-                Elev: {state.enrollmentData.student.firstName} {state.enrollmentData.student.lastName}
-              </p>
-              <p className="text-gray-700 dark:text-gray-300 font-montserrat">
-                Kurs: {state.enrollmentData.selectedCourses.map(course => course.name).join(', ')}
-              </p>
-              <p className="text-gray-700 dark:text-gray-300 font-montserrat">
-                Totalt: {formatSmartPrice(state.enrollmentData.pricing!.total)}
-              </p>
-              {state.enrollmentData.isSecondDancerInFamily && (
-                <p className="text-purple-700 dark:text-purple-400 font-montserrat">
-                  Familierabatt: {formatSmartPrice(state.enrollmentData.pricing!.appliedFamilyDiscount || 0)}
-                </p>
-              )}
-            </div>
-            <Button
-              onClick={resetEnrollment}
-              className="font-montserrat bg-brand-600 hover:bg-brand-700 text-white"
-            >
-              Start ny påmelding
-            </Button>
-          </div>
-        </motion.div>
-      </div>
-    );
-  }
-
-  return null; // Should not reach this point
-}
-
-const { Client, Functions } = require('appwrite');
-
-module.exports = async function (req, res) {
-  const client = new Client()
-    .setEndpoint(process.env.APPWRITE_ENDPOINT)
-    .setProject(process.env.APPWRITE_PROJECT_ID)
-    .setKey(process.env.APPWRITE_API_KEY);
-
-  const functions = new Functions(client);
-
-  const payload = JSON.parse(req.payload);
-  const { to, subject, body } = payload.data;
-
-  // Her må du integrere med en e-posttjeneste som SendGrid eller Appwrites egen e-posthåndtering
-  // Eksempel med SendGrid:
-  const sgMail = require('@sendgrid/mail');
-  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
-  const msg = {
-    to,
-    from: 'no-reply@urbanstudios.no', // Sett opp en verifisert avsender
-    subject,
-    text: body,
+  const handleSubmission = async () => {
+    // Prevent multiple concurrent submissions
+    if (submissionState === 'submitting') {
+      console.log('⚠️ Submission already in progress, ignoring...');
+      return;
+    }
+    
+    setSubmissionState('submitting');
+    
+    // Create abort controller for this submission
+    abortController.current = new AbortController();
+    
+    try {
+      console.log('📝 Starting enrollment submission...');
+      dispatch({ type: 'SET_SUBMITTING', payload: true });
+      
+      // Submit enrollment
+      const id = await submitEnrollment(state.enrollmentData);
+      
+      // ✅ VIKTIG: Hvis database lagring lykkes, vis success uansett om component unmountes
+      console.log('✅ Enrollment submitted successfully:', id);
+      setEnrollmentId(id);
+      setSubmissionState('success');
+      
+      // E-post sending skjer i bakgrunnen og påvirker ikke success state
+      
+    } catch (err) {
+      // Check if component was unmounted BARE for errors
+      if (abortController.current?.signal.aborted) {
+        console.log('🛑 Submission cancelled (component unmounted)');
+        return;
+      }
+      
+      console.error('❌ Submission error:', err);
+      setError(err instanceof Error ? err.message : 'Ukjent feil oppstod');
+      setSubmissionState('error');
+    } finally {
+      dispatch({ type: 'SET_SUBMITTING', payload: false });
+    }
   };
 
-  try {
-    await sgMail.send(msg);
-    res.json({ success: true, message: 'E-post sendt' });
-  } catch (error) {
-    console.error('Feil ved sending av e-post:', error);
-    res.json({ success: false, error: error.message });
+  const handleRetry = () => {
+    console.log('🔄 Retrying submission...');
+    setError('');
+    setSubmissionState('idle');
+    submissionAttempted.current = false; // Reset for retry
+  };
+
+  const handleNewEnrollment = () => {
+    console.log('🆕 Starting new enrollment...');
+    submissionAttempted.current = false; // Reset for new enrollment
+    resetEnrollment();
+  };
+
+  // Submitting state
+  if (submissionState === 'submitting') {
+    return (
+      <div className="p-8 md:p-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center"
+        >
+          <div className="flex items-center justify-center mb-6">
+            <div className="bg-brand-100 dark:bg-brand-900/30 p-4 rounded-full">
+              <Loader2 className="h-8 w-8 text-brand-600 dark:text-brand-400 animate-spin" />
+            </div>
+          </div>
+          
+          <h2 className="font-bebas text-bebas-xl text-gray-900 dark:text-white mb-4">
+            Sender påmelding...
+          </h2>
+          
+          <p className="text-gray-600 dark:text-gray-300 font-montserrat mb-8">
+            Vi behandler påmeldingen din. Dette tar bare noen sekunder.
+          </p>
+
+          <div className="max-w-md mx-auto space-y-4">
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.5 }}
+              className="flex items-center gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg"
+            >
+              <Database className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+              <span className="text-sm font-montserrat text-blue-800 dark:text-blue-200">
+                Lagrer i database...
+              </span>
+            </motion.div>
+            
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 1 }}
+              className="flex items-center gap-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg"
+            >
+              <Mail className="h-5 w-5 text-green-600 dark:text-green-400" />
+              <span className="text-sm font-montserrat text-green-800 dark:text-green-200">
+                Sender e-post...
+              </span>
+            </motion.div>
+          </div>
+        </motion.div>
+      </div>
+    );
   }
-};
+
+  // Success state
+  if (submissionState === 'success') {
+    return (
+      <div className="p-8 md:p-12">
+        <ScrollToTop />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center"
+        >
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="flex items-center justify-center mb-6"
+          >
+            <div className="bg-green-100 dark:bg-green-900/30 p-4 rounded-full">
+              <CheckCircle className="h-12 w-12 text-green-600 dark:text-green-400" />
+            </div>
+          </motion.div>
+          
+          <motion.h2
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="font-bebas text-bebas-2xl text-gray-900 dark:text-white mb-4"
+          >
+            Påmelding fullført!
+          </motion.h2>
+          
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="text-lg text-gray-600 dark:text-gray-300 font-montserrat mb-6"
+          >
+            Takk for at du meldte deg på våre kurs, {state.enrollmentData.student.firstName}!
+          </motion.p>
+
+          {/* Success details */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 }}
+            className="max-w-2xl mx-auto mb-8"
+          >
+            <div className="bg-gradient-to-br from-green-50/50 to-emerald-50/30 dark:from-green-900/20 dark:to-emerald-900/10 p-6 rounded-xl border border-green-100/50 dark:border-green-700/30">
+              <h3 className="font-bebas text-bebas-base text-gray-900 dark:text-white mb-4">
+                Hva skjer nå?
+              </h3>
+              
+              <div className="space-y-3 text-left">
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 mt-0.5" />
+                  <div>
+                    <p className="font-montserrat font-medium text-gray-900 dark:text-white">
+                      Påmeldingen er lagret
+                    </p>
+                    <p className="text-sm text-gray-600 dark:text-gray-300 font-montserrat">
+                      Referanse: {enrollmentId.slice(-8).toUpperCase()}
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start gap-3">
+                  <Mail className="h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5" />
+                  <div>
+                    <p className="font-montserrat font-medium text-gray-900 dark:text-white">
+                      E-post sendt til studio
+                    </p>
+                    <p className="text-sm text-gray-600 dark:text-gray-300 font-montserrat">
+                      Vi har mottatt påmeldingen din og tar kontakt snart
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="h-5 w-5 text-purple-600 dark:text-purple-400 mt-0.5" />
+                  <div>
+                    <p className="font-montserrat font-medium text-gray-900 dark:text-white">
+                      Bekreftelse kommer
+                    </p>
+                    <p className="text-sm text-gray-600 dark:text-gray-300 font-montserrat">
+                      Du vil få en e-post med betalingsinformasjon og kursdetaljer
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Quick summary */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1 }}
+            className="max-w-md mx-auto mb-8"
+          >
+            <div className="bg-white dark:bg-surface-dark p-4 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+              <h4 className="font-bebas text-bebas-sm text-gray-900 dark:text-white mb-2">
+                Påmeldt til
+              </h4>
+              <div className="space-y-1">
+                {state.enrollmentData.selectedCourses.map(course => (
+                  <p key={course.$id} className="text-sm font-montserrat text-gray-600 dark:text-gray-300">
+                    • {course.name}
+                  </p>
+                ))}
+              </div>
+              {state.enrollmentData.pricing && (
+                <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+                  <p className="text-sm font-montserrat text-gray-900 dark:text-white">
+                    <strong>Total: {state.enrollmentData.pricing.totalPrice.toLocaleString('no-NO')} kr</strong>
+                  </p>
+                </div>
+              )}
+            </div>
+          </motion.div>
+
+          {/* Action buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.2 }}
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+          >
+            <Link to="/" className="w-full sm:w-auto">
+              <Button
+                variant="outline"
+                className="w-full px-6 py-3 rounded-full font-montserrat font-medium"
+              >
+                <Home className="h-4 w-4 mr-2" />
+                Tilbake til forsiden
+              </Button>
+            </Link>
+            
+            <Button
+              onClick={handleNewEnrollment}
+              className="w-full sm:w-auto bg-brand-500 hover:bg-brand-600 text-white px-6 py-3 rounded-full font-montserrat font-medium"
+            >
+              <ArrowRight className="h-4 w-4 mr-2" />
+              Ny påmelding
+            </Button>
+          </motion.div>
+        </motion.div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (submissionState === 'error') {
+    return (
+      <div className="p-8 md:p-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center"
+        >
+          <div className="flex items-center justify-center mb-6">
+            <div className="bg-red-100 dark:bg-red-900/30 p-4 rounded-full">
+              <AlertTriangle className="h-8 w-8 text-red-600 dark:text-red-400" />
+            </div>
+          </div>
+          
+          <h2 className="font-bebas text-bebas-xl text-gray-900 dark:text-white mb-4">
+            Noe gikk galt
+          </h2>
+          
+          <p className="text-gray-600 dark:text-gray-300 font-montserrat mb-6">
+            Vi klarte ikke å sende inn påmeldingen din. Prøv igjen eller kontakt oss direkte.
+          </p>
+
+          {/* Error details */}
+          <div className="max-w-md mx-auto mb-8">
+            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4">
+              <p className="text-sm text-red-700 dark:text-red-300 font-montserrat">
+                <strong>Feilmelding:</strong> {error}
+              </p>
+            </div>
+          </div>
+
+          {/* Action buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Button
+              onClick={handleRetry}
+              className="w-full sm:w-auto bg-brand-500 hover:bg-brand-600 text-white px-6 py-3 rounded-full font-montserrat font-medium"
+            >
+              <RefreshCw className="h-4 w-4 mr-2" />
+              Prøv igjen
+            </Button>
+            
+            <Link to="/kontakt" className="w-full sm:w-auto">
+              <Button
+                variant="outline"
+                className="w-full px-6 py-3 rounded-full font-montserrat font-medium"
+              >
+                <Mail className="h-4 w-4 mr-2" />
+                Kontakt oss
+              </Button>
+            </Link>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
+
+  // This should not be reached, but just in case
+  return null;
+} 
