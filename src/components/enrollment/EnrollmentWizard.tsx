@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEnrollment } from '../../contexts/EnrollmentContext';
-import { listDocuments, DATABASE_ID, COLLECTIONS, Query } from '../../lib/appwrite';
+import { coursesService } from '../../services/coursesService'; // 🔄 Bytt til coursesService
 import ScrollToTop from '../../helpers/ScrollToTop';
 import StepIndicator from './StepIndicator';
 import ContactInfoStep from './steps/ContactInfoStep';
@@ -23,20 +23,36 @@ export default function EnrollmentWizard() {
       setError(null);
 
       try {
-        // Fetch courses only - no pricing packages needed
-        const coursesResponse = await listDocuments(
-          DATABASE_ID,
-          COLLECTIONS.DANCE_CLASSES,
-          [
-            Query.orderAsc('name'),
-            Query.limit(50)
-          ]
-        );
+        // 🚫 BRUK COURSESSERVICE MED AUTOMATISK KOMPANI-FILTRERING
+        console.log('📚 Fetching filtered courses via coursesService...');
+        
+        const courseData = await coursesService.getAllCourses(false); // false = ekskluder kompani
+        
+        // Konverter til DanceClass format hvis nødvendig
+        const formattedCourses: DanceClass[] = courseData.map(course => ({
+          $id: course.$id,
+          $createdAt: course.$createdAt,
+          $updatedAt: course.$updatedAt,
+          $collectionId: course.$collectionId,
+          $databaseId: course.$databaseId,
+          $permissions: course.$permissions,
+          name: course.name,
+          description: course.description,
+          color: course.color,
+          icon: course.icon,
+          image: course.image,
+          level: course.level,
+          age: course.age,
+          instructor: course.instructor,
+          duration: course.duration,
+          availableFromYear: course.availableFromYear,
+          type: course.type,
+          studio: course.studio,
+        }));
 
-        const courseData = coursesResponse.documents as unknown as DanceClass[];
-        dispatch({ type: 'SET_AVAILABLE_COURSES', payload: courseData });
+        dispatch({ type: 'SET_AVAILABLE_COURSES', payload: formattedCourses });
 
-        console.log('✅ Lastet kurs:', courseData.length);
+        console.log(`✅ Loaded ${formattedCourses.length} filtered courses (kompani excluded)`);
 
       } catch (err) {
         console.error('Error fetching courses:', err);

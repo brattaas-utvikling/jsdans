@@ -236,7 +236,7 @@ const validateBirthDate = (value: string): string | undefined => {
             <User className="h-6 w-6 text-brand-600 dark:text-brand-400" />
           </div>
         </div>
-        <h2 className="font-bebas text-bebas-lg md:text-bebas-xl text-gray-900 dark:text-white mb-2 break-words max-w-prose">
+        <h2 className="font-bebas text-bebas-sm md:text-bebas-lg lg:text-bebas-xl text-gray-900 dark:text-white mb-2 break-words max-w-prose">
           Kontaktinformasjon
         </h2>
         <p className="text-gray-600 dark:text-gray-300 font-montserrat">

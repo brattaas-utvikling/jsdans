@@ -13,9 +13,43 @@ export interface CourseWithSchedule extends DanceClass {
 
 export class CoursesService {
   /**
-   * Hent alle aktive kurs
+   * Sjekk om et kurs er kompani-kurs (skal ikke vises i påmelding)
    */
-  static async getAllCourses(): Promise<CourseWithSchedule[]> {
+  private static isCompanyCourse(course: CourseWithSchedule): boolean {
+    const courseName = course.name.toLowerCase();
+    const courseType = course.type?.toLowerCase() || '';
+    
+    // Sjekk navn
+    const companyNamePatterns = [
+      'kompani',
+      'aspirantkompani',
+      'aspirant kompani',
+      'company',
+      'dance company'
+    ];
+    
+    // Sjekk type-feltet
+    const companyTypePatterns = [
+      'kompani',
+      'company',
+      'aspirant'
+    ];
+    
+    const hasCompanyName = companyNamePatterns.some(pattern => 
+      courseName.includes(pattern)
+    );
+    
+    const hasCompanyType = companyTypePatterns.some(pattern => 
+      courseType.includes(pattern)
+    );
+    
+    return hasCompanyName || hasCompanyType;
+  }
+
+  /**
+   * Hent alle aktive kurs (filtrert for påmelding)
+   */
+  static async getAllCourses(includeCompanyCourses: boolean = false): Promise<CourseWithSchedule[]> {
     try {
       console.log('📚 Fetching courses from database...');
       
@@ -57,14 +91,52 @@ export class CoursesService {
         return course;
       });
 
+      // 🚫 FILTRER BORT KOMPANI-KURS HVIS IKKE ØNSKET
+      let filteredCourses = courses;
+      
+      if (!includeCompanyCourses) {
+        const beforeCount = courses.length;
+        filteredCourses = courses.filter(course => !this.isCompanyCourse(course));
+        const afterCount = filteredCourses.length;
+        const removedCount = beforeCount - afterCount;
+        
+        console.log(`🚫 Filtered out ${removedCount} company courses (${afterCount} remaining)`);
+        
+        // Log hvilke kurs som ble filtrert bort (for debugging)
+        const removedCourses = courses.filter(course => this.isCompanyCourse(course));
+        if (removedCourses.length > 0) {
+          console.log('Removed courses:', removedCourses.map(c => c.name));
+        }
+      }
+
       // Hent schedule info for hver kurs (optional enhancement)
-      const coursesWithSchedule = await this.enrichWithSchedules(courses);
+      const coursesWithSchedule = await this.enrichWithSchedules(filteredCourses);
 
       return coursesWithSchedule;
 
     } catch (error) {
       console.error('❌ Error fetching courses:', error);
       throw new Error('Kunne ikke laste kurs fra database');
+    }
+  }
+
+  /**
+   * Hent alle kurs inkludert kompani-kurs (for admin eller andre formål)
+   */
+  static async getAllCoursesIncludingCompany(): Promise<CourseWithSchedule[]> {
+    return this.getAllCourses(true);
+  }
+
+  /**
+   * Hent kun kompani-kurs
+   */
+  static async getCompanyCourses(): Promise<CourseWithSchedule[]> {
+    try {
+      const allCourses = await this.getAllCourses(true);
+      return allCourses.filter(course => this.isCompanyCourse(course));
+    } catch (error) {
+      console.error('❌ Error fetching company courses:', error);
+      throw new Error('Kunne ikke laste kompani-kurs fra database');
     }
   }
 
@@ -232,11 +304,11 @@ export class CoursesService {
   }
 
   /**
-   * Søk i kurs
+   * Søk i kurs (ekskluderer kompani som standard)
    */
-  static async searchCourses(searchTerm: string): Promise<CourseWithSchedule[]> {
+  static async searchCourses(searchTerm: string, includeCompanyCourses: boolean = false): Promise<CourseWithSchedule[]> {
     try {
-      const allCourses = await this.getAllCourses();
+      const allCourses = await this.getAllCourses(includeCompanyCourses);
       
       const searchLower = searchTerm.toLowerCase();
       

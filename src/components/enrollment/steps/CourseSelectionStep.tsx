@@ -394,12 +394,12 @@ export default function CourseSelectionStep() {
 <div className="mt-3 p-3 bg-brand-50 dark:bg-brand-900/20 rounded-lg border border-brand-200 dark:border-brand-700">
   <div className="text-sm">
     <p className="font-semibold text-brand-700 dark:text-brand-300 mb-1 text-left">Rabatter tilgjengelig:</p>
-    <ul className="list-disc list-inside space-y-1 text-brand-600 dark:text-brand-400">
+    <ul className="list-disc list-inside space-y-1 text-brand-600 dark:text-brand-400 text-left">
       <li>Søskenrabatt 200kr avslag for kurs 60 min</li>
       <li>Familierabatt 20% for dansepakke nr. 2</li>
       <li>Familierabatt 50% for dansepakke nr. 3+</li>
     </ul>
-    <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">
+    <p className="text-xs text-gray-600 dark:text-gray-400 mt-2 text-left">
       Rabatten aktiveres ved fakturering, husk derfor å oppgi navn på søsken ved påmelding.
     </p>
   </div>
