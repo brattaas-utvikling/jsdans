@@ -390,30 +390,21 @@ export default function CourseSelectionStep() {
           <p className="text-sm text-brand-600 dark:text-brand-400 font-montserrat mt-1">
             NB! Hvis du har søsken og kan oppnå "søskenrabatt", vennligst kontakt oss direkte for å få rabatten lagt til manuelt.
           </p>
-          {/* <div className="mt-3 p-3 bg-brand-50 dark:bg-brand-900/20 rounded-lg border border-brand-200 dark:border-brand-700">
-  <div className="flex items-start gap-2">
-    <div className="text-sm">
-      <p className="font-semibold text-brand-700 dark:text-brand-300 mb-1 text-left">Søskenrabatt tilgjengelig</p>
-      <div className="space-y-1 text-brand-600 dark:text-brand-400">
-        <div className="flex items-center gap-2">
-          <span className="w-2 h-2 bg-brand-400 rounded-full"></span>
-          <span>200 kr avslag for søsken som meldes på til kurs (60 min)</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="w-2 h-2 bg-brand-400 rounded-full"></span>
-          <span>20% avslag for søsken nr. 2 med dansepakke. Gjelder for søsken i samme husstand. </span>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="w-2 h-2 bg-brand-400 rounded-full"></span>
-          <span>50% avslag for søsken nr. 3 med dansepakke. Gjelder for søsken i samme husstand.</span>
-        </div>
-      </div>
-      <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">
-        Ta kontakt med oss for å få rabatten aktivert manuelt.
-      </p>
-    </div>
+ 
+// Alternativ 1: Standard HTML kulepunkter (enklest)
+<div className="mt-3 p-3 bg-brand-50 dark:bg-brand-900/20 rounded-lg border border-brand-200 dark:border-brand-700">
+  <div className="text-sm">
+    <p className="font-semibold text-brand-700 dark:text-brand-300 mb-1 text-left">Rabatter tilgjengelig:</p>
+    <ul className="list-disc list-inside space-y-1 text-brand-600 dark:text-brand-400">
+      <li>Søskenrabatt 200kr avslag for kurs 60 min</li>
+      <li>Familierabatt 20% for dansepakke nr. 2</li>
+      <li>Familierabatt 50% for dansepakke nr. 3+</li>
+    </ul>
+    <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">
+      Rabatten aktiveres ved fakturering, husk derfor å oppgi navn på søsken ved påmelding.
+    </p>
   </div>
-</div> */}
+</div>
 
       </motion.div>
 
