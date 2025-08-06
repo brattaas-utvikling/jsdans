@@ -1,34 +1,13 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { 
-  ArrowRight
-} from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import ScrollToTop from "@/helpers/ScrollToTop";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { listDocuments, DATABASE_ID, COLLECTIONS, Query } from "@/lib/appwrite";
+import { PricingPackage } from "@/types";
 
-// TypeScript interface som matcher Appwrite schema
-interface AppwriteDocument {
-  $id: string;
-  $createdAt: string;
-  $updatedAt: string;
-  $collectionId: string;
-  $databaseId: string;
-  $permissions: string[];
-}
 
-interface PricingPackage extends AppwriteDocument {
-  name: string;
-  price?: number; // Pris i øre
-  period?: string;
-  discount_amount?: number; // Rabatt i øre
-  discount_text?: string;
-  description?: string;
-  order: number;
-  is_active: boolean;
-  category?: string;
-}
 
 export default function PricingPage() {
   const [pricingPackages, setPricingPackages] = useState<PricingPackage[]>([]);
@@ -37,15 +16,15 @@ export default function PricingPage() {
 
   // Format price from øre to kr
   const formatPrice = (priceInOre?: number): string => {
-    if (!priceInOre) return '';
-    return `${(priceInOre / 100).toLocaleString('no-NO')} kr`;
+    if (!priceInOre) return "";
+    return `${(priceInOre / 100).toLocaleString("no-NO")} kr`;
   };
 
   // Calculate discounted price
   const calculateDiscountedPrice = (pkg: PricingPackage): number => {
     if (!pkg.price || pkg.price === 0) return 0;
     if (!pkg.discount_amount) return pkg.price;
-    
+
     return pkg.price - pkg.discount_amount;
   };
 
@@ -53,64 +32,64 @@ export default function PricingPage() {
   const formatPricingDisplay = (pkg: PricingPackage): string => {
     // Special cases with fallback descriptions - ALLTID vis disse
     const fallbackDescriptions: Record<string, string> = {
-      "Familierabatt": "50% for danser nr 2 som danser 3 eller flere klasser",
-      "Kompani": "500 kr ekstra per halvår",
-      "Klippekort": "1 500 kr for 10 klipp",
-      "Prøvetime": "Gratis første time for nye deltakere"
+      "Barnedans": "1300kr per halvår",
+      "1 Klasse": "1700kr per halvår",
+      "2 Klasser": "3200kr per halvår",
+      "3 eller flere klasser": "4500kr per halvår",
     };
 
     // Check if this package has a fallback description - VIS ALLTID
     if (fallbackDescriptions[pkg.name]) {
       return pkg.description || fallbackDescriptions[pkg.name];
     }
-    
+
     // If has description and no meaningful price, show description
     if (pkg.description && (!pkg.price || pkg.price === 0)) {
       return pkg.description;
     }
-    
+
     // If no price and no description
     if ((!pkg.price || pkg.price === 0) && !pkg.description) {
-      return 'Pris kommer';
+      return "Pris kommer";
     }
-    
+
     // Calculate final price (with discount if applicable)
     const finalPrice = calculateDiscountedPrice(pkg);
-    
+
     // Standard price display with period
     if (finalPrice > 0 && pkg.period) {
       return `${formatPrice(finalPrice)} ${pkg.period}`;
     }
-    
+
     // Price without period
     if (finalPrice > 0) {
       return formatPrice(finalPrice);
     }
-    
-    return 'Kontakt oss for pris';
+
+    return "Kontakt oss for pris";
   };
 
   // Fetch pricing packages from Appwrite
   const fetchPricingFromAppwrite = async () => {
     setLoading(true);
     setError(null);
-    
+
     try {
       const response = await listDocuments(
         DATABASE_ID,
         COLLECTIONS.PRICING_PACKAGES,
         [
-          Query.equal('is_active', true), // Vis kun aktive priser
-          Query.orderAsc('order'), // Sorter etter order felt
-          Query.limit(50) // Begrens til 50 pakker
-        ]
+          Query.equal("is_active", true), // Vis kun aktive priser
+          Query.orderAsc("order"), // Sorter etter order felt
+          Query.limit(50), // Begrens til 50 pakker
+        ],
       );
-      
+
       const packages = response.documents as unknown as PricingPackage[];
       setPricingPackages(packages);
     } catch (err) {
-      console.error('Error fetching pricing packages:', err);
-      setError('Kunne ikke laste priser fra databasen.');
+      console.error("Error fetching pricing packages:", err);
+      setError("Kunne ikke laste priser fra databasen.");
     } finally {
       setLoading(false);
     }
@@ -126,7 +105,9 @@ export default function PricingPage() {
       <div className="min-h-screen bg-white dark:bg-surface-dark flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-500 mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-300 font-montserrat">Laster priser...</p>
+          <p className="text-gray-600 dark:text-gray-300 font-montserrat">
+            Laster priser...
+          </p>
         </div>
       </div>
     );
@@ -143,7 +124,7 @@ export default function PricingPage() {
             <p className="text-red-600 dark:text-red-300 font-montserrat mb-4">
               {error}
             </p>
-            <Button 
+            <Button
               onClick={fetchPricingFromAppwrite}
               className="font-semibold bg-red-600 hover:bg-red-700 text-white"
             >
@@ -159,11 +140,13 @@ export default function PricingPage() {
     return (
       <div className="min-h-screen bg-white dark:bg-surface-dark">
         <ScrollToTop />
-        
+
         {/* Hero Section - samme som før */}
-        <section className="bg-gradient-to-br from-brand-50/80 to-surface-muted 
+        <section
+          className="bg-gradient-to-br from-brand-50/80 to-surface-muted 
                           dark:from-brand-900/10 dark:to-surface-dark-muted 
-                          pt-24 pb-16 relative overflow-hidden">
+                          pt-24 pb-16 relative overflow-hidden"
+        >
           <div className="container mx-auto px-4 md:px-6 relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -171,17 +154,20 @@ export default function PricingPage() {
               transition={{ duration: 0.8 }}
               className="text-center max-w-4xl mx-auto"
             >
-              <h1 className="text-base font-medium text-brand-600 dark:text-brand-400 
-                            uppercase tracking-wider mb-3">
+              <h1
+                className="text-base font-medium text-brand-600 dark:text-brand-400 
+                            uppercase tracking-wider mb-3"
+              >
                 Priser
               </h1>
               <h2 className="font-bebas font-semibold text-bebas-xl md:text-bebas-2xl mb-6 text-gray-900 dark:text-white">
                 Ingen priser tilgjengelig ennå
               </h2>
               <p className="text-lg text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed mb-8">
-                Vi jobber med å legge til våre priser. Kom tilbake snart eller kontakt oss for mer informasjon!
+                Vi jobber med å legge til våre priser. Kom tilbake snart eller
+                kontakt oss for mer informasjon!
               </p>
-              <Button 
+              <Button
                 onClick={fetchPricingFromAppwrite}
                 className="font-semibold"
                 variant="outline"
@@ -200,28 +186,29 @@ export default function PricingPage() {
       <ScrollToTop />
 
       {/* Hero Section - Standard styling */}
-      <section className="bg-gradient-to-br from-brand-50/80 to-surface-muted 
+      <section
+        className="bg-gradient-to-br from-brand-50/80 to-surface-muted 
                         dark:from-brand-900/10 dark:to-surface-dark-muted 
-                        pt-24 pb-16 relative overflow-hidden">
-        
+                        pt-24 pb-16 relative overflow-hidden"
+      >
         {/* Animated background elements - Brand farger */}
-        <motion.div 
-          animate={{ 
+        <motion.div
+          animate={{
             scale: [1, 1.1, 1],
-            opacity: [0.1, 0.2, 0.1]
+            opacity: [0.1, 0.2, 0.1],
           }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
           className="absolute top-0 right-0 w-96 h-96 bg-magenta-400/10 rounded-full blur-3xl"
         />
-        <motion.div 
-          animate={{ 
+        <motion.div
+          animate={{
             scale: [1.1, 1, 1.1],
-            opacity: [0.15, 0.25, 0.15]
+            opacity: [0.15, 0.25, 0.15],
           }}
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
           className="absolute bottom-0 left-0 w-80 h-80 bg-brand-400/10 rounded-full blur-3xl"
         />
-        
+
         <div className="container mx-auto px-4 md:px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -234,13 +221,15 @@ export default function PricingPage() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <h1 className="text-xl font-medium text-brand-600 dark:text-brand-400 
-                            uppercase tracking-wider mb-3">
+              <h1
+                className="text-xl font-medium text-brand-600 dark:text-brand-400 
+                            uppercase tracking-wider mb-3"
+              >
                 Priser
               </h1>
             </motion.div>
-            
-            <motion.h2 
+
+            <motion.h2
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
@@ -248,29 +237,33 @@ export default function PricingPage() {
             >
               Våre kurs
             </motion.h2>
-            
-            <motion.p 
+
+            <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
               className="text-lg text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed"
             >
-              Våre priser er laget for å være tilgjengelige for alle. Jo mer du danser, jo mer sparer du!
+              Våre priser er laget for å være tilgjengelige for alle. Jo mer du
+              danser, jo mer sparer du!
             </motion.p>
           </motion.div>
         </div>
       </section>
 
       {/* Pricing Section - Standard styling med dynamisk data */}
-      <section className="py-16 bg-gradient-to-br from-brand-50/80 to-surface-muted 
-                         dark:from-brand-900/10 dark:to-surface-dark-muted">
+      <section
+        className="py-16 bg-gradient-to-br from-brand-50/80 to-surface-muted 
+                         dark:from-brand-900/10 dark:to-surface-dark-muted"
+      >
         <div className="container mx-auto px-4 md:px-6">
           <div className="max-w-4xl mx-auto">
             <div className="space-y-6">
               {pricingPackages.map((pkg, index) => {
                 const finalPrice = calculateDiscountedPrice(pkg);
-                const hasDiscount = pkg.discount_amount && pkg.discount_amount > 0;
-                
+                const hasDiscount =
+                  pkg.discount_amount && pkg.discount_amount > 0;
+
                 return (
                   <motion.div
                     key={pkg.$id}
@@ -280,14 +273,18 @@ export default function PricingPage() {
                     transition={{ duration: 0.6, delay: 0.1 * index }}
                     className="group"
                   >
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between 
+                    <div
+                      className="flex flex-col sm:flex-row sm:items-center sm:justify-between 
                                   bg-white dark:bg-surface-dark rounded-xl p-6 
                                   border border-brand-100/50 dark:border-brand-700/30
                                   transition-all duration-200 group-hover:border-brand-300 dark:group-hover:border-brand-500
-                                  hover:shadow-brand-lg">
+                                  hover:shadow-brand-lg"
+                    >
                       <div className="mb-2 sm:mb-0">
-                        <h3 className="font-semibold text-lg text-gray-900 dark:text-white 
-                                     transition-colors duration-200 group-hover:text-brand-600 dark:group-hover:text-brand-400">
+                        <h3
+                          className="font-semibold text-lg text-gray-900 dark:text-white 
+                                     transition-colors duration-200 group-hover:text-brand-600 dark:group-hover:text-brand-400"
+                        >
                           {pkg.name}
                         </h3>
                         {pkg.discount_text && (
@@ -307,14 +304,20 @@ export default function PricingPage() {
                             <p className="text-sm text-gray-500 dark:text-gray-400 line-through">
                               {formatPrice(pkg.price)} {pkg.period}
                             </p>
-                            <p className="font-montserrat text-gray-700 dark:text-gray-300 
-                                        transition-colors duration-200 group-hover:text-gray-900 dark:group-hover:text-white">
-                              {finalPrice > 0 && pkg.period ? `${formatPrice(finalPrice)} ${pkg.period}` : formatPricingDisplay(pkg)}
+                            <p
+                              className="font-montserrat text-gray-700 dark:text-gray-300 
+                                        transition-colors duration-200 group-hover:text-gray-900 dark:group-hover:text-white"
+                            >
+                              {finalPrice > 0 && pkg.period
+                                ? `${formatPrice(finalPrice)} ${pkg.period}`
+                                : formatPricingDisplay(pkg)}
                             </p>
                           </div>
                         ) : (
-                          <p className="font-montserrat text-gray-700 dark:text-gray-300 
-                                      transition-colors duration-200 group-hover:text-gray-900 dark:group-hover:text-white">
+                          <p
+                            className="font-montserrat text-gray-700 dark:text-gray-300 
+                                      transition-colors duration-200 group-hover:text-gray-900 dark:group-hover:text-white"
+                          >
                             {formatPricingDisplay(pkg)}
                           </p>
                         )}
@@ -342,11 +345,13 @@ export default function PricingPage() {
               Ikke sikker på hvilket kurs som passer deg?
             </h3>
             <p className="text-gray-600 dark:text-gray-300 font-montserrat mb-8 text-lg">
-              Kontakt oss på kontakt@urbanstudios.no eller benytt vårt kontaktskjema, så hjelper vi deg med å finne det perfekte kurset basert på dine behov!
+              Kontakt oss på kontakt@urbanstudios.no eller benytt vårt
+              kontaktskjema, så hjelper vi deg med å finne det perfekte kurset
+              basert på dine behov!
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link to="/kontakt" className="w-full sm:w-auto">
-                <Button 
+                <Button
                   variant="outline"
                   className="font-semibold rounded-full 
                             bg-white/80 border-brand-300 text-brand-700 

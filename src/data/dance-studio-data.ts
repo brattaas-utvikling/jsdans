@@ -9,7 +9,8 @@ export const DANCE_CLASSES = [
     color:
       "bg-primary-100 border-primary-300 text-primary-600 dark:bg-primary-900/20 dark:border-primary-800 dark:text-primary-400",
     icon: "radio",
-    image: "https://plus.unsplash.com/premium_photo-1682089697749-f5cdd624f21e?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    image:
+      "https://plus.unsplash.com/premium_photo-1682089697749-f5cdd624f21e?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     schedule: [
       { day: "Mandag", time: "16:00 - 17:30", level: "Nybegynner" },
       { day: "Onsdag", time: "18:00 - 19:30", level: "Erfaren" },
@@ -22,11 +23,13 @@ export const DANCE_CLASSES = [
   {
     id: 2,
     name: "Jazz",
-    description: "Jazzdansen kommer fra USA og oppstod som stilart på 1900-tallet. Det er en blanding av klassisk ballett og rytmer fra black culture. I dag har jazzen et mer moderne uttrykk og strekker seg fra klassisk jazz til energisk showdans. En klasse kan være svært variert, og inneholder alt fra sprudlende koreograferer til tekniske piruetter, hopp og spark.",
+    description:
+      "Jazzdansen kommer fra USA og oppstod som stilart på 1900-tallet. Det er en blanding av klassisk ballett og rytmer fra black culture. I dag har jazzen et mer moderne uttrykk og strekker seg fra klassisk jazz til energisk showdans. En klasse kan være svært variert, og inneholder alt fra sprudlende koreograferer til tekniske piruetter, hopp og spark.",
     color:
       "bg-green-100 border-green-300 text-green-600 dark:bg-green-900/20 dark:border-green-800 dark:text-green-400",
     icon: "music",
-    image: "https://images.unsplash.com/photo-1547153760-18fc86324498?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    image:
+      "https://images.unsplash.com/photo-1547153760-18fc86324498?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     schedule: [
       { day: "Tirsdag", time: "16:00 - 17:30", level: "Nybegynner" },
       { day: "Torsdag", time: "18:00 - 19:30", level: "Erfaren" },
@@ -39,11 +42,13 @@ export const DANCE_CLASSES = [
   {
     id: 3,
     name: "Ballett",
-    description: "I klassisk ballett undervises små som ønsker å bli prima ballerina, og ungdom/eldre som vil utvikle seg danseteknisk og få flott holdning. Kursene i klassisk ballett er basert på tradisjonell balletteknikk. I timene starter man med grunnleggende øvelser ved barre, og deretter lengre sekvenser i senter og over gulv. Klassisk ballett er en grunnleggende teknisk dansestil som er morsom, krevende og et nyttig supplement for å bli bedre i andre dansestiler.",
+    description:
+      "I klassisk ballett undervises små som ønsker å bli prima ballerina, og ungdom/eldre som vil utvikle seg danseteknisk og få flott holdning. Kursene i klassisk ballett er basert på tradisjonell balletteknikk. I timene starter man med grunnleggende øvelser ved barre, og deretter lengre sekvenser i senter og over gulv. Klassisk ballett er en grunnleggende teknisk dansestil som er morsom, krevende og et nyttig supplement for å bli bedre i andre dansestiler.",
     color:
       "bg-purple-100 border-purple-300 text-purple-600 dark:bg-purple-900/20 dark:border-purple-800 dark:text-purple-400",
     icon: "zap",
-    image: "https://images.unsplash.com/photo-1508700929628-666bc8bd84ea?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    image:
+      "https://images.unsplash.com/photo-1508700929628-666bc8bd84ea?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     schedule: [
       { day: "Mandag", time: "18:00 - 19:30", level: "Nybegynner" },
       { day: "Onsdag", time: "16:00 - 17:30", level: "Erfaren" },
@@ -56,11 +61,13 @@ export const DANCE_CLASSES = [
   {
     id: 4,
     name: "Moderne",
-    description: "Moderne dans tar utgangspunkt i kreativitet, skaperglede og kroppsbeherskelse. I timene er det fokus på å formidle følelser innen dans, musikalitet og på å utforske ulike bevegelsesmønstre. Disse klassene gir elevene mulighet til å sette sitt eget preg på dansen, og utvikle seg selv som en skapende danser. En moderneklasse inneholder gulvarbeid, tekniske øvelser, improvisasjon og formidling av koreografi. Prinsipp som senter, pust, tyngdekraft og dynamikk står sterkt i disse timene. ",
+    description:
+      "Moderne dans tar utgangspunkt i kreativitet, skaperglede og kroppsbeherskelse. I timene er det fokus på å formidle følelser innen dans, musikalitet og på å utforske ulike bevegelsesmønstre. Disse klassene gir elevene mulighet til å sette sitt eget preg på dansen, og utvikle seg selv som en skapende danser. En moderneklasse inneholder gulvarbeid, tekniske øvelser, improvisasjon og formidling av koreografi. Prinsipp som senter, pust, tyngdekraft og dynamikk står sterkt i disse timene. ",
     color:
       "bg-blue-100 border-blue-300 text-blue-600 dark:bg-blue-900/20 dark:border-blue-800 dark:text-blue-400",
     icon: "wind",
-    image: "https://images.unsplash.com/photo-1630543901558-868a6b596bd3?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjR8fGNvbnRlbXB0b3JhcnklMjBkYW5jZXxlbnwwfHwwfHx8MA%3D%3D",
+    image:
+      "https://images.unsplash.com/photo-1630543901558-868a6b596bd3?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjR8fGNvbnRlbXB0b3JhcnklMjBkYW5jZXxlbnwwfHwwfHx8MA%3D%3D",
     schedule: [
       { day: "Tirsdag", time: "18:00 - 19:30", level: "Nybegynner" },
       { day: "Torsdag", time: "16:00 - 17:30", level: "Erfaren" },
@@ -71,7 +78,6 @@ export const DANCE_CLASSES = [
     instructor: "Emma",
   },
 ];
-
 
 export const TESTIMONIALS = [
   {
@@ -132,10 +138,11 @@ export const PRICING_PLANS = [
       "Alle nivåer velkommen",
       "Profesjonell instruksjon",
       "Gratis første gang",
-      "Tilgang til studioets fellesområder"
+      "Tilgang til studioets fellesområder",
     ],
     popular: false,
-    color: "bg-indigo-50 border-indigo-200 hover:border-indigo-300 dark:bg-indigo-900/10 dark:border-indigo-900 dark:hover:border-indigo-800"
+    color:
+      "bg-indigo-50 border-indigo-200 hover:border-indigo-300 dark:bg-indigo-900/10 dark:border-indigo-900 dark:hover:border-indigo-800",
   },
   {
     id: 2,
@@ -146,10 +153,11 @@ export const PRICING_PLANS = [
       "Tilgang til én klasse",
       "Alle nivåer velkommen",
       "Profesjonell instruksjon",
-      "Gratis første gang"
+      "Gratis første gang",
     ],
     popular: true,
-    color: "bg-blue-50 border-blue-200 hover:border-blue-300 dark:bg-blue-900/10 dark:border-blue-900 dark:hover:border-blue-800"
+    color:
+      "bg-blue-50 border-blue-200 hover:border-blue-300 dark:bg-blue-900/10 dark:border-blue-900 dark:hover:border-blue-800",
   },
   {
     id: 3,
@@ -162,10 +170,11 @@ export const PRICING_PLANS = [
       "Profesjonell instruksjon",
       "Gratis første gang",
       "Tilgang til studioets fellesområder",
-      "200kr rabatt"
+      "200kr rabatt",
     ],
     popular: false,
-    color: "bg-indigo-50 border-indigo-200 hover:border-indigo-300 dark:bg-indigo-900/10 dark:border-indigo-900 dark:hover:border-indigo-800"
+    color:
+      "bg-indigo-50 border-indigo-200 hover:border-indigo-300 dark:bg-indigo-900/10 dark:border-indigo-900 dark:hover:border-indigo-800",
   },
   {
     id: 4,
@@ -178,10 +187,11 @@ export const PRICING_PLANS = [
       "Profesjonell instruksjon",
       "Gratis første gang",
       "Tilgang til studioets fellesområder",
-      "500kr rabatt"
+      "500kr rabatt",
     ],
     popular: false,
-    color: "bg-indigo-50 border-indigo-200 hover:border-indigo-300 dark:bg-indigo-900/10 dark:border-indigo-900 dark:hover:border-indigo-800"
+    color:
+      "bg-indigo-50 border-indigo-200 hover:border-indigo-300 dark:bg-indigo-900/10 dark:border-indigo-900 dark:hover:border-indigo-800",
   },
   {
     id: 5,
@@ -195,8 +205,9 @@ export const PRICING_PLANS = [
       "Tilgang til studioets fellesområder",
     ],
     popular: false,
-    color: "bg-indigo-50 border-indigo-200 hover:border-indigo-300 dark:bg-indigo-900/10 dark:border-indigo-900 dark:hover:border-indigo-800"
-  }
+    color:
+      "bg-indigo-50 border-indigo-200 hover:border-indigo-300 dark:bg-indigo-900/10 dark:border-indigo-900 dark:hover:border-indigo-800",
+  },
 ];
 
 export const STUDIO_INFO = {
@@ -213,7 +224,7 @@ export const STUDIO_INFO = {
   contact: {
     phone: "+47 979 53 671",
     email: "kontakt@urbanstudio.no",
-    hours: "Åpner høsten 2025"
+    hours: "Åpner høsten 2025",
   },
   social: {
     instagram: "https://instagram.com/urbanstudios.dans",

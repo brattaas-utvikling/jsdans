@@ -1,10 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { 
-  SparklesIcon,
-  ArrowRight
-} from "lucide-react";
+import { SparklesIcon, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { listDocuments, DATABASE_ID, COLLECTIONS, Query } from "@/lib/appwrite";
 import ScrollToTop from "@/helpers/ScrollToTop";
@@ -43,22 +40,18 @@ export default function AboutPage() {
   const fetchAboutFromAppwrite = async () => {
     setLoading(true);
     setError(null);
-    
+
     try {
-      const response = await listDocuments(
-        DATABASE_ID,
-        COLLECTIONS.ABOUT_US,
-        [
-          Query.orderDesc('$createdAt'), // Sorter nyeste først
-          Query.limit(1) // Begrens til 1 seksjon
-        ]
-      );
-      
+      const response = await listDocuments(DATABASE_ID, COLLECTIONS.ABOUT_US, [
+        Query.orderDesc("$createdAt"), // Sorter nyeste først
+        Query.limit(1), // Begrens til 1 seksjon
+      ]);
+
       const sections = response.documents as unknown as AboutSection[];
       setAboutSections(sections);
     } catch (err) {
-      console.error('Error fetching about sections:', err);
-      setError('Kunne ikke laste om oss-innhold.');
+      console.error("Error fetching about sections:", err);
+      setError("Kunne ikke laste om oss-innhold.");
     } finally {
       setLoading(false);
     }
@@ -78,16 +71,22 @@ export default function AboutPage() {
       section.paragraph1,
       section.paragraph2,
       section.paragraph3,
-      section.paragraph4
-    ].filter((paragraph): paragraph is string => paragraph != null && paragraph.trim() !== '');
-    
+      section.paragraph4,
+    ].filter(
+      (paragraph): paragraph is string =>
+        paragraph != null && paragraph.trim() !== "",
+    );
+
     return paragraphs;
   };
 
   // Render content with pullquote positioned correctly
-  const renderContentWithPullquote = (section: AboutSection, paragraphs: string[]) => {
+  const renderContentWithPullquote = (
+    section: AboutSection,
+    paragraphs: string[],
+  ) => {
     const content = [];
-    
+
     // Første paragraph
     if (paragraphs[0]) {
       content.push(
@@ -103,7 +102,7 @@ export default function AboutPage() {
               {paragraphs[0]}
             </p>
           </div>
-        </motion.div>
+        </motion.div>,
       );
     }
 
@@ -126,12 +125,15 @@ export default function AboutPage() {
               {paragraphs[1]}
             </p>
           </div>
-        </motion.div>
+        </motion.div>,
       );
     }
 
     // Pullquote posisjonering
-    if (pullquoteAfterParagraph === 1 || (pullquoteAfterParagraph === 2 && paragraphs.length >= 2)) {
+    if (
+      pullquoteAfterParagraph === 1 ||
+      (pullquoteAfterParagraph === 2 && paragraphs.length >= 2)
+    ) {
       content.push(
         <motion.div
           key="pullquote"
@@ -144,7 +146,7 @@ export default function AboutPage() {
           <blockquote className="text-transparent bg-clip-text bg-hero-gradient font-bebas text-bebas-xl md:text-bebas-2xl leading-tight">
             {section.pullQuote}
           </blockquote>
-        </motion.div>
+        </motion.div>,
       );
     }
 
@@ -163,7 +165,7 @@ export default function AboutPage() {
               {paragraphs[2]}
             </p>
           </div>
-        </motion.div>
+        </motion.div>,
       );
     }
 
@@ -182,7 +184,7 @@ export default function AboutPage() {
               {paragraphs[3]}
             </p>
           </div>
-        </motion.div>
+        </motion.div>,
       );
     }
 
@@ -194,7 +196,9 @@ export default function AboutPage() {
       <div className="min-h-screen bg-white dark:bg-surface-dark flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-500 mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-300 font-montserrat">Laster om oss...</p>
+          <p className="text-gray-600 dark:text-gray-300 font-montserrat">
+            Laster om oss...
+          </p>
         </div>
       </div>
     );
@@ -211,7 +215,7 @@ export default function AboutPage() {
             <p className="text-red-600 dark:text-red-300 font-montserrat mb-4">
               {error}
             </p>
-            <Button 
+            <Button
               onClick={fetchAboutFromAppwrite}
               className="font-semibold bg-red-600 hover:bg-red-700 text-white"
             >
@@ -234,7 +238,7 @@ export default function AboutPage() {
           <p className="text-gray-600 dark:text-gray-300 font-montserrat mb-4">
             Vi jobber med å legge til innhold på om oss-siden.
           </p>
-          <Button 
+          <Button
             onClick={fetchAboutFromAppwrite}
             className="font-semibold"
             variant="outline"
@@ -265,10 +269,10 @@ export default function AboutPage() {
             {/* Glow effekt - subtil brand-farget glow */}
             <div className="absolute inset-0 bg-gradient-to-t from-brand-500/20 via-transparent to-magenta-500/10" />
           </div>
-          
+
           {/* Overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-          
+
           {/* Content Container - nederst til venstre */}
           <div className="absolute bottom-0 left-0 right-0 z-10 p-6 md:p-10">
             <div className="container mx-auto">
@@ -278,13 +282,17 @@ export default function AboutPage() {
                 transition={{ duration: 0.8 }}
                 className="max-w-3xl"
               >
-                <h1 className="text-xl font-medium text-brand-400 
-                      uppercase tracking-wider mb-3">
+                <h1
+                  className="text-xl font-medium text-brand-400 
+                      uppercase tracking-wider mb-3"
+                >
                   {heroSection.headlines}
                 </h1>
 
-                <h2 className="font-bebas font-semibold text-bebas-2xl md:text-bebas-3xl lg:text-bebas-4xl 
-                              text-white leading-tight">
+                <h2
+                  className="font-bebas font-semibold text-bebas-2xl md:text-bebas-3xl lg:text-bebas-4xl 
+                              text-white leading-tight"
+                >
                   {heroSection.lead}
                 </h2>
               </motion.div>
@@ -295,12 +303,14 @@ export default function AboutPage() {
 
       {/* Article Content Section med samme bakgrunn som andre sider */}
       {heroSection && (
-        <section className="py-20 bg-gradient-to-br from-brand-50/80 to-surface-muted 
-                           dark:from-brand-900/10 dark:to-surface-dark-muted">
+        <section
+          className="py-20 bg-gradient-to-br from-brand-50/80 to-surface-muted 
+                           dark:from-brand-900/10 dark:to-surface-dark-muted"
+        >
           {/* Decorative elements som andre sider */}
           <div className="absolute -top-10 -right-10 w-40 h-40 bg-magenta-400/10 rounded-full blur-3xl" />
           <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-brand-400/10 rounded-full blur-3xl" />
-          
+
           <div className="container mx-auto px-4 md:px-6 relative z-10">
             <div className="max-w-4xl mx-auto space-y-12">
               {renderContentWithPullquote(heroSection, paragraphs)}
@@ -323,21 +333,23 @@ export default function AboutPage() {
               Ikke sikker på hvilket kurs som passer deg?
             </h3>
             <p className="text-gray-600 dark:text-gray-300 font-montserrat mb-8 text-lg">
-              Kontakt oss på kontakt@urbanstudios.no eller benytt vårt kontaktskjema, så hjelper vi deg med å finne det perfekte kurset basert på dine behov!
+              Kontakt oss på kontakt@urbanstudios.no eller benytt vårt
+              kontaktskjema, så hjelper vi deg med å finne det perfekte kurset
+              basert på dine behov!
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link to="/kontakt" className="w-full sm:w-auto">
-                <Button 
-  variant="outline"
-  className="font-semibold rounded-full 
+                <Button
+                  variant="outline"
+                  className="font-semibold rounded-full 
             bg-white/80 border-brand-300 text-brand-600 
             hover:bg-brand-50 hover:text-brand-700
             dark:bg-transparent dark:border-brand-700 dark:text-brand-400 
             dark:hover:bg-brand-900/30 dark:hover:text-brand-300"
->
-  Kontakt oss
-  <ArrowRight className="ml-2 h-4 w-4" />
-</Button>
+                >
+                  Kontakt oss
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
               </Link>
             </div>
           </motion.div>

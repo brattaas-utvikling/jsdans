@@ -41,17 +41,17 @@ interface DanceClass extends AppwriteDocument {
   sorting: number; // Ny attributt for sortering
 }
 
-export default function CoursesCarousel({ 
+export default function CoursesCarousel({
   title = "Våre kurs",
   subtitle = "Utforsk vårt utvalg av danser og finn ditt perfekte kurs",
   limit = 10,
-  className = ""
+  className = "",
 }: CoursesCarouselProps) {
   const [courses, setCourses] = useState<DanceClass[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
-  
+
   // Responsive slides per view
   const [slidesPerView, setSlidesPerView] = useState(1);
 
@@ -70,8 +70,8 @@ export default function CoursesCarousel({
     };
 
     updateSlidesPerView();
-    window.addEventListener('resize', updateSlidesPerView);
-    return () => window.removeEventListener('resize', updateSlidesPerView);
+    window.addEventListener("resize", updateSlidesPerView);
+    return () => window.removeEventListener("resize", updateSlidesPerView);
   }, []);
 
   // Navigation functions - ett kort av gangen
@@ -83,7 +83,7 @@ export default function CoursesCarousel({
       setCurrentIndex(Math.max(0, courses.length - slidesPerView));
     }
   }, [currentIndex, courses.length, slidesPerView]);
-  
+
   const scrollNext = useCallback(() => {
     if (currentIndex < courses.length - slidesPerView) {
       setCurrentIndex(currentIndex + 1);
@@ -92,26 +92,26 @@ export default function CoursesCarousel({
     }
   }, [currentIndex, courses.length, slidesPerView]);
 
-   // Fetch courses from Appwrite - Sortert etter sorting attributt
-   const fetchCoursesFromAppwrite = async () => {
+  // Fetch courses from Appwrite - Sortert etter sorting attributt
+  const fetchCoursesFromAppwrite = async () => {
     setLoading(true);
     setError(null);
-    
+
     try {
       const response = await listDocuments(
         DATABASE_ID,
         COLLECTIONS.DANCE_CLASSES_CAROUSEL,
         [
-          Query.orderAsc('sorting'), // Sorterer etter sorting attributt (0, 1, 2, 3, 4, 5, 6, 7)
-          Query.limit(limit) // Bruk limit parameter
-        ]
+          Query.orderAsc("sorting"), // Sorterer etter sorting attributt (0, 1, 2, 3, 4, 5, 6, 7)
+          Query.limit(limit), // Bruk limit parameter
+        ],
       );
 
       const courseData = response.documents as unknown as DanceClass[];
       setCourses(courseData);
     } catch (err) {
-      console.error('Error fetching courses:', err);
-      setError('Kunne ikke laste kurs fra databasen.');
+      console.error("Error fetching courses:", err);
+      setError("Kunne ikke laste kurs fra databasen.");
     } finally {
       setLoading(false);
     }
@@ -120,7 +120,7 @@ export default function CoursesCarousel({
   // Preload images for better performance
   useEffect(() => {
     if (courses.length > 0) {
-      courses.forEach(course => {
+      courses.forEach((course) => {
         const img = new Image();
         img.src = course.image;
       });
@@ -144,11 +144,13 @@ export default function CoursesCarousel({
               {subtitle}
             </p>
           </div>
-          
+
           <div className="flex justify-center items-center py-20">
             <div className="text-center">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-500 mx-auto mb-4"></div>
-              <p className="text-gray-600 dark:text-gray-300 font-montserrat">Laster kurs...</p>
+              <p className="text-gray-600 dark:text-gray-300 font-montserrat">
+                Laster kurs...
+              </p>
             </div>
           </div>
         </div>
@@ -168,7 +170,7 @@ export default function CoursesCarousel({
               <p className="text-red-600 dark:text-red-300 font-montserrat mb-4">
                 {error}
               </p>
-              <button 
+              <button
                 onClick={fetchCoursesFromAppwrite}
                 className="bg-red-600 hover:bg-red-700 text-white font-montserrat-medium px-4 py-2 rounded-lg transition-colors"
               >
@@ -238,7 +240,7 @@ export default function CoursesCarousel({
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
-              
+
               <button
                 className="absolute -right-2 lg:-right-4 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-slate-800/90 
                           hover:bg-white dark:hover:bg-slate-700 text-gray-800 dark:text-gray-200 
@@ -254,18 +256,18 @@ export default function CoursesCarousel({
 
           {/* Carousel Container - Overflow hidden for å skjule neste kort */}
           <div className="overflow-hidden">
-            <div 
+            <div
               className="flex transition-transform duration-500 ease-in-out"
-              style={{ 
+              style={{
                 transform: `translateX(-${currentIndex * (100 / slidesPerView)}%)`,
               }}
             >
               {courses.map((course) => (
-                <div 
-                  key={course.$id} 
+                <div
+                  key={course.$id}
                   className="px-3 flex-shrink-0"
-                  style={{ 
-                    width: `${100 / slidesPerView}%`
+                  style={{
+                    width: `${100 / slidesPerView}%`,
                   }}
                 >
                   <div className="h-full">
@@ -275,7 +277,11 @@ export default function CoursesCarousel({
                       age={course.age}
                       color={course.color}
                       image={course.image}
-                      schedule={course.schedule || [{ day: "September 2025", time: "Tidspunkt kommer" }]}
+                      schedule={
+                        course.schedule || [
+                          { day: "September 2025", time: "Tidspunkt kommer" },
+                        ]
+                      }
                       instructor={course.instructor}
                       studio={course.studio}
                     />
@@ -288,13 +294,15 @@ export default function CoursesCarousel({
           {/* Dots Indicator */}
           {courses.length > slidesPerView && (
             <div className="flex justify-center mt-8 space-x-2">
-              {Array.from({ length: Math.max(1, courses.length - slidesPerView + 1) }).map((_, index) => (
+              {Array.from({
+                length: Math.max(1, courses.length - slidesPerView + 1),
+              }).map((_, index) => (
                 <button
-                  key={`carousel-dot-${index}`} 
+                  key={`carousel-dot-${index}`}
                   className={`w-3 h-3 rounded-full transition-all duration-200 ${
-                    index === currentIndex 
-                      ? 'bg-brand-600 dark:bg-brand-400' 
-                      : 'bg-gray-300 dark:bg-gray-600 hover:bg-brand-400 dark:hover:bg-brand-500'
+                    index === currentIndex
+                      ? "bg-brand-600 dark:bg-brand-400"
+                      : "bg-gray-300 dark:bg-gray-600 hover:bg-brand-400 dark:hover:bg-brand-500"
                   }`}
                   onClick={() => setCurrentIndex(index)}
                   aria-label={`Gå til posisjon ${index + 1}`}
@@ -312,15 +320,15 @@ export default function CoursesCarousel({
           transition={{ duration: 0.6, delay: 0.4 }}
           className="text-center mt-12"
         >
-         <Link to="/kurs" className="w-full sm:w-auto">
-                <Button 
-                  className="border-brand-300 text-brand-600 hover:bg-brand-50 hover:text-brand-600
+          <Link to="/kurs" className="w-full sm:w-auto">
+            <Button
+              className="border-brand-300 text-brand-600 hover:bg-brand-50 hover:text-brand-600
                             dark:border-brand-700 dark:text-brand-400 dark:hover:bg-brand-900/30 dark:hover:text-brand-400
                             font-semibold rounded-full bg-transparent border-2 px-6 py-3"
-                >
-                  Se alle kurs
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
+            >
+              Se alle kurs
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
           </Link>
         </motion.div>
       </div>

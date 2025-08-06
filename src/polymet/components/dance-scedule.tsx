@@ -21,12 +21,15 @@ export default function DanceSchedule() {
       (c) =>
         c.day === selectedDay &&
         (!ageFilter || c.ageGroup === ageFilter) &&
-        (!levelFilter || c.level === levelFilter)
+        (!levelFilter || c.level === levelFilter),
     );
   }, [selectedDay, ageFilter, levelFilter]);
 
   const classIndex = useMemo(() => {
-    const map: Record<string, Record<string, typeof filteredSchedule[0]>> = {};
+    const map: Record<
+      string,
+      Record<string, (typeof filteredSchedule)[0]>
+    > = {};
     filteredSchedule.forEach((c) => {
       if (!map[c.room]) map[c.room] = {};
       map[c.room][c.startTime] = c;
@@ -61,7 +64,9 @@ export default function DanceSchedule() {
 
   return (
     <div className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 p-4">
-      <h1 className="text-center text-3xl md:text-4xl font-bold my-8 text-gray-900 dark:text-white">Timeplan Dansestudio</h1>
+      <h1 className="text-center text-3xl md:text-4xl font-bold my-8 text-gray-900 dark:text-white">
+        Timeplan Dansestudio
+      </h1>
 
       <div className="flex flex-wrap gap-2 mb-4 justify-center">
         {DAYS_OF_WEEK.map((day) => (

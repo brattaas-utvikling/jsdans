@@ -40,22 +40,22 @@ export default function CoursesPage() {
   const fetchCoursesFromAppwrite = async () => {
     setLoading(true);
     setError(null);
-    
+
     try {
       const response = await listDocuments(
         DATABASE_ID,
         COLLECTIONS.DANCE_CLASSES,
         [
-          Query.orderAsc('name'), // Sorter alfabetisk
-          Query.limit(40) // Begrens til 40 kurs
-        ]
+          Query.orderAsc("name"), // Sorter alfabetisk
+          Query.limit(40), // Begrens til 40 kurs
+        ],
       );
-      
+
       const courseData = response.documents as unknown as DanceClass[];
       setCourses(courseData);
     } catch (err) {
-      console.error('Error fetching courses:', err);
-      setError('Kunne ikke laste kurs fra databasen.');
+      console.error("Error fetching courses:", err);
+      setError("Kunne ikke laste kurs fra databasen.");
     } finally {
       setLoading(false);
     }
@@ -71,7 +71,9 @@ export default function CoursesPage() {
       <div className="min-h-screen bg-white dark:bg-surface-dark flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-500 mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-300 font-montserrat">Laster kurs...</p>
+          <p className="text-gray-600 dark:text-gray-300 font-montserrat">
+            Laster kurs...
+          </p>
         </div>
       </div>
     );
@@ -88,7 +90,7 @@ export default function CoursesPage() {
             <p className="text-red-600 dark:text-red-300 font-montserrat mb-4">
               {error}
             </p>
-            <Button 
+            <Button
               onClick={fetchCoursesFromAppwrite}
               className="font-semibold bg-red-600 hover:bg-red-700 text-white"
             >
@@ -105,13 +107,15 @@ export default function CoursesPage() {
       <ScrollToTop />
 
       {/* Hero Section - Standard styling */}
-      <section className="bg-gradient-to-br from-brand-50/80 to-surface-muted 
+      <section
+        className="bg-gradient-to-br from-brand-50/80 to-surface-muted 
                         dark:from-brand-900/10 dark:to-surface-dark-muted 
-                        pt-24 pb-16 relative overflow-hidden">
+                        pt-24 pb-16 relative overflow-hidden"
+      >
         {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-magenta-400/10 rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-brand-400/10 rounded-full blur-3xl" />
-        
+
         <div className="container mx-auto px-4 md:px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -119,30 +123,35 @@ export default function CoursesPage() {
             transition={{ duration: 0.8 }}
             className="text-center max-w-4xl mx-auto"
           >
-            <h1 className="text-xl font-medium text-brand-600 dark:text-brand-400 
-                          uppercase tracking-wider mb-3">
+            <h1
+              className="text-xl font-medium text-brand-600 dark:text-brand-400 
+                          uppercase tracking-wider mb-3"
+            >
               Våre kurs
             </h1>
             <h2 className="font-bebas font-semibold text-bebas-xl md:text-bebas-2xl mb-6 text-gray-900 dark:text-white">
               Finn din stil
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed">
-              Fra energiske grooves til klassisk eleganse – vårt kursprogram er designet for å møte deg der du er og ta deg dit du vil.
+              Fra energiske grooves til klassisk eleganse – vårt kursprogram er
+              designet for å møte deg der du er og ta deg dit du vil.
             </p>
           </motion.div>
         </div>
       </section>
 
       {/* Courses Section - Standard styling */}
-      <section className="py-16 bg-gradient-to-br from-brand-50/80 to-surface-muted 
-                         dark:from-brand-900/10 dark:to-surface-dark-muted">
+      <section
+        className="py-16 bg-gradient-to-br from-brand-50/80 to-surface-muted 
+                         dark:from-brand-900/10 dark:to-surface-dark-muted"
+      >
         <div className="container mx-auto px-4 md:px-6">
           {courses.length === 0 ? (
             <div className="text-center py-16">
               <p className="text-gray-500 dark:text-gray-400 font-montserrat text-lg mb-4">
                 Ingen kurs funnet.
               </p>
-              <Button 
+              <Button
                 onClick={fetchCoursesFromAppwrite}
                 className="border-brand-300 text-brand-600 hover:bg-brand-50 hover:text-brand-600
                           dark:border-brand-700 dark:text-brand-400 dark:hover:bg-brand-900/30 dark:hover:text-brand-400
@@ -178,7 +187,11 @@ export default function CoursesPage() {
                         age={course.age}
                         color={course.color}
                         image={course.image}
-                        schedule={course.schedule || [{ day: "September 2025", time: "Tidspunkt kommer" }]}
+                        schedule={
+                          course.schedule || [
+                            { day: "September 2025", time: "Tidspunkt kommer" },
+                          ]
+                        }
                         instructor={course.instructor}
                         studio={course.studio}
                       />
@@ -205,11 +218,13 @@ export default function CoursesPage() {
               Ikke sikker på hvilket kurs som passer deg?
             </h3>
             <p className="text-gray-600 dark:text-gray-300 font-montserrat mb-8 text-lg">
-              Kontakt oss på kontakt@urbanstudios.no eller benytt vårt kontaktskjema, så hjelper vi deg med å finne det perfekte kurset basert på dine behov!
+              Kontakt oss på kontakt@urbanstudios.no eller benytt vårt
+              kontaktskjema, så hjelper vi deg med å finne det perfekte kurset
+              basert på dine behov!
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link to="/kontakt" className="w-full sm:w-auto">
-                <Button 
+                <Button
                   variant="outline"
                   className="font-semibold rounded-full 
                             bg-white/80 border-brand-300 text-brand-600 

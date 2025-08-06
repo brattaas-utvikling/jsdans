@@ -12,13 +12,15 @@ export default function PricingSection() {
       <ScrollToTop />
 
       {/* Hero Section - Samme stil som andre sider */}
-      <section className="bg-gradient-to-br from-blue-50 via-white to-pink-50 
+      <section
+        className="bg-gradient-to-br from-blue-50 via-white to-pink-50 
                         dark:from-blue-900/20 dark:via-slate-900 dark:to-pink-900/20 
-                        pt-24 pb-16 relative overflow-hidden">
+                        pt-24 pb-16 relative overflow-hidden"
+      >
         {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-pink-400/10 rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-blue-400/10 rounded-full blur-3xl" />
-        
+
         <div className="container mx-auto px-4 md:px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -26,17 +28,21 @@ export default function PricingSection() {
             transition={{ duration: 0.8 }}
             className="text-center max-w-4xl mx-auto"
           >
-            <h1 className="text-sm font-montserrat-medium text-indigo-600 dark:text-indigo-400 
-                          uppercase tracking-wider mb-3">
+            <h1
+              className="text-sm font-montserrat-medium text-indigo-600 dark:text-indigo-400 
+                          uppercase tracking-wider mb-3"
+            >
               Våre priser
             </h1>
-            <h2 className="font-bebas text-bebas-4xl md:text-bebas-5xl lg:text-bebas-6xl 
-                          text-gray-900 dark:text-white mb-6">
+            <h2
+              className="font-bebas text-bebas-4xl md:text-bebas-5xl lg:text-bebas-6xl 
+                          text-gray-900 dark:text-white mb-6"
+            >
               Fleksible priser for alle behov
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed">
-              Velg en prismodell som passer deg best. Vi har noe for enhver danser, 
-              uavhengig av erfaring eller budsjett.
+              Velg en prismodell som passer deg best. Vi har noe for enhver
+              danser, uavhengig av erfaring eller budsjett.
             </p>
           </motion.div>
         </div>
@@ -93,12 +99,13 @@ export default function PricingSection() {
               Trenger du en mer tilpasset prismodell?
             </h3>
             <p className="text-gray-600 dark:text-gray-300 font-montserrat mb-8 text-lg">
-              Vi tilbyr egne spesialmodeller for både yngre og eldre dansere. 
-              Ta kontakt med oss for et personlig tilpasset tilbud som passer dine behov!
+              Vi tilbyr egne spesialmodeller for både yngre og eldre dansere. Ta
+              kontakt med oss for et personlig tilpasset tilbud som passer dine
+              behov!
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link to="/kontakt" className="w-full sm:w-auto">
-                <Button 
+                <Button
                   className="font-montserrat-semibold rounded-full 
                             bg-gradient-to-r from-blue-600 via-indigo-600 to-pink-600 
                             hover:from-blue-700 hover:via-indigo-700 hover:to-pink-700 
@@ -110,7 +117,7 @@ export default function PricingSection() {
                 </Button>
               </Link>
               <Link to="/kurs" className="w-full sm:w-auto">
-                <Button 
+                <Button
                   variant="outline"
                   className="font-montserrat-semibold rounded-full border-blue-300 text-blue-600 
                             hover:bg-blue-50 dark:border-blue-700 dark:text-blue-400 
@@ -123,7 +130,6 @@ export default function PricingSection() {
           </motion.div>
         </div>
       </section>
-
     </div>
   );
 }

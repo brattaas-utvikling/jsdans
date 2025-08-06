@@ -3,7 +3,7 @@ import { ClockIcon, MailIcon, MapPinIcon, PhoneIcon } from "lucide-react";
 import ContactForm from "./ContactForm";
 import { STUDIO_INFO } from "../data/dance-studio-data";
 import ScrollToTop from "@/helpers/ScrollToTop";
-import { FaInstagram, FaFacebookF } from 'react-icons/fa'
+import { FaInstagram, FaFacebookF } from "react-icons/fa";
 
 export default function ContactSection() {
   return (
@@ -14,9 +14,11 @@ export default function ContactSection() {
     >
       <ScrollToTop />
       {/* Subtle gradient accent - Standard bakgrunn */}
-      <div className="absolute inset-0 bg-gradient-to-br from-brand-50/80 to-surface-muted 
-                    dark:from-brand-900/10 dark:to-surface-dark-muted" />
-      
+      <div
+        className="absolute inset-0 bg-gradient-to-br from-brand-50/80 to-surface-muted 
+                    dark:from-brand-900/10 dark:to-surface-dark-muted"
+      />
+
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         {/* Section header med animasjoner */}
         <motion.div
@@ -26,7 +28,7 @@ export default function ContactSection() {
           transition={{ duration: 0.8 }}
           className="text-center max-w-3xl mx-auto mb-12"
         >
-          <motion.h1 
+          <motion.h1
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
@@ -36,8 +38,8 @@ export default function ContactSection() {
           >
             Kontakt oss
           </motion.h1>
-          
-          <motion.h2 
+
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -46,16 +48,17 @@ export default function ContactSection() {
           >
             Vi er her for deg
           </motion.h2>
-          
-          <motion.p 
+
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.6 }}
             className="text-lg text-gray-600 dark:text-gray-300 font-montserrat"
           >
-            Har du spørsmål, ønsker du mer informasjon, eller vil du bare si hei?
-            Fyll ut kontaktskjemaet nedenfor, så tar vi kontakt med deg så snart som mulig!
+            Har du spørsmål, ønsker du mer informasjon, eller vil du bare si
+            hei? Fyll ut kontaktskjemaet nedenfor, så tar vi kontakt med deg så
+            snart som mulig!
           </motion.p>
         </motion.div>
 
@@ -66,27 +69,28 @@ export default function ContactSection() {
           <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-brand-400/10 rounded-full blur-3xl" />
 
           {/* Grid med equal heights og animasjoner */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
             className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch relative z-10"
           >
-            
             {/* Left column: Contact info med animasjon */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.4 }}
               className="h-full flex flex-col"
             >
-              <div className="bg-gradient-to-br from-brand-50/80 to-surface-muted 
+              <div
+                className="bg-gradient-to-br from-brand-50/80 to-surface-muted 
                             dark:from-brand-900/10 dark:to-surface-dark-muted 
                             rounded-2xl shadow-brand-lg p-6 md:p-8
-                            border border-brand-100/50 dark:border-brand-700/30 h-full flex flex-col">
-                <motion.h3 
+                            border border-brand-100/50 dark:border-brand-700/30 h-full flex flex-col"
+              >
+                <motion.h3
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
                   viewport={{ once: true }}
@@ -95,10 +99,10 @@ export default function ContactSection() {
                 >
                   URBAN STUDIOS
                 </motion.h3>
-                
+
                 {/* Contact details med staggered animasjoner */}
                 <div className="space-y-4 flex-grow">
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
@@ -113,13 +117,14 @@ export default function ContactSection() {
                         Adresse
                       </h4>
                       <address className="text-gray-600 dark:text-gray-300 font-montserrat not-italic">
-                        {STUDIO_INFO.address.street}<br />
+                        {STUDIO_INFO.address.street}
+                        <br />
                         {STUDIO_INFO.address.zip} {STUDIO_INFO.address.city}
                       </address>
                     </div>
                   </motion.div>
 
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
@@ -133,8 +138,8 @@ export default function ContactSection() {
                       <h4 className="font-semibold text-gray-900 dark:text-white">
                         Telefon
                       </h4>
-                      <a 
-                        href={`tel:${STUDIO_INFO.contact.phone.replace(/\s+/g, '')}`}
+                      <a
+                        href={`tel:${STUDIO_INFO.contact.phone.replace(/\s+/g, "")}`}
                         className="text-gray-600 dark:text-gray-300 font-montserrat 
                                  hover:text-brand-600 dark:hover:text-brand-400 
                                  transition-colors duration-200 
@@ -148,7 +153,7 @@ export default function ContactSection() {
                     </div>
                   </motion.div>
 
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
@@ -162,7 +167,7 @@ export default function ContactSection() {
                       <h4 className="font-semibold text-gray-900 dark:text-white">
                         E-post
                       </h4>
-                      <a 
+                      <a
                         href={`mailto:${STUDIO_INFO.contact.email}`}
                         className="text-gray-600 dark:text-gray-300 font-montserrat 
                                  hover:text-brand-600 dark:hover:text-brand-400 
@@ -177,7 +182,7 @@ export default function ContactSection() {
                     </div>
                   </motion.div>
 
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
@@ -199,7 +204,7 @@ export default function ContactSection() {
                 </div>
 
                 {/* Social media med animasjon */}
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -244,17 +249,19 @@ export default function ContactSection() {
             </motion.div>
 
             {/* Right column: Contact form med animasjon */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.6 }}
               className="h-full flex flex-col"
             >
-              <div className="bg-gradient-to-br from-brand-50/80 to-surface-muted 
+              <div
+                className="bg-gradient-to-br from-brand-50/80 to-surface-muted 
                             dark:from-brand-900/10 dark:to-surface-dark-muted 
                             rounded-2xl shadow-brand-lg p-6 md:p-8
-                            border border-brand-100/50 dark:border-brand-700/30 h-full flex-col">
+                            border border-brand-100/50 dark:border-brand-700/30 h-full flex-col"
+              >
                 <ContactForm />
               </div>
             </motion.div>

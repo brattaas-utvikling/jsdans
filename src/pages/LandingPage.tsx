@@ -5,7 +5,6 @@ import HomepageNews from "@/components/HomePageNews";
 import KompaniAuditionSection from "@/components/KompaniAuditionSection";
 import SelmaWorkshop from "@/components/SelmaWorkshop";
 
-
 import ScrollToTop from "@/helpers/ScrollToTop";
 
 export default function LandingPage() {

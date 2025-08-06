@@ -29,7 +29,6 @@ export default function CtaSection() {
       {/* Content - økt z-index for hele innholdsområdet */}
       <div className="container mx-auto px-4 md:px-6 relative z-20">
         <div className="max-w-3xl">
-          
           {/* H1 - Urban Studios med SEO-optimalisering */}
           <motion.h1
             id="cta-heading"
@@ -40,7 +39,10 @@ export default function CtaSection() {
             className="flex items-center gap-2 mb-4"
             itemProp="name"
           >
-            <span className="text-base font-bebas text-white/60 uppercase tracking-wider sr-only" aria-label="Urban Studios - Dansestudio Kongsvinger">
+            <span
+              className="text-base font-bebas text-white/60 uppercase tracking-wider sr-only"
+              aria-label="Urban Studios - Dansestudio Kongsvinger"
+            >
               URBAN STUDIOS - Dansestudio Kongsvinger
             </span>
           </motion.h1>
@@ -71,10 +73,14 @@ export default function CtaSection() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.5 }}
             viewport={{ once: true }}
-            className="font-montserrat text-lg text-white/80 mb-8 max-w-xl"
+            className="font-montserrat text-lg text-white/90 mb-8 max-w-xl"
             itemProp="description"
           >
-            Endelig kan vi dele dette vi har drømt om så lenge! Vi åpner dørene for Urban Studios høsten 2025, et profesjonelt dansestudio hvor du kan utforske forskjellige stilarter og utvikle deg innen scenisk dansekunst. Enten du er nybegynner eller en mer erfaren danser, har vi danseklasser som vil utfordre deg!
+            Endelig kan vi dele dette vi har drømt om så lenge! Vi åpner dørene
+            for Urban Studios høsten 2025, et profesjonelt dansestudio hvor du
+            kan utforske forskjellige stilarter og utvikle deg innen scenisk
+            dansekunst. Enten du er nybegynner eller en mer erfaren danser, har
+            vi danseklasser som vil utfordre deg! <span className="text-magenta-400 dark:text-magenta-300 font-bold">Oppstart 24. august!</span>
           </motion.p>
 
           {/* CTA Buttons - forbedret z-index og touch-target */}
@@ -85,10 +91,10 @@ export default function CtaSection() {
             viewport={{ once: true }}
             className="flex flex-col sm:flex-row gap-4 relative z-30"
           >
-            <Link 
-              to="/kurs" 
+            <Link
+              to="/kurs"
               className="relative z-40 touch-manipulation"
-              style={{ touchAction: 'manipulation' }}
+              style={{ touchAction: "manipulation" }}
             >
               <Button
                 size="lg"
@@ -98,12 +104,12 @@ export default function CtaSection() {
                           active:scale-95 focus:ring-2 focus:ring-brand-400/50 focus:ring-offset-2"
                 aria-label="Se alle dansetimer og kurs hos Urban Studios Kongsvinger"
                 title="Utforsk vårt utvalg av hip-hop, moderne dans og breakdance kurs"
-                style={{ touchAction: 'manipulation' }}
+                style={{ touchAction: "manipulation" }}
               >
                 Se våre kurs
               </Button>
             </Link>
-            
+
             {/* Din kommenterte ut knapp - kan aktiveres igjen */}
             {/* <Button
               size="lg"
@@ -115,15 +121,20 @@ export default function CtaSection() {
               Timeplan
               <ArrowRightIcon className="ml-2 h-4 w-4" />
             </Button> */}
-            
+
             <span id="cta-description" className="sr-only">
-              Urban Studios - Dansestudio i Kongsvinger med hip-hop, moderne dans og breakdance for alle nivåer
+              Urban Studios - Dansestudio i Kongsvinger med hip-hop, moderne
+              dans og breakdance for alle nivåer
             </span>
           </motion.div>
 
           {/* Skjult SEO-informasjon for søkemotorer */}
           <div className="sr-only">
-            <span itemProp="address" itemScope itemType="https://schema.org/PostalAddress">
+            <span
+              itemProp="address"
+              itemScope
+              itemType="https://schema.org/PostalAddress"
+            >
               <span itemProp="streetAddress">Storgata 42</span>
               <span itemProp="addressLocality">Kongsvinger</span>
               <span itemProp="postalCode">2212</span>
@@ -140,7 +151,7 @@ export default function CtaSection() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(homepageSchemaModalBased)
+          __html: JSON.stringify(homepageSchemaModalBased),
         }}
       />
 

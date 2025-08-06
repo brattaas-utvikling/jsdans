@@ -1,28 +1,28 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { 
-  ArrowRight, 
-  Star, 
-  Calendar, 
+import {
+  ArrowRight,
+  Star,
+  Calendar,
   MapPin,
   Trophy,
-  Clock
+  Clock,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function KompaniAuditionSection() {
   return (
-    <section className="py-16 bg-gradient-to-br from-brand-50/80 to-surface-muted 
+    <section
+      className="py-16 bg-gradient-to-br from-brand-50/80 to-surface-muted 
                        dark:from-brand-900/10 dark:to-surface-dark-muted 
-                       relative overflow-hidden">
-      
+                       relative overflow-hidden"
+    >
       {/* Decorative background elements */}
       <div className="absolute top-0 right-0 w-64 h-64 bg-magenta-400/10 rounded-full blur-3xl" />
       <div className="absolute bottom-0 left-0 w-48 h-48 bg-brand-400/10 rounded-full blur-3xl" />
-      
+
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          
           {/* Left column - Content */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -66,8 +66,14 @@ export default function KompaniAuditionSection() {
               transition={{ duration: 0.4, delay: 0.3 }}
               className="text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed text-lg"
             >
-              <strong className="text-magenta-600 dark:text-magenta-400">Søndag 24. august</strong> holder vi vår første kompaniaudition. 
-              Påmeldingsfrist <strong className="text-brand-600 dark:text-brand-400">20. august</strong>.
+              <strong className="text-magenta-600 dark:text-magenta-400">
+                Søndag 24. august
+              </strong>{" "}
+              holder vi vår første kompaniaudition. Påmeldingsfrist{" "}
+              <strong className="text-brand-600 dark:text-brand-400">
+                20. august
+              </strong>
+              .
             </motion.p>
 
             {/* Additional information */}
@@ -83,7 +89,7 @@ export default function KompaniAuditionSection() {
               <h3 className="font-bebas text-bebas-base text-gray-900 dark:text-white mb-4">
                 Audition Detaljer
               </h3>
-              
+
               <div className="space-y-3">
                 <div className="flex items-center gap-3">
                   <Calendar className="h-5 w-5 text-magenta-500 flex-shrink-0" />
@@ -91,14 +97,14 @@ export default function KompaniAuditionSection() {
                     <strong>Søndag 24. august</strong> - Første kompaniaudition
                   </span>
                 </div>
-                
+
                 <div className="flex items-center gap-3">
                   <Clock className="h-5 w-5 text-magenta-500 flex-shrink-0" />
                   <span className="font-montserrat text-gray-700 dark:text-gray-300">
                     <strong>Påmeldingsfrist:</strong> 20. august
                   </span>
                 </div>
-                
+
                 <div className="flex items-center gap-3">
                   <MapPin className="h-5 w-5 text-magenta-500 flex-shrink-0" />
                   <span className="font-montserrat text-gray-700 dark:text-gray-300">
@@ -116,7 +122,7 @@ export default function KompaniAuditionSection() {
               transition={{ duration: 0.4, delay: 0.5 }}
               className="flex flex-col sm:flex-row gap-4"
             >
-              <Button 
+              <Button
                 size="lg"
                 onClick={() => {
                   const subject = "Påmelding - Kompaniaudition 24. august 2025";
@@ -132,7 +138,7 @@ Fødselsdato:
 Telefon:
 
 Denne påmeldingen er bindende.`;
-                  
+
                   const mailtoLink = `mailto:registrer@urbanstudios.no?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
                   window.location.href = mailtoLink;
                 }}
@@ -148,7 +154,7 @@ Denne påmeldingen er bindende.`;
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
               <Link to="/nyheter/68735f06003e7a595607">
-                <Button 
+                <Button
                   size="lg"
                   variant="outline"
                   className="font-semibold rounded-full 
@@ -174,8 +180,8 @@ Denne påmeldingen er bindende.`;
             >
               <div className="w-2 h-2 rounded-full bg-brand-500 mt-2 flex-shrink-0 animate-pulse"></div>
               <p className="text-brand-700 dark:text-brand-300 font-montserrat text-sm leading-relaxed">
-                <strong>Påmeldingsfrist:</strong> 20. august kl. 23:59. 
-                Meld deg på i tide for å sikre din plass til auditionen!
+                <strong>Påmeldingsfrist:</strong> 20. august kl. 23:59. Meld deg
+                på i tide for å sikre din plass til auditionen!
               </p>
             </motion.div>
           </motion.div>
@@ -197,7 +203,6 @@ Denne påmeldingen er bindende.`;
                   alt="Urban Studios kompani - dansere i aksjon"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-               
               </div>
 
               {/* Floating badge */}

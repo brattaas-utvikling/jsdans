@@ -1,9 +1,9 @@
 // src/components/DanceClassCard.tsx
-import React from 'react';
-import { Clock, Users, Star, Calendar } from 'lucide-react';
-import { Card, CardContent } from './ui/card';
-import { Badge } from './ui/badge';
-import type { DanceClass, Schedule } from '../types';
+import React from "react";
+import { Clock, Users, Star, Calendar } from "lucide-react";
+import { Card, CardContent } from "./ui/card";
+import { Badge } from "./ui/badge";
+import type { DanceClass, Schedule } from "../types";
 
 interface DanceClassCardProps {
   danceClass: DanceClass;
@@ -13,15 +13,15 @@ interface DanceClassCardProps {
   showSchedules?: boolean;
 }
 
-export const DanceClassCard: React.FC<DanceClassCardProps> = ({ 
-  danceClass, 
-  schedules = [], 
+export const DanceClassCard: React.FC<DanceClassCardProps> = ({
+  danceClass,
+  schedules = [],
   onSelectSchedule,
   selectedSchedules = [],
-  showSchedules = true 
+  showSchedules = true,
 }) => {
-  const availableSchedules = schedules.filter(schedule => 
-    schedule.danceClassId === danceClass.$id && schedule.isActive
+  const availableSchedules = schedules.filter(
+    (schedule) => schedule.danceClassId === danceClass.$id && schedule.isActive,
   );
 
   const getAvailableSpots = (schedule: Schedule): number => {
@@ -89,23 +89,24 @@ export const DanceClassCard: React.FC<DanceClassCardProps> = ({
               <Calendar className="w-4 h-4 mr-2" />
               Tilgjengelige timer:
             </div>
-            
+
             {availableSchedules.map((schedule) => {
               const availableSpots = getAvailableSpots(schedule);
               const isSelected = isScheduleSelected(schedule.$id);
               const isFull = availableSpots === 0;
-              
+
               return (
                 <div
                   key={schedule.$id}
                   onClick={() => handleScheduleClick(schedule)}
                   className={`
                     p-3 rounded-lg border-2 transition-all cursor-pointer
-                    ${isSelected 
-                      ? 'border-purple-500 bg-purple-50' 
-                      : isFull 
-                        ? 'border-gray-200 bg-gray-50 cursor-not-allowed opacity-60'
-                        : 'border-gray-200 hover:border-purple-300 hover:bg-purple-25'
+                    ${
+                      isSelected
+                        ? "border-purple-500 bg-purple-50"
+                        : isFull
+                          ? "border-gray-200 bg-gray-50 cursor-not-allowed opacity-60"
+                          : "border-gray-200 hover:border-purple-300 hover:bg-purple-25"
                     }
                   `}
                 >
@@ -120,11 +121,17 @@ export const DanceClassCard: React.FC<DanceClassCardProps> = ({
                         </div>
                       )}
                     </div>
-                    
+
                     <div className="text-right">
                       <div className="flex items-center text-sm text-gray-600">
                         <Users className="w-4 h-4 mr-1" />
-                        <span className={availableSpots <= 3 ? 'text-primary-600 font-medium' : ''}>
+                        <span
+                          className={
+                            availableSpots <= 3
+                              ? "text-primary-600 font-medium"
+                              : ""
+                          }
+                        >
                           {availableSpots} ledige
                         </span>
                       </div>
@@ -156,10 +163,9 @@ export const DanceClassCard: React.FC<DanceClassCardProps> = ({
           <div className="text-center py-4 text-gray-500">
             <Calendar className="w-8 h-8 mx-auto mb-2 opacity-50" />
             <p className="text-sm">
-              {danceClass.availableFromYear > 2025 
+              {danceClass.availableFromYear > 2025
                 ? `Starter i ${danceClass.availableFromYear}`
-                : 'Ingen timer tilgjengelig for øyeblikket'
-              }
+                : "Ingen timer tilgjengelig for øyeblikket"}
             </p>
           </div>
         )}

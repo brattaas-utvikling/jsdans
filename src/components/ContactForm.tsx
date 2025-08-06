@@ -4,17 +4,23 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { 
-  CheckIcon, 
-  AlertCircleIcon, 
-  XCircleIcon, 
+import {
+  CheckIcon,
+  AlertCircleIcon,
+  XCircleIcon,
   ShieldCheckIcon,
   ClockIcon,
-  MailIcon
+  MailIcon,
 } from "lucide-react";
 
-import { SecureContactService, type SubmissionResult } from "../services/secureContactService";
-import { validateField, type ContactFormData } from "../validation/contactValidation";
+import {
+  SecureContactService,
+  type SubmissionResult,
+} from "../services/secureContactService";
+import {
+  validateField,
+  type ContactFormData,
+} from "../validation/contactValidation";
 import { RateLimiter, BotDetection, SecurityLogger } from "../utils/security";
 
 interface FormErrors {
@@ -33,7 +39,7 @@ export default function SecureContactForm() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [formStartTime] = useState(Date.now());
   const [rateLimitError, setRateLimitError] = useState<string | null>(null);
-  
+
   const [formData, setFormData] = useState<ContactFormData>({
     name: "",
     email: "",
@@ -45,9 +51,14 @@ export default function SecureContactForm() {
   const formRef = useRef<HTMLFormElement>(null);
 
   // Real-time validation med debounce
-  const [validationTimeouts, setValidationTimeouts] = useState<Record<string, NodeJS.Timeout>>({});
+  const [validationTimeouts, setValidationTimeouts] = useState<
+    Record<string, NodeJS.Timeout>
+  >({});
 
-  const validateFieldWithDelay = (fieldName: keyof ContactFormData, value: string) => {
+  const validateFieldWithDelay = (
+    fieldName: keyof ContactFormData,
+    value: string,
+  ) => {
     // Clear existing timeout
     if (validationTimeouts[fieldName]) {
       clearTimeout(validationTimeouts[fieldName]);
@@ -56,30 +67,32 @@ export default function SecureContactForm() {
     // Set new timeout for validation
     const timeout = setTimeout(async () => {
       const error = await validateField(fieldName, value);
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
-        [fieldName]: error
+        [fieldName]: error,
       }));
     }, 300); // 300ms debounce
 
-    setValidationTimeouts(prev => ({
+    setValidationTimeouts((prev) => ({
       ...prev,
-      [fieldName]: timeout
+      [fieldName]: timeout,
     }));
   };
 
   // Cleanup timeouts on unmount
   useEffect(() => {
     return () => {
-      Object.values(validationTimeouts).forEach(timeout => clearTimeout(timeout));
+      Object.values(validationTimeouts).forEach((timeout) =>
+        clearTimeout(timeout),
+      );
     };
   }, [validationTimeouts]);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
-    
+
     // Update form data
     setFormData((prev) => ({
       ...prev,
@@ -88,12 +101,12 @@ export default function SecureContactForm() {
 
     // Clear existing errors
     if (errors[name as keyof FormErrors]) {
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
-        [name]: undefined
+        [name]: undefined,
       }));
     }
-    
+
     // Clear system errors
     if (submitError) setSubmitError(null);
     if (rateLimitError) setRateLimitError(null);
@@ -102,30 +115,33 @@ export default function SecureContactForm() {
     validateFieldWithDelay(name as keyof ContactFormData, value);
   };
 
-  const handleBlur = async (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleBlur = async (
+    e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = e.target;
-    
+
     // Immediate validation on blur
     const error = await validateField(name as keyof ContactFormData, value);
     if (error) {
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
-        [name]: error
+        [name]: error,
       }));
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Rate limiting check
-    const identifier = formData.email || 'anonymous';
+    const identifier = formData.email || "anonymous";
     const rateLimitCheck = RateLimiter.isAllowed(identifier);
-    
+
     if (!rateLimitCheck.allowed) {
-      const waitTime = rateLimitCheck.waitTime ? 
-        RateLimiter.formatWaitTime(rateLimitCheck.waitTime) : 'ukjent tid';
-      
+      const waitTime = rateLimitCheck.waitTime
+        ? RateLimiter.formatWaitTime(rateLimitCheck.waitTime)
+        : "ukjent tid";
+
       setRateLimitError(`${rateLimitCheck.reason} Prøv igjen om ${waitTime}.`);
       return;
     }
@@ -133,11 +149,17 @@ export default function SecureContactForm() {
     // Bot detection
     if (formRef.current) {
       const formDataForBot = new FormData(formRef.current);
-      const botCheck = BotDetection.validateSubmission(formDataForBot, formStartTime);
-      
+      const botCheck = BotDetection.validateSubmission(
+        formDataForBot,
+        formStartTime,
+      );
+
       if (botCheck.isBot) {
-        SecurityLogger.logSuspiciousActivity(botCheck.reason || 'Bot detected', identifier);
-        setSubmitError('Sikkerhetsvalidering feilet. Prøv igjen senere.');
+        SecurityLogger.logSuspiciousActivity(
+          botCheck.reason || "Bot detected",
+          identifier,
+        );
+        setSubmitError("Sikkerhetsvalidering feilet. Prøv igjen senere.");
         return;
       }
     }
@@ -147,21 +169,19 @@ export default function SecureContactForm() {
     setRateLimitError(null);
 
     try {
-      const result: SubmissionResult = await SecureContactService.submitContactForm(
-        formData,
-        {
+      const result: SubmissionResult =
+        await SecureContactService.submitContactForm(formData, {
           userAgent: navigator.userAgent,
-          startTime: formStartTime
-        }
-      );
+          startTime: formStartTime,
+        });
 
       if (result.success) {
         // Record successful submission for rate limiting
         RateLimiter.recordSubmission(identifier);
-        
+
         // Show success
         setIsSubmitted(true);
-        
+
         // Reset form
         setFormData({
           name: "",
@@ -170,37 +190,39 @@ export default function SecureContactForm() {
           message: "",
         });
         setErrors({});
-        
+
         // Reset success message after 12 seconds
         setTimeout(() => {
           setIsSubmitted(false);
         }, 12000);
-        
       } else {
-        console.error('❌ Form submission failed:', result);
-        
+        console.error("❌ Form submission failed:", result);
+
         // Handle different error types
         switch (result.errorCode) {
-          case 'RATE_LIMIT':
-            setRateLimitError(result.error || 'For mange forsøk');
+          case "RATE_LIMIT":
+            setRateLimitError(result.error || "For mange forsøk");
             break;
-          case 'VALIDATION':
-            setSubmitError(result.error || 'Valideringsfeil');
+          case "VALIDATION":
+            setSubmitError(result.error || "Valideringsfeil");
             break;
-          case 'SECURITY':
-            setSubmitError('Sikkerhetskontroll feilet. Kontroller innholdet og prøv igjen.');
+          case "SECURITY":
+            setSubmitError(
+              "Sikkerhetskontroll feilet. Kontroller innholdet og prøv igjen.",
+            );
             break;
-          case 'BOT_DETECTED':
-            setSubmitError('Automatisk innsending oppdaget. Prøv igjen senere.');
+          case "BOT_DETECTED":
+            setSubmitError(
+              "Automatisk innsending oppdaget. Prøv igjen senere.",
+            );
             break;
           default:
-            setSubmitError(result.error || 'En uventet feil oppstod');
+            setSubmitError(result.error || "En uventet feil oppstod");
         }
       }
-      
     } catch (error) {
-      console.error('❌ Form submission error:', error);
-      setSubmitError('En teknisk feil oppstod. Prøv igjen senere.');
+      console.error("❌ Form submission error:", error);
+      setSubmitError("En teknisk feil oppstod. Prøv igjen senere.");
     } finally {
       setIsSubmitting(false);
     }
@@ -214,7 +236,7 @@ export default function SecureContactForm() {
       viewport={{ once: true }}
       className="bg-transparent rounded-2xl p-6 md:p-8 h-full flex flex-col"
     >
-      <motion.h3 
+      <motion.h3
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.2 }}
@@ -238,7 +260,7 @@ export default function SecureContactForm() {
           >
             {/* Hovedsuksess-melding */}
             <div className="flex items-start">
-              <motion.div 
+              <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ duration: 0.3, delay: 0.1 }}
@@ -256,8 +278,9 @@ export default function SecureContactForm() {
                   </p>
                 </div>
                 <p className="text-gray-700 dark:text-gray-300 font-montserrat leading-relaxed">
-                  Vi har mottatt din melding og lagret den trygt i vårt system. 
-                  Meldingen er sikret og validert gjennom våre sikkerhetskontroller.
+                  Vi har mottatt din melding og lagret den trygt i vårt system.
+                  Meldingen er sikret og validert gjennom våre
+                  sikkerhetskontroller.
                 </p>
               </div>
             </div>
@@ -287,8 +310,8 @@ export default function SecureContactForm() {
                     E-post varsling sendt
                   </p>
                   <p className="text-sm text-brand-700 dark:text-brand-400 font-montserrat">
-                    Vi har automatisk sendt en e-post av din melding til Urban Studios. 
-                    Vi vil kontakte deg så snart som mulig.
+                    Vi har automatisk sendt en e-post av din melding til Urban
+                    Studios. Vi vil kontakte deg så snart som mulig.
                   </p>
                 </div>
               </div>
@@ -315,7 +338,8 @@ export default function SecureContactForm() {
                 </li>
                 <li className="flex items-center">
                   <div className="w-1.5 h-1.5 rounded-full bg-brand-500 mr-3 flex-shrink-0"></div>
-                  Ved spørsmål kan du kontakte oss direkt på kontakt@urbanstudios.no
+                  Ved spørsmål kan du kontakte oss direkt på
+                  kontakt@urbanstudios.no
                 </li>
               </ul>
             </motion.div>
@@ -357,7 +381,9 @@ export default function SecureContactForm() {
               const honeypot = BotDetection.getHoneypotProps();
               return (
                 <div style={honeypot.style}>
-                  <label htmlFor={honeypot.fieldName}>Website (leave blank)</label>
+                  <label htmlFor={honeypot.fieldName}>
+                    Website (leave blank)
+                  </label>
                   <input {...honeypot.inputProps} />
                 </div>
               );
@@ -368,7 +394,7 @@ export default function SecureContactForm() {
               {rateLimitError && (
                 <motion.div
                   initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
+                  animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
                   className="bg-brand-50 dark:bg-brand-900/20 
                             border border-brand-300 dark:border-brand-600 
@@ -394,7 +420,7 @@ export default function SecureContactForm() {
               {submitError && (
                 <motion.div
                   initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
+                  animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
                   className="bg-red-50 dark:bg-red-900/20 
                             border border-red-300 dark:border-red-600 
@@ -424,7 +450,10 @@ export default function SecureContactForm() {
                 viewport={{ once: true }}
                 className="space-y-2"
               >
-                <Label htmlFor="name" className="font-montserrat-medium text-gray-900 dark:text-white">
+                <Label
+                  htmlFor="name"
+                  className="font-montserrat-medium text-gray-900 dark:text-white"
+                >
                   Navn <span className="text-red-500">*</span>
                 </Label>
                 <Input
@@ -443,7 +472,7 @@ export default function SecureContactForm() {
                     hover:border-brand-300 dark:hover:border-brand-500 
                     focus:border-brand-500 dark:focus:border-brand-400
                     focus:ring-brand-500/20 focus:ring-2
-                    ${errors.name ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : ''}
+                    ${errors.name ? "border-red-500 focus:border-red-500 focus:ring-red-500/20" : ""}
                     shadow-sm hover:shadow-brand-sm focus:shadow-brand`}
                 />
                 <AnimatePresence>
@@ -451,7 +480,7 @@ export default function SecureContactForm() {
                     <motion.div
                       id="name-error"
                       initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
+                      animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}
                       className="flex items-center gap-2 text-red-600 dark:text-red-400 text-sm"
                     >
@@ -470,7 +499,10 @@ export default function SecureContactForm() {
                 viewport={{ once: true }}
                 className="space-y-2"
               >
-                <Label htmlFor="email" className="font-montserrat-medium text-gray-900 dark:text-white">
+                <Label
+                  htmlFor="email"
+                  className="font-montserrat-medium text-gray-900 dark:text-white"
+                >
                   E-post <span className="text-red-500">*</span>
                 </Label>
                 <Input
@@ -490,7 +522,7 @@ export default function SecureContactForm() {
                     hover:border-brand-300 dark:hover:border-brand-500 
                     focus:border-brand-500 dark:focus:border-brand-400
                     focus:ring-brand-500/20 focus:ring-2
-                    ${errors.email ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : ''}
+                    ${errors.email ? "border-red-500 focus:border-red-500 focus:ring-red-500/20" : ""}
                     shadow-sm hover:shadow-brand-sm focus:shadow-brand`}
                 />
                 <AnimatePresence>
@@ -498,7 +530,7 @@ export default function SecureContactForm() {
                     <motion.div
                       id="email-error"
                       initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
+                      animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}
                       className="flex items-center gap-2 text-red-600 dark:text-red-400 text-sm"
                     >
@@ -518,8 +550,14 @@ export default function SecureContactForm() {
               viewport={{ once: true }}
               className="space-y-2"
             >
-              <Label htmlFor="phone" className="font-montserrat-medium text-gray-900 dark:text-white">
-                Telefon <span className="text-gray-500 text-sm font-montserrat">(valgfritt)</span>
+              <Label
+                htmlFor="phone"
+                className="font-montserrat-medium text-gray-900 dark:text-white"
+              >
+                Telefon{" "}
+                <span className="text-gray-500 text-sm font-montserrat">
+                  (valgfritt)
+                </span>
               </Label>
               <Input
                 id="phone"
@@ -537,7 +575,7 @@ export default function SecureContactForm() {
                   hover:border-brand-300 dark:hover:border-brand-500 
                   focus:border-brand-500 dark:focus:border-brand-400
                   focus:ring-brand-500/20 focus:ring-2
-                  ${errors.phone ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : ''}
+                  ${errors.phone ? "border-red-500 focus:border-red-500 focus:ring-red-500/20" : ""}
                   shadow-sm hover:shadow-brand-sm focus:shadow-brand`}
               />
               <AnimatePresence>
@@ -545,7 +583,7 @@ export default function SecureContactForm() {
                   <motion.div
                     id="phone-error"
                     initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
+                    animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
                     className="flex items-center gap-2 text-red-600 dark:text-red-400 text-sm"
                   >
@@ -564,7 +602,10 @@ export default function SecureContactForm() {
               viewport={{ once: true }}
               className="space-y-2"
             >
-              <Label htmlFor="message" className="font-montserrat-medium text-gray-900 dark:text-white">
+              <Label
+                htmlFor="message"
+                className="font-montserrat-medium text-gray-900 dark:text-white"
+              >
                 Melding <span className="text-red-500">*</span>
               </Label>
               <Textarea
@@ -583,7 +624,7 @@ export default function SecureContactForm() {
                   hover:border-brand-300 dark:hover:border-brand-500 
                   focus:border-brand-500 dark:focus:border-brand-400
                   focus:ring-brand-500/20 focus:ring-2
-                  ${errors.message ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : ''}
+                  ${errors.message ? "border-red-500 focus:border-red-500 focus:ring-red-500/20" : ""}
                   shadow-sm hover:shadow-brand-sm focus:shadow-brand resize-none`}
               />
               <div className="flex justify-between items-center">
@@ -592,7 +633,7 @@ export default function SecureContactForm() {
                     <motion.div
                       id="message-error"
                       initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
+                      animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}
                       className="flex items-center gap-2 text-red-600 dark:text-red-400 text-sm"
                     >
@@ -615,7 +656,7 @@ export default function SecureContactForm() {
               viewport={{ once: true }}
               className="pt-4"
             >
-               <Button
+              <Button
                 type="submit"
                 disabled={isSubmitting || !!rateLimitError}
                 className="w-full rounded-full font-montserrat-semibold text-lg py-3 h-14
@@ -637,7 +678,7 @@ export default function SecureContactForm() {
                 ) : (
                   <div className="flex items-center justify-center space-x-3">
                     <ShieldCheckIcon className="h-5 w-5" />
-                    <span>Send  melding</span>
+                    <span>Send melding</span>
                   </div>
                 )}
               </Button>
