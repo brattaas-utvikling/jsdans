@@ -30,7 +30,7 @@ const steps: StepInfo[] = [
   {
     key: 'summary',
     title: 'Sammendrag',
-    description: 'Bekreft og se priser',
+    description: 'Bekreft og send inn',
     icon: CreditCard,
   },
   {

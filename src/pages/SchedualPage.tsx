@@ -432,7 +432,7 @@ export default function SchedualPage() {
 
               {/* Room selector - kun synlig på mobil */}
               <select
-                className="md:hidden bg-white dark:bg-surface-dark border-2 border-brand-300 dark:border-brand-700 
+                className="lg:hidden bg-white dark:bg-surface-dark border-2 border-brand-300 dark:border-brand-700 
                           text-brand-600 dark:text-brand-400 px-4 py-2 rounded-xl font-montserrat
                           focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all"
                 value={selectedRoom}
