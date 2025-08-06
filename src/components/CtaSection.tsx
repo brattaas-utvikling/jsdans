@@ -73,14 +73,14 @@ export default function CtaSection() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.5 }}
             viewport={{ once: true }}
-            className="font-montserrat text-lg text-white/80 mb-8 max-w-xl"
+            className="font-montserrat text-lg text-white/90 mb-8 max-w-xl"
             itemProp="description"
           >
             Endelig kan vi dele dette vi har drømt om så lenge! Vi åpner dørene
             for Urban Studios høsten 2025, et profesjonelt dansestudio hvor du
             kan utforske forskjellige stilarter og utvikle deg innen scenisk
             dansekunst. Enten du er nybegynner eller en mer erfaren danser, har
-            vi danseklasser som vil utfordre deg!
+            vi danseklasser som vil utfordre deg! <span className="text-magenta-400 dark:text-magenta-300 font-bold">Oppstart 24. august!</span>
           </motion.p>
 
           {/* CTA Buttons - forbedret z-index og touch-target */}

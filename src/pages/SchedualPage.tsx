@@ -349,13 +349,17 @@ export default function SchedualPage() {
               Se når dine favorittklasser går og finn den perfekte tiden for
               deg.
             </p>
+                        {/* Ny linje for "Oppstart uke 35!" med border */}
+            <div className=" mt-6 bg-magenta-100 dark:bg-magenta-900/20 text-magenta-600 dark:text-magenta-300 font-bold text-xl py-2 px-4 rounded-md border border-magenta-300 dark:border-magenta-700">
+              Oppstart 24. august!
+            </div>
           </motion.div>
         </div>
       </section>
 
       {/* Timeplan Section */}
       <section
-        className="py-16 bg-gradient-to-br from-brand-50/80 to-surface-muted 
+        className="p-8 bg-gradient-to-br from-brand-50/80 to-surface-muted 
                          dark:from-brand-900/10 dark:to-surface-dark-muted"
       >
         <div className="container mx-auto px-4 md:px-6">

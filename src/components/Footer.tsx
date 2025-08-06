@@ -2,7 +2,7 @@ import { STUDIO_INFO } from "@/data/dance-studio-data";
 import { useState } from "react";
 import { MapPinIcon, PhoneIcon, MailIcon } from "lucide-react";
 // import { Link } from "react-router-dom";
-import logo from "../assets/ny_logo.svg";
+import logo from "../assets/logo.svg";
 import { FaFacebookF, FaInstagram } from "react-icons/fa";
 
 export default function Footer() {
