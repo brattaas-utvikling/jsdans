@@ -80,7 +80,7 @@ export default function CtaSection() {
             for Urban Studios høsten 2025, et profesjonelt dansestudio hvor du
             kan utforske forskjellige stilarter og utvikle deg innen scenisk
             dansekunst. Enten du er nybegynner eller en mer erfaren danser, har
-            vi danseklasser som vil utfordre deg! <span className="text-magenta-400 dark:text-magenta-300 font-bold">Oppstart 24. august!</span>
+            vi danseklasser som vil utfordre deg! <span className="text-magenta-400 dark:text-magenta-300 font-bold">Oppstart 25. august!</span>
           </motion.p>
 
           {/* CTA Buttons - forbedret z-index og touch-target */}

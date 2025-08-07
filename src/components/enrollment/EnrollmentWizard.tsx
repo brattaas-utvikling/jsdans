@@ -185,7 +185,7 @@ export default function EnrollmentWizard() {
 
             {/* Ny linje for "Oppstart uke 35!" med border */}
             <div className="bg-magenta-100 dark:bg-magenta-900/20 text-magenta-600 dark:text-magenta-300 font-bold text-xl py-2 px-4 rounded-md mb-6 border border-magenta-300 dark:border-magenta-700">
-              Oppstart 24. august!
+              Oppstart 25. august!
             </div>
 
             {/* Step Indicator */}
