@@ -254,49 +254,46 @@ export default function AboutPage() {
   const paragraphs = getParagraphs(heroSection);
 
   return (
-    <div className="min-h-screen bg-white dark:bg-surface-dark">
+    <div className="min-h-screen bg-white dark:bg-surface-dark w-full overflow-x-hidden">
       <ScrollToTop />
 
-      {/* Hero Section med fullscreen bilde og glow effekt */}
-      {heroSection && (
-        <section className="relative min-h-screen overflow-hidden">
-          {/* Background Image med glow effekt */}
-          <div className="absolute inset-0">
+ {/* Hero Section - Bildet går bak navbar */}
+ {heroSection && (
+        <section className="relative h-screen overflow-hidden -mt-16 lg:-mt-20">
+          {/* Background Image med glow effekt - går helt til toppen */}
+          <div className="absolute inset-0 z-0">
             <img
               src={heroSection.img}
               alt={heroSection.headlines}
               className="w-full h-full object-cover"
+              loading="lazy"
             />
             {/* Glow effekt - subtil brand-farget glow */}
             <div className="absolute inset-0 bg-gradient-to-t from-brand-500/20 via-transparent to-magenta-500/10" />
           </div>
 
           {/* Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent z-[1]" />
 
-          {/* Content Container - nederst til venstre */}
-          <div className="absolute bottom-0 left-0 right-0 z-10 p-6 md:p-10">
-            <div className="container mx-auto">
-              <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8 }}
-                className="max-w-3xl"
-              >
-                <h1
-                  className="text-xl font-medium text-brand-400 
-                      uppercase tracking-wider mb-3"
+          {/* Content Container - med plass til navbar */}
+          <div className="absolute inset-0 z-[5] flex items-end pt-20 md:pt-24 pb-16 md:pb-20">
+            <div className="w-full p-6 md:p-10">
+              <div className="container mx-auto max-w-7xl">
+                <motion.div
+                  initial={{ opacity: 0, x: -30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.8 }}
+                  className="max-w-3xl"
                 >
-                  {heroSection.headlines}
-                </h1>
+                  <h1 className="text-xl font-medium text-brand-400 uppercase tracking-wider mb-3">
+                    {heroSection.headlines}
+                  </h1>
 
-                <h2
-                  className="font-bebas font-semibold text-bebas-2xl md:text-bebas-3xl lg:text-bebas-4xl 
-                              text-white leading-tight"
-                >
-                  {heroSection.lead}
-                </h2>
-              </motion.div>
+                  <h2 className="font-bebas font-semibold text-bebas-2xl md:text-bebas-3xl lg:text-bebas-4xl text-white leading-tight">
+                    {heroSection.lead}
+                  </h2>
+                </motion.div>
+              </div>
             </div>
           </div>
         </section>
@@ -304,25 +301,27 @@ export default function AboutPage() {
 
       {/* Article Content Section med samme bakgrunn som andre sider */}
       {heroSection && (
-        <section
-          className="py-20 bg-gradient-to-br from-brand-50/80 to-surface-muted 
-                           dark:from-brand-900/10 dark:to-surface-dark-muted"
-        >
+        <section className="relative py-20 bg-gradient-to-br from-brand-50/80 to-surface-muted dark:from-brand-900/10 dark:to-surface-dark-muted overflow-hidden">
           {/* Decorative elements som andre sider */}
-          <div className="absolute -top-10 -right-10 w-40 h-40 bg-magenta-400/10 rounded-full blur-3xl" />
-          <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-brand-400/10 rounded-full blur-3xl" />
+          <div className="absolute top-4 right-4 w-32 h-32 bg-magenta-400/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-4 left-4 w-32 h-32 bg-brand-400/10 rounded-full blur-3xl" />
 
-          <div className="container mx-auto px-4 md:px-6 relative z-10">
+          <div className="container mx-auto px-4 md:px-6 max-w-7xl relative z-10">
             <div className="max-w-4xl mx-auto space-y-12">
               {renderContentWithPullquote(heroSection, paragraphs)}
             </div>
           </div>
         </section>
       )}
-<InstructorsSection />
+
+      {/* FIKSET: InstructorsSection med proper overflow håndtering */}
+      <div className="w-full overflow-hidden">
+        <InstructorsSection />
+      </div>
+
       {/* Call to Action Section - standard hvit bakgrunn */}
-      <section className="py-16 bg-white dark:bg-surface-dark">
-        <div className="container mx-auto px-4 md:px-6">
+      <section className="py-16 bg-white dark:bg-surface-dark overflow-hidden">
+        <div className="container mx-auto px-4 md:px-6 max-w-7xl">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -343,10 +342,10 @@ export default function AboutPage() {
                 <Button
                   variant="outline"
                   className="font-semibold rounded-full 
-            bg-white/80 border-brand-300 text-brand-600 
-            hover:bg-brand-50 hover:text-brand-700
-            dark:bg-transparent dark:border-brand-700 dark:text-brand-400 
-            dark:hover:bg-brand-900/30 dark:hover:text-brand-300"
+                    bg-white/80 border-brand-300 text-brand-600 
+                    hover:bg-brand-50 hover:text-brand-700
+                    dark:bg-transparent dark:border-brand-700 dark:text-brand-400 
+                    dark:hover:bg-brand-900/30 dark:hover:text-brand-300"
                 >
                   Kontakt oss
                   <ArrowRight className="ml-2 h-4 w-4" />

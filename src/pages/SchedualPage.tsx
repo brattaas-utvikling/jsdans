@@ -245,8 +245,7 @@ export default function SchedualPage() {
         transition={{ duration: 0.3 }}
         className={`absolute inset-0 ${isDesktop ? "rounded-lg px-2 py-1" : "rounded px-1.5 py-0.5"} font-montserrat
                    ${themeColors.color} ${themeColors.textColor} 
-                   shadow-md hover:shadow-lg transition-all duration-200
-                   cursor-pointer hover:scale-[1.01] z-10`}
+                   shadow-md z-10`}
         style={{ height: `${heightInPx}px` }}
         title={`${schedule.dance_class.name} - ${schedule.start_time} til ${schedule.end_time}`}
       >
