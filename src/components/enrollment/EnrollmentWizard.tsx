@@ -24,7 +24,6 @@ export default function EnrollmentWizard() {
 
       try {
         // 🚫 BRUK COURSESSERVICE MED AUTOMATISK KOMPANI-FILTRERING
-        console.log('📚 Fetching filtered courses via coursesService...');
         
         const courseData = await coursesService.getAllCourses(false); // false = ekskluder kompani
         
@@ -51,8 +50,6 @@ export default function EnrollmentWizard() {
         }));
 
         dispatch({ type: 'SET_AVAILABLE_COURSES', payload: formattedCourses });
-
-        console.log(`✅ Loaded ${formattedCourses.length} filtered courses (kompani excluded)`);
 
       } catch (err) {
         console.error('Error fetching courses:', err);

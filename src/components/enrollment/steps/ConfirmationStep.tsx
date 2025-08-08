@@ -33,7 +33,6 @@ export default function ConfirmationStep() {
   // Auto-submit when component mounts (only once)
   useEffect(() => {
     if (!submissionAttempted.current && submissionState === 'idle') {
-      console.log('🚀 Auto-submitting enrollment...');
       submissionAttempted.current = true;
       handleSubmission();
     }
@@ -49,7 +48,6 @@ export default function ConfirmationStep() {
   const handleSubmission = async () => {
     // Prevent multiple concurrent submissions
     if (submissionState === 'submitting') {
-      console.log('⚠️ Submission already in progress, ignoring...');
       return;
     }
     
@@ -59,14 +57,12 @@ export default function ConfirmationStep() {
     abortController.current = new AbortController();
     
     try {
-      console.log('📝 Starting enrollment submission...');
       dispatch({ type: 'SET_SUBMITTING', payload: true });
       
       // Submit enrollment
       const id = await submitEnrollment(state.enrollmentData);
       
       // ✅ VIKTIG: Hvis database lagring lykkes, vis success uansett om component unmountes
-      console.log('✅ Enrollment submitted successfully:', id);
       setEnrollmentId(id);
       setSubmissionState('success');
       
@@ -88,20 +84,17 @@ export default function ConfirmationStep() {
   };
 
   const handleRetry = () => {
-    console.log('🔄 Retrying submission...');
     setError('');
     setSubmissionState('idle');
     submissionAttempted.current = false; // Reset for retry
   };
 
   const handleNewEnrollment = () => {
-    console.log('🆕 Starting new enrollment...');
     submissionAttempted.current = false; // Reset for new enrollment
     resetEnrollment();
   };
 
   const handleGoHome = () => {
-    console.log('🏠 Going home and resetting enrollment...');
     handleNewEnrollment(); // Reset state first
     navigate('/', { replace: true }); // Navigate programmatically
   };
