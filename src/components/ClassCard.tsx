@@ -348,7 +348,7 @@ export default function ClassCard({
             <div className="mt-3">
               <div className="flex items-center gap-2 text-sm">
                 <Calendar className="h-4 w-4 text-brand-500" />
-                <span className="font-montserrat">Neste kurs:</span>
+                <span className="font-montserrat">Tidspunkt:</span>
               </div>
               <div
                 className={`${colors.bg} ${colors.border} border rounded-lg p-3 text-sm mt-1`}
@@ -357,7 +357,7 @@ export default function ClassCard({
                   <span
                     className={`${colors.text} font-montserrat font-semibold`}
                   >
-                    {schedule[0]?.day || "September 2025"}
+                    {schedule[0]?.day || "Uke 35 2025"} uke 35
                   </span>
                 </div>
                 <div className="flex items-center gap-1 mt-1">
@@ -461,7 +461,7 @@ export default function ClassCard({
             <div>
               <h3 className="text-base sm:text-lg font-bebas mb-3 sm:mb-4 flex items-center gap-2 text-gray-900 dark:text-white">
                 <Calendar className="h-4 sm:h-5 w-4 sm:w-5 text-brand-500" />
-                Timeplan
+                Tidspunkt
               </h3>
               <div className="space-y-2 sm:space-y-3">
                 {schedule.map((session, index) => (
@@ -472,7 +472,7 @@ export default function ClassCard({
                     {/* Mobile: Stacked layout */}
                     <div className="flex flex-col space-y-2 sm:hidden">
                       <div className={`text-gray-700 dark:text-gray-200 font-montserrat font-semibold text-sm`}>
-                        {session.day}
+                        {session.day} uke 35
                       </div>
                       <div className="flex items-center gap-2">
                         <div className="flex items-center gap-1 text-gray-700 dark:text-gray-300">
@@ -494,7 +494,7 @@ export default function ClassCard({
                     <div className="hidden sm:flex sm:justify-between sm:items-center">
                       <div className="flex items-center gap-3 min-w-0 flex-1">
                         <div className={`text-gray-700 dark:text-gray-200 font-montserrat font-semibold`}>
-                          {session.day}
+                          {session.day} uke 35
                         </div>
                         <div className="flex items-center gap-1 text-gray-700 dark:text-gray-300">
                           <Clock className="h-4 w-4" />

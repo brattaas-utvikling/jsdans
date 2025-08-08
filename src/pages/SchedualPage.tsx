@@ -105,38 +105,50 @@ export default function SchedualPage() {
     return map;
   }, [schedules, themeFilter]);
 
-  // Room selector component - Simple buttons like theme filter
+  // Room selector component - Updated with grid system
   const RoomSelector = () => (
     <div className="hidden lg:flex justify-center mb-6">
-      <div className="flex flex-wrap gap-2">
-        <Button
-          onClick={() => setSelectedRooms(STUDIO_ROOMS)}
-          size="sm"
-          className={`font-montserrat font-medium rounded-full transition-all duration-200 ${
-            selectedRooms.length === STUDIO_ROOMS.length
-              ? "bg-brand-500 text-white shadow-brand"
-              : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
-          }`}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 max-w-5xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.2 }}
         >
-          Alle saler
-        </Button>
-        <Button
-          onClick={() => setSelectedRooms([])}
-          size="sm"
-          className={`font-montserrat font-medium rounded-full transition-all duration-200 ${
-            selectedRooms.length === 0
-              ? "bg-coral-500 text-white shadow-lg shadow-coral-500/25"
-              : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
-          }`}
+          <Button
+            onClick={() => setSelectedRooms(STUDIO_ROOMS)}
+            className={`w-full h-10 font-montserrat font-medium rounded-full transition-all duration-200 text-xs sm:text-sm px-3 py-2 ${
+              selectedRooms.length === STUDIO_ROOMS.length
+                ? "bg-brand-500 text-white shadow-brand"
+                : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+            }`}
+          >
+            <span className="truncate">Alle saler</span>
+          </Button>
+        </motion.div>
+        
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.2, delay: 0.05 }}
         >
-          Fjern alle
-        </Button>
+          <Button
+            onClick={() => setSelectedRooms([])}
+            className={`w-full h-10 font-montserrat font-medium rounded-full transition-all duration-200 text-xs sm:text-sm px-3 py-2 ${
+              selectedRooms.length === 0
+                ? "bg-coral-500 text-white shadow-lg shadow-coral-500/25"
+                : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+            }`}
+          >
+            <span className="truncate">Fjern alle</span>
+          </Button>
+        </motion.div>
+        
         {STUDIO_ROOMS.map((room, index) => (
           <motion.div
             key={room}
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.2, delay: index * 0.05 }}
+            transition={{ duration: 0.2, delay: (index + 2) * 0.05 }}
           >
             <Button
               onClick={() => {
@@ -147,14 +159,13 @@ export default function SchedualPage() {
                     : [...selectedRooms, room],
                 );
               }}
-              size="sm"
-              className={`font-montserrat font-medium rounded-full transition-all duration-200 ${
+              className={`w-full h-10 font-montserrat font-medium rounded-full transition-all duration-200 text-xs sm:text-sm px-3 py-2 ${
                 selectedRooms.includes(room)
                   ? "bg-magenta-500 text-white shadow-lg shadow-magenta-500/25"
                   : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
               }`}
             >
-              {room}
+              <span className="truncate">{room}</span>
             </Button>
           </motion.div>
         ))}
@@ -349,7 +360,7 @@ export default function SchedualPage() {
               Se når dine favorittklasser går og finn den perfekte tiden for
               deg.
             </p>
-                        {/* Ny linje for "Oppstart uke 35!" med border */}
+            {/* Ny linje for "Oppstart uke 35!" med border */}
             <div className=" mt-6 bg-magenta-100 dark:bg-magenta-900/20 text-magenta-600 dark:text-magenta-300 font-bold text-xl py-2 px-4 rounded-md border border-magenta-300 dark:border-magenta-700">
               Oppstart 25. august!
             </div>
@@ -363,91 +374,99 @@ export default function SchedualPage() {
                          dark:from-brand-900/10 dark:to-surface-dark-muted"
       >
         <div className="container mx-auto px-4 md:px-6">
-          {/* Controls */}
+          {/* Controls - Updated with grid system */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             className="mb-8 space-y-6"
           >
-            {/* Day selector - skjult på desktop */}
-            <div className="lg:hidden flex flex-wrap gap-2 justify-center">
-              {DAYS_OF_WEEK.map((day, index) => (
-                <motion.div
-                  key={day}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.1 }}
-                >
-                  <Button
-                    onClick={() => setSelectedDay(day)}
-                    className={`font-montserrat font-medium rounded-full px-6 py-3 transition-all duration-200 ${
-                      selectedDay === day
-                        ? "bg-brand-500 hover:bg-brand-600 text-white shadow-brand"
-                        : "bg-white dark:bg-surface-dark border-2 border-brand-300 dark:border-brand-700 text-brand-600 dark:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-900/30"
-                    }`}
+            {/* Day selector - Updated with grid system for mobile */}
+            <div className="lg:hidden">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 max-w-4xl mx-auto">
+                {DAYS_OF_WEEK.map((day, index) => (
+                  <motion.div
+                    key={day}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3, delay: index * 0.05 }}
                   >
-                    {day}
-                  </Button>
-                </motion.div>
-              ))}
+                    <Button
+                      onClick={() => setSelectedDay(day)}
+                      className={`w-full h-12 font-montserrat font-medium rounded-full transition-all duration-200 text-xs sm:text-sm px-3 py-2 ${
+                        selectedDay === day
+                          ? "bg-brand-500 hover:bg-brand-600 text-white shadow-brand"
+                          : "bg-white dark:bg-surface-dark border-2 border-brand-300 dark:border-brand-700 text-brand-600 dark:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-900/30"
+                      }`}
+                    >
+                      <span className="truncate">{day}</span>
+                    </Button>
+                  </motion.div>
+                ))}
+              </div>
             </div>
 
-            {/* Theme filter og room selector */}
-            <div className="flex gap-4 flex-wrap justify-center items-center">
-              {/* Theme filter */}
-              <div className="flex flex-wrap gap-2">
-                <Button
-                  onClick={() => setThemeFilter(null)}
-                  size="sm"
-                  className={`font-montserrat font-medium rounded-full transition-all duration-200 ${
-                    !themeFilter
-                      ? "bg-gray-800 dark:bg-white text-white dark:text-gray-900"
-                      : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"
-                  }`}
+            {/* Theme filter - Updated with grid system */}
+            <div className="flex flex-col items-center space-y-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 max-w-4xl mx-auto">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.2 }}
                 >
-                  Alle temaer
-                </Button>
+                  <Button
+                    onClick={() => setThemeFilter(null)}
+                    className={`w-full h-10 font-montserrat font-medium rounded-full transition-all duration-200 text-xs sm:text-sm px-3 py-2 ${
+                      !themeFilter
+                        ? "bg-gray-800 dark:bg-white text-white dark:text-gray-900"
+                        : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"
+                    }`}
+                  >
+                    <span className="truncate">Alle temaer</span>
+                  </Button>
+                </motion.div>
+                
                 {Object.entries(THEMES).map(([theme, colors], index) => (
                   <motion.div
                     key={theme}
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.2, delay: index * 0.05 }}
+                    transition={{ duration: 0.2, delay: (index + 1) * 0.05 }}
                   >
                     <Button
                       onClick={() => setThemeFilter(theme)}
-                      size="sm"
-                      className={`font-montserrat font-medium rounded-full transition-all duration-200 ${
+                      className={`w-full h-10 font-montserrat font-medium rounded-full transition-all duration-200 text-xs sm:text-sm px-3 py-2 ${
                         themeFilter === theme
                           ? `${colors.color} ${colors.textColor} shadow-brand`
                           : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
                       }`}
                     >
-                      {theme}
+                      <span className="truncate">{theme}</span>
                     </Button>
                   </motion.div>
                 ))}
               </div>
 
-              {/* Room selector - kun synlig på mobil */}
-              <select
-                className="lg:hidden bg-white dark:bg-surface-dark border-2 border-brand-300 dark:border-brand-700 
-                          text-brand-600 dark:text-brand-400 px-4 py-2 rounded-xl font-montserrat
-                          focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all"
-                value={selectedRoom}
-                onChange={(e) => setSelectedRoom(e.target.value)}
-              >
-                {STUDIO_ROOMS.map((room) => (
-                  <option key={room} value={room}>
-                    {room}
-                  </option>
-                ))}
-              </select>
+              {/* Room selector dropdown - only on mobile */}
+              <div className="lg:hidden w-full max-w-sm">
+                <select
+                  className="w-full bg-white dark:bg-surface-dark border-2 border-brand-300 dark:border-brand-700 
+                            text-brand-600 dark:text-brand-400 px-4 py-3 rounded-xl font-montserrat text-sm
+                            focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all"
+                  value={selectedRoom}
+                  onChange={(e) => setSelectedRoom(e.target.value)}
+                >
+                  {STUDIO_ROOMS.map((room) => (
+                    <option key={room} value={room}>
+                      {room}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
           </motion.div>
 
-          {/* Room Selector for Desktop */}
+          {/* Room Selector for Desktop - Updated with grid */}
           <RoomSelector />
 
           {/* Download Schedule Component */}
@@ -611,9 +630,9 @@ export default function SchedualPage() {
                 </div>
               ) : (
                 <div
-                  className="grid gap-px bg-gray-200 dark:bg-gray-800"
+                  className="grid gap-px bg-gray-200 dark:bg-gray-800 overflow-x-auto"
                   style={{
-                    gridTemplateColumns: `80px repeat(${DAYS_OF_WEEK.length * selectedRooms.length}, minmax(120px, 1fr))`,
+                    gridTemplateColumns: `80px repeat(${DAYS_OF_WEEK.length * selectedRooms.length}, minmax(100px, 1fr))`,
                   }}
                 >
                   {/* Header row - Tom celle + dager med rom */}
