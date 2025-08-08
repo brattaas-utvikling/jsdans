@@ -58,13 +58,11 @@ export default function CourseSelectionStep() {
     const ensureCoursesLoaded = async () => {
       // If no courses available and not already loading, try to reload them
       if (state.availableCourses.length === 0 && !state.isLoading && !isReloading) {
-        console.log('🚨 No courses available in CourseSelection, attempting to reload...');
         setIsReloading(true);
         dispatch({ type: 'SET_LOADING', payload: true });
         
         try {
           const courses = await coursesService.getAllCourses();
-          console.log(`🔄 Re-loaded courses in CourseSelection: ${courses.length}`);
           dispatch({ type: 'SET_AVAILABLE_COURSES', payload: courses });
           
           // Clear any previous error
@@ -95,13 +93,11 @@ export default function CourseSelectionStep() {
 
   // Manual reload function
   const handleReloadCourses = async () => {
-    console.log('🔄 Manual course reload triggered...');
     setIsReloading(true);
     dispatch({ type: 'SET_LOADING', payload: true });
     
     try {
       const courses = await coursesService.getAllCourses();
-      console.log(`✅ Manually reloaded courses: ${courses.length}`);
       dispatch({ type: 'SET_AVAILABLE_COURSES', payload: courses });
       dispatch({ 
         type: 'SET_ERRORS', 
@@ -256,7 +252,6 @@ export default function CourseSelectionStep() {
         message = `Dette kurset er for elever fra 5. trinn. Eleven din er ${studentAge} år og kan være for ung.`;
       }
     } else {
-      console.log(`⚠️ Ukjent aldersformat: "${ageRange}" for klasse ${course.name}`);
       // Allow selection for unknown formats, just don't show warning
       isAgeMatch = true; // Don't block unknown formats
     }

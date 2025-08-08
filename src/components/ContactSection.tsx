@@ -197,7 +197,7 @@ export default function ContactSection() {
                         Åpningstid
                       </h4>
                       <p className="text-gray-600 dark:text-gray-300 font-montserrat">
-                        Åpner høsten 2025!
+                        Åpner 25. august 2025
                       </p>
                     </div>
                   </motion.div>

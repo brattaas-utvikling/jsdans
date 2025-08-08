@@ -277,13 +277,12 @@ export default function PricingPage() {
                       className="flex flex-col sm:flex-row sm:items-center sm:justify-between 
                                   bg-white dark:bg-surface-dark rounded-xl p-6 
                                   border border-brand-100/50 dark:border-brand-700/30
-                                  transition-all duration-200 group-hover:border-brand-300 dark:group-hover:border-brand-500
-                                  hover:shadow-brand-lg"
+                                  transition-all duration-200"
                     >
                       <div className="mb-2 sm:mb-0">
                         <h3
                           className="font-semibold text-lg text-gray-900 dark:text-white 
-                                     transition-colors duration-200 group-hover:text-brand-600 dark:group-hover:text-brand-400"
+                                     transition-colors duration-200"
                         >
                           {pkg.name}
                         </h3>

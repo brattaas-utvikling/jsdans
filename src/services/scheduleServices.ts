@@ -3,6 +3,7 @@
 import { listDocuments, DATABASE_ID, COLLECTIONS, Query } from "@/lib/appwrite";
 
 export interface DanceClass {
+  studio: string;
   $id: string;
   name: string;
   description: string;

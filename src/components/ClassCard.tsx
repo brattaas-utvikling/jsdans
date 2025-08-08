@@ -27,6 +27,7 @@ type ClassCardProps = {
   schedule: Array<{
     day: string;
     time: string;
+    studio?: string; // Added studio to schedule items
   }>;
   instructor?: string;
   age: string;
@@ -347,7 +348,7 @@ export default function ClassCard({
             <div className="mt-3">
               <div className="flex items-center gap-2 text-sm">
                 <Calendar className="h-4 w-4 text-brand-500" />
-                <span className="font-montserrat">Neste kurs:</span>
+                <span className="font-montserrat">Tidspunkt:</span>
               </div>
               <div
                 className={`${colors.bg} ${colors.border} border rounded-lg p-3 text-sm mt-1`}
@@ -356,7 +357,7 @@ export default function ClassCard({
                   <span
                     className={`${colors.text} font-montserrat font-semibold`}
                   >
-                    {schedule[0]?.day || "September 2025"}
+                    {schedule[0]?.day || "Uke 35 2025"} uke 35
                   </span>
                 </div>
                 <div className="flex items-center gap-1 mt-1">
@@ -380,21 +381,24 @@ export default function ClassCard({
         </CardFooter>
       </Card>
 
-      {/* Modal */}
+      {/* Modal - FIXED for mobile responsiveness */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto bg-white dark:bg-surface-dark">
-          <DialogHeader>
-            <DialogTitle className="text-2xl font-bebas flex items-center gap-3 text-gray-900 dark:text-white">
-              {name}
+        <DialogContent 
+          className="w-[95vw] max-w-2xl max-h-[95vh] overflow-y-auto bg-white dark:bg-surface-dark 
+                     mx-auto my-2 sm:my-8 p-4 sm:p-6"
+        >
+          <DialogHeader className="space-y-2 sm:space-y-3">
+            <DialogTitle className="text-xl sm:text-2xl font-bebas flex items-center gap-3 text-gray-900 dark:text-white pr-8">
+              <span className="break-words">{name}</span>
             </DialogTitle>
-            <DialogDescription className="text-base text-start mt-2 font-montserrat text-gray-600 dark:text-gray-300">
+            <DialogDescription className="text-sm sm:text-base text-start font-montserrat text-gray-600 dark:text-gray-300">
               {description}
             </DialogDescription>
           </DialogHeader>
 
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6 mt-4">
             {/* Hero Image */}
-            <div className="relative h-64 rounded-xl overflow-hidden">
+            <div className="relative h-48 sm:h-64 rounded-xl overflow-hidden">
               <img
                 src={image}
                 alt={`${name} dance class`}
@@ -403,26 +407,26 @@ export default function ClassCard({
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
             </div>
 
-            {/* Quick Info */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-surface-dark-muted rounded-lg border border-brand-100/50 dark:border-brand-700/30">
-                <User className="h-5 w-5 text-brand-500" />
-                <div>
-                  <div className="font-montserrat font-semibold text-gray-900 dark:text-white">
+            {/* Quick Info - FIXED for mobile */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+              <div className="flex items-center gap-3 p-3 sm:p-4 bg-gray-50 dark:bg-surface-dark-muted rounded-lg border border-brand-100/50 dark:border-brand-700/30">
+                <User className="h-4 sm:h-5 w-4 sm:w-5 text-brand-500 flex-shrink-0" />
+                <div className="min-w-0 flex-1">
+                  <div className="font-montserrat font-semibold text-gray-900 dark:text-white text-sm sm:text-base">
                     Instruktør
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-300 font-montserrat">
+                  <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 font-montserrat truncate">
                     {instructor}
                   </div>
                 </div>
               </div>
-              <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-surface-dark-muted rounded-lg border border-brand-100/50 dark:border-brand-700/30">
-                <Users className="h-5 w-5 text-brand-500" />
-                <div>
-                  <div className="font-montserrat font-semibold text-gray-900 dark:text-white">
+              <div className="flex items-center gap-3 p-3 sm:p-4 bg-gray-50 dark:bg-surface-dark-muted rounded-lg border border-brand-100/50 dark:border-brand-700/30">
+                <Users className="h-4 sm:h-5 w-4 sm:w-5 text-brand-500 flex-shrink-0" />
+                <div className="min-w-0 flex-1">
+                  <div className="font-montserrat font-semibold text-gray-900 dark:text-white text-sm sm:text-base">
                     Alder
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-300 font-montserrat">
+                  <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 font-montserrat">
                     {age}
                   </div>
                 </div>
@@ -432,18 +436,18 @@ export default function ClassCard({
             {/* Extended Description */}
             <div className="prose dark:prose-invert max-w-none">
               <div
-                className={`mt-4 p-4 ${colors.bg} rounded-lg border ${colors.border}`}
+                className={`p-3 sm:p-4 ${colors.bg} rounded-lg border ${colors.border}`}
               >
-                <div className="flex items-center gap-2 mb-2">
-                  <Heart className={`h-4 w-4 text-brand-500`} />
+                <div className="flex items-center gap-2 mb-2 sm:mb-3">
+                  <Heart className={`h-4 w-4 text-brand-500 flex-shrink-0`} />
                   <span
-                    className={`font-montserrat font-semibold text-gray-700 dark:text-gray-200`}
+                    className={`font-montserrat font-semibold text-gray-700 dark:text-gray-200 text-sm sm:text-base`}
                   >
                     Hva du lærer:
                   </span>
                 </div>
                 <ul
-                  className={`text-sm text-gray-600 dark:text-gray-300 space-y-1 font-montserrat`}
+                  className={`text-xs sm:text-sm text-gray-600 dark:text-gray-300 space-y-1 font-montserrat`}
                 >
                   <li>• Grunnleggende teknikker og bevegelser</li>
                   <li>• Rytme og musikktolkning</li>
@@ -453,66 +457,90 @@ export default function ClassCard({
               </div>
             </div>
 
-            {/* Schedule */}
+            {/* Schedule - FIXED responsive layout */}
             <div>
-              <h3 className="text-lg font-bebas mb-4 flex items-center gap-2 text-gray-900 dark:text-white">
-                <Calendar className="h-5 w-5 text-brand-500" />
-                Timeplan
+              <h3 className="text-base sm:text-lg font-bebas mb-3 sm:mb-4 flex items-center gap-2 text-gray-900 dark:text-white">
+                <Calendar className="h-4 sm:h-5 w-4 sm:w-5 text-brand-500" />
+                Tidspunkt
               </h3>
-              <div className="space-y-3">
+              <div className="space-y-2 sm:space-y-3">
                 {schedule.map((session, index) => (
                   <div
                     key={index}
-                    className={`flex justify-between items-center p-4 ${colors.bg} ${colors.border} border rounded-lg`}
+                    className={`p-3 sm:p-4 ${colors.bg} ${colors.border} border rounded-lg`}
                   >
-                    <div className="flex items-center gap-3">
-                      <div
-                        className={`text-gray-700 dark:text-gray-200 font-montserrat font-semibold`}
-                      >
-                        {session.day}
+                    {/* Mobile: Stacked layout */}
+                    <div className="flex flex-col space-y-2 sm:hidden">
+                      <div className={`text-gray-700 dark:text-gray-200 font-montserrat font-semibold text-sm`}>
+                        {session.day} uke 35
                       </div>
-                      <div className="flex items-center gap-1 text-gray-700 dark:text-gray-300">
-                        <Clock className="h-4 w-4" />
-                        <span className="font-montserrat">{session.time}</span>
+                      <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1 text-gray-700 dark:text-gray-300">
+                          <Clock className="h-3 w-3 flex-shrink-0" />
+                          <span className="font-montserrat text-xs">{session.time}</span>
+                        </div>
+                        {(session.studio || studio) && (
+                          <div className="flex items-center gap-1">
+                            <MapPin className="h-3 w-3 text-gray-500 dark:text-gray-400 flex-shrink-0" />
+                            <span className="text-xs text-gray-600 dark:text-gray-300 font-montserrat">
+                              {session.studio || studio}
+                            </span>
+                          </div>
+                        )}
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <MapPin className="h-4 w-4 text-gray-500 dark:text-gray-400" />
-                      <span className="text-sm text-gray-600 dark:text-gray-300 font-montserrat">
-                        {studio}
-                      </span>
+                    
+                    {/* Desktop: Horizontal layout */}
+                    <div className="hidden sm:flex sm:justify-between sm:items-center">
+                      <div className="flex items-center gap-3 min-w-0 flex-1">
+                        <div className={`text-gray-700 dark:text-gray-200 font-montserrat font-semibold`}>
+                          {session.day} uke 35
+                        </div>
+                        <div className="flex items-center gap-1 text-gray-700 dark:text-gray-300">
+                          <Clock className="h-4 w-4" />
+                          <span className="font-montserrat">{session.time}</span>
+                        </div>
+                      </div>
+                      {(session.studio || studio) && (
+                        <div className="flex items-center gap-2 flex-shrink-0">
+                          <MapPin className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+                          <span className="text-sm text-gray-600 dark:text-gray-300 font-montserrat">
+                            {session.studio || studio}
+                          </span>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Booking Info - Standard styling */}
+            {/* Booking Info - FIXED responsive spacing */}
             <div
               className="bg-gradient-to-br from-brand-50/80 to-surface-muted 
                            dark:from-brand-900/10 dark:to-surface-dark-muted 
-                           p-6 rounded-xl border border-brand-100/50 dark:border-brand-700/30 relative overflow-hidden"
+                           p-4 sm:p-6 rounded-xl border border-brand-100/50 dark:border-brand-700/30 relative overflow-hidden"
             >
               {/* Decorative elements */}
               <div className="absolute top-0 right-0 w-32 h-32 bg-magenta-400/10 rounded-full blur-2xl" />
               <div className="absolute bottom-0 left-0 w-24 h-24 bg-brand-400/10 rounded-full blur-2xl" />
 
               <div className="relative z-10">
-                <h4 className="font-bebas text-lg mb-2 text-gray-900 dark:text-white">
+                <h4 className="font-bebas text-base sm:text-lg mb-2 text-gray-900 dark:text-white">
                   Klar for å begynne?
                 </h4>
-                <p className="text-gray-600 dark:text-gray-300 mb-4 font-montserrat">
+                <p className="text-gray-600 dark:text-gray-300 mb-4 font-montserrat text-sm sm:text-base">
                   Bli med på en prøvetime og opplev gleden ved dans. I uke 35 og
                   36 kan du prøve så mange klasser du vil helt gratis. Ingen
                   påmelding nødvendig. Timeplanen kommer snart!
                 </p>
-                <div className="flex gap-3">
+                <div className="flex flex-col sm:flex-row gap-3">
                   <Link to="/registration" className="flex-1">
                     <Button
                       className="w-full font-semibold bg-brand-500 hover:bg-brand-600
                                      dark:bg-white dark:hover:bg-brand-600/80
                                      text-white dark:text-brand-600
-                                     dark:hover:text-white/90 transition-all duration-200"
+                                     dark:hover:text-white/90 transition-all duration-200 text-sm sm:text-base"
                     >
                       Påmelding
                     </Button>
@@ -520,7 +548,7 @@ export default function ClassCard({
                   <Link to="/kontakt" className="flex-1">
                     <Button
                       className="w-full font-medium bg-transparent border-2 border-brand-300 text-brand-600 hover:bg-brand-50 hover:text-brand-600
-                                     dark:border-brand-700 dark:text-brand-400 dark:hover:bg-brand-900/30 dark:hover:text-brand-400"
+                                     dark:border-brand-700 dark:text-brand-400 dark:hover:bg-brand-900/30 dark:hover:text-brand-400 text-sm sm:text-base"
                     >
                       Kontakt oss
                     </Button>
@@ -530,10 +558,10 @@ export default function ClassCard({
             </div>
           </div>
 
-          <DialogFooter>
+          <DialogFooter className="mt-4 sm:mt-6">
             <Button
               className="w-full font-medium bg-transparent border-2 border-brand-300 text-brand-600 hover:bg-brand-50 hover:text-brand-600
-                        dark:border-brand-700 dark:text-brand-400 dark:hover:bg-brand-900/30 dark:hover:text-brand-400"
+                        dark:border-brand-700 dark:text-brand-400 dark:hover:bg-brand-900/30 dark:hover:text-brand-400 text-sm sm:text-base"
               onClick={() => setIsModalOpen(false)}
             >
               Lukk

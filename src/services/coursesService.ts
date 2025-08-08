@@ -51,8 +51,6 @@ export class CoursesService {
    */
   static async getAllCourses(includeCompanyCourses: boolean = false): Promise<CourseWithSchedule[]> {
     try {
-      console.log('📚 Fetching courses from database...');
-      
       // Hent alle dance classes
       const response = await databases.listDocuments(
         DATABASE_ID,
@@ -62,8 +60,6 @@ export class CoursesService {
           Query.orderAsc('name')
         ]
       );
-
-      console.log(`✅ Fetched ${response.documents.length} courses from database`);
 
       // Konverter til riktig format - inkluder alle Appwrite metadata felter
       const courses: CourseWithSchedule[] = response.documents.map(doc => {
