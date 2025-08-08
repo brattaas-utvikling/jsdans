@@ -257,8 +257,8 @@ export default function AboutPage() {
     <div className="min-h-screen bg-white dark:bg-surface-dark w-full overflow-x-hidden">
       <ScrollToTop />
 
- {/* Hero Section - Bildet går bak navbar */}
- {heroSection && (
+      {/* Hero Section - Bildet går bak navbar */}
+      {heroSection && (
         <section className="relative h-screen overflow-hidden -mt-16 lg:-mt-20">
           {/* Background Image med glow effekt - går helt til toppen */}
           <div className="absolute inset-0 z-0">
@@ -318,6 +318,72 @@ export default function AboutPage() {
       <div className="w-full overflow-hidden">
         <InstructorsSection />
       </div>
+
+      {/* Styret Section */}
+      <section className="py-16 bg-gradient-to-br from-brand-50/50 to-magenta-50/50 dark:from-brand-900/10 dark:to-magenta-900/10 relative overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute top-4 right-4 w-24 h-24 bg-brand-400/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-4 left-4 w-32 h-32 bg-magenta-400/10 rounded-full blur-3xl" />
+
+        <div className="container mx-auto px-4 md:px-6 max-w-7xl relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="max-w-4xl mx-auto"
+          >
+            {/* Header - sentrert */}
+            <div className="text-center mb-12">
+              
+              <h2 className="font-bebas text-bebas-2xl md:text-bebas-3xl text-gray-900 dark:text-white leading-tight mb-6">
+                Informasjon om selskapet
+              </h2>
+            </div>
+
+            {/* Innhold - venstrestilt */}
+            <div className="text-left space-y-8">
+              <p className="text-lg text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed font-bold">
+                Styret består av:
+              </p>
+
+              {/* Styremedlemmer - venstrestilt liste */}
+              <div className="space-y-3">
+                {[
+                  "Ingrid Fløiten Nordli",
+                  "Espen Kamøy Furuseth", 
+                  "Eileen Grethe Oplenskedal Hokaasen",
+                  "Tone Fredheim",
+                  "Petra Noer Sæthre"
+                ].map((member, index) => (
+                  <motion.div
+                    key={member}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                  >
+                    <p className="font-montserrat text-lg font-medium text-gray-700 dark:text-gray-300">
+                      {member}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Beskrivelse av selskapet */}
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+                className="text-lg text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed italic pt-4"
+              >
+                Urban Studios er et uavhengig selskap som er opprettet i den hensikt å fremme kultur gjennom aktivitet- og undervisningstilbud for barn og unge i Kongsvinger-regionen.
+              </motion.p>
+            </div>
+          </motion.div>
+        </div>
+      </section>
 
       {/* Call to Action Section - standard hvit bakgrunn */}
       <section className="py-16 bg-white dark:bg-surface-dark overflow-hidden">

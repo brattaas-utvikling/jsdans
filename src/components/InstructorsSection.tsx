@@ -121,7 +121,7 @@ const instructors = [
     image: "https://fra.cloud.appwrite.io/v1/storage/buckets/6857bb630022ef965c25/files/68926ce3002a4acdd3ff/view?project=6853fb68001e82047908&mode=admin",
     education: "VG3 Studiespesialisering ved Øvrebyen vgs",
     description: "Møt Anna Matilde Hvarstad-Nabben (18) og Otilie Nordseth (17). De går studiespesialisering på Øvrebyen vgs, og starter i VG3 nå til høsten. De har begge danset på Jump siden de var små. Otilie sin favorittstilart er moderne, Anna Matilde liker også jazz og hiphop.",
-    description2: "De to gleder seg til å undervise en klasse Barnedans på Urban til høsten! Klassen blir variert og en fin aktivitet for de minste",
+    description2: "De to gleder seg til å undervise en klasse Barnedans på Urban til høsten! Klassen blir variert og en fin aktivitet for de minste.",
     bgColor: "from-brand-50 to-coral-50",
     bgColorDark: "dark:from-brand-900/20 dark:to-coral-900/20"
   }
