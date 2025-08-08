@@ -5,6 +5,7 @@ import { SparklesIcon, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { listDocuments, DATABASE_ID, COLLECTIONS, Query } from "@/lib/appwrite";
 import ScrollToTop from "@/helpers/ScrollToTop";
+import InstructorsSection from "@/components/InstructorsSection";
 
 // TypeScript interface som matcher Appwrite schema
 interface AppwriteDocument {
@@ -318,7 +319,7 @@ export default function AboutPage() {
           </div>
         </section>
       )}
-
+<InstructorsSection />
       {/* Call to Action Section - standard hvit bakgrunn */}
       <section className="py-16 bg-white dark:bg-surface-dark">
         <div className="container mx-auto px-4 md:px-6">
