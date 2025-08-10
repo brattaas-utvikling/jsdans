@@ -50,9 +50,6 @@ export default function CourseSelectionStep() {
   const [isFormValid, setIsFormValid] = useState(false);
   const [isReloading, setIsReloading] = useState(false);
 
-  // Calculate student age for validation
-  const studentAge = state.enrollmentData.student.age || 0;
-
   // 🔄 Backup: Re-load courses if they're missing
   useEffect(() => {
     const ensureCoursesLoaded = async () => {
@@ -162,102 +159,6 @@ export default function CourseSelectionStep() {
     setModalCourse(null);
   };
 
-  // Get age validation for a course - only warn if too young
-  const getCourseAgeValidation = (course: DanceClass) => {
-    if (!studentAge) return { valid: true, warning: false, message: "" };
-    
-    const ageRange = course.age.trim(); // Remove extra spaces
-    let isAgeMatch = false;
-    let warning = false;
-    let message = "";
-    
-    // Age matching logic with all your formats
-    if (ageRange === "3-4 år" || ageRange === "3-4") {
-      isAgeMatch = studentAge >= 3 && studentAge <= 4;
-      if (studentAge < 3) {
-        warning = true;
-        message = `Dette kurset er for barn 3-4 år. Eleven din er ${studentAge} år og kan være for ung.`;
-      }
-    } else if (ageRange === "3-5 år" || ageRange === "3-5") {
-      isAgeMatch = studentAge >= 3 && studentAge <= 5;
-      if (studentAge < 3) {
-        warning = true;
-        message = `Dette kurset er for barn 3-5 år. Eleven din er ${studentAge} år og kan være for ung.`;
-      }
-    } else if (ageRange === "4-6 år" || ageRange === "4-6") {
-      isAgeMatch = studentAge >= 4 && studentAge <= 6;
-      if (studentAge < 4) {
-        warning = true;
-        message = `Dette kurset er for barn 4-6 år. Eleven din er ${studentAge} år og kan være for ung.`;
-      }
-    } else if (ageRange === "5-6 år" || ageRange === "5-6") {
-      isAgeMatch = studentAge >= 5 && studentAge <= 6;
-      if (studentAge < 5) {
-        warning = true;
-        message = `Dette kurset er for barn 5-6 år. Eleven din er ${studentAge} år og kan være for ung.`;
-      }
-    } else if (ageRange === "6-8 år" || ageRange === "6-8") {
-      isAgeMatch = studentAge >= 6 && studentAge <= 8;
-      if (studentAge < 6) {
-        warning = true;
-        message = `Dette kurset er for barn 6-8 år. Eleven din er ${studentAge} år og kan være for ung.`;
-      }
-    } else if (ageRange === "6-9 år" || ageRange === "6-9") {
-      isAgeMatch = studentAge >= 6 && studentAge <= 9;
-      if (studentAge < 6) {
-        warning = true;
-        message = `Dette kurset er for barn 6-9 år. Eleven din er ${studentAge} år og kan være for ung.`;
-      }
-    } else if (ageRange === "8+ år" || ageRange === "8+") {
-      isAgeMatch = studentAge === 8;
-      if (studentAge < 8) {
-        warning = true;
-        message = `Dette kurset er spesielt for 8-åringer. Eleven din er ${studentAge} år og kan være for ung.`;
-      }
-    } else if (ageRange === "9+ år" || ageRange === "9+") {
-      isAgeMatch = studentAge >= 9 && studentAge <= 11;
-      if (studentAge < 9) {
-        warning = true;
-        message = `Dette kurset er for barn 9-11 år. Eleven din er ${studentAge} år og kan være for ung.`;
-      }
-    } else if (ageRange === "10+ år" || ageRange === "10+") {
-      isAgeMatch = studentAge >= 10 && studentAge <= 11;
-      if (studentAge < 10) {
-        warning = true;
-        message = `Dette kurset er for barn 10-11 år. Eleven din er ${studentAge} år og kan være for ung.`;
-      }
-    } else if (ageRange === "12+ år" || ageRange === "12+") {
-      isAgeMatch = studentAge >= 12;
-      if (studentAge < 12) {
-        warning = true;
-        message = `Dette kurset er for barn 12+ år. Eleven din er ${studentAge} år og kan være for ung.`;
-      }
-    } else if (ageRange === "13+" || ageRange === "13+ år") {
-      isAgeMatch = studentAge >= 13;
-      if (studentAge < 13) {
-        warning = true;
-        message = `Dette kurset er for ungdom 13+ år. Eleven din er ${studentAge} år og kan være for ung.`;
-      }
-    } else if (ageRange === "16+ år" || ageRange === "16+") {
-      isAgeMatch = studentAge >= 16;
-      if (studentAge < 16) {
-        warning = true;
-        message = `Dette kurset er for ungdom/voksne 16+ år. Eleven din er ${studentAge} år og kan være for ung.`;
-      }
-    } else if (ageRange.includes("trinn") || ageRange.includes("Trinn")) {
-      // Handle "fra 5. trinn" format - assume it's appropriate for older students
-      isAgeMatch = studentAge >= 10; // 5. trinn = ca 10-11 år
-      if (studentAge < 10) {
-        warning = true;
-        message = `Dette kurset er for elever fra 5. trinn. Eleven din er ${studentAge} år og kan være for ung.`;
-      }
-    } else {
-      // Allow selection for unknown formats, just don't show warning
-      isAgeMatch = true; // Don't block unknown formats
-    }
-    
-    return { valid: true, warning, message, isAgeMatch };
-  };
 
   // Get course type label and color for display
   const getCourseTypeInfo = (course: DanceClass) => {
@@ -415,7 +316,6 @@ export default function CourseSelectionStep() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {state.availableCourses.map((course) => {
               const isSelected = selectedCourseIds.includes(course.$id);
-              const ageValidation = getCourseAgeValidation(course);
               const typeInfo = getCourseTypeInfo(course);
               
               return (
@@ -473,15 +373,6 @@ export default function CourseSelectionStep() {
                           <span>{course.instructor}</span>
                         </div>
                       </div>
-
-                      {ageValidation.warning && (
-                        <div className="mt-2 p-2 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded">
-                          <p className="text-xs text-amber-700 dark:text-amber-300 font-montserrat">
-                            <AlertCircle className="h-3 w-3 inline mr-1" />
-                            {ageValidation.message}
-                          </p>
-                        </div>
-                      )}
                     </div>
                     
                     {/* Course info button */}

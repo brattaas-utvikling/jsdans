@@ -1,18 +1,158 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowRight, Info, X } from "lucide-react";
 import ScrollToTop from "@/helpers/ScrollToTop";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { listDocuments, DATABASE_ID, COLLECTIONS, Query } from "@/lib/appwrite";
 import { PricingPackage } from "@/types";
 
+// Modal komponent for beskrivelse
+function PricingModal({ 
+  pkg, 
+  isOpen, 
+  onClose 
+}: { 
+  pkg: PricingPackage | null; 
+  isOpen: boolean; 
+  onClose: () => void;
+}) {
+  const formatPrice = (priceInOre?: number): string => {
+    if (!priceInOre) return "";
+    return `${(priceInOre / 100).toLocaleString("no-NO")} kr`;
+  };
 
+  // Null-sjekk først
+  if (!isOpen || !pkg) return null;
+
+  const finalPrice = pkg.price && pkg.discount_amount 
+    ? pkg.price - pkg.discount_amount 
+    : pkg.price;
+
+  const savings = pkg.discount_amount ? formatPrice(pkg.discount_amount) : null;
+
+  return (
+    <AnimatePresence>
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        {/* Backdrop */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+          onClick={onClose}
+        />
+        
+        {/* Modal */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.95, y: 20 }}
+          className="relative bg-white dark:bg-surface-dark rounded-xl p-6 w-full max-w-md shadow-xl border border-gray-200 dark:border-gray-700"
+        >
+          {/* Close button */}
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+          >
+            <X className="h-5 w-5 text-gray-500" />
+          </button>
+
+          {/* Modal content */}
+          <div className="space-y-4">
+            {/* Navn */}
+            <h3 className="font-bebas text-bebas-xl text-gray-900 dark:text-white pr-8">
+              {pkg.name}
+            </h3>
+
+            {/* Beskrivelse */}
+            {pkg.description && pkg.description.trim() !== '' && (
+              <div>
+                <h4 className="font-montserrat font-semibold text-gray-900 dark:text-white mb-2">
+                  Beskrivelse
+                </h4>
+                <p className="text-gray-600 dark:text-gray-400 font-montserrat leading-relaxed">
+                  {pkg.description}
+                </p>
+              </div>
+            )}
+
+            {/* Varighet */}
+            <div className="border-t border-gray-200 dark:border-gray-700 pt-4 flex justify-between items-center gap-2">
+              <span className="font-montserrat font-semibold text-gray-900 dark:text-white">
+                Varighet:
+              </span>
+              <span className="text-gray-600 dark:text-gray-400 text-r">
+                {pkg.period || "15 uker"}
+              </span>
+            </div>
+            {/* Pris-informasjon */}
+            <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
+              <h4 className="font-montserrat font-semibold text-gray-900 dark:text-white mb-3">
+                Prisinformasjon
+              </h4>
+              
+              {pkg.price && pkg.price > 0 ? (
+                <div className="space-y-2">
+                  {/* Rabatt info */}
+                  {pkg.discount_amount && pkg.discount_amount > 0 && (
+                    <>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600 dark:text-gray-400">Ordinær pris:</span>
+                        <span className="line-through text-gray-500">
+                          {formatPrice(pkg.price)}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-green-600 dark:text-green-400 font-medium">Du sparer:</span>
+                        <span className="text-green-600 dark:text-green-400 font-medium">
+                          {savings}
+                        </span>
+                      </div>
+                      <div className="flex justify-between font-semibold text-lg border-t border-gray-200 dark:border-gray-700 pt-2">
+                        <span className="text-gray-900 dark:text-white">Din pris:</span>
+                        <span className="text-gray-900 dark:text-white">
+                          {formatPrice(finalPrice || 0)}
+                        </span>
+                      </div>
+                    </>
+                  )}
+                  
+                  {/* Hvis ingen rabatt, vis bare ordinær pris */}
+                  {(!pkg.discount_amount || pkg.discount_amount === 0) && (
+                    <div className="flex justify-between font-semibold text-lg">
+                      <span className="text-gray-900 dark:text-white">Pris:</span>
+                      <span className="text-gray-900 dark:text-white">
+                        {formatPrice(pkg.price)}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Rabatt-tekst */}
+                  {pkg.discount_text && pkg.discount_text.trim() !== '' && (
+                    <p className="text-sm text-green-600 dark:text-green-400 font-medium mt-2">
+                      {pkg.discount_text}
+                    </p>
+                  )}
+                </div>
+              ) : (
+                <p className="text-gray-600 dark:text-gray-400">
+                  Kontakt oss for prisinformasjon
+                </p>
+              )}
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </AnimatePresence>
+  );
+}
 
 export default function PricingPage() {
   const [pricingPackages, setPricingPackages] = useState<PricingPackage[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedPackage, setSelectedPackage] = useState<PricingPackage | null>(null);
 
   // Format price from øre to kr
   const formatPrice = (priceInOre?: number): string => {
@@ -26,47 +166,6 @@ export default function PricingPage() {
     if (!pkg.discount_amount) return pkg.price;
 
     return pkg.price - pkg.discount_amount;
-  };
-
-  // Format full pricing display
-  const formatPricingDisplay = (pkg: PricingPackage): string => {
-    // Special cases with fallback descriptions - ALLTID vis disse
-    const fallbackDescriptions: Record<string, string> = {
-      "Barnedans": "1300kr per halvår",
-      "1 Klasse": "1700kr per halvår",
-      "2 Klasser": "3200kr per halvår",
-      "3 eller flere klasser": "4500kr per halvår",
-    };
-
-    // Check if this package has a fallback description - VIS ALLTID
-    if (fallbackDescriptions[pkg.name]) {
-      return pkg.description || fallbackDescriptions[pkg.name];
-    }
-
-    // If has description and no meaningful price, show description
-    if (pkg.description && (!pkg.price || pkg.price === 0)) {
-      return pkg.description;
-    }
-
-    // If no price and no description
-    if ((!pkg.price || pkg.price === 0) && !pkg.description) {
-      return "Pris kommer";
-    }
-
-    // Calculate final price (with discount if applicable)
-    const finalPrice = calculateDiscountedPrice(pkg);
-
-    // Standard price display with period
-    if (finalPrice > 0 && pkg.period) {
-      return `${formatPrice(finalPrice)} ${pkg.period}`;
-    }
-
-    // Price without period
-    if (finalPrice > 0) {
-      return formatPrice(finalPrice);
-    }
-
-    return "Kontakt oss for pris";
   };
 
   // Fetch pricing packages from Appwrite
@@ -251,7 +350,7 @@ export default function PricingPage() {
         </div>
       </section>
 
-      {/* Pricing Section - Standard styling med dynamisk data */}
+      {/* Pricing Section - FIKSET: Beskrivelse alltid synlig */}
       <section
         className="py-16 bg-gradient-to-br from-brand-50/80 to-surface-muted 
                          dark:from-brand-900/10 dark:to-surface-dark-muted"
@@ -271,57 +370,54 @@ export default function PricingPage() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.1 * index }}
-                    className="group"
                   >
-                    <div
-                      className="flex flex-col sm:flex-row sm:items-center sm:justify-between 
-                                  bg-white dark:bg-surface-dark rounded-xl p-6 
-                                  border border-brand-100/50 dark:border-brand-700/30
-                                  transition-all duration-200"
-                    >
-                      <div className="mb-2 sm:mb-0">
-                        <h3
-                          className="font-semibold text-lg text-gray-900 dark:text-white 
-                                     transition-colors duration-200"
-                        >
-                          {pkg.name}
-                        </h3>
-                        {pkg.discount_text && (
-                          <p className="text-sm text-green-700 dark:text-green-400 font-medium">
-                            {pkg.discount_text}
-                          </p>
-                        )}
-                        {pkg.description && pkg.price && pkg.price > 0 && (
-                          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                            {pkg.description}
-                          </p>
-                        )}
-                      </div>
-                      <div className="text-right">
-                        {hasDiscount && pkg.price && pkg.price > 0 ? (
-                          <div className="space-y-1">
-                            <p className="text-sm text-gray-500 dark:text-gray-400 line-through">
-                              {formatPrice(pkg.price)} {pkg.period}
-                            </p>
-                            <p
-                              className="font-montserrat text-gray-700 dark:text-gray-300 
-                                        transition-colors duration-200 group-hover:text-gray-900 dark:group-hover:text-white"
+                    {/* Enkelt design med modal-knapp */}
+                    <div className="py-6 border-b border-gray-200 dark:border-gray-700 last:border-b-0">
+                      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
+                        
+                        {/* Venstresiden - Navn og beskrivelse-knapp */}
+                        <div className="flex-1 flex items-center gap-3">
+                          {/* Pakkenavn */}
+                          <h3 className="font-bebas text-bebas-lg text-gray-900 dark:text-white">
+                            {pkg.name}
+                          </h3>
+                          
+                       
+                        </div>
+   {/* Beskrivelse-knapp (kun hvis beskrivelse finnes) */}
+   {pkg.description && pkg.description.trim() !== '' && (
+                            <button
+                              onClick={() => setSelectedPackage(pkg)}
+                              className="w-fit flex items-center gap-1 px-2 py-1 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                              title="Vis beskrivelse"
                             >
-                              {finalPrice > 0 && pkg.period
-                                ? `${formatPrice(finalPrice)} ${pkg.period}`
-                                : formatPricingDisplay(pkg)}
+                              <Info className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                              <span className="text-xs font-medium text-gray-600 dark:text-gray-400">
+                                Info
+                              </span>
+                            </button>
+                          )}
+                        {/* Høyresiden - Kun pris */}
+                        <div className="text-left sm:text-right">
+                          {hasDiscount && (
+                            <p className="text-sm text-gray-500 dark:text-gray-400 line-through">
+                              {formatPrice(pkg.price)}
                             </p>
-                          </div>
-                        ) : (
-                          <p
-                            className="font-montserrat text-gray-700 dark:text-gray-300 
-                                      transition-colors duration-200 group-hover:text-gray-900 dark:group-hover:text-white"
-                          >
-                            {formatPricingDisplay(pkg)}
-                          </p>
-                        )}
+                          )}
+
+                          {pkg.price && pkg.price > 0 ? (
+                            <p className="font-montserrat text-xl font-semibold text-gray-900 dark:text-white">
+                              {formatPrice(finalPrice)}
+                            </p>
+                          ) : (
+                            <p className="font-montserrat text-xl font-semibold text-gray-900 dark:text-white">
+                              Kontakt oss for pris
+                            </p>
+                          )}
+                        </div>
+
+                        </div>
                       </div>
-                    </div>
                   </motion.div>
                 );
               })}
@@ -329,6 +425,13 @@ export default function PricingPage() {
           </div>
         </div>
       </section>
+
+      {/* Modal for beskrivelse */}
+      <PricingModal 
+        pkg={selectedPackage} 
+        isOpen={selectedPackage !== null} 
+        onClose={() => setSelectedPackage(null)} 
+      />
 
       {/* CTA Section - Standard styling */}
       <section className="py-16 bg-white dark:bg-surface-dark">
