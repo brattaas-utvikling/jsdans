@@ -358,7 +358,7 @@ export default function PricingPage() {
         <div className="container mx-auto px-4 md:px-6">
           <div className="max-w-4xl mx-auto">
             <div className="space-y-6">
-              {pricingPackages.map((pkg, index) => {
+              {pricingPackages.map((pkg) => {
                 const finalPrice = calculateDiscountedPrice(pkg);
                 const hasDiscount =
                   pkg.discount_amount && pkg.discount_amount > 0;
@@ -368,8 +368,7 @@ export default function PricingPage() {
                     key={pkg.$id}
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: 0.1 * index }}
+                    transition={{ duration: 0.6 }}
                   >
                     {/* Enkelt design med modal-knapp */}
                     <div className="py-6 border-b border-gray-200 dark:border-gray-700 last:border-b-0">
