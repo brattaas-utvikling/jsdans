@@ -1,29 +1,50 @@
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Info, X } from "lucide-react";
+import { useState, useEffect, useCallback } from "react";
+import { motion } from "framer-motion";
+import { ArrowRight, Info } from "lucide-react";
 import ScrollToTop from "@/helpers/ScrollToTop";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { listDocuments, DATABASE_ID, COLLECTIONS, Query } from "@/lib/appwrite";
 import { PricingPackage } from "@/types";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 
-// Modal komponent for beskrivelse
+// Modal komponent med samme funksjonalitet som ClassCard
 function PricingModal({ 
   pkg, 
   isOpen, 
-  onClose 
+  onOpenChange 
 }: { 
   pkg: PricingPackage | null; 
   isOpen: boolean; 
-  onClose: () => void;
+  onOpenChange: (open: boolean) => void;
 }) {
   const formatPrice = (priceInOre?: number): string => {
     if (!priceInOre) return "";
     return `${(priceInOre / 100).toLocaleString("no-NO")} kr`;
   };
 
-  // Null-sjekk først
-  if (!isOpen || !pkg) return null;
+  // Handle escape key like ClassCard modal
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        onOpenChange(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape);
+      return () => document.removeEventListener('keydown', handleEscape);
+    }
+  }, [isOpen, onOpenChange]);
+
+  if (!pkg) return null;
 
   const finalPrice = pkg.price && pkg.discount_amount 
     ? pkg.price - pkg.discount_amount 
@@ -32,97 +53,87 @@ function PricingModal({
   const savings = pkg.discount_amount ? formatPrice(pkg.discount_amount) : null;
 
   return (
-    <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        {/* Backdrop */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-          onClick={onClose}
-        />
-        
-        {/* Modal */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="relative bg-white dark:bg-surface-dark rounded-xl p-6 w-full max-w-md shadow-xl border border-gray-200 dark:border-gray-700"
-        >
-          {/* Close button */}
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-          >
-            <X className="h-5 w-5 text-gray-500" />
-          </button>
+    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+      <DialogContent 
+        className="w-[95vw] max-w-lg max-h-[95vh] overflow-y-auto bg-white dark:bg-surface-dark 
+                   mx-auto my-2 sm:my-8 p-4 sm:p-6"
+      >
+        <DialogHeader className="space-y-2 sm:space-y-3">
+          <DialogTitle className="text-xl sm:text-2xl font-bebas text-gray-900 dark:text-white pr-8">
+            {pkg.name}
+          </DialogTitle>
+          {pkg.description && pkg.description.trim() !== '' && (
+            <DialogDescription className="text-sm sm:text-base text-start font-montserrat text-gray-600 dark:text-gray-300">
+              {pkg.description}
+            </DialogDescription>
+          )}
+        </DialogHeader>
 
-          {/* Modal content */}
-          <div className="space-y-4">
-            {/* Navn */}
-            <h3 className="font-bebas text-bebas-xl text-gray-900 dark:text-white pr-8">
-              {pkg.name}
-            </h3>
-
-            {/* Beskrivelse */}
-            {pkg.description && pkg.description.trim() !== '' && (
-              <div>
-                <h4 className="font-montserrat font-semibold text-gray-900 dark:text-white mb-2">
-                  Beskrivelse
-                </h4>
-                <p className="text-gray-600 dark:text-gray-400 font-montserrat leading-relaxed">
-                  {pkg.description}
-                </p>
-              </div>
-            )}
-
-            {/* Varighet */}
-            <div className="border-t border-gray-200 dark:border-gray-700 pt-4 flex justify-between items-center gap-2">
-              <span className="font-montserrat font-semibold text-gray-900 dark:text-white">
-                Varighet:
+        <div className="space-y-4 sm:space-y-6 mt-4">
+          {/* Varighet Info */}
+          <div className="p-3 sm:p-4 bg-gray-50 dark:bg-surface-dark-muted rounded-lg border border-brand-100/50 dark:border-brand-700/30">
+            <div className="flex justify-between items-center">
+              <span className="font-montserrat font-semibold text-gray-900 dark:text-white text-sm sm:text-base">
+                Varighet
               </span>
-              <span className="text-gray-600 dark:text-gray-400 text-r">
+              <span className="text-gray-600 dark:text-gray-300 font-montserrat text-sm sm:text-base">
                 {pkg.period || "15 uker"}
               </span>
             </div>
-            {/* Pris-informasjon */}
-            <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
-              <h4 className="font-montserrat font-semibold text-gray-900 dark:text-white mb-3">
+          </div>
+
+          {/* Pris-informasjon */}
+          <div className="bg-gradient-to-br from-brand-50/80 to-surface-muted 
+                           dark:from-brand-900/10 dark:to-surface-dark-muted 
+                           p-4 sm:p-6 rounded-xl border border-brand-100/50 dark:border-brand-700/30 relative overflow-hidden">
+            
+            {/* Decorative elements */}
+            <div className="absolute top-0 right-0 w-24 h-24 bg-magenta-400/10 rounded-full blur-2xl" />
+            <div className="absolute bottom-0 left-0 w-20 h-20 bg-brand-400/10 rounded-full blur-2xl" />
+
+            <div className="relative z-10">
+              <h4 className="font-bebas text-base sm:text-lg mb-3 text-gray-900 dark:text-white">
                 Prisinformasjon
               </h4>
               
               {pkg.price && pkg.price > 0 ? (
-                <div className="space-y-2">
+                <div className="space-y-3">
                   {/* Rabatt info */}
-                  {pkg.discount_amount && pkg.discount_amount > 0 && (
-                    <>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600 dark:text-gray-400">Ordinær pris:</span>
-                        <span className="line-through text-gray-500">
+                  {pkg.discount_amount && pkg.discount_amount > 0 ? (
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-600 dark:text-gray-400 font-montserrat text-sm">
+                          Ordinær pris:
+                        </span>
+                        <span className="line-through text-gray-500 font-montserrat text-sm">
                           {formatPrice(pkg.price)}
                         </span>
                       </div>
-                      <div className="flex justify-between">
-                        <span className="text-green-600 dark:text-green-400 font-medium">Du sparer:</span>
-                        <span className="text-green-600 dark:text-green-400 font-medium">
+                      <div className="flex justify-between items-center">
+                        <span className="text-green-600 dark:text-green-400 font-montserrat font-medium text-sm">
+                          Du sparer:
+                        </span>
+                        <span className="text-green-600 dark:text-green-400 font-montserrat font-medium text-sm">
                           {savings}
                         </span>
                       </div>
-                      <div className="flex justify-between font-semibold text-lg border-t border-gray-200 dark:border-gray-700 pt-2">
-                        <span className="text-gray-900 dark:text-white">Din pris:</span>
-                        <span className="text-gray-900 dark:text-white">
-                          {formatPrice(finalPrice || 0)}
-                        </span>
+                      <div className="border-t border-brand-200/50 dark:border-brand-700/50 pt-2">
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-900 dark:text-white font-montserrat font-semibold">
+                            Din pris:
+                          </span>
+                          <span className="text-gray-900 dark:text-white font-montserrat font-semibold text-lg">
+                            {formatPrice(finalPrice || 0)}
+                          </span>
+                        </div>
                       </div>
-                    </>
-                  )}
-                  
-                  {/* Hvis ingen rabatt, vis bare ordinær pris */}
-                  {(!pkg.discount_amount || pkg.discount_amount === 0) && (
-                    <div className="flex justify-between font-semibold text-lg">
-                      <span className="text-gray-900 dark:text-white">Pris:</span>
-                      <span className="text-gray-900 dark:text-white">
+                    </div>
+                  ) : (
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-900 dark:text-white font-montserrat font-semibold">
+                        Pris:
+                      </span>
+                      <span className="text-gray-900 dark:text-white font-montserrat font-semibold text-lg">
                         {formatPrice(pkg.price)}
                       </span>
                     </div>
@@ -130,21 +141,34 @@ function PricingModal({
 
                   {/* Rabatt-tekst */}
                   {pkg.discount_text && pkg.discount_text.trim() !== '' && (
-                    <p className="text-sm text-green-600 dark:text-green-400 font-medium mt-2">
-                      {pkg.discount_text}
-                    </p>
+                    <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-3 mt-3">
+                      <p className="text-sm text-green-700 dark:text-green-300 font-montserrat font-medium">
+                        {pkg.discount_text}
+                      </p>
+                    </div>
                   )}
                 </div>
               ) : (
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-gray-600 dark:text-gray-400 font-montserrat">
                   Kontakt oss for prisinformasjon
                 </p>
               )}
             </div>
           </div>
-        </motion.div>
-      </div>
-    </AnimatePresence>
+
+        </div>
+
+        <DialogFooter className="mt-4 sm:mt-6">
+          <Button
+            className="w-full font-medium bg-transparent border-2 border-brand-300 text-brand-600 hover:bg-brand-50 hover:text-brand-600
+                      dark:border-brand-700 dark:text-brand-400 dark:hover:bg-brand-900/30 dark:hover:text-brand-400 text-sm sm:text-base"
+            onClick={() => onOpenChange(false)}
+          >
+            Lukk
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -153,6 +177,7 @@ export default function PricingPage() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedPackage, setSelectedPackage] = useState<PricingPackage | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   // Format price from øre to kr
   const formatPrice = (priceInOre?: number): string => {
@@ -164,9 +189,22 @@ export default function PricingPage() {
   const calculateDiscountedPrice = (pkg: PricingPackage): number => {
     if (!pkg.price || pkg.price === 0) return 0;
     if (!pkg.discount_amount) return pkg.price;
-
     return pkg.price - pkg.discount_amount;
   };
+
+  // Handle modal open with package selection
+  const handleOpenModal = useCallback((pkg: PricingPackage) => {
+    setSelectedPackage(pkg);
+    setIsModalOpen(true);
+  }, []);
+
+  // Handle modal close
+  const handleCloseModal = useCallback((open: boolean) => {
+    setIsModalOpen(open);
+    if (!open) {
+      setSelectedPackage(null);
+    }
+  }, []);
 
   // Fetch pricing packages from Appwrite
   const fetchPricingFromAppwrite = async () => {
@@ -240,7 +278,7 @@ export default function PricingPage() {
       <div className="min-h-screen bg-white dark:bg-surface-dark">
         <ScrollToTop />
 
-        {/* Hero Section - samme som før */}
+        {/* Hero Section */}
         <section
           className="bg-gradient-to-br from-brand-50/80 to-surface-muted 
                           dark:from-brand-900/10 dark:to-surface-dark-muted 
@@ -250,7 +288,7 @@ export default function PricingPage() {
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
+              transition={{ duration: 0.5 }}
               className="text-center max-w-4xl mx-auto"
             >
               <h1
@@ -284,13 +322,13 @@ export default function PricingPage() {
     <div className="bg-white dark:bg-surface-dark">
       <ScrollToTop />
 
-      {/* Hero Section - Standard styling */}
+      {/* Hero Section */}
       <section
         className="bg-gradient-to-br from-brand-50/80 to-surface-muted 
                         dark:from-brand-900/10 dark:to-surface-dark-muted 
                         pt-24 pb-16 relative overflow-hidden"
       >
-        {/* Animated background elements - Brand farger */}
+        {/* Animated background elements */}
         <motion.div
           animate={{
             scale: [1, 1.1, 1],
@@ -350,89 +388,123 @@ export default function PricingPage() {
         </div>
       </section>
 
-      {/* Pricing Section - FIKSET: Beskrivelse alltid synlig */}
+      {/* Pricing Section - FORBEDRET MODERNE DESIGN */}
       <section
         className="py-16 bg-gradient-to-br from-brand-50/80 to-surface-muted 
                          dark:from-brand-900/10 dark:to-surface-dark-muted"
       >
         <div className="container mx-auto px-4 md:px-6">
           <div className="max-w-4xl mx-auto">
-            <div className="space-y-6">
-              {pricingPackages.map((pkg) => {
-                const finalPrice = calculateDiscountedPrice(pkg);
-                const hasDiscount =
-                  pkg.discount_amount && pkg.discount_amount > 0;
+            {/* Modern card container with subtle shadow and gradient border */}
+            <div className="bg-white/80 dark:bg-surface-dark/80 backdrop-blur-sm rounded-2xl shadow-brand-lg 
+                            border border-brand-100/50 dark:border-brand-700/30 overflow-hidden">
+              
+              {/* Header */}
+              <div className="bg-gradient-to-r from-brand-500/5 to-magenta-500/5 
+                              dark:from-brand-400/10 dark:to-magenta-400/10 
+                              px-6 py-4 border-b border-brand-100/30 dark:border-brand-700/30">
+                <h3 className="font-bebas text-bebas-lg text-gray-900 dark:text-white">
+                  Kurspriser
+                </h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400 font-montserrat mt-1">
+                  Klikk på en prispakke for mer detaljer
+                </p>
+              </div>
 
-                return (
-                  <motion.div
-                    key={pkg.$id}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                  >
-                    {/* Enkelt design med modal-knapp */}
-                    <div className="py-6 border-b border-gray-200 dark:border-gray-700 last:border-b-0">
-                      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
+              {/* Pricing list */}
+              <div className="divide-y divide-gray-100 dark:divide-gray-700/50">
+                {pricingPackages.map((pkg, index) => {
+                  const finalPrice = calculateDiscountedPrice(pkg);
+
+                  return (
+                    <motion.div
+                      key={pkg.$id}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.4, delay: index * 0.1 }}
+                      className="group relative overflow-hidden"
+                    >
+                      {/* Hover background gradient */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-brand-50/0 to-brand-50/50 
+                                      dark:from-brand-900/0 dark:to-brand-900/20 
+                                      opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      
+                      <button
+                        onClick={() => handleOpenModal(pkg)}
+                        className="relative w-full flex items-center justify-between py-4 px-6 
+                                   transition-all duration-200 group-hover:translate-x-1
+                                   text-left cursor-pointer focus:outline-none 
+                                   focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 
+                                   focus:ring-offset-white dark:focus:ring-offset-surface-dark
+                                   rounded-lg"
+                      >
                         
-                        {/* Venstresiden - Navn og beskrivelse-knapp */}
-                        <div className="flex-1 flex items-center gap-3">
-                          {/* Pakkenavn */}
-                          <h3 className="font-bebas text-bebas-lg text-gray-900 dark:text-white">
-                            {pkg.name}
-                          </h3>
+                        {/* Left side - Info button + Name */}
+                        <div className="flex items-center gap-4 min-w-0 flex-1">
+                          <div className="rounded-full border-0 shadow-sm
+                                          bg-brand-50 dark:bg-brand-900/30
+                                          group-hover:bg-brand-100 dark:group-hover:bg-brand-900/50
+                                          text-brand-600 dark:text-brand-400 transition-all duration-200 
+                                          group-hover:shadow-brand-glow group-hover:scale-105 flex-shrink-0
+                                          flex items-center justify-center border-brand-200/30 dark:border-brand-700/30">
+                            <Info className="h-3.5 w-3.5" />
+                          </div>
                           
-                       
-                        </div>
-   {/* Beskrivelse-knapp (kun hvis beskrivelse finnes) */}
-   {pkg.description && pkg.description.trim() !== '' && (
-                            <button
-                              onClick={() => setSelectedPackage(pkg)}
-                              className="w-fit flex items-center gap-1 px-2 py-1 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-                              title="Vis beskrivelse"
-                            >
-                              <Info className="h-4 w-4 text-gray-600 dark:text-gray-400" />
-                              <span className="text-xs font-medium text-gray-600 dark:text-gray-400">
-                                Info
-                              </span>
-                            </button>
-                          )}
-                        {/* Høyresiden - Kun pris */}
-                        <div className="text-left sm:text-right">
-                          {hasDiscount && (
-                            <p className="text-sm text-gray-500 dark:text-gray-400 line-through">
-                              {formatPrice(pkg.price)}
-                            </p>
-                          )}
-
-                          {pkg.price && pkg.price > 0 ? (
-                            <p className="font-montserrat text-xl font-semibold text-gray-900 dark:text-white">
-                              {formatPrice(finalPrice)}
-                            </p>
-                          ) : (
-                            <p className="font-montserrat text-xl font-semibold text-gray-900 dark:text-white">
-                              Kontakt oss for pris
-                            </p>
-                          )}
+                          <div className="min-w-0 flex-1">
+                            <h4 className="font-montserrat font-semibold text-gray-900 dark:text-white 
+                                           group-hover:text-brand-600 dark:group-hover:text-brand-400 
+                                           transition-colors duration-200 truncate">
+                              {pkg.name}
+                            </h4>
+                          </div>
                         </div>
 
+                        {/* Right side - Price with discount indication */}
+                        <div className="flex items-center gap-3 flex-shrink-0">
+                          
+                          <div className="text-right">
+                            {pkg.price && pkg.price > 0 ? (
+                              <div className={`font-montserrat font-medium text-sm text-gray-900 dark:text-white`}>
+                                {formatPrice(finalPrice)}
+                              </div>
+                            ) : (
+                              <div className="font-montserrat text-sm text-gray-600 dark:text-gray-400">
+                                Kontakt oss for pris
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Subtle arrow indicating clickable */}
+                          <ArrowRight className="h-4 w-4 text-gray-300 dark:text-gray-600 
+                                                 group-hover:text-brand-500 dark:group-hover:text-brand-400 
+                                                 transition-all duration-200 group-hover:translate-x-1 flex-shrink-0" />
                         </div>
-                      </div>
-                  </motion.div>
-                );
-              })}
+                      </button>
+                    </motion.div>
+                  );
+                })}
+              </div>
+
+              {/* Footer with additional info */}
+              <div className="bg-gray-50/50 dark:bg-gray-800/30 px-6 py-4 
+                              border-t border-gray-100/50 dark:border-gray-700/30">
+                <p className="text-xs text-gray-600 dark:text-gray-400 font-montserrat text-center">
+                  Alle priser er inkludert MVA. Kontakt oss for spørsmål om priser eller rabatter.
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Modal for beskrivelse */}
+      {/* Modal - Same functionality as ClassCard */}
       <PricingModal 
         pkg={selectedPackage} 
-        isOpen={selectedPackage !== null} 
-        onClose={() => setSelectedPackage(null)} 
+        isOpen={isModalOpen} 
+        onOpenChange={handleCloseModal} 
       />
 
-      {/* CTA Section - Standard styling */}
+      {/* CTA Section */}
       <section className="py-16 bg-white dark:bg-surface-dark">
         <div className="container mx-auto px-4 md:px-6">
           <motion.div
