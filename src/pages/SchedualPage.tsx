@@ -357,11 +357,14 @@ export default function SchedualPage() {
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed">
               Se når dine favorittklasser går og finn den perfekte tiden for
-              deg.
+              deg. (Med forbehold om endringer)
             </p>
             {/* Ny linje for "Oppstart uke 35!" med border */}
             <div className=" mt-6 bg-magenta-100 dark:bg-magenta-900/20 text-magenta-600 dark:text-magenta-300 font-bold text-xl py-2 px-4 rounded-md border border-magenta-300 dark:border-magenta-700">
               Oppstart 25. august!
+            </div>
+            <div className="uppercase mt-6  text-brand-500 dark:text-brand-400 font-bold text-3xl py-2 px-4 rounded-md">
+            Gratis prøveuker 35 og 36!
             </div>
           </motion.div>
         </div>

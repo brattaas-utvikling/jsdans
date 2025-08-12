@@ -184,6 +184,9 @@ export default function EnrollmentWizard() {
             <div className="bg-magenta-100 dark:bg-magenta-900/20 text-magenta-600 dark:text-magenta-300 font-bold text-xl py-2 px-4 rounded-md mb-6 border border-magenta-300 dark:border-magenta-700">
               Oppstart 25. august!
             </div>
+            <div className="uppercase my-6  text-brand-500 dark:text-brand-400 font-bold text-3xl py-2 px-4 rounded-md">
+            Gratis prøveuker 35 og 36!
+            </div>
 
             {/* Step Indicator */}
             <StepIndicator currentStep={state.currentStep} />
