@@ -66,10 +66,20 @@ export default function KompaniAuditionSection() {
               transition={{ duration: 0.4, delay: 0.3 }}
               className="text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed text-lg"
             >
-              <strong className="text-magenta-600 dark:text-magenta-400">
+              <strong className="text-gray-900 dark:text-white">
                 Søndag 24. august
               </strong>{" "}
-              holder vi vår første kompaniaudition. Påmeldingsfrist{" "}
+              holder vi audition til Urban Kompani og Urban Aspirant. For påmelding, følg lenken her på siden eller send en mail med navn, fødselsdato og hvilket kompani du ønsker å gå på audition for til{" "}
+            <a 
+              href="mailto:registrer@urbanstudios.no"
+              className="text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 
+                        font-semibold underline decoration-2 underline-offset-2 
+                        hover:underline-offset-4 transition-all duration-200"
+            >
+              registrer@urbanstudios.no
+            </a>
+              <br />
+              Påmeldingsfrist{" "}
               <strong className="text-brand-600 dark:text-brand-400">
                 20. august
               </strong>
@@ -122,37 +132,21 @@ export default function KompaniAuditionSection() {
               transition={{ duration: 0.4, delay: 0.5 }}
               className="flex flex-col sm:flex-row gap-4"
             >
-              <Button
-                size="lg"
-                onClick={() => {
-                  const subject = "Påmelding - Kompaniaudition 24. august 2025";
-                  const body = `Jeg melder meg på audition til … (skriv hvilket kompani) 24. august 2025. 
-
-Aspirantkompani kl.16:30
-Kompani kl.17:15
-
-Oppmøte 15 minutter før. 
-
-Navn:
-Fødselsdato:
-Telefon:
-
-Denne påmeldingen er bindende.`;
-
-                  const mailtoLink = `mailto:registrer@urbanstudios.no?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-                  window.location.href = mailtoLink;
-                }}
-                className="bg-magenta-500 hover:bg-magenta-600
-                          dark:bg-white dark:hover:bg-magenta-600/80
-                          text-white dark:text-magenta-600
-                          dark:hover:text-white/90
-                          font-semibold rounded-full px-8 py-4 text-lg
-                          shadow-brand-lg hover:shadow-brand-xl transition-all duration-300
-                          transform active:scale-[0.98]"
-              >
-                Meld deg på audition
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
+              <a href="mailto:registrer@urbanstudios.no">
+                <Button
+                  size="lg"
+                  className="bg-magenta-500 hover:bg-magenta-600
+                            dark:bg-white dark:hover:bg-magenta-600/80
+                            text-white dark:text-magenta-600
+                            dark:hover:text-white/90
+                            font-semibold rounded-full px-8 py-4 text-lg
+                            shadow-brand-lg hover:shadow-brand-xl transition-all duration-300
+                            transform active:scale-[0.98]"
+                >
+                  Meld deg på audition
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </a>
               <Link to="/nyheter/68735f06003e7a595607">
                 <Button
                   size="lg"

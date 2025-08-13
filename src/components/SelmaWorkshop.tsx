@@ -155,8 +155,15 @@ export default function SelmaWorkshop() {
                 className="text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed"
               >
                 Selma gleder seg masse til å jobbe dynamikk, groove og
-                showteknikk med oss på Urban. Påmeldingen er nå åpen, vær rask
-                da dette er en populær workshop som fylles opp raskt!
+                showteknikk med oss på Urban. Påmeldingen er nå åpen! Følg lenken her på siden eller send en mail med navn, fødselsdato samt foresattes navn/telefonnummer til{" "}
+                <a 
+                  href="mailto:registrer@urbanstudios.no"
+                  className="text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 
+                            font-semibold underline decoration-2 underline-offset-2 
+                            hover:underline-offset-4 transition-all duration-200"
+                >
+                  registrer@urbanstudios.no
+                </a>
               </motion.p>
             </div>
 
@@ -241,27 +248,12 @@ export default function SelmaWorkshop() {
               transition={{ duration: 0.4, delay: 0.8 }}
               className="flex flex-col sm:flex-row gap-4"
             >
-              <Button
-                size="lg"
-                onClick={() => {
-                  const subject =
-                    "Påmelding - Workshop med Selma 23. august 2025";
-                  const body = `Jeg melder meg på workshop med Selma 23. august 2025.
-
-Fullt navn:
-Fødselsdato:
-
-Denne påmeldingen er bindende.
-
-Til info:
-Du vil få en mail med betalingsinfo som må betales innen fristen, følg med i spam-innboksen.`;
-
-                  const mailtoLink = `mailto:registrer@urbanstudios.no?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-                  window.location.href = mailtoLink;
-                }}
-                className="bg-brand-500 hover:bg-brand-600
-                          dark:bg-white dark:hover:bg-brand-600/80
-                          text-white dark:text-brand-600
+              <a href="mailto:registrer@urbanstudios.no">
+                <Button
+                  size="lg"
+                  className="bg-brand-500 hover:bg-brand-600
+                            dark:bg-white dark:hover:bg-brand-600/80
+                            text-white dark:text-brand-600
                           dark:hover:text-white/90
                           font-semibold rounded-full px-8 py-4 text-lg
                           shadow-brand-lg hover:shadow-brand-xl transition-all duration-300
@@ -270,7 +262,7 @@ Du vil få en mail med betalingsinfo som må betales innen fristen, følg med i 
                 Meld deg på nå
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-
+              </a>
               <Link to="/nyheter/6872899c00367b1047ee">
                 <Button
                   size="lg"
