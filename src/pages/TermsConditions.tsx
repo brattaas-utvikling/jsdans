@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import {
   AlertTriangleIcon,
   CalendarOffIcon,
@@ -8,6 +7,7 @@ import {
   InfoIcon,
   ScaleIcon,
   ZapIcon,
+  MessageCircleIcon,
 } from "lucide-react";
 import ScrollToTop from "@/helpers/ScrollToTop";
 
@@ -23,65 +23,57 @@ export default function TermsConditions({
   const termsData = [
     {
       icon: AlertTriangleIcon,
-      title: "Avmelding",
+      title: "Bindende påmelding",
       content:
-        "Etter første kurs-uke er påmeldingen bindende og man må betale den totale kursavgiften + adm.gebyr. Ved langvarig sykdom (mer enn 3 uker) refunderes semesteravgiften, avregnet fra sykemeldingsdato, mot fremleggelse av sykemelding fra lege. Ved utestående kursavgift må vi i værste fall utelukke eleven fra dansetrening hos oss.",
-      delay: 0.1,
+        "Etter andre kursuke er påmeldingen bindende og man må betale den totale kursavgiften. Kjøpsavtalen er underlagt norsk lov. Ved langvarig sykdom (mer enn 4 uker) kan det søkes om å få en del av semesteravgiften refundert. Man må da fremlegge legeerklæring for sykdom, og søknaden sendes per mail til ingrid@urbanstudios.no.",
+    },
+    {
+      icon: MessageCircleIcon,
+      title: "Kommunikasjon",
+      content:
+        "Urban Studios bruker Spond for kommunikasjon mellom instruktører og elever/foresatte. Det er elever og foresattes plikt å melde inn riktig informasjon, deltakelse på klasser og annet, samt holde seg oppdatert på den informasjonen som sendes ut. ",
     },
     {
       icon: CalendarOffIcon,
       title: "Avlysning av timer",
       content:
-        'Det kan forekomme avlysning av timer på grunn av sykdom eller andre årsaker. Dette kompenseres ikke med redusert semesteravgift. Om mulig vil disse timene bli tatt igjen ved en senere anledning. Det informeres om avlysninger og ekstratimer via e-post og/eller sms til elevens "foresatte".',
-      delay: 0.2,
+        "Det kan forekomme avlysning av timer på grunn av sykdom eller andre årsaker, dette informeres om i Spond. Dette kompenseres ikke med redusert semesteravgift, men om mulig vil disse timene bli tatt igjen ved en senere anledning.",
     },
     {
       icon: UsersIcon,
-      title: "Nedlegging av timer",
+      title: "Nedlegging av kurs",
       content:
-        'Urban Studios forbeholder seg retten til å "legge" ned timer der det er 8 eller færre betalende påmeldte elever, i løpet av de 4 første ukene av kurset. Resterende semesteravgift for det aktuelle kurset vil da bli refundert til de aktuelle elevene som har betalt.',
-      delay: 0.3,
+        "Urban Studios forbeholder seg retten til å legge ned timer der det er 5 eller færre betalende påmeldte elever, i løpet av de 4 første ukene av kursperioden. Elevene som er påmeldte til kurs som legges ned vil hvis mulig overføres til annet tilsvarende kurs. Ved nedleggelse av hele kurs vil resterende semesteravgift for det aktuelle kurset bli refundert.",
     },
     {
       icon: ShieldIcon,
       title: "Ansvar",
       content:
-        "Eleven deltar på eget ansvar. Skolen har ikke forsikringsansvar for skader i forbindelse med trening i våre lokaler eller under våre forestillinger. Verdisaker oppbevares på eget ansvar. Dere kan ta de med inn i dansesalen. Alle verdisaker oppbevares på eget ansvar.",
-      delay: 0.4,
+        "Aktiviteter som eleven deltar på i undervisning og forestillinger, skjer på eget ansvar. Verdisaker oppbevares på eget ansvar. Urban Studios har ikke forsikringsansvar for skader på person eller eiendom.",
     },
     {
       icon: CameraIcon,
       title: "Bilder/Video",
       content:
-        "Vi forbeholder oss retten til å bruke bilder og videopptak fra undervisning og forestillinger arrangert av Urban Studios. Disse kan for eksempel brukes til egen reklame, annonser og på vår hjemmeside.",
-      delay: 0.5,
+        "Vi forbeholder oss retten til å bruke bilder og video fra undervisning og forestillinger i våre kanaler og i annonser, reklame mm., med mindre annet er spesifikt opplyst om ved påmelding.",
     },
     {
       icon: InfoIcon,
       title: "Annet",
       content:
-        "Vi tar forbehold om feil og eventuelle endringer. Tyggegummi, snop, brus og mat er ikke tillatt i dansesalene. Urban Studios følger skolerutens ferier og har stengt ved ferie og røde dager. Billettkostnader ved vårforestilling kommer utenom semesteravgift.",
-      delay: 0.6,
-    },
-    {
-      icon: ScaleIcon,
-      title: "Norsk lov",
-      content: "Kjøpsavtalen er underlagt norsk lov.",
-      delay: 0.7,
+        "Vi tar forbehold om feil og eventuelle endringer. Tyggis, godteri, brus og mat er ikke tillatt i dansesalene. Urban Studios følger skoleruten og holder stengt i ferier, men holder åpent for undervisning på andre røde dager med mindre annet er spesifisert. Billettkostnader ved vårforestilling kommer utenom semesteravgift.",
     },
     {
       icon: ZapIcon,
       title: "Force majeure",
       content:
-        "Hvis det oppstår ekstraordinære hendelser utenfor vår kontroll (som brann, streik, lock-down, flom, krig, opprør, naturkatastrofer osv.), som hindrer oss i å gjennomføre vår danseundervisning, er dette utenfor vår kontroll og Urban Studios er fritatt for alt ansvar. Dette kompenseres ikke med redusert semesteravgift.",
-      delay: 0.8,
+        "Hvis det oppstår ekstraordinære hendelser utenfor vår kontroll (som brann, streik, lock-down, flom, krig, opprør, naturkatastrofer osv.), som hindrer oss i å gjennomføre planlagt undervisning, er Urban Studios fritatt for alt ansvar. Undervisning kompenseres da ikke med redusert semesteravgift.",
     },
     {
       icon: ScaleIcon,
       title: "Tvister",
       content:
         "Tvister mellom kunden og skolen skal søkes løst i minnelighet. Dersom dette ikke fører frem, kan hver av partene bringe tvisten inn for de ordinære domstoler.",
-      delay: 0.9,
     },
   ];
 
@@ -98,11 +90,7 @@ export default function TermsConditions({
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         {/* Section Header */}
         {showTitle && (
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+          <div
             className="text-center max-w-3xl mx-auto mb-12"
           >
             <h1
@@ -118,7 +106,7 @@ export default function TermsConditions({
               Les gjennom våre betingelser før du melder deg på kurs. Dette
               sikrer en god opplevelse for alle deltakere.
             </p>
-          </motion.div>
+          </div>
         )}
 
         {/* Terms Grid */}
@@ -127,12 +115,8 @@ export default function TermsConditions({
             const IconComponent = term.icon;
 
             return (
-              <motion.div
+              <div
                 key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: term.delay }}
                 className="bg-gray-50 dark:bg-surface-dark-muted rounded-xl p-6 
                           border border-gray-200 dark:border-gray-700 
                           hover:shadow-md dark:hover:shadow-lg 
@@ -159,24 +143,20 @@ export default function TermsConditions({
                 <div className="text-sm text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed">
                   {term.content}
                 </div>
-              </motion.div>
+              </div>
             );
           })}
         </div>
 
         {/* Footer Note */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 1.0 }}
+        <div
           className="mt-12 text-center"
         >
           <div
             className="bg-gradient-to-r from-brand-50/80 to-magenta-50/50 
-                         dark:from-brand-900/20 dark:to-magenta-900/20 
-                         rounded-xl p-6 border border-brand-200/50 dark:border-brand-700/30 
-                         max-w-2xl mx-auto"
+                      dark:from-brand-900/20 dark:to-magenta-900/20 
+                      rounded-xl p-6 border border-brand-200/50 dark:border-brand-700/30 
+                      max-w-6xl mx-auto"
           >
             <p className="text-sm text-gray-600 dark:text-gray-400 font-montserrat leading-relaxed">
               <strong className="text-gray-900 dark:text-white">Viktig:</strong>{" "}
@@ -185,7 +165,7 @@ export default function TermsConditions({
               melder deg på.
             </p>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
