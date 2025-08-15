@@ -1,4 +1,5 @@
 // src/components/enrollment/steps/SummaryStep.tsx
+import { useState } from 'react'; // ✨ NY: Import useState
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { useEnrollment } from '../../../contexts/EnrollmentContext';
@@ -13,9 +14,12 @@ import {
   Phone,
   CheckCircle,
   Edit3,
-  UserPlus, // ✨ NY: Ikon for søsken
+  UserPlus,
+  FileText,
 } from 'lucide-react';
 import ScrollToTop from '@/helpers/ScrollToTop';
+import TermsModal from '../../TermsModal';
+
 
 export default function SummaryStep() {
   const { 
@@ -27,12 +31,20 @@ export default function SummaryStep() {
     isFormValid
   } = useEnrollment();
 
+  // ✨ NY: State for betingelser modal
+  const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
+
   const handleNext = () => {
     goToNextStep();
   };
 
   const handleEditSection = (step: 'contact' | 'courses') => {
     setStep(step);
+  };
+
+  // ✨ NY: Funksjon for å åpne betingelser modal
+  const handleOpenTerms = () => {
+    setIsTermsModalOpen(true);
   };
 
   // Calculate age for display
@@ -135,7 +147,7 @@ export default function SummaryStep() {
           </div>
         </motion.div>
 
-        {/* ✨ NY: Søsken Information (hvis det finnes søsken) */}
+        {/* ✨ Søsken Information (hvis det finnes søsken) */}
         {state.enrollmentData.hasSiblings && state.enrollmentData.siblings.length > 0 && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -319,7 +331,7 @@ export default function SummaryStep() {
               {!currentPricing && (
                 <li>• Prisberegning mangler</li>
               )}
-              {/* ✨ NY: Søsken validering */}
+              {/* ✨ Søsken validering */}
               {state.enrollmentData.hasSiblings && state.enrollmentData.siblings.some(s => !s.firstName.trim() || !s.lastName.trim()) && (
                 <li>• Søskeninformasjon er ikke fullstendig</li>
               )}
@@ -327,6 +339,47 @@ export default function SummaryStep() {
           </div>
         )}
       </div>
+
+      {/* ✨ OPPDATERT: Terms Notice - Modal i stedet for Link */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ 
+          duration: 0.4, 
+          delay: 0.5,
+          ease: "easeOut"
+        }}
+        style={{ willChange: 'transform, opacity' }}
+        className="mt-8 relative overflow-hidden"
+      >
+        <div className="bg-gradient-to-r from-brand-50/80 to-magenta-50/50 
+                        dark:from-brand-900/20 dark:to-magenta-900/20 
+                        rounded-xl p-6 border border-brand-200/50 dark:border-brand-700/30">
+          
+          {/* Decorative element */}
+          <div className="absolute top-0 right-0 w-20 h-20 bg-brand-400/10 rounded-full blur-2xl" />
+          
+          <div className="relative z-10 text-center">
+            <h4 className="font-bebas text-bebas-sm text-gray-900 dark:text-white mb-2">
+              Før du fullfører
+            </h4>
+            <p className="text-sm text-gray-600 dark:text-gray-300 font-montserrat mb-3">
+              Ved å fullføre påmeldingen aksepterer du våre betingelser for kursdeltagelse.
+            </p>
+            {/* ✨ ENDRET: Button i stedet for Link */}
+            <button
+              onClick={handleOpenTerms}
+              className="inline-flex items-center gap-2 text-brand-600 dark:text-brand-400 
+                         hover:text-brand-700 dark:hover:text-brand-300 font-montserrat font-medium 
+                         text-sm transition-colors duration-200 cursor-pointer"
+            >
+              <FileText className="h-4 w-4" />
+              Les betingelser og vilkår
+              <ArrowRight className="h-3 w-3" />
+            </button>
+          </div>
+        </div>
+      </motion.div>
 
       {/* Navigation */}
       <motion.div
@@ -354,7 +407,7 @@ export default function SummaryStep() {
           disabled={!isFormValid}
           className={
             isFormValid 
-              ? 'bg-green-600 hover:bg-green-700 text-white shadow-lg hover:shadow-xl transform hover:scale-[1.01]  md:px-8 md:py-3 rounded-full font-semibold font-montserrat text-sm md:text-base transition-all duration-200 flex items-center gap-2' 
+              ? 'bg-green-600 hover:bg-green-700 text-white shadow-lg hover:shadow-xl transform hover:scale-[1.01] md:px-8 md:py-3 rounded-full font-semibold font-montserrat text-sm md:text-base transition-all duration-200 flex items-center gap-2' 
               : 'bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed px-8 py-3 rounded-full font-semibold font-montserrat text-base transition-all duration-200 flex items-center gap-2'
           }
         >
@@ -362,6 +415,12 @@ export default function SummaryStep() {
           <ArrowRight className="h-4 w-4" />
         </Button>
       </motion.div>
+
+      {/* ✨ NY: TermsModal */}
+      <TermsModal 
+        open={isTermsModalOpen}
+        onOpenChange={setIsTermsModalOpen}
+      />
     </div>
   );
 }
