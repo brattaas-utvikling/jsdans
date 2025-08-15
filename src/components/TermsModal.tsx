@@ -90,11 +90,11 @@ export default function TermsModal({ open, onOpenChange }: TermsModalProps) {
                                 overflow-x-hidden">
         <DialogHeader className="space-y-2 sm:space-y-4 pb-3 sm:pb-6 
                                 border-b border-gray-200 dark:border-gray-700">
-          <DialogTitle className="text-bebas-base sm:text-bebas-lg 2xl:text-bebas-xl 
-                                 font-bebas text-gray-900 dark:text-white text-center leading-tight">
+          <DialogTitle className="text-xl md:text-3xl
+                                 font-bebas text-gray-900 dark:text-white text-left md:text-center leading-tight">
             Betingelser for kursdeltagelse
           </DialogTitle>
-          <DialogDescription className="text-sm sm:text-base 2xl:text-lg text-center 
+          <DialogDescription className="text-base md:text-lg text-left md:text-center
                                         font-montserrat text-gray-600 dark:text-gray-300 
                                         leading-relaxed">
             Les gjennom våre betingelser som gjelder for alle kurs hos Urban Studios
@@ -136,7 +136,7 @@ export default function TermsModal({ open, onOpenChange }: TermsModalProps) {
                                                text-brand-600 dark:text-brand-400" />
                     </div>
                     <div className="flex-1 min-w-0 overflow-hidden">
-                      <h3 className="font-bebas text-sm sm:text-bebas-base 2xl:text-bebas-lg 
+                      <h3 className="font-bebas text-lg
                                    font-semibold text-gray-900 dark:text-white 
                                    mb-1 sm:mb-2 lg:mb-3 leading-tight break-words 
                                    overflow-wrap-anywhere">
@@ -146,7 +146,7 @@ export default function TermsModal({ open, onOpenChange }: TermsModalProps) {
                   </div>
 
                   {/* Content */}
-                  <div className="text-xs sm:text-sm 2xl:text-base leading-snug sm:leading-relaxed 
+                  <div className="text-base leading-snug sm:leading-relaxed 
                                 text-gray-600 dark:text-gray-300 font-montserrat 
                                 pl-6 sm:pl-11 lg:pl-14 break-words overflow-wrap-anywhere 
                                 word-break-break-word">
@@ -171,7 +171,7 @@ export default function TermsModal({ open, onOpenChange }: TermsModalProps) {
                               bg-brand-400/10 rounded-full blur-xl" />
               
               <div className="relative z-10">
-                <p className="text-xs sm:text-sm 2xl:text-base text-gray-600 dark:text-gray-400 
+                <p className="text-base text-gray-600 dark:text-gray-400 
                              font-montserrat leading-relaxed text-center break-words 
                              overflow-wrap-anywhere">
                   <strong className="text-gray-900 dark:text-white">Viktig:</strong>{" "}
