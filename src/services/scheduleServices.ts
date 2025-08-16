@@ -22,13 +22,13 @@ export interface Schedule {
   $id: string;
   dance_class_id: string;
   day: string;
-  start_time: string; // Tilpasset dine feltnavn
-  end_time: string; // Tilpasset dine feltnavn
+  start_time: string;
+  end_time: string;
   room: string;
-  semester: string; // Nytt felt du la til
-  maxStudents: number; // Tilpasset dine feltnavn
-  currentStudents: number; // Tilpasset dine feltnavn
-  isActive: boolean; // Tilpasset dine feltnavn
+  semester: string;
+  maxStudents: number;
+  currentStudents: number;
+  isActive: boolean;
   special_notes?: string;
   substitute_instructor?: string;
 }
@@ -107,12 +107,11 @@ export const fetchSchedulesWithClasses = async (): Promise<
   ScheduleWithClass[]
 > => {
   try {
-    // Hent alle aktive schedules
     const schedulesResponse = await listDocuments(
       DATABASE_ID,
       COLLECTIONS.SCHEDULES,
       [
-        Query.equal("isActive", true), // Oppdatert feltnavn
+        Query.equal("isActive", true),
         Query.orderAsc("day"),
         Query.orderAsc("start_time"),
         Query.limit(100),
@@ -120,11 +119,8 @@ export const fetchSchedulesWithClasses = async (): Promise<
     );
 
     const schedules = schedulesResponse.documents as unknown as Schedule[];
-
-    // Hent alle unike dance_class_ids
     const danceClassIds = [...new Set(schedules.map((s) => s.dance_class_id))];
 
-    // Hent alle relevante dance classes
     const danceClassesResponse = await listDocuments(
       DATABASE_ID,
       COLLECTIONS.DANCE_CLASSES,
@@ -134,7 +130,6 @@ export const fetchSchedulesWithClasses = async (): Promise<
     const danceClasses =
       danceClassesResponse.documents as unknown as DanceClass[];
 
-    // Kombiner data
     const schedulesWithClasses: ScheduleWithClass[] = schedules
       .map((schedule) => {
         const danceClass = danceClasses.find(
@@ -178,14 +173,14 @@ export const fetchSchedulesByTheme = async (
   );
 };
 
-// Helper: Get schedule duration in time slots (30 min slots)
+// OPPDATERT: Helper: Get schedule duration in time slots (15 min slots)
 export const getScheduleDuration = (schedule: Schedule): number => {
   const startMinutes = timeToMinutes(schedule.start_time);
   const endMinutes = timeToMinutes(schedule.end_time);
   const durationMinutes = endMinutes - startMinutes;
 
-  // Each time slot is 30 minutes, so divide by 30
-  const slots = durationMinutes / 30;
+  // Each time slot is now 15 minutes, so divide by 15
+  const slots = durationMinutes / 15;
 
   return Math.max(1, slots); // Minimum 1 slot
 };
@@ -199,20 +194,36 @@ const timeToMinutes = (timeString: string): number => {
 // Constants for timeplan view
 export const STUDIO_ROOMS = ["Sal 1", "Sal 2"];
 export const DAYS_OF_WEEK = ["Mandag", "Tirsdag", "Onsdag", "Torsdag"];
+
+// OPPDATERT: TIME_SLOTS med 15-minutters intervaller
 export const TIME_SLOTS = [
   "15:00",
+  "15:15",
   "15:30",
+  "15:45",
   "16:00",
+  "16:15",
   "16:30",
+  "16:45",
   "17:00",
+  "17:15",
   "17:30",
+  "17:45",
   "18:00",
+  "18:15",
   "18:30",
+  "18:45",
   "19:00",
+  "19:15",
   "19:30",
+  "19:45",
   "20:00",
+  "20:15",
   "20:30",
+  "20:45",
   "21:00",
+  "21:15",
+  "21:30",
 ];
 
 // Tema-farger - Oppdatert til å matche ClassCard

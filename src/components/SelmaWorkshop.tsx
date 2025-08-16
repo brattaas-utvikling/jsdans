@@ -210,18 +210,10 @@ export default function SelmaWorkshop() {
                   Klokkeslett & Priser
                 </h4>
                 <div className="space-y-2">
-                  <div className="grid grid-cols-[1fr,auto] gap-3 items-center py-2 px-3 bg-brand-50 dark:bg-brand-900/20 rounded-lg">
-                    <span className="font-montserrat text-xs sm:text-sm text-gray-700 dark:text-gray-300">
-                      <strong>Kl. 13:00-14:00</strong> • 1.-4. trinn
-                    </span>
-                    <span className="font-montserrat font-semibold text-brand-600 dark:text-brand-400 whitespace-nowrap text-sm">
-                      150 kr
-                    </span>
-                  </div>
 
                   <div className="grid grid-cols-[1fr,auto] gap-3 items-center py-2 px-3 bg-magenta-50 dark:bg-magenta-900/20 rounded-lg">
                     <span className="font-montserrat text-xs sm:text-sm text-gray-700 dark:text-gray-300">
-                      <strong>Kl. 14:00-16:00</strong> • 5.-8. trinn
+                      <strong>Kl. 14:00-16:00</strong>{" "}1.-7. trinn.
                     </span>
                     <span className="font-montserrat font-semibold text-magenta-600 dark:text-magenta-400 whitespace-nowrap text-sm">
                       300 kr
@@ -230,10 +222,15 @@ export default function SelmaWorkshop() {
 
                   <div className="grid grid-cols-[1fr,auto] gap-3 items-center py-2 px-3 bg-coral-50 dark:bg-coral-900/20 rounded-lg">
                     <span className="font-montserrat text-xs sm:text-sm text-gray-700 dark:text-gray-300">
-                      <strong>Kl. 16:15-18:15</strong> • 8. trinn og oppover
+                      <strong>Kl. 16:15-18:15</strong>{" "}8. trinn og oppover.
                     </span>
                     <span className="font-montserrat font-semibold text-coral-600 dark:text-coral-400 whitespace-nowrap text-sm">
                       300 kr
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-[1fr,auto] gap-3 items-center py-2 px-3 bg-surface-muted dark:bg-surface-dark-muted/20 rounded-lg">
+                    <span className="font-montserrat text-xs sm:text-sm text-gray-700 dark:text-gray-300">
+                      <strong>NB! 150kr pr. time</strong>{" "}1.-4. trinn kan velge å kun være på den første timen.
                     </span>
                   </div>
                 </div>
