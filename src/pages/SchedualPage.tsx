@@ -424,7 +424,7 @@ const heightInPx = isDesktop
                         : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"
                     }`}
                   >
-                    <span className="truncate">Alle temaer</span>
+                    <span className="truncate">Alle kurs</span>
                   </Button>
                 </motion.div>
                 
@@ -451,7 +451,7 @@ const heightInPx = isDesktop
 
                             {/* Room selector & Theme selector - Mobile version */}
               <div className="lg:hidden w-full max-w-sm space-y-4 mx-auto">
-                {/* Tema selector - dropdown */}
+                {/* Kurs selector - dropdown */}
                 <select
                   className="w-full bg-white dark:bg-surface-dark border-2 border-brand-300 dark:border-brand-700 
                             text-brand-600 dark:text-brand-400 px-4 py-3 rounded-xl font-montserrat text-sm
@@ -459,7 +459,7 @@ const heightInPx = isDesktop
                   value={themeFilter || ""}
                   onChange={(e) => setThemeFilter(e.target.value || null)}
                 >
-                  <option value="">Alle temaer</option>
+                  <option value="">Alle kurs</option>
                   {Object.keys(THEMES).map((theme) => (
                     <option key={theme} value={theme}>
                       {theme}
