@@ -59,15 +59,17 @@ export default function SchedualPage() {
   }, [isInitialized]);
 
   // Filter schedules based on day and theme
-  const filteredSchedules = useMemo(() => {
-    return schedules.filter((schedule) => {
-      const dayMatch = schedule.day === selectedDay;
-      const themeMatch =
-        !themeFilter || getThemeFromClass(schedule.dance_class) === themeFilter;
-
-      return dayMatch && themeMatch;
-    });
-  }, [schedules, selectedDay, themeFilter]);
+// ✅ Bedre dependency tracking og error handling
+const filteredSchedules = useMemo(() => {
+  if (!schedules.length) return [];
+  
+  return schedules.filter(schedule => {
+    if (!schedule?.dance_class) return false;
+    const dayMatch = schedule.day === selectedDay;
+    const themeMatch = !themeFilter || getThemeFromClass(schedule.dance_class) === themeFilter;
+    return dayMatch && themeMatch;
+  });
+}, [schedules, selectedDay, themeFilter]);
 
   // Create schedule index for efficient lookup - mobile (filtered by day)
   const scheduleIndex = useMemo(() => {
@@ -106,71 +108,71 @@ export default function SchedualPage() {
 
   // Room selector component
   const RoomSelector = () => (
-    <div className="hidden lg:flex justify-center mb-6">
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 max-w-5xl mx-auto">
+  <div className="hidden lg:flex justify-center mb-6">
+    <div className="flex flex-wrap justify-center gap-3 max-w-4xl mx-auto px-4">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.2 }}
+      >
+        <Button
+          onClick={() => setSelectedRooms(STUDIO_ROOMS)}
+          className={`h-10 font-montserrat font-medium rounded-full transition-all duration-200 text-xs sm:text-sm px-4 py-2 ${
+            selectedRooms.length === STUDIO_ROOMS.length
+              ? "bg-brand-500 text-white shadow-brand"
+              : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+          }`}
+        >
+          <span className="whitespace-nowrap">Alle saler</span>
+        </Button>
+      </motion.div>
+      
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.2, delay: 0.05 }}
+      >
+        <Button
+          onClick={() => setSelectedRooms([])}
+          className={`h-10 font-montserrat font-medium rounded-full transition-all duration-200 text-xs sm:text-sm px-4 py-2 ${
+            selectedRooms.length === 0
+              ? "bg-coral-500 text-white shadow-lg shadow-coral-500/25"
+              : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+          }`}
+        >
+          <span className="whitespace-nowrap">Fjern alle</span>
+        </Button>
+      </motion.div>
+      
+      {STUDIO_ROOMS.map((room, index) => (
         <motion.div
+          key={room}
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.2 }}
+          transition={{ duration: 0.2, delay: (index + 2) * 0.05 }}
         >
           <Button
-            onClick={() => setSelectedRooms(STUDIO_ROOMS)}
-            className={`w-full h-10 font-montserrat font-medium rounded-full transition-all duration-200 text-xs sm:text-sm px-3 py-2 ${
-              selectedRooms.length === STUDIO_ROOMS.length
-                ? "bg-brand-500 text-white shadow-brand"
+            onClick={() => {
+              const isSelected = selectedRooms.includes(room);
+              setSelectedRooms(
+                isSelected
+                  ? selectedRooms.filter((r) => r !== room)
+                  : [...selectedRooms, room],
+              );
+            }}
+            className={`h-10 font-montserrat font-medium rounded-full transition-all duration-200 text-xs sm:text-sm px-4 py-2 ${
+              selectedRooms.includes(room)
+                ? "bg-magenta-500 text-white shadow-lg shadow-magenta-500/25"
                 : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
             }`}
           >
-            <span className="truncate">Alle saler</span>
+            <span className="whitespace-nowrap">{room}</span>
           </Button>
         </motion.div>
-        
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.2, delay: 0.05 }}
-        >
-          <Button
-            onClick={() => setSelectedRooms([])}
-            className={`w-full h-10 font-montserrat font-medium rounded-full transition-all duration-200 text-xs sm:text-sm px-3 py-2 ${
-              selectedRooms.length === 0
-                ? "bg-coral-500 text-white shadow-lg shadow-coral-500/25"
-                : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
-            }`}
-          >
-            <span className="truncate">Fjern alle</span>
-          </Button>
-        </motion.div>
-        
-        {STUDIO_ROOMS.map((room, index) => (
-          <motion.div
-            key={room}
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.2, delay: (index + 2) * 0.05 }}
-          >
-            <Button
-              onClick={() => {
-                const isSelected = selectedRooms.includes(room);
-                setSelectedRooms(
-                  isSelected
-                    ? selectedRooms.filter((r) => r !== room)
-                    : [...selectedRooms, room],
-                );
-              }}
-              className={`w-full h-10 font-montserrat font-medium rounded-full transition-all duration-200 text-xs sm:text-sm px-3 py-2 ${
-                selectedRooms.includes(room)
-                  ? "bg-magenta-500 text-white shadow-lg shadow-magenta-500/25"
-                  : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
-              }`}
-            >
-              <span className="truncate">{room}</span>
-            </Button>
-          </motion.div>
-        ))}
-      </div>
+      ))}
     </div>
-  );
+  </div>
+);
 
   // Helper function to check if a time slot is occupied by a longer schedule
   const isTimeSlotOccupied = (
@@ -214,7 +216,7 @@ export default function SchedualPage() {
     let schedule;
 
     if (isDesktop && day) {
-      // For desktop: bruk fullScheduleIndex med spesifikk dag
+      // For desktop: bruk fullSche0duleIndex med spesifikk dag
       schedule = fullScheduleIndex[day]?.[room]?.[time];
     } else {
       // For mobil: bruk scheduleIndex (filtrert på selectedDay)
@@ -229,20 +231,20 @@ export default function SchedualPage() {
 
     // Bruk substitute_instructor hvis den finnes
     const instructor =
-      schedule.substitute_instructor || schedule.dance_class.instructor;
+      schedule.substitute_instructor || schedule.dance_class?.instructor;
 
     // Kompakte høyder: desktop 48px, mobil 32px per slot
-    const heightInPx = isDesktop
-      ? duration * 48 + (duration - 1) * 1 // Desktop: 48px per slot (redusert fra 64px)
-      : duration * 32 + (duration - 1) * 1; // Mobil: 32px per slot (redusert fra 40px)
-
+const heightInPx = isDesktop
+  ? duration * 28 + (duration - 1) * 1 // h-7 = 28px ✅
+  : duration * 24 + (duration - 1) * 1; // h-6 = 24px (oppdater fra 20px)
+  
     return (
       <motion.div
         key={schedule.$id}
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.3 }}
-        className={`absolute inset-0 ${isDesktop ? "rounded-lg px-2 py-1" : "rounded px-1.5 py-0.5"} font-montserrat
+        className={`absolute inset-0 ${isDesktop ? "rounded-lg px-1 py-0.5" : "rounded px-1 py-0.5"} font-montserrat
                    ${themeColors.color} ${themeColors.textColor} 
                    shadow-md z-10`}
         style={{ height: `${heightInPx}px` }}
@@ -252,13 +254,13 @@ export default function SchedualPage() {
         <div
           className={`font-bold ${isDesktop ? "text-xs" : "text-xs"} leading-tight ${isDesktop ? "mb-0.5" : "mb-0"}`}
         >
-          <span className="line-clamp-1 truncate">
+          <div className="font-bold text-xs leading-tight mb-0.5 line-clamp-3">
             {schedule.dance_class.name}
-          </span>
+          </div>
         </div>
 
-        {/* Instruktør - kun på desktop */}
-        {isDesktop && instructor && (
+        {/* Instruktør */}
+        {instructor && (
           <div className="text-xs opacity-80 mb-0.5 truncate leading-tight">
             {instructor}
             {schedule.substitute_instructor && (
@@ -408,7 +410,7 @@ export default function SchedualPage() {
 
             {/* Theme filter */}
             <div className="flex flex-col items-center space-y-4">
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 max-w-4xl mx-auto">
+              <div className="hidden lg:grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 max-w-4xl mx-auto">
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -447,21 +449,46 @@ export default function SchedualPage() {
                 ))}
               </div>
 
-              {/* Room selector dropdown - kun mobile */}
-              <div className="lg:hidden w-full max-w-sm">
+                            {/* Room selector & Theme selector - Mobile version */}
+              <div className="lg:hidden w-full max-w-sm space-y-4 mx-auto">
+                {/* Tema selector - dropdown */}
                 <select
                   className="w-full bg-white dark:bg-surface-dark border-2 border-brand-300 dark:border-brand-700 
                             text-brand-600 dark:text-brand-400 px-4 py-3 rounded-xl font-montserrat text-sm
                             focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all"
-                  value={selectedRoom}
-                  onChange={(e) => setSelectedRoom(e.target.value)}
+                  value={themeFilter || ""}
+                  onChange={(e) => setThemeFilter(e.target.value || null)}
                 >
-                  {STUDIO_ROOMS.map((room) => (
-                    <option key={room} value={room}>
-                      {room}
+                  <option value="">Alle temaer</option>
+                  {Object.keys(THEMES).map((theme) => (
+                    <option key={theme} value={theme}>
+                      {theme}
                     </option>
                   ))}
                 </select>
+
+                {/* Sal selector - knapper */}
+                <div className="grid grid-cols-2 gap-3">
+                  {STUDIO_ROOMS.map((room) => (
+                    <motion.div
+                      key={room}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <Button
+                        onClick={() => setSelectedRoom(room)}
+                        className={`w-full h-10 font-montserrat font-medium rounded-full transition-all duration-200 text-xs sm:text-sm px-3 py-2 ${
+                          selectedRoom === room
+                            ? "bg-magenta-500 text-white shadow-lg shadow-magenta-500/25"
+                            : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+                        }`}
+                      >
+                        <span className="truncate">{room}</span>
+                      </Button>
+                    </motion.div>
+                  ))}
+                </div>
               </div>
             </div>
           </motion.div>
@@ -469,28 +496,7 @@ export default function SchedualPage() {
           {/* Room Selector for Desktop */}
           <RoomSelector />
 
-          {/* Download Schedule Component */}
-          <div className="flex justify-center mb-4">
-            <Button
-              onClick={() => {
-                const link = document.createElement("a");
-                link.href = "/Urban-Studios-Timeplan.pdf";
-                link.download = "Urban-Studios-Timeplan.pdf";
-                link.click();
-              }}
-              variant="outline"
-              size="sm"
-              className="font-montserrat font-medium rounded-full 
-                        border-brand-300 text-brand-600 
-                        hover:bg-brand-50 hover:text-brand-700
-                        dark:border-brand-700 dark:text-brand-400 
-                        dark:hover:bg-brand-900/30 dark:hover:text-brand-300
-                        transition-all duration-200"
-            >
-              <Download className="mr-2 h-4 w-4" />
-              Last ned timeplan
-            </Button>
-          </div>
+
 
           {/* Schedule Grid */}
           <motion.div
@@ -508,20 +514,20 @@ export default function SchedualPage() {
                 </h3>
               </div>
 
-              <div className="schedule-grid grid grid-cols-[60px_1fr] gap-px bg-gray-200 dark:bg-gray-800">
-                <div className="bg-gray-100 dark:bg-gray-700 font-montserrat font-medium text-center py-1.5 text-xs text-gray-700 dark:text-gray-200">
-                  Tid
-                </div>
-                <div className="bg-gray-100 dark:bg-gray-700 font-montserrat font-medium text-center py-1.5 text-xs text-gray-700 dark:text-gray-200">
-                  Klasse
-                </div>
+                <div className="schedule-grid grid grid-cols-[50px_1fr] gap-px bg-gray-200 dark:bg-gray-800"> {/* Endret fra 60px til 50px */}
+                  <div className="bg-gray-100 dark:bg-gray-700 font-montserrat font-medium text-center py-1 text-xs text-gray-700 dark:text-gray-200">
+                    Tid
+                  </div>
+                  <div className="bg-gray-100 dark:bg-gray-700 font-montserrat font-medium text-center py-1 text-xs text-gray-700 dark:text-gray-200">
+                    Klasse
+                  </div>
 
                 {TIME_SLOTS.map((time) => (
                   <React.Fragment key={`mobile-${time}`}>
-                    <div className="bg-gray-50 dark:bg-gray-600 text-xs text-center py-2 font-montserrat text-gray-600 dark:text-gray-300">
+                    <div className="bg-gray-50 dark:bg-gray-600 text-xs text-center py-1 font-montserrat text-gray-600 dark:text-gray-300">
                       {time.substring(0, 5)}
                     </div>
-                    <div className="relative h-8 bg-white dark:bg-gray-900">
+                    <div className="relative h-6 bg-white dark:bg-gray-900"> {/* Endret fra h-8 til h-5 */}
                       {!isTimeSlotOccupied(selectedRoom, time) &&
                         renderSchedule(selectedRoom, time)}
                     </div>
@@ -551,7 +557,7 @@ export default function SchedualPage() {
                 <div
                   className="grid gap-px bg-gray-200 dark:bg-gray-800 overflow-x-auto"
                   style={{
-                    gridTemplateColumns: `80px repeat(${DAYS_OF_WEEK.length * selectedRooms.length}, minmax(100px, 1fr))`,
+                    gridTemplateColumns: `60px repeat(${DAYS_OF_WEEK.length * selectedRooms.length}, minmax(80px, 1fr))`,
                   }}
                 >
                   {/* Header row */}
@@ -562,7 +568,7 @@ export default function SchedualPage() {
                     selectedRooms.map((room: string) => (
                       <div
                         key={`header-${day}-${room}`}
-                        className="bg-gray-100 dark:bg-gray-700 font-montserrat font-medium text-center py-3 text-gray-700 dark:text-gray-200 text-xs"
+                        className="bg-gray-100 dark:bg-gray-700 font-montserrat font-medium text-center py-1.5 text-gray-700 dark:text-gray-200 text-xs" // Endret fra py-3 til py-1.5
                       >
                         <div className="font-semibold text-xs">{day}</div>
                         <div className="text-xs opacity-75">{room}</div>
@@ -573,7 +579,7 @@ export default function SchedualPage() {
                   {/* Time slots */}
                   {TIME_SLOTS.map((time) => (
                     <React.Fragment key={`desktop-week-row-${time}`}>
-                      <div className="bg-gray-50 dark:bg-gray-600 text-xs text-center py-3 font-montserrat text-gray-600 dark:text-gray-300 flex items-center justify-center">
+                      <div className="bg-gray-50 dark:bg-gray-600 text-xs text-center py-1.5 font-montserrat text-gray-600 dark:text-gray-300 flex items-center justify-center">
                         {time}
                       </div>
                       {DAYS_OF_WEEK.map((day) =>
@@ -581,7 +587,7 @@ export default function SchedualPage() {
                           return (
                             <div
                               key={`cell-${day}-${room}-${time}`}
-                              className="relative h-12 bg-white dark:bg-gray-900"
+                              className="relative h-7 bg-white dark:bg-gray-900" // Endret fra h-12 til h-7
                             >
                               {!isTimeSlotOccupied(room, time, day) &&
                                 (() => {
@@ -602,6 +608,28 @@ export default function SchedualPage() {
           </motion.div>
         </div>
         <div>
+                    {/* Download Schedule Component */}
+          <div className="flex justify-center my-4">
+            <Button
+              onClick={() => {
+                const link = document.createElement("a");
+                link.href = "/Urban-Studios-Timeplan.pdf";
+                link.download = "Urban-Studios-Timeplan.pdf";
+                link.click();
+              }}
+              variant="outline"
+              size="sm"
+              className="font-montserrat font-medium rounded-full 
+                        border-brand-300 text-brand-600 
+                        hover:bg-brand-50 hover:text-brand-700
+                        dark:border-brand-700 dark:text-brand-400 
+                        dark:hover:bg-brand-900/30 dark:hover:text-brand-300
+                        transition-all duration-200"
+            >
+              <Download className="mr-2 h-4 w-4" />
+              Last ned timeplan
+            </Button>
+          </div>
           <div className="text-center mt-6 text-gray-500 dark:text-gray-400 font-montserrat text-xs">
             Timeplanen er oppdatert 21. august 2025. Forbehold om endringer.
           </div>
