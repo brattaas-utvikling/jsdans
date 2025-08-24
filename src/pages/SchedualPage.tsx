@@ -335,7 +335,7 @@ const heightInPx = isDesktop
       <section
         className="bg-gradient-to-br from-brand-50/80 to-surface-muted 
                         dark:from-brand-900/10 dark:to-surface-dark-muted 
-                        pt-24 pb-16 relative overflow-hidden"
+                        pt-24 pb-4 relative overflow-hidden"
       >
         <div className="absolute top-0 right-0 w-64 h-64 bg-magenta-400/10 rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-brand-400/10 rounded-full blur-3xl" />
@@ -372,7 +372,7 @@ const heightInPx = isDesktop
 
       {/* Timeplan Section */}
       <section
-        className="p-8 bg-gradient-to-br from-brand-50/80 to-surface-muted 
+        className="py-4 pb-8 px-4 bg-gradient-to-br from-brand-50/80 to-surface-muted 
                          dark:from-brand-900/10 dark:to-surface-dark-muted"
       >
         <div className="container mx-auto px-4 md:px-6">
