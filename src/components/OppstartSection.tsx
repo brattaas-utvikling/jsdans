@@ -83,16 +83,16 @@ export default function OppstartSection() {
 
               <div className="space-y-3 mx-auto">
                 <div className="flex items-center gap-3">
-                  <Calendar className="h-5 w-5 text-magenta-500 flex-shrink-0" />
+                  <Heart className="h-5 w-5 text-magenta-500 flex-shrink-0" />
                   <span className="font-montserrat text-gray-700 dark:text-gray-300">
-                    <strong>Mandag 25. august</strong> - Første kursdag
+                    <strong>Gratis prøvetimer:</strong> Uke 35 og 36
                   </span>
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <Heart className="h-5 w-5 text-magenta-500 flex-shrink-0" />
+                  <Calendar className="h-5 w-5 text-magenta-500 flex-shrink-0" />
                   <span className="font-montserrat text-gray-700 dark:text-gray-300">
-                    <strong>Gratis prøvetimer:</strong> Uke 35 og 36
+                    <strong>Mandag 25. august</strong>
                   </span>
                 </div>
 
