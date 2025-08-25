@@ -119,7 +119,7 @@ export default function OppstartSection() {
               transition={{ duration: 0.4, delay: 0.5 }}
               className="flex flex-col sm:flex-row gap-4"
             >
-              <Link to="/timeplan">
+              <Link to="/registration">
                 <Button
                   size="lg"
                   className="bg-magenta-500 hover:bg-magenta-600
