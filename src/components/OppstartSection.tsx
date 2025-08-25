@@ -8,6 +8,7 @@ import {
   Users,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import logo from "../assets/logo.svg";
 
 export default function OppstartSection() {
   return (
@@ -78,7 +79,7 @@ export default function OppstartSection() {
                         rounded-xl p-6 border border-magenta-100/50 dark:border-magenta-700/30
                         shadow-brand-sm grid grid-cols-1 md:grid-cols-2 items-center"
             >
-              <img src="../assets/logo.svg" alt="Urban Studios logo" className="h-60 w-auto mx-auto dark:invert" />
+              <img src={logo} alt="Urban Studios logo" className="h-60 w-auto mx-auto dark:invert" />
 
               <div className="space-y-3 mx-auto">
                 <div className="flex items-center gap-3">
