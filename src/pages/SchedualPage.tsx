@@ -358,7 +358,7 @@ const heightInPx = isDesktop
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed">
               Se når dine favorittklasser går og finn den perfekte tiden for
-              deg. (Med forbehold om endringer)
+              deg.
             </p>
             <div className=" mt-6 bg-magenta-100 dark:bg-magenta-900/20 text-magenta-600 dark:text-magenta-300 font-bold text-xl py-2 px-4 rounded-md border border-magenta-300 dark:border-magenta-700">
               Oppstart 25. august!
@@ -384,14 +384,16 @@ const heightInPx = isDesktop
             className="mb-8 space-y-6"
           >
             {/* Day selector - kun mobile */}
+            {/* Day selector - kun mobile */}
             <div className="lg:hidden">
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 max-w-4xl mx-auto">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 max-w-4xl mx-auto">
                 {DAYS_OF_WEEK.map((day, index) => (
                   <motion.div
                     key={day}
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.3, delay: index * 0.05 }}
+                    className={index === 4 ? "col-span-2 sm:col-span-1" : ""}
                   >
                     <Button
                       onClick={() => setSelectedDay(day)}
@@ -554,54 +556,56 @@ const heightInPx = isDesktop
                   </p>
                 </div>
               ) : (
-                <div
-                  className="grid gap-px bg-gray-200 dark:bg-gray-800 overflow-x-auto"
-                  style={{
-                    gridTemplateColumns: `60px repeat(${DAYS_OF_WEEK.length * selectedRooms.length}, minmax(80px, 1fr))`,
-                  }}
-                >
-                  {/* Header row */}
-                  <div className="bg-gray-100 dark:bg-gray-700 font-montserrat font-medium text-center py-3 text-gray-700 dark:text-gray-200 text-xs">
-                    Tid
-                  </div>
-                  {DAYS_OF_WEEK.map((day) =>
-                    selectedRooms.map((room: string) => (
-                      <div
-                        key={`header-${day}-${room}`}
-                        className="bg-gray-100 dark:bg-gray-700 font-montserrat font-medium text-center py-1.5 text-gray-700 dark:text-gray-200 text-xs" // Endret fra py-3 til py-1.5
-                      >
-                        <div className="font-semibold text-xs">{day}</div>
-                        <div className="text-xs opacity-75">{room}</div>
-                      </div>
-                    )),
-                  )}
+                <div className="overflow-x-auto">
+                  <div
+                    className="grid gap-px bg-gray-200 dark:bg-gray-800 min-w-max"
+                    style={{
+                      gridTemplateColumns: `60px repeat(${DAYS_OF_WEEK.length * selectedRooms.length}, minmax(90px, 1fr))`,
+                    }}
+                  >
+                    {/* Header row */}
+                    <div className="bg-gray-100 dark:bg-gray-700 font-montserrat font-medium text-center py-3 text-gray-700 dark:text-gray-200 text-xs">
+                      Tid
+                    </div>
+                    {DAYS_OF_WEEK.map((day) =>
+                      selectedRooms.map((room: string) => (
+                        <div
+                          key={`header-${day}-${room}`}
+                          className="bg-gray-100 dark:bg-gray-700 font-montserrat font-medium text-center py-1.5 text-gray-700 dark:text-gray-200 text-xs"
+                        >
+                          <div className="font-semibold text-xs truncate">{day}</div>
+                          <div className="text-xs opacity-75 truncate">{room}</div>
+                        </div>
+                      )),
+                    )}
 
-                  {/* Time slots */}
-                  {TIME_SLOTS.map((time) => (
-                    <React.Fragment key={`desktop-week-row-${time}`}>
-                      <div className="bg-gray-50 dark:bg-gray-600 text-xs text-center py-1.5 font-montserrat text-gray-600 dark:text-gray-300 flex items-center justify-center">
-                        {time}
-                      </div>
-                      {DAYS_OF_WEEK.map((day) =>
-                        selectedRooms.map((room: string) => {
-                          return (
-                            <div
-                              key={`cell-${day}-${room}-${time}`}
-                              className="relative h-7 bg-white dark:bg-gray-900" // Endret fra h-12 til h-7
-                            >
-                              {!isTimeSlotOccupied(room, time, day) &&
-                                (() => {
-                                  const schedule =
-                                    fullScheduleIndex[day]?.[room]?.[time];
-                                  if (!schedule) return null;
-                                  return renderSchedule(room, time, true, day);
-                                })()}
-                            </div>
-                          );
-                        }),
-                      )}
-                    </React.Fragment>
-                  ))}
+                    {/* Time slots */}
+                    {TIME_SLOTS.map((time) => (
+                      <React.Fragment key={`desktop-week-row-${time}`}>
+                        <div className="bg-gray-50 dark:bg-gray-600 text-xs text-center py-1.5 font-montserrat text-gray-600 dark:text-gray-300 flex items-center justify-center">
+                          {time}
+                        </div>
+                        {DAYS_OF_WEEK.map((day) =>
+                          selectedRooms.map((room: string) => {
+                            return (
+                              <div
+                                key={`cell-${day}-${room}-${time}`}
+                                className="relative h-7 bg-white dark:bg-gray-900"
+                              >
+                                {!isTimeSlotOccupied(room, time, day) &&
+                                  (() => {
+                                    const schedule =
+                                      fullScheduleIndex[day]?.[room]?.[time];
+                                    if (!schedule) return null;
+                                    return renderSchedule(room, time, true, day);
+                                  })()}
+                              </div>
+                            );
+                          }),
+                        )}
+                      </React.Fragment>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
@@ -631,7 +635,7 @@ const heightInPx = isDesktop
             </Button>
           </div>
           <div className="text-center mt-6 text-gray-500 dark:text-gray-400 font-montserrat text-xs">
-            Timeplanen er oppdatert 21. august 2025. Forbehold om endringer.
+            Timeplanen er oppdatert 25. august 2025. Forbehold om endringer.
           </div>
         </div>
       </section>

@@ -193,7 +193,7 @@ const timeToMinutes = (timeString: string): number => {
 
 // Constants for timeplan view
 export const STUDIO_ROOMS = ["Sal 1", "Sal 2"];
-export const DAYS_OF_WEEK = ["Mandag", "Tirsdag", "Onsdag", "Torsdag"];
+export const DAYS_OF_WEEK = ["Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag"];
 
 // OPPDATERT: TIME_SLOTS med 15-minutters intervaller
 export const TIME_SLOTS = [
