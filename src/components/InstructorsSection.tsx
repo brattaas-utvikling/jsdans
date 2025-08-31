@@ -84,7 +84,7 @@ const instructors = [
     image: "https://fra.cloud.appwrite.io/v1/storage/buckets/6857bb630022ef965c25/files/68926ca400372e00c0a6/view?project=6853fb68001e82047908&mode=admin",
     education: "Studiespesialierende ved Øvrebyen vgs",
     description: "Nora Tosounidi er 17 år gammel og skal begynne 2. året på Øvrebyen vgs. Hun har danset siden hun var rundt 3 år, blant annet ballett, jazz, contemporary og commercial, og hun har vært en del av kompaniene på Jump. Hun begynte å bidra som assistent for Hiphop 2.-4. trinn på Victory Dance i 2023, og vårsemesteret 2025 har hun også fått prøve seg som trener.",
-    description2: "Nora liker å undervise og gleder seg til å ha Moderne nivå 1, samt fortsette å bidra som assistent på Hiphop 2.-4. klasse på Urban denne høsten. Timeplanen blir lagt ut i løpet av kort tid, ikke nøl med å sende oss en melding om du har noen spørsmål!",
+    description2: "Nora liker å undervise og gleder seg til å ha Moderne nivå 1, samt fortsette å bidra som assistent på Hiphop 2.-4. klasse på Urban denne høsten.",
     bgColor: "from-brand-50 to-coral-50",
     bgColorDark: "dark:from-brand-900/20 dark:to-coral-900/20"
   },
