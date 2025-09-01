@@ -3,8 +3,9 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { listDocuments, DATABASE_ID, COLLECTIONS, Query } from "@/lib/appwrite";
-import ClassCard from "./ClassCard";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import CarouselCard from "./CarouselCard";
+import { DanceClass } from "@/types";
 
 interface CoursesCarouselProps {
   title?: string;
@@ -13,33 +14,6 @@ interface CoursesCarouselProps {
   className?: string;
 }
 
-// TypeScript interface som matcher Appwrite schema
-interface AppwriteDocument {
-  $id: string;
-  $createdAt: string;
-  $updatedAt: string;
-  $collectionId: string;
-  $databaseId: string;
-  $permissions: string[];
-}
-
-interface DanceClass extends AppwriteDocument {
-  name: string;
-  description: string;
-  color: string;
-  image: string;
-  schedule: Array<{
-    day: string;
-    time: string;
-  }>;
-  instructor: string;
-  age: string;
-  studio: string;
-  level: string;
-  availableFromYear: number;
-  type: string;
-  sorting: number; // Ny attributt for sortering
-}
 
 export default function CoursesCarousel({
   title = "Våre kurs",
@@ -271,19 +245,11 @@ export default function CoursesCarousel({
                   }}
                 >
                   <div className="h-full">
-                    <ClassCard
+                    <CarouselCard
                       name={course.name}
                       description={course.description}
-                      age={course.age}
                       color={course.color}
                       image={course.image}
-                      schedule={
-                        course.schedule || [
-                          { day: "September 2025", time: "Tidspunkt kommer" },
-                        ]
-                      }
-                      instructor={course.instructor}
-                      studio={course.studio}
                     />
                   </div>
                 </div>
