@@ -357,7 +357,7 @@ export default function ClassCard({
                   <span
                     className={`${colors.text} font-montserrat font-semibold`}
                   >
-                    {schedule[0]?.day || "Uke 35 2025"} uke 35
+                    {schedule[0]?.day || "Uke 35 2025"}
                   </span>
                 </div>
                 <div className="flex items-center gap-1 mt-1">
@@ -472,7 +472,7 @@ export default function ClassCard({
                     {/* Mobile: Stacked layout */}
                     <div className="flex flex-col space-y-2 sm:hidden">
                       <div className={`text-gray-700 dark:text-gray-200 font-montserrat font-semibold text-sm`}>
-                        {session.day} uke 35
+                        {session.day}
                       </div>
                       <div className="flex items-center gap-2">
                         <div className="flex items-center gap-1 text-gray-700 dark:text-gray-300">
@@ -494,7 +494,7 @@ export default function ClassCard({
                     <div className="hidden sm:flex sm:justify-between sm:items-center">
                       <div className="flex items-center gap-3 min-w-0 flex-1">
                         <div className={`text-gray-700 dark:text-gray-200 font-montserrat font-semibold`}>
-                          {session.day} uke 35
+                          {session.day}
                         </div>
                         <div className="flex items-center gap-1 text-gray-700 dark:text-gray-300">
                           <Clock className="h-4 w-4" />

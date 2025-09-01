@@ -176,29 +176,35 @@ export default function CoursesPage() {
 
   // Fetch courses from Appwrite
   const fetchCoursesFromAppwrite = async () => {
-    setLoading(true);
-    setError(null);
+  setLoading(true);
+  setError(null);
 
-    try {
-      // Fetch both courses and schedules in parallel
-      const [coursesResponse, schedulesData] = await Promise.all([
-        listDocuments(DATABASE_ID, COLLECTIONS.DANCE_CLASSES, [
-          Query.orderAsc("name"), // Sorter alfabetisk
-          Query.limit(40), // Begrens til 40 kurs
-        ]),
-        fetchSchedulesWithClasses()
-      ]);
+  try {
+    // Fetch both courses and schedules in parallel
+    const [coursesResponse, schedulesData] = await Promise.all([
+      listDocuments(DATABASE_ID, COLLECTIONS.DANCE_CLASSES, [
+        Query.orderAsc("name"), // Sorter alfabetisk
+        Query.limit(40), // Begrens til 40 kurs
+      ]),
+      fetchSchedulesWithClasses()
+    ]);
 
-      const courseData = coursesResponse.documents as unknown as DanceClass[];
-      setCourses(courseData);
-      setSchedules(schedulesData);
-    } catch (err) {
-      console.error("Error fetching courses and schedules:", err);
-      setError("Kunne ikke laste kurs og timeplan fra databasen.");
-    } finally {
-      setLoading(false);
-    }
-  };
+    const courseData = (coursesResponse.documents as unknown as DanceClass[])
+    .filter(course => {
+      // Skjul kun "Aspirantkompani", men behold "Kompani"
+      const courseName = course.name.toLowerCase().trim();
+      return courseName !== 'aspirantkompani';
+    });
+      
+    setCourses(courseData);
+    setSchedules(schedulesData);
+  } catch (err) {
+    console.error("Error fetching courses and schedules:", err);
+    setError("Kunne ikke laste kurs og timeplan fra databasen.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   // Fetch data når komponenten laster
   useEffect(() => {
