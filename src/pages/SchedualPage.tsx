@@ -331,44 +331,82 @@ const heightInPx = isDesktop
     <div className="min-h-screen bg-white dark:bg-surface-dark">
       <ScrollToTop />
 
-      {/* Hero Section */}
-      <section
-        className="bg-gradient-to-br from-brand-50/80 to-surface-muted 
-                        dark:from-brand-900/10 dark:to-surface-dark-muted 
-                        pt-24 pb-4 relative overflow-hidden"
-      >
-        <div className="absolute top-0 right-0 w-64 h-64 bg-magenta-400/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-48 h-48 bg-brand-400/10 rounded-full blur-3xl" />
+{/* Hero Section */}
+<section
+  className="bg-gradient-to-br from-brand-50/80 to-surface-muted 
+                      dark:from-brand-900/10 dark:to-surface-dark-muted 
+                      pt-24 pb-4 relative overflow-hidden"
+>
+  <div className="absolute top-0 right-0 w-64 h-64 bg-magenta-400/10 rounded-full blur-3xl" />
+  <div className="absolute bottom-0 left-0 w-48 h-48 bg-brand-400/10 rounded-full blur-3xl" />
 
-        <div className="container mx-auto px-4 md:px-6 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center max-w-4xl mx-auto"
-          >
-            <h1
-              className="text-xl font-medium text-brand-600 dark:text-brand-400 
-                          uppercase tracking-wider mb-3"
-            >
-              Timeplan
-            </h1>
-            <h2 className="font-bebas font-semibold text-bebas-xl md:text-bebas-2xl mb-6 text-gray-900 dark:text-white">
-              Våre dansetimer
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed">
-              Se når dine favorittklasser går og finn den perfekte tiden for
-              deg.
-            </p>
-            <div className=" mt-6 bg-magenta-100 dark:bg-magenta-900/20 text-magenta-600 dark:text-magenta-300 font-bold text-xl py-2 px-4 rounded-md border border-magenta-300 dark:border-magenta-700">
-              Oppstart 25. august!
-            </div>
-            <div className="uppercase mt-6  text-brand-500 dark:text-brand-400 font-bold text-3xl py-2 px-4 rounded-md">
-            Gratis prøveuker 35 og 36!
-            </div>
-          </motion.div>
+  <div className="container mx-auto px-4 md:px-6 relative z-10">
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+      className="text-center max-w-4xl mx-auto"
+    >
+      <h1
+        className="text-xl font-medium text-brand-600 dark:text-brand-400 
+                        uppercase tracking-wider mb-3"
+      >
+        Timeplan
+      </h1>
+      <h2 className="font-bebas font-semibold text-bebas-xl md:text-bebas-2xl mb-6 text-gray-900 dark:text-white">
+        Våre dansetimer
+      </h2>
+      <p className="text-lg text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed">
+        Se når dine favorittklasser går og finn den perfekte tiden for
+        deg.
+      </p>
+      
+      {/* Oppstart info med påmeldingsknapp */}
+      <div className="mt-8 space-y-4">
+        <div className="bg-magenta-100 dark:bg-magenta-900/20 text-magenta-600 dark:text-magenta-300 font-bold text-xl py-2 px-4 rounded-md border border-magenta-300 dark:border-magenta-700">
+          Oppstart 25. august!
         </div>
-      </section>
+        
+        
+        {/* Påmeldingsseksjon */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+        >
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <p className="text-lg font-montserrat font-semibold text-gray-900 dark:text-white">
+                Klar for å melde deg på?
+              </p>
+              <p className="text-gray-600 dark:text-gray-300 font-montserrat">
+                Spondkode: <span className="font-bold text-magenta-600 dark:text-magenta-400 bg-magenta-50 dark:bg-magenta-900/30 px-2 py-1 rounded">COGZO</span>
+              </p>
+            </div>
+            
+            <Link to="/registration" className="inline-block w-full sm:w-auto">
+              <Button
+                className="w-full sm:w-auto font-montserrat font-semibold
+                           bg-brand-500 hover:bg-brand-600
+                          dark:bg-white dark:hover:bg-gray-50
+                          text-white dark:text-brand-600
+                          dark:hover:text-brand-700
+                          shadow-lg hover:shadow-xl transform active:scale-95
+                          transition-all duration-200 rounded-full px-8 py-3"
+              >
+                Meld deg på nå
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
+          </div>
+        <div className="uppercase text-brand-500 dark:text-brand-400 font-bold text-3xl mt-8 py-2 px-4 rounded-md">
+          Gratis prøveuker 35 og 36!
+        </div>
+        </motion.div>
+      </div>
+    </motion.div>
+  </div>
+</section>
 
       {/* Timeplan Section */}
       <section
@@ -383,7 +421,6 @@ const heightInPx = isDesktop
             transition={{ duration: 0.6 }}
             className="mb-8 space-y-6"
           >
-            {/* Day selector - kun mobile */}
             {/* Day selector - kun mobile */}
             <div className="lg:hidden">
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 max-w-4xl mx-auto">
@@ -635,7 +672,7 @@ const heightInPx = isDesktop
             </Button>
           </div>
           <div className="text-center mt-6 text-gray-500 dark:text-gray-400 font-montserrat text-xs">
-            Timeplanen er oppdatert 31. august 2025. Forbehold om endringer.
+            Timeplanen er oppdatert 02. september 2025. Forbehold om endringer.
           </div>
         </div>
       </section>

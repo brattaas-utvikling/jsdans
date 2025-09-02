@@ -197,6 +197,7 @@ export const DAYS_OF_WEEK = ["Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag"]
 
 // OPPDATERT: TIME_SLOTS med 15-minutters intervaller
 export const TIME_SLOTS = [
+  "15:30",
   "16:00",
   "16:15",
   "16:30",
