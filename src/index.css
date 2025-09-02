@@ -143,3 +143,44 @@ body {
     font-weight: 700;
   }
 }
+/* Expo Slider Customizations - oppdatert versjon */
+.expo-slider {
+  padding-bottom: 60px;
+}
+
+.expo-slider .swiper-slide:not(.swiper-slide-active) .sepia {
+  filter: sepia(100%) saturate(50%) hue-rotate(30deg);
+}
+
+.expo-slider .swiper-slide.swiper-slide-active .sepia {
+  filter: sepia(0%);
+}
+
+.expo-slider .swiper-slide.swiper-slide-active .active-slide-content {
+  opacity: 1;
+}
+
+.expo-slider .swiper-slide:not(.swiper-slide-active) .active-slide-content {
+  opacity: 0;
+}
+
+/* Smooth transition for glass morphism effect */
+.expo-slider .active-slide-content {
+  transition: opacity 0.5s ease-in-out;
+}
+
+.expo-slider .swiper-pagination {
+  bottom: 10px;
+}
+
+.expo-slider .swiper-pagination-bullet {
+  background: #666;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+}
+
+.expo-slider .swiper-pagination-bullet-active {
+  background: #f97316;
+  opacity: 1;
+  transform: scale(1.2);
+}
