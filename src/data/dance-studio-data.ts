@@ -223,7 +223,7 @@ export const STUDIO_INFO = {
   },
   contact: {
     phone: "+47 979 53 671",
-    email: "kontakt@urbanstudio.no",
+    email: "kontakt@urbanstudios.no",
     hours: "Åpner høsten 2025",
   },
   social: {
