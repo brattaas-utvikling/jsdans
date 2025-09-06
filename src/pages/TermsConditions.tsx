@@ -1,14 +1,5 @@
-import {
-  AlertTriangleIcon,
-  CalendarOffIcon,
-  UsersIcon,
-  ShieldIcon,
-  CameraIcon,
-  InfoIcon,
-  ScaleIcon,
-  ZapIcon,
-  MessageCircleIcon,
-} from "lucide-react";
+// src/components/TermsConditions.tsx - Bruker importert termsData
+import { termsData } from "@/data/termsData"; // ✨ Import fra separat fil
 import ScrollToTop from "@/helpers/ScrollToTop";
 
 interface TermsConditionsProps {
@@ -20,63 +11,6 @@ export default function TermsConditions({
   showTitle = true,
   className = "",
 }: TermsConditionsProps) {
-  const termsData = [
-    {
-      icon: AlertTriangleIcon,
-      title: "Bindende påmelding",
-      content:
-        "Etter andre kursuke er påmeldingen bindende og man må betale den totale kursavgiften. Kjøpsavtalen er underlagt norsk lov. Ved langvarig sykdom (mer enn 4 uker) kan det søkes om å få en del av semesteravgiften refundert. Man må da fremlegge legeerklæring for sykdom, og søknaden sendes per mail til ingrid@urbanstudios.no.",
-    },
-    {
-      icon: MessageCircleIcon,
-      title: "Kommunikasjon",
-      content:
-        "Urban Studios bruker Spond for kommunikasjon mellom instruktører og elever/foresatte. Det er elever og foresattes plikt å melde inn riktig informasjon, deltakelse på klasser og annet, samt holde seg oppdatert på den informasjonen som sendes ut. ",
-    },
-    {
-      icon: CalendarOffIcon,
-      title: "Avlysning av timer",
-      content:
-        "Det kan forekomme avlysning av timer på grunn av sykdom eller andre årsaker, dette informeres om i Spond. Dette kompenseres ikke med redusert semesteravgift, men om mulig vil disse timene bli tatt igjen ved en senere anledning.",
-    },
-    {
-      icon: UsersIcon,
-      title: "Nedlegging av kurs",
-      content:
-        "Urban Studios forbeholder seg retten til å legge ned timer der det er 5 eller færre betalende påmeldte elever, i løpet av de 4 første ukene av kursperioden. Elevene som er påmeldte til kurs som legges ned vil hvis mulig overføres til annet tilsvarende kurs. Ved nedleggelse av hele kurs vil resterende semesteravgift for det aktuelle kurset bli refundert.",
-    },
-    {
-      icon: ShieldIcon,
-      title: "Ansvar",
-      content:
-        "Aktiviteter som eleven deltar på i undervisning og forestillinger, skjer på eget ansvar. Verdisaker oppbevares på eget ansvar. Urban Studios har ikke forsikringsansvar for skader på person eller eiendom.",
-    },
-    {
-      icon: CameraIcon,
-      title: "Bilder/Video",
-      content:
-        "Vi forbeholder oss retten til å bruke bilder og video fra undervisning og forestillinger i våre kanaler og i annonser, reklame mm., med mindre annet er spesifikt opplyst om ved påmelding.",
-    },
-    {
-      icon: InfoIcon,
-      title: "Annet",
-      content:
-        "Vi tar forbehold om feil og eventuelle endringer. Tyggis, godteri, brus og mat er ikke tillatt i dansesalene. Urban Studios følger skoleruten og holder stengt i ferier, men holder åpent for undervisning på andre røde dager med mindre annet er spesifisert. Billettkostnader ved vårforestilling kommer utenom semesteravgift.",
-    },
-    {
-      icon: ZapIcon,
-      title: "Force majeure",
-      content:
-        "Hvis det oppstår ekstraordinære hendelser utenfor vår kontroll (som brann, streik, lock-down, flom, krig, opprør, naturkatastrofer osv.), som hindrer oss i å gjennomføre planlagt undervisning, er Urban Studios fritatt for alt ansvar. Undervisning kompenseres da ikke med redusert semesteravgift.",
-    },
-    {
-      icon: ScaleIcon,
-      title: "Tvister",
-      content:
-        "Tvister mellom kunden og skolen skal søkes løst i minnelighet. Dersom dette ikke fører frem, kan hver av partene bringe tvisten inn for de ordinære domstoler.",
-    },
-  ];
-
   return (
     <section
       className={`py-16 bg-white dark:bg-surface-dark relative overflow-hidden ${className}`}
@@ -90,13 +24,9 @@ export default function TermsConditions({
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         {/* Section Header */}
         {showTitle && (
-          <div
-            className="text-center max-w-3xl mx-auto mb-12"
-          >
-            <h1
-              className="text-base font-medium text-brand-600 dark:text-brand-400 
-                          uppercase tracking-wider mb-3"
-            >
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <h1 className="text-base font-medium text-brand-600 dark:text-brand-400 
+                          uppercase tracking-wider mb-3">
               Betingelser
             </h1>
             <h2 className="font-bebas font-semibold text-bebas-xl md:text-bebas-2xl mb-6 text-gray-900 dark:text-white">
@@ -149,9 +79,7 @@ export default function TermsConditions({
         </div>
 
         {/* Footer Note */}
-        <div
-          className="mt-12 text-center"
-        >
+        <div className="mt-12 text-center">
           <div
             className="bg-gradient-to-r from-brand-50/80 to-magenta-50/50 
                       dark:from-brand-900/20 dark:to-magenta-900/20 

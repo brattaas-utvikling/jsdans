@@ -1,8 +1,7 @@
-// src/components/enrollment/steps/ContactInfoStep.tsx - Oppdatert med adressefelter
+// src/components/enrollment/steps/ContactInfoStep.tsx - Oppdatert med TermsModal
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
 import {
   User,
   UserCheck,
@@ -16,10 +15,11 @@ import {
   Trash2,
   MapPin,
   Home,
-  ExternalLink,
+  FileText,
 } from "lucide-react";
 import { useEnrollment } from "@/contexts/EnrollmentContext";
 import ScrollToTop from "@/helpers/ScrollToTop";
+import TermsModal from "../../TermsModal"; // ✨ NY: Import TermsModal
 import type { Sibling } from "@/types/enrollment";
 
 interface ValidationErrors {
@@ -50,6 +50,9 @@ export default function ContactInfoStep() {
     dispatch,
   } = useEnrollment();
 
+  // ✨ NY: State for TermsModal
+  const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
+
   // Local form state
   const [studentForm, setStudentForm] = useState({
     firstName: state.enrollmentData.student.firstName || "",
@@ -61,13 +64,11 @@ export default function ContactInfoStep() {
     name: state.enrollmentData.guardian.name || "",
     email: state.enrollmentData.guardian.email || "",
     phone: state.enrollmentData.guardian.phone || "",
-    // ✨ NYE: Adressefelter
     address: state.enrollmentData.guardian.address || "",
     postalCode: state.enrollmentData.guardian.postalCode || "",
     city: state.enrollmentData.guardian.city || "",
   });
 
-  // ✨ Søsken state
   const [hasSiblings, setHasSiblings] = useState(state.enrollmentData.hasSiblings || false);
   const [siblings, setSiblings] = useState<Sibling[]>(
     state.enrollmentData.siblings.length > 0 
@@ -79,7 +80,12 @@ export default function ContactInfoStep() {
   const [isFormValid, setIsFormValid] = useState(false);
   const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
 
-  // Validation functions (existing ones stay the same)
+  // ✨ NY: Funksjon for å åpne betingelser modal
+  const handleOpenTerms = () => {
+    setIsTermsModalOpen(true);
+  };
+
+  // Validation functions
   const validateFirstName = (value: string): string | undefined => {
     if (!value.trim()) return "Fornavn er påkrevd";
     if (value.trim().length < 2) return "Fornavn må være minst 2 tegn";
@@ -147,10 +153,8 @@ export default function ContactInfoStep() {
   const validatePhone = (value: string): string | undefined => {
     if (!value.trim()) return "Telefonnummer er påkrevd";
     
-    // Fjern mellomrom og andre tegn for validering
     const cleanPhone = value.replace(/[\s\-+()]/g, "");
     
-    // Norsk telefonnummer: 8 siffer eller +47 + 8 siffer
     if (!/^[2-9]\d{7}$/.test(cleanPhone)) {
       return "Ugyldig telefonnummer (må være 8 siffer som starter med 2, 4, 6, 7, 8 eller 9)";
     }
@@ -158,7 +162,6 @@ export default function ContactInfoStep() {
     return undefined;
   };
 
-  // ✨ NYE: Adresse valideringsfunksjoner
   const validateAddress = (value: string): string | undefined => {
     if (!value.trim()) return "Adresse er påkrevd";
     if (value.trim().length < 5) return "Adresse må være minst 5 tegn";
@@ -169,7 +172,6 @@ export default function ContactInfoStep() {
   const validatePostalCode = (value: string): string | undefined => {
     if (!value.trim()) return "Postnummer er påkrevd";
     
-    // Norsk postnummer: 4 siffer
     if (!/^\d{4}$/.test(value.trim())) {
       return "Postnummer må være 4 siffer";
     }
@@ -187,7 +189,6 @@ export default function ContactInfoStep() {
     return undefined;
   };
 
-  // ✨ Søsken validering
   const validateSiblings = (): { [index: number]: { firstName?: string; lastName?: string } } => {
     if (!hasSiblings) return {};
     
@@ -210,7 +211,6 @@ export default function ContactInfoStep() {
     return errors;
   };
 
-  // Validate all fields
   const validateAllFields = (): ValidationErrors => {
     const errors: ValidationErrors = {
       firstName: validateFirstName(studentForm.firstName),
@@ -219,14 +219,12 @@ export default function ContactInfoStep() {
       guardianName: validateGuardianName(guardianForm.name),
       email: validateEmail(guardianForm.email),
       phone: validatePhone(guardianForm.phone),
-      // ✨ NYE: Adresse validering
       address: validateAddress(guardianForm.address),
       postalCode: validatePostalCode(guardianForm.postalCode),
       city: validateCity(guardianForm.city),
       siblings: validateSiblings(),
     };
     
-    // Remove undefined errors
     Object.keys(errors).forEach(key => {
       if (errors[key as keyof ValidationErrors] === undefined) {
         delete errors[key as keyof ValidationErrors];
@@ -245,7 +243,6 @@ export default function ContactInfoStep() {
     setGuardianData(guardianForm);
   }, [guardianForm, setGuardianData]);
 
-  // ✨ Update søsken i context
   useEffect(() => {
     dispatch({ type: 'SET_HAS_SIBLINGS', payload: hasSiblings });
     if (hasSiblings) {
@@ -270,7 +267,6 @@ export default function ContactInfoStep() {
       
       setIsFormValid(!hasErrors);
     } else {
-      // Basic check for form completion
       const isComplete = 
         studentForm.firstName.trim() !== "" &&
         studentForm.lastName.trim() !== "" &&
@@ -308,7 +304,6 @@ export default function ContactInfoStep() {
   const handleStudentChange = (field: string, value: string) => {
     setStudentForm((prev) => ({ ...prev, [field]: value }));
     
-    // Clear specific error when user starts typing
     if (hasAttemptedSubmit && validationErrors[field as keyof ValidationErrors]) {
       setValidationErrors(prev => ({ ...prev, [field]: undefined }));
     }
@@ -317,21 +312,18 @@ export default function ContactInfoStep() {
   const handleGuardianChange = (field: string, value: string) => {
     setGuardianForm((prev) => ({ ...prev, [field]: value }));
     
-    // Clear specific error when user starts typing
     const errorKey = field === 'name' ? 'guardianName' : field;
     if (hasAttemptedSubmit && validationErrors[errorKey as keyof ValidationErrors]) {
       setValidationErrors(prev => ({ ...prev, [errorKey]: undefined }));
     }
   };
 
-  // ✨ Søsken handlers
   const handleSiblingsToggle = (checked: boolean) => {
     setHasSiblings(checked);
     if (checked && siblings.length === 0) {
       setSiblings([{ firstName: "", lastName: "" }]);
     }
     
-    // Clear siblings errors
     if (hasAttemptedSubmit) {
       setValidationErrors(prev => ({ ...prev, siblings: {} }));
     }
@@ -342,7 +334,6 @@ export default function ContactInfoStep() {
     updatedSiblings[index] = { ...updatedSiblings[index], [field]: value };
     setSiblings(updatedSiblings);
     
-    // Clear specific sibling error
     if (hasAttemptedSubmit && validationErrors.siblings?.[index]?.[field]) {
       setValidationErrors(prev => ({
         ...prev,
@@ -366,7 +357,6 @@ export default function ContactInfoStep() {
       const updatedSiblings = siblings.filter((_, i) => i !== index);
       setSiblings(updatedSiblings);
       
-      // Clear errors for removed sibling
       if (hasAttemptedSubmit && validationErrors.siblings?.[index]) {
         const remainingErrors = Object.fromEntries(
         Object.entries(validationErrors.siblings).filter(([key]) => key !== index.toString())
@@ -376,7 +366,6 @@ export default function ContactInfoStep() {
     }
   };
 
-  // Calculate age for display
   const calculateAge = (birthDate: string): number | null => {
     if (!birthDate) return null;
     const birth = new Date(birthDate);
@@ -417,7 +406,7 @@ export default function ContactInfoStep() {
           Vi trenger informasjon om eleven og foresatt for å kunne fullføre påmeldingen.
         </p>
         
-        {/* ✨ NY: Lenke til betingelser */}
+        {/* ✨ OPPDATERT: Betingelser med modal i stedet for Link */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -427,16 +416,16 @@ export default function ContactInfoStep() {
           <p className="text-sm text-gray-600 dark:text-gray-300 font-montserrat mb-2">
             Ved å melde deg på aksepterer du våre betingelser for kursdeltagelse.
           </p>
-          <Link 
-            to="/betingelser"
-            target="_blank"
+          {/* ✨ ENDRET: Button i stedet for Link */}
+          <button
+            onClick={handleOpenTerms}
             className="inline-flex items-center gap-2 text-brand-600 dark:text-brand-400 
                        hover:text-brand-700 dark:hover:text-brand-300 
-                       transition-colors font-montserrat font-medium text-sm"
+                       transition-colors font-montserrat font-medium text-sm cursor-pointer"
           >
-            <ExternalLink className="h-4 w-4" />
+            <FileText className="h-4 w-4" />
             Les betingelser og vilkår
-          </Link>
+          </button>
         </motion.div>
       </motion.div>
 
@@ -551,7 +540,7 @@ export default function ContactInfoStep() {
           </div>
         </motion.div>
 
-        {/* ✨ Søsken Section */}
+        {/* Søsken Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -567,7 +556,6 @@ export default function ContactInfoStep() {
             </h3>
           </div>
 
-          {/* Søsken checkbox */}
           <div className="flex items-center gap-3 mb-4">
             <input
               type="checkbox"
@@ -650,7 +638,6 @@ export default function ContactInfoStep() {
                                   }`}
                         placeholder="Familiemedlem etternavn"
                       />
-                      
                     </div>
                     {validationErrors.siblings?.[index]?.lastName && (
                       <div className="flex items-center gap-2 mt-2 text-red-600 dark:text-red-400 text-sm">
@@ -698,7 +685,7 @@ export default function ContactInfoStep() {
           <div className="flex items-center gap-3 mb-4">
             <UserCheck className="h-5 w-5 text-magenta-600 dark:text-magenta-400" />
             <h3 className="font-bebas text-bebas-base text-gray-900 dark:text-white">
-              Fullt navn
+              Kontaktperson
             </h3>
           </div>
 
@@ -729,7 +716,7 @@ export default function ContactInfoStep() {
               )}
             </div>
 
-            {/* ✨ NYE: Adressefelter */}
+            {/* Adressefelter */}
             <div>
               <label className="block text-sm font-montserrat font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Adresse *
@@ -907,6 +894,12 @@ export default function ContactInfoStep() {
           </Button>
         </motion.div>
       </div>
+
+      {/* TermsModal */}
+      <TermsModal 
+        open={isTermsModalOpen}
+        onOpenChange={setIsTermsModalOpen}
+      />
     </div>
   );
 }
