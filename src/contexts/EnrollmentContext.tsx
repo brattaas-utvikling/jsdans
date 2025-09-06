@@ -1,4 +1,4 @@
-// src/contexts/EnrollmentContext.tsx
+// src/contexts/EnrollmentContext.tsx - HMR-sikker versjon
 import React, { createContext, useContext, useReducer, useCallback, useMemo, ReactNode } from 'react';
 import type { 
   EnrollmentState, 
@@ -7,13 +7,13 @@ import type {
   Student, 
   Guardian,
   EnrollmentErrors,
-  Sibling // ✨ NY: Import søsken type
+  Sibling
 } from '../types/enrollment';
 import type { DanceClass } from '../types';
 import { calculateSimplePrice, SimplePricingResult } from '../utils/simplePricing';
 import { validateStudentAge } from '../utils/pricing';
 
-// ✨ OPPDATERT: Initial state med søsken-felter
+// ✨ OPPDATERT: Initial state med søsken-felter og adresse
 const initialState: EnrollmentState = {
   currentStep: 'contact',
   enrollmentData: {
@@ -26,11 +26,15 @@ const initialState: EnrollmentState = {
       name: '',
       email: '',
       phone: '',
+      // ✨ NYE: Adressefelter
+      address: '',
+      postalCode: '',
+      city: '',
     },
     selectedCourses: [],
     pricing: null,
     isSecondDancerInFamily: false,
-    // ✨ NYE: Søsken-felter
+    // ✨ Søsken-felter
     hasSiblings: false,
     siblings: [],
   },
@@ -40,7 +44,7 @@ const initialState: EnrollmentState = {
   availableCourses: [],
 };
 
-// ✨ OPPDATERT: Reducer function med søsken-actions
+// Reducer function
 function enrollmentReducer(state: EnrollmentState, action: EnrollmentAction): EnrollmentState {
   switch (action.type) {
     case 'SET_STEP':
@@ -119,7 +123,7 @@ function enrollmentReducer(state: EnrollmentState, action: EnrollmentAction): En
         availableCourses: action.payload,
       };
 
-    // ✨ NYE: Søsken actions
+    // Søsken actions
     case 'SET_HAS_SIBLINGS':
       return {
         ...state,
@@ -204,7 +208,7 @@ function enrollmentReducer(state: EnrollmentState, action: EnrollmentAction): En
   }
 }
 
-// ✨ OPPDATERT: Context interface med søsken-metoder
+// Context interface
 interface EnrollmentContextType {
   state: EnrollmentState;
   dispatch: React.Dispatch<EnrollmentAction>;
@@ -220,7 +224,7 @@ interface EnrollmentContextType {
   validateCurrentStep: () => boolean;
   resetEnrollment: () => void;
   
-  // ✨ NYE: Søsken convenience methods
+  // Søsken convenience methods
   setSiblingsEnabled: (enabled: boolean) => void;
   setSiblings: (siblings: Sibling[]) => void;
   addSibling: (sibling: Sibling) => void;
@@ -232,7 +236,7 @@ interface EnrollmentContextType {
   isFormValid: boolean;
 }
 
-// Create context
+// Create context with better error handling
 const EnrollmentContext = createContext<EnrollmentContextType | undefined>(undefined);
 
 // Provider component
@@ -243,21 +247,13 @@ interface EnrollmentProviderProps {
 export function EnrollmentProvider({ children }: EnrollmentProviderProps) {
   const [state, dispatch] = useReducer(enrollmentReducer, initialState);
 
-  // Memoized pricing calculation - recalculates whenever courses or family discount changes
+  // Memoized pricing calculation
   const currentPricing = useMemo(() => {
     const { selectedCourses, isSecondDancerInFamily } = state.enrollmentData;
     
     if (selectedCourses.length === 0) {
       return null;
     }
-    
-    console.log('🧮 Beregner priser (useMemo):', {
-      courseCount: selectedCourses.length,
-      courses: selectedCourses.map(c => c.name),
-      isSecondDancerInFamily,
-      hasSiblings: state.enrollmentData.hasSiblings, // ✨ NY: Log søsken-info
-      siblingsCount: state.enrollmentData.siblings.length
-    });
     
     const pricing = calculateSimplePrice(selectedCourses, isSecondDancerInFamily);
     
@@ -269,21 +265,27 @@ export function EnrollmentProvider({ children }: EnrollmentProviderProps) {
     return pricing;
   }, [state.enrollmentData.selectedCourses, state.enrollmentData.isSecondDancerInFamily, state.enrollmentData.hasSiblings, state.enrollmentData.siblings]);
 
-  // ✨ OPPDATERT: Memoized form validation inkluderer søsken
+  // ✨ OPPDATERT: Memoized form validation inkluderer adresse og søsken
   const isFormValid = useMemo(() => {
     const { student, guardian, selectedCourses, hasSiblings, siblings } = state.enrollmentData;
     
     const hasStudentInfo = !!student.firstName.trim() && 
                           !!student.lastName.trim() && 
                           !!student.birthDate;
+    
+    // ✨ OPPDATERT: Inkluder adressefelter i validering
     const hasGuardianInfo = !!guardian.name.trim() && 
                            !!guardian.email.trim() && 
                            !!guardian.phone.trim() &&
+                           !!guardian.address.trim() &&
+                           !!guardian.postalCode.trim() &&
+                           !!guardian.city.trim() &&
                            /\S+@\S+\.\S+/.test(guardian.email);
+                           
     const hasCourses = selectedCourses.length > 0;
     const hasPricing = currentPricing !== null;
     
-    // ✨ NY: Valider søsken hvis aktivert
+    // Valider søsken hvis aktivert
     const hasSiblingsValid = !hasSiblings || siblings.every(sibling => 
       sibling.firstName.trim().length > 0 && sibling.lastName.trim().length > 0
     );
@@ -291,7 +293,7 @@ export function EnrollmentProvider({ children }: EnrollmentProviderProps) {
     return hasStudentInfo && hasGuardianInfo && hasCourses && hasPricing && hasSiblingsValid;
   }, [state.enrollmentData, currentPricing]);
 
-  // Existing convenience methods
+  // Convenience methods
   const setStep = useCallback((step: EnrollmentStep) => {
     dispatch({ type: 'SET_STEP', payload: step });
   }, []);
@@ -326,7 +328,7 @@ export function EnrollmentProvider({ children }: EnrollmentProviderProps) {
     dispatch({ type: 'GO_TO_PREVIOUS_STEP' });
   }, []);
 
-  // ✨ NYE: Søsken convenience methods
+  // Søsken convenience methods
   const setSiblingsEnabled = useCallback((enabled: boolean) => {
     dispatch({ type: 'SET_HAS_SIBLINGS', payload: enabled });
   }, []);
@@ -347,7 +349,7 @@ export function EnrollmentProvider({ children }: EnrollmentProviderProps) {
     dispatch({ type: 'UPDATE_SIBLING', payload: { index, sibling } });
   }, []);
 
-  // ✨ OPPDATERT: Validation for current step inkluderer søsken
+  // ✨ OPPDATERT: Validation for current step inkluderer adresse og søsken
   const validateCurrentStep = useCallback((): boolean => {
     const errors: EnrollmentErrors = {};
     let isValid = true;
@@ -368,7 +370,7 @@ export function EnrollmentProvider({ children }: EnrollmentProviderProps) {
           isValid = false;
         }
 
-        // Validate guardian data
+        // ✨ OPPDATERT: Validate guardian data inkludert adresse
         if (!state.enrollmentData.guardian.name.trim()) {
           errors.guardian = { ...errors.guardian, name: 'Foresattes navn er påkrevd' };
           isValid = false;
@@ -384,8 +386,21 @@ export function EnrollmentProvider({ children }: EnrollmentProviderProps) {
           errors.guardian = { ...errors.guardian, phone: 'Telefonnummer er påkrevd' };
           isValid = false;
         }
+        // ✨ NYE: Adressefelter validering
+        if (!state.enrollmentData.guardian.address.trim()) {
+          errors.guardian = { ...errors.guardian, address: 'Adresse er påkrevd' };
+          isValid = false;
+        }
+        if (!state.enrollmentData.guardian.postalCode.trim()) {
+          errors.guardian = { ...errors.guardian, postalCode: 'Postnummer er påkrevd' };
+          isValid = false;
+        }
+        if (!state.enrollmentData.guardian.city.trim()) {
+          errors.guardian = { ...errors.guardian, city: 'Poststed er påkrevd' };
+          isValid = false;
+        }
 
-        // ✨ NY: Validate søsken data
+        // Validate søsken data
         if (state.enrollmentData.hasSiblings) {
           const siblingsErrors: { [index: number]: { firstName?: string; lastName?: string } } = {};
           
@@ -438,7 +453,7 @@ export function EnrollmentProvider({ children }: EnrollmentProviderProps) {
           isValid = false;
         }
         
-        // ✨ NY: Final søsken validation
+        // Final søsken validation
         if (state.enrollmentData.hasSiblings) {
           const incompleteSiblings = state.enrollmentData.siblings.some(sibling =>
             !sibling.firstName.trim() || !sibling.lastName.trim()
@@ -446,8 +461,8 @@ export function EnrollmentProvider({ children }: EnrollmentProviderProps) {
           
           if (incompleteSiblings) {
             errors.general = errors.general ? 
-              `${errors.general}. Søskeninformasjon er ikke fullstendig` :
-              'Søskeninformasjon er ikke fullstendig';
+              `${errors.general}. Informasjon om familiemedlem er ikke fullstendig` :
+              'Informasjon om familiemedlem er ikke fullstendig';
             isValid = false;
           }
         }
@@ -467,7 +482,7 @@ export function EnrollmentProvider({ children }: EnrollmentProviderProps) {
     dispatch({ type: 'RESET_ENROLLMENT' });
   }, []);
 
-  // ✨ OPPDATERT: Context value med søsken-metoder
+  // Context value
   const contextValue: EnrollmentContextType = {
     state,
     dispatch,
@@ -480,7 +495,7 @@ export function EnrollmentProvider({ children }: EnrollmentProviderProps) {
     goToPreviousStep,
     validateCurrentStep,
     resetEnrollment,
-    // ✨ NYE: Søsken methods
+    // Søsken methods
     setSiblingsEnabled,
     setSiblings,
     addSibling,
@@ -497,11 +512,27 @@ export function EnrollmentProvider({ children }: EnrollmentProviderProps) {
   );
 }
 
-// Custom hook for using enrollment context
+// ✨ FORBEDRET: Custom hook med bedre feilhåndtering for HMR
 export function useEnrollment() {
   const context = useContext(EnrollmentContext);
+  
   if (context === undefined) {
-    throw new Error('useEnrollment must be used within an EnrollmentProvider');
+    // Mer detaljert feilmelding for debugging
+    const error = new Error(
+      'useEnrollment must be used within an EnrollmentProvider. ' +
+      'This error can occur during hot module replacement. ' +
+      'Make sure your component is wrapped in <EnrollmentProvider>.'
+    );
+    
+    // Log for debugging
+    console.error('EnrollmentContext Error:', {
+      context,
+      provider: 'EnrollmentProvider',
+      component: 'useEnrollment hook'
+    });
+    
+    throw error;
   }
+  
   return context;
 }

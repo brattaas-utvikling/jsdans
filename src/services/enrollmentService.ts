@@ -1,4 +1,4 @@
-// src/services/enrollmentService.ts
+// src/services/enrollmentService.ts - Fikset versjon
 import { ID, Functions } from 'appwrite';
 import { databases, DATABASE_ID, COLLECTIONS, client } from '../lib/appwrite';
 import type { EnrollmentData } from '../types/enrollment';
@@ -14,6 +14,10 @@ export interface FlatEnrollmentSubmission {
   guardian_name: string;
   guardian_email: string;
   guardian_phone: string;
+  // Adressefelter
+  guardian_address: string;
+  guardian_postalCode: string;
+  guardian_city: string;
   
   // Selected courses (arrays, ikke strings)
   selectedCourses_ids: string[];
@@ -22,7 +26,7 @@ export interface FlatEnrollmentSubmission {
   selectedCourses_ages: string[];
   selectedCourses_schedules: string[]; // JSON strings av schedule arrays
   
-  // ✨ NYE: Søsken felter
+  // Søsken felter
   hasSiblings: boolean;
   siblings_firstNames: string[];
   siblings_lastNames: string[];
@@ -55,6 +59,10 @@ export interface EnrollmentRecord {
     name: string;
     email: string;
     phone: string;
+    // Adressefelter
+    address: string;
+    postalCode: string;
+    city: string;
   };
   selectedCourses: {
     ids: string[];
@@ -63,7 +71,7 @@ export interface EnrollmentRecord {
     ages: string[];
     schedules: Array<Array<{ day: string; time: string }>>;
   };
-  // ✨ NYE: Søsken felter
+  // Søsken felter
   hasSiblings: boolean;
   siblings: Array<{
     firstName: string;
@@ -98,9 +106,12 @@ export class EnrollmentService {
    */
   static async submitEnrollment(enrollmentData: EnrollmentData): Promise<SubmissionResult> {
     try {
-      // 1. Basic validering
+      // 1. Basic validering (inkluder adressefelt)
       if (!enrollmentData.student.firstName || 
           !enrollmentData.guardian.email || 
+          !enrollmentData.guardian.address ||
+          !enrollmentData.guardian.postalCode ||
+          !enrollmentData.guardian.city ||
           !enrollmentData.selectedCourses.length ||
           !enrollmentData.pricing) {
         return {
@@ -109,7 +120,7 @@ export class EnrollmentService {
         };
       }
 
-      // ✨ NY: Valider søsken hvis aktivert
+      // Valider søsken hvis aktivert
       if (enrollmentData.hasSiblings) {
         const invalidSiblings = enrollmentData.siblings.some(sibling => 
           !sibling.firstName.trim() || !sibling.lastName.trim()
@@ -118,12 +129,12 @@ export class EnrollmentService {
         if (invalidSiblings) {
           return {
             success: false,
-            error: 'Søskeninformasjon er ikke fullstendig',
+            error: 'Informasjon om familiemedlem er ikke fullstendig',
           };
         }
       }
 
-      // 2. Forbered data for Appwrite (som arrays, ikke JSON strings)
+      // 2. Forbered data for Appwrite (med adressefelt)
       const flatEnrollmentDoc: FlatEnrollmentSubmission = {
         // Student fields
         student_firstName: enrollmentData.student.firstName.trim(),
@@ -131,10 +142,13 @@ export class EnrollmentService {
         student_birthDate: enrollmentData.student.birthDate,
         student_age: enrollmentData.student.age || 0,
         
-        // Guardian fields
+        // Guardian fields (med adresse)
         guardian_name: enrollmentData.guardian.name.trim(),
         guardian_email: enrollmentData.guardian.email.trim().toLowerCase(),
         guardian_phone: enrollmentData.guardian.phone.trim(),
+        guardian_address: enrollmentData.guardian.address.trim(),
+        guardian_postalCode: enrollmentData.guardian.postalCode.trim(),
+        guardian_city: enrollmentData.guardian.city.trim(),
         
         // Selected courses as actual arrays (not JSON strings)
         selectedCourses_ids: enrollmentData.selectedCourses.map(c => c.$id),
@@ -145,7 +159,7 @@ export class EnrollmentService {
           JSON.stringify(c.schedule || [])
         ),
         
-        // ✨ NYE: Søsken felter
+        // Søsken felter
         hasSiblings: enrollmentData.hasSiblings,
         siblings_firstNames: enrollmentData.siblings.map(s => s.firstName.trim()),
         siblings_lastNames: enrollmentData.siblings.map(s => s.lastName.trim()),
@@ -167,11 +181,12 @@ export class EnrollmentService {
       };
 
       // 3. Lagre i database
-      console.log('💾 Saving enrollment to database with siblings info:', {
-        hasSiblings: flatEnrollmentDoc.hasSiblings,
-        siblingsCount: flatEnrollmentDoc.siblings_firstNames.length,
-        studentName: `${flatEnrollmentDoc.student_firstName} ${flatEnrollmentDoc.student_lastName}`
-      });
+      // console.log('💾 Saving enrollment to database with address and siblings:', {
+      //   hasSiblings: flatEnrollmentDoc.hasSiblings,
+      //   siblingsCount: flatEnrollmentDoc.siblings_firstNames.length,
+      //   studentName: `${flatEnrollmentDoc.student_firstName} ${flatEnrollmentDoc.student_lastName}`,
+      //   address: `${flatEnrollmentDoc.guardian_address}, ${flatEnrollmentDoc.guardian_postalCode} ${flatEnrollmentDoc.guardian_city}`
+      // });
 
       const document = await databases.createDocument(
         DATABASE_ID,
@@ -180,7 +195,7 @@ export class EnrollmentService {
         flatEnrollmentDoc
       );
 
-      console.log('✅ Påmelding lagret i database:', document.$id);
+      // console.log('✅ Påmelding lagret i database:', document.$id);
 
       // 4. Send e-post notifikasjon (fire and forget)
       this.sendEnrollmentEmailNotification(
@@ -212,7 +227,7 @@ export class EnrollmentService {
     try {
       const functions = new Functions(client);
 
-      // Clean payload - inkluder søsken informasjon
+      // Clean payload - inkluder adresse og søsken informasjon
       const payload = {
         enrollmentData: {
           student: {
@@ -225,6 +240,10 @@ export class EnrollmentService {
             name: enrollmentData.guardian.name,
             email: enrollmentData.guardian.email,
             phone: enrollmentData.guardian.phone,
+            // Adressefelter i e-post payload
+            address: enrollmentData.guardian.address,
+            postalCode: enrollmentData.guardian.postalCode,
+            city: enrollmentData.guardian.city,
           },
           selectedCourses: enrollmentData.selectedCourses.map(course => ({
             name: course.name,
@@ -232,7 +251,7 @@ export class EnrollmentService {
             age: course.age,
             schedule: course.schedule,
           })),
-          // ✨ NY: Inkluder søsken i e-post payload
+          // Inkluder søsken i e-post payload
           hasSiblings: enrollmentData.hasSiblings,
           siblings: enrollmentData.siblings,
           pricing: enrollmentData.pricing,
@@ -244,20 +263,21 @@ export class EnrollmentService {
       // Serialize payload
       const payloadString = JSON.stringify(payload);
 
-      console.log('📧 Sending email with payload (including siblings):', {
-        studentName: `${enrollmentData.student.firstName} ${enrollmentData.student.lastName}`,
-        guardianEmail: enrollmentData.guardian.email,
-        coursesCount: enrollmentData.selectedCourses.length,
-        hasSiblings: enrollmentData.hasSiblings,
-        siblingsCount: enrollmentData.siblings.length,
-        documentId: documentId,
-        payloadSize: payloadString.length
-      });
+      // console.log('📧 Sending email with payload (including address and siblings):', {
+      //   studentName: `${enrollmentData.student.firstName} ${enrollmentData.student.lastName}`,
+      //   guardianEmail: enrollmentData.guardian.email,
+      //   address: `${enrollmentData.guardian.address}, ${enrollmentData.guardian.postalCode} ${enrollmentData.guardian.city}`,
+      //   coursesCount: enrollmentData.selectedCourses.length,
+      //   hasSiblings: enrollmentData.hasSiblings,
+      //   siblingsCount: enrollmentData.siblings.length,
+      //   documentId: documentId,
+      //   payloadSize: payloadString.length
+      // });
 
       // Execute function
       await functions.createExecution('send-enrollment-email', payloadString);
 
-      console.log('📧 E-post notifikasjon sendt via Appwrite Function');
+      // console.log('📧 E-post notifikasjon sendt via Appwrite Function');
       
     } catch (error: unknown) {
       // Silently fail - don't break enrollment submission
@@ -288,6 +308,10 @@ export class EnrollmentService {
             name: 'Test Guardian',
             email: 'debug@test.com',
             phone: '12345678',
+            // Test adressefelter
+            address: 'Testveien 123',
+            postalCode: '0123',
+            city: 'Oslo',
           },
           selectedCourses: [
             {
@@ -296,11 +320,11 @@ export class EnrollmentService {
               age: '8-10 år',
             },
           ],
-          // ✨ NY: Test søsken
+          // Test søsken
           hasSiblings: true,
           siblings: [
-            { firstName: 'Test', lastName: 'Søsken1' },
-            { firstName: 'Test', lastName: 'Søsken2' }
+            { firstName: 'Test', lastName: 'Familiemedlem1' },
+            { firstName: 'Test', lastName: 'Familiemedlem2' }
           ],
           pricing: {
             totalPrice: 1700,
@@ -332,7 +356,7 @@ export class EnrollmentService {
   }
 
   /**
-   * Hent påmeldinger fra database (for admin) - oppdatert med søsken
+   * Hent påmeldinger fra database (for admin) - oppdatert med adresse og søsken
    */
   static async getEnrollments(): Promise<EnrollmentRecord[]> {
     try {
@@ -355,6 +379,10 @@ export class EnrollmentService {
           name: doc.guardian_name as string,
           email: doc.guardian_email as string,
           phone: doc.guardian_phone as string,
+          // Rekonstruer adressefelter
+          address: doc.guardian_address as string,
+          postalCode: doc.guardian_postalCode as string,
+          city: doc.guardian_city as string,
         },
         selectedCourses: {
           ids: doc.selectedCourses_ids as string[],
@@ -365,7 +393,7 @@ export class EnrollmentService {
             JSON.parse(scheduleStr)
           ),
         },
-        // ✨ NYE: Rekonstruer søsken fra arrays
+        // Rekonstruer søsken fra arrays
         hasSiblings: doc.hasSiblings as boolean,
         siblings: (doc.siblings_firstNames as string[] || []).map((firstName, index) => ({
           firstName,

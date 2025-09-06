@@ -1,8 +1,8 @@
-// src/components/enrollment/EnrollmentWizard.tsx
+// src/components/enrollment/EnrollmentWizard.tsx - Fullstendig versjon
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEnrollment } from '../../contexts/EnrollmentContext';
-import { coursesService } from '../../services/coursesService'; // 🔄 Bytt til coursesService
+import { coursesService } from '../../services/coursesService';
 import ScrollToTop from '../../helpers/ScrollToTop';
 import StepIndicator from './StepIndicator';
 import ContactInfoStep from './steps/ContactInfoStep';
@@ -23,8 +23,7 @@ export default function EnrollmentWizard() {
       setError(null);
 
       try {
-        // 🚫 BRUK COURSESSERVICE MED AUTOMATISK KOMPANI-FILTRERING
-        
+        // BRUK COURSESSERVICE MED AUTOMATISK KOMPANI-FILTRERING
         const courseData = await coursesService.getAllCourses(false); // false = ekskluder kompani
         
         // Konverter til DanceClass format hvis nødvendig
@@ -193,7 +192,6 @@ export default function EnrollmentWizard() {
           </motion.div>
         </div>
       </section>
-
 
       {/* Main Content - Step Content */}
       <section className="pb-16">

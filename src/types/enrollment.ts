@@ -1,4 +1,4 @@
-// src/types/enrollment.ts
+// src/types/enrollment.ts - Oppdatert med adressefelter
 import type { DanceClass } from '.';
 import type { SimplePricingResult } from '../utils/simplePricing';
 
@@ -15,6 +15,10 @@ export interface Guardian {
   name: string;
   email: string;
   phone: string;
+  // ✨ NYE: Adressefelter
+  address: string;
+  postalCode: string;
+  city: string;
 }
 
 // ✨ Søsken informasjon
@@ -46,6 +50,10 @@ export interface EnrollmentErrors {
     name?: string;
     email?: string;
     phone?: string;
+    // ✨ NYE: Adresse valideringsfeil
+    address?: string;
+    postalCode?: string;
+    city?: string;
   };
   courses?: string;
   // Søsken feilmeldinger
@@ -88,7 +96,7 @@ export type EnrollmentAction =
   | { type: 'GO_TO_PREVIOUS_STEP' }
   | { type: 'RESET_ENROLLMENT' };
 
-// Database schema for enrollments collection - oppdatert med søsken
+// Database schema for enrollments collection - oppdatert med adresse
 export interface EnrollmentDocument {
   student: {
     firstName: string;
@@ -100,6 +108,10 @@ export interface EnrollmentDocument {
     name: string;
     email: string;
     phone: string;
+    // ✨ NYE: Adressefelter i database
+    address: string;
+    postalCode: string;
+    city: string;
   };
   selectedCourses: Array<{
     id: string;
