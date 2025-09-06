@@ -1,4 +1,4 @@
-// src/services/coursesService.ts
+// src/services/coursesService.ts - Uten debug logging
 import { Query } from 'appwrite';
 import { databases, DATABASE_ID, COLLECTIONS } from '../lib/appwrite';
 import type { DanceClass } from '../types';
@@ -87,22 +87,11 @@ export class CoursesService {
         return course;
       });
 
-      // 🚫 FILTRER BORT KOMPANI-KURS HVIS IKKE ØNSKET
+      // FILTRER BORT KOMPANI-KURS HVIS IKKE ØNSKET
       let filteredCourses = courses;
       
       if (!includeCompanyCourses) {
-        const beforeCount = courses.length;
         filteredCourses = courses.filter(course => !this.isCompanyCourse(course));
-        const afterCount = filteredCourses.length;
-        const removedCount = beforeCount - afterCount;
-        
-        console.log(`🚫 Filtered out ${removedCount} company courses (${afterCount} remaining)`);
-        
-        // Log hvilke kurs som ble filtrert bort (for debugging)
-        const removedCourses = courses.filter(course => this.isCompanyCourse(course));
-        if (removedCourses.length > 0) {
-          console.log('Removed courses:', removedCourses.map(c => c.name));
-        }
       }
 
       // Hent schedule info for hver kurs (optional enhancement)
@@ -111,7 +100,7 @@ export class CoursesService {
       return coursesWithSchedule;
 
     } catch (error) {
-      console.error('❌ Error fetching courses:', error);
+      console.error('Error fetching courses:', error);
       throw new Error('Kunne ikke laste kurs fra database');
     }
   }
@@ -131,7 +120,7 @@ export class CoursesService {
       const allCourses = await this.getAllCourses(true);
       return allCourses.filter(course => this.isCompanyCourse(course));
     } catch (error) {
-      console.error('❌ Error fetching company courses:', error);
+      console.error('Error fetching company courses:', error);
       throw new Error('Kunne ikke laste kompani-kurs fra database');
     }
   }
@@ -174,7 +163,7 @@ export class CoursesService {
       return courseWithSchedule[0] || null;
 
     } catch (error) {
-      console.error('❌ Error fetching course by ID:', error);
+      console.error('Error fetching course by ID:', error);
       return null;
     }
   }
@@ -221,7 +210,8 @@ export class CoursesService {
       return courses;
 
     } catch (error) {
-      console.warn('⚠️ Could not enrich with schedules, returning courses without schedule:', error);
+      // Beholder warning for schedule-problemer da dette kan påvirke brukeropplevelse
+      console.warn('Could not enrich with schedules, returning courses without schedule:', error);
       return courses;
     }
   }
@@ -316,7 +306,7 @@ export class CoursesService {
       );
 
     } catch (error) {
-      console.error('❌ Error searching courses:', error);
+      console.error('Error searching courses:', error);
       throw new Error('Kunne ikke søke i kurs');
     }
   }

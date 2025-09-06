@@ -19,12 +19,12 @@ export function calculateEnhancedSmartPackagePrice(
     return null;
   }
 
-  console.log('📊 Beregner priser for:', {
-    courseCount: selectedCourses.length,
-    courses: selectedCourses.map(c => c.name),
-    isSecondDancerInFamily,
-    availablePackages: pricingPackages.length
-  });
+  // console.log('📊 Beregner priser for:', {
+  //   courseCount: selectedCourses.length,
+  //   courses: selectedCourses.map(c => c.name),
+  //   isSecondDancerInFamily,
+  //   availablePackages: pricingPackages.length
+  // });
 
   // Sjekk om det er småbarnsprising (3-5 år)
   const isToddlerPricing = selectedCourses.some(course => {
@@ -127,14 +127,14 @@ export function calculateEnhancedSmartPackagePrice(
     }
   };
 
-  console.log('💰 Prisberegning fullført:', {
-    pakke: result.packageName,
-    grunnpris: basePrice / 100,
-    pakkerabatt: packageDiscount / 100,
-    familierabatt: familyDiscount / 100,
-    totalPris: finalPrice / 100,
-    småbarn: isToddlerPricing
-  });
+  // console.log('💰 Prisberegning fullført:', {
+  //   pakke: result.packageName,
+  //   grunnpris: basePrice / 100,
+  //   pakkerabatt: packageDiscount / 100,
+  //   familierabatt: familyDiscount / 100,
+  //   totalPris: finalPrice / 100,
+  //   småbarn: isToddlerPricing
+  // });
 
   return result;
 }

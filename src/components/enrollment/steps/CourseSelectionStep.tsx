@@ -1,7 +1,8 @@
-// src/components/enrollment/steps/CourseSelectionStep.tsx
+// src/components/enrollment/steps/CourseSelectionStep.tsx - Oppdatert med tilbakeknapp
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 import { 
   Dialog,
   DialogContent,
@@ -50,7 +51,7 @@ export default function CourseSelectionStep() {
   const [isFormValid, setIsFormValid] = useState(false);
   const [isReloading, setIsReloading] = useState(false);
 
-  // 🔄 Backup: Re-load courses if they're missing
+  // Backup: Re-load courses if they're missing
   useEffect(() => {
     const ensureCoursesLoaded = async () => {
       // If no courses available and not already loading, try to reload them
@@ -70,7 +71,7 @@ export default function CourseSelectionStep() {
             });
           }
         } catch (error) {
-          console.error('❌ Failed to reload courses in CourseSelection:', error);
+          console.error('⚠ Failed to reload courses in CourseSelection:', error);
           dispatch({ 
             type: 'SET_ERRORS', 
             payload: { 
@@ -101,7 +102,7 @@ export default function CourseSelectionStep() {
         payload: { ...state.errors, courses: undefined } 
       });
     } catch (error) {
-      console.error('❌ Manual course reload failed:', error);
+      console.error('⚠ Manual course reload failed:', error);
       dispatch({ 
         type: 'SET_ERRORS', 
         payload: { 
@@ -159,8 +160,7 @@ export default function CourseSelectionStep() {
     setModalCourse(null);
   };
 
-
-  // Get course type label and color for display
+  // Get course type label and color for display (✨ OPPDATERT: "15 uker høst" i stedet for "vanlige kurs")
   const getCourseTypeInfo = (course: DanceClass) => {
     const type = identifyCourseType(course);
     
@@ -170,13 +170,13 @@ export default function CourseSelectionStep() {
       case 'kompani':
         return { label: 'Kompani', color: 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-200' };
       case 'vanlig':
-        return { label: 'Vanlig kurs', color: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-200' };
+        return { label: '15 uker høst', color: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-200' };
       default:
         return { label: 'Ukjent', color: 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-200' };
     }
   };
 
-  // 🔄 Show loading state when courses are being loaded/reloaded
+  // Show loading state when courses are being loaded/reloaded
   if (state.isLoading || isReloading) {
     return (
       <div className="p-8 md:p-12">
@@ -204,7 +204,7 @@ export default function CourseSelectionStep() {
     );
   }
 
-  // 🚨 Show error if no courses and not loading
+  // Show error if no courses and not loading
   if (state.availableCourses.length === 0) {
     return (
       <div className="p-8 md:p-12">
@@ -263,6 +263,25 @@ export default function CourseSelectionStep() {
   return (
     <div className="px-2 py-4 md:p-12">
       <ScrollToTop />
+      
+      {/* ✨ NY: Tilbakeknapp øverst */}
+      <motion.div
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.4 }}
+        className="mb-6"
+      >
+        <Link 
+          to="/"
+          className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 
+                     hover:text-brand-600 dark:hover:text-brand-400 
+                     transition-colors font-montserrat text-sm"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Tilbake til forsiden
+        </Link>
+      </motion.div>
+
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -286,7 +305,7 @@ export default function CourseSelectionStep() {
           Velg de kursene <span className="font-bold text-brand-600 dark:text-brand-400">{state.enrollmentData.student.firstName}</span> ønsker å delta på
         </p>
           <p className="text-sm text-brand-600 dark:text-brand-400 font-montserrat mt-1">
-            NB! Hvis du har søsken og kan oppnå "søskenrabatt", vennligst legg inn navn på søsken i <span className="font-semibold">"Kontaktinformasjon - steget"</span>.
+            NB! Hvis du har familiemedlem og kan oppnå "familierabatt", vennligst legg inn navn på søsken i <span className="font-semibold">"Kontaktinformasjon - steget"</span>.
           </p>
 
       </motion.div>
@@ -377,7 +396,7 @@ export default function CourseSelectionStep() {
                     
                     {/* Course info button */}
                     <Button
-                      variant="ghost" // Eller "ghost" for en mer subtil effekt
+                      variant="ghost"
                       size="icon"
                       onClick={(e) => {
                         e.stopPropagation();
@@ -385,7 +404,7 @@ export default function CourseSelectionStep() {
                       }}
                       className="h-auto hover:text-white"
                     >
-                      <Info className="h-5 w-5 text-brand-500" /> {/* Juster størrelse etter behov */}
+                      <Info className="h-5 w-5 text-brand-500" />
                     </Button>
                   </div>
                 </motion.div>

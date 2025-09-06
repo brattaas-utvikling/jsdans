@@ -1,4 +1,4 @@
-// src/components/enrollment/steps/ConfirmationStep.tsx
+// src/components/enrollment/steps/ConfirmationStep.tsx - Oppdatert med søsken-tilbakemelding
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -62,7 +62,7 @@ export default function ConfirmationStep() {
       // Submit enrollment
       const id = await submitEnrollment(state.enrollmentData);
       
-      // ✅ VIKTIG: Hvis database lagring lykkes, vis success uansett om component unmountes
+      // VIKTIG: Hvis database lagring lykkes, vis success uansett om component unmountes
       setEnrollmentId(id);
       setSubmissionState('success');
       
@@ -71,11 +71,10 @@ export default function ConfirmationStep() {
     } catch (err) {
       // Check if component was unmounted BARE for errors
       if (abortController.current?.signal.aborted) {
-        console.log('🛑 Submission cancelled (component unmounted)');
         return;
       }
       
-      console.error('❌ Submission error:', err);
+      console.error('Submission error:', err);
       setError(err instanceof Error ? err.message : 'Ukjent feil oppstod');
       setSubmissionState('error');
     } finally {
@@ -97,6 +96,40 @@ export default function ConfirmationStep() {
   const handleGoHome = () => {
     handleNewEnrollment(); // Reset state first
     navigate('/', { replace: true }); // Navigate programmatically
+  };
+
+  // ✨ NYE: Funksjon for å formatere søsken-tekst
+  const renderSiblingsMessage = () => {
+    if (!state.enrollmentData.hasSiblings || state.enrollmentData.siblings.length === 0) {
+      return null;
+    }
+
+    const siblings = state.enrollmentData.siblings;
+    const siblingsCount = siblings.length;
+    
+    // Dynamisk tekst basert på antall søsken
+    let familyLabel: string;
+    if (siblingsCount === 1) {
+      familyLabel = "Følgende familiemedlem er også registrert:";
+    } else {
+      familyLabel = "Følgende familiemedlemmer er også registrert:";
+    }
+
+    // Lag en liste med navn
+    const siblingsNames = siblings.map(sibling => 
+      `${sibling.firstName} ${sibling.lastName}`
+    ).join(', ');
+
+    return (
+      <motion.p
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.7 }}
+        className="text-sm text-gray-500 dark:text-gray-400 font-montserrat italic mt-2"
+      >
+     {familyLabel} <span className="text-purple-600 dark:text-purple-400 font-medium">{siblingsNames}</span>
+      </motion.p>
+    );
   };
 
   // Submitting state
@@ -188,17 +221,20 @@ export default function ConfirmationStep() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
-            className="text-lg text-gray-600 dark:text-gray-300 font-montserrat mb-6"
+            className="text-lg text-gray-600 dark:text-gray-300 font-montserrat mb-2"
           >
             Takk for at du meldte deg på våre kurs, <span className='font-bold text-brand-600 dark:text-brand-400'>{state.enrollmentData.student.firstName}!</span>
           </motion.p>
+
+          {/* ✨ NY: Søsken-melding */}
+          {renderSiblingsMessage()}
 
           {/* Success details */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8 }}
-            className="max-w-2xl mx-auto mb-8"
+            className="max-w-2xl mx-auto mb-8 mt-6"
           >
             <div className="bg-gradient-to-br from-green-50/50 to-emerald-50/30 dark:from-green-900/20 dark:to-emerald-900/10 p-6 rounded-xl border border-green-100/50 dark:border-green-700/30">
               <h3 className="font-bebas text-bebas-base text-gray-900 dark:text-white mb-4">

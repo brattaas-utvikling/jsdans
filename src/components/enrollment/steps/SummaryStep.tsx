@@ -164,7 +164,7 @@ export default function SummaryStep() {
               <div className="flex items-center gap-3">
                 <UserPlus className="h-5 w-5 text-purple-600 dark:text-purple-400" />
                 <h3 className="font-bebas text-bebas-base text-gray-900 dark:text-white">
-                  Søsken ({state.enrollmentData.siblings.length})
+                  Familiemedlem ({state.enrollmentData.siblings.length})
                 </h3>
               </div>
               <Button
@@ -180,7 +180,7 @@ export default function SummaryStep() {
 
             <div className="space-y-3">
               <p className="text-sm text-purple-600 dark:text-purple-300 font-montserrat mb-3">
-                Søskenrabatt aktiveres ved fakturering
+                Familierabatt aktiveres ved fakturering
               </p>
               {state.enrollmentData.siblings.map((sibling, index) => (
                 <div key={index} className="flex items-center gap-3 p-3 bg-white dark:bg-surface-dark/70 rounded-lg">
@@ -192,7 +192,7 @@ export default function SummaryStep() {
                       {sibling.firstName} {sibling.lastName}
                     </p>
                     <p className="text-xs text-gray-500 dark:text-gray-400 font-montserrat">
-                      Søsken {index + 1}
+                      Familiemedlem nr. {index + 1}
                     </p>
                   </div>
                 </div>
@@ -333,7 +333,7 @@ export default function SummaryStep() {
               )}
               {/* ✨ Søsken validering */}
               {state.enrollmentData.hasSiblings && state.enrollmentData.siblings.some(s => !s.firstName.trim() || !s.lastName.trim()) && (
-                <li>• Søskeninformasjon er ikke fullstendig</li>
+                <li>• Informasjon om familiemedlem er ikke fullstendig</li>
               )}
             </ul>
           </div>

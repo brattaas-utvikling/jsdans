@@ -1,7 +1,8 @@
-// src/components/enrollment/steps/ContactInfoStep.tsx
+// src/components/enrollment/steps/ContactInfoStep.tsx - Oppdatert med adressefelter
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import {
   User,
   UserCheck,
@@ -13,6 +14,9 @@ import {
   Users,
   Plus,
   Trash2,
+  MapPin,
+  Home,
+  ExternalLink,
 } from "lucide-react";
 import { useEnrollment } from "@/contexts/EnrollmentContext";
 import ScrollToTop from "@/helpers/ScrollToTop";
@@ -25,6 +29,9 @@ interface ValidationErrors {
   guardianName?: string;
   email?: string;
   phone?: string;
+  address?: string;
+  postalCode?: string;
+  city?: string;
   siblings?: {
     [index: number]: {
       firstName?: string;
@@ -54,9 +61,13 @@ export default function ContactInfoStep() {
     name: state.enrollmentData.guardian.name || "",
     email: state.enrollmentData.guardian.email || "",
     phone: state.enrollmentData.guardian.phone || "",
+    // ✨ NYE: Adressefelter
+    address: state.enrollmentData.guardian.address || "",
+    postalCode: state.enrollmentData.guardian.postalCode || "",
+    city: state.enrollmentData.guardian.city || "",
   });
 
-  // ✨ NY: Søsken state
+  // ✨ Søsken state
   const [hasSiblings, setHasSiblings] = useState(state.enrollmentData.hasSiblings || false);
   const [siblings, setSiblings] = useState<Sibling[]>(
     state.enrollmentData.siblings.length > 0 
@@ -89,28 +100,28 @@ export default function ContactInfoStep() {
     return undefined;
   };
 
-const validateBirthDate = (value: string): string | undefined => {
-  if (!value) return "Fødselsdato er påkrevd";
+  const validateBirthDate = (value: string): string | undefined => {
+    if (!value) return "Fødselsdato er påkrevd";
 
-  const birthDate = new Date(value);
-  const today = new Date();
-  const age = today.getFullYear() - birthDate.getFullYear();
-  const monthDiff = today.getMonth() - birthDate.getMonth();
+    const birthDate = new Date(value);
+    const today = new Date();
+    const age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
 
-  let actualAge = age;
-  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-    actualAge--;
-  }
+    let actualAge = age;
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      actualAge--;
+    }
 
-  if (birthDate > today) return "Fødselsdato kan ikke være i fremtiden";
-  if (actualAge < 3) return "Eleven må være minst 3 år gammel";
+    if (birthDate > today) return "Fødselsdato kan ikke være i fremtiden";
+    if (actualAge < 3) return "Eleven må være minst 3 år gammel";
 
-  return undefined;
-};
+    return undefined;
+  };
 
   const validateGuardianName = (value: string): string | undefined => {
-    if (!value.trim()) return "Navn på foresatt er påkrevd";
-    if (value.trim().length < 2) return "Navn må være minst 2 tegn";
+    if (!value.trim()) return "Fullt navn på foresatt er påkrevd";
+    if (value.trim().length < 3) return "Navn må være minst 3 tegn";
     if (value.trim().length > 100) return "Navn kan ikke være lengre enn 100 tegn";
     if (!/^[a-zA-ZæøåÆØÅ\s'-]+$/.test(value.trim())) {
       return "Navn kan kun inneholde bokstaver, mellomrom, bindestrek og apostrof";
@@ -147,7 +158,36 @@ const validateBirthDate = (value: string): string | undefined => {
     return undefined;
   };
 
-  // ✨ NY: Søsken validering
+  // ✨ NYE: Adresse valideringsfunksjoner
+  const validateAddress = (value: string): string | undefined => {
+    if (!value.trim()) return "Adresse er påkrevd";
+    if (value.trim().length < 5) return "Adresse må være minst 5 tegn";
+    if (value.trim().length > 100) return "Adresse kan ikke være lengre enn 100 tegn";
+    return undefined;
+  };
+
+  const validatePostalCode = (value: string): string | undefined => {
+    if (!value.trim()) return "Postnummer er påkrevd";
+    
+    // Norsk postnummer: 4 siffer
+    if (!/^\d{4}$/.test(value.trim())) {
+      return "Postnummer må være 4 siffer";
+    }
+    
+    return undefined;
+  };
+
+  const validateCity = (value: string): string | undefined => {
+    if (!value.trim()) return "Poststed er påkrevd";
+    if (value.trim().length < 2) return "Poststed må være minst 2 tegn";
+    if (value.trim().length > 50) return "Poststed kan ikke være lengre enn 50 tegn";
+    if (!/^[a-zA-ZæøåÆØÅ\s'-]+$/.test(value.trim())) {
+      return "Poststed kan kun inneholde bokstaver, mellomrom, bindestrek og apostrof";
+    }
+    return undefined;
+  };
+
+  // ✨ Søsken validering
   const validateSiblings = (): { [index: number]: { firstName?: string; lastName?: string } } => {
     if (!hasSiblings) return {};
     
@@ -179,6 +219,10 @@ const validateBirthDate = (value: string): string | undefined => {
       guardianName: validateGuardianName(guardianForm.name),
       email: validateEmail(guardianForm.email),
       phone: validatePhone(guardianForm.phone),
+      // ✨ NYE: Adresse validering
+      address: validateAddress(guardianForm.address),
+      postalCode: validatePostalCode(guardianForm.postalCode),
+      city: validateCity(guardianForm.city),
       siblings: validateSiblings(),
     };
     
@@ -201,7 +245,7 @@ const validateBirthDate = (value: string): string | undefined => {
     setGuardianData(guardianForm);
   }, [guardianForm, setGuardianData]);
 
-  // ✨ NY: Update søsken i context
+  // ✨ Update søsken i context
   useEffect(() => {
     dispatch({ type: 'SET_HAS_SIBLINGS', payload: hasSiblings });
     if (hasSiblings) {
@@ -234,6 +278,9 @@ const validateBirthDate = (value: string): string | undefined => {
         guardianForm.name.trim() !== "" &&
         guardianForm.email.trim() !== "" &&
         guardianForm.phone.trim() !== "" &&
+        guardianForm.address.trim() !== "" &&
+        guardianForm.postalCode.trim() !== "" &&
+        guardianForm.city.trim() !== "" &&
         (!hasSiblings || siblings.every(s => s.firstName.trim() !== "" && s.lastName.trim() !== ""));
       
       setIsFormValid(isComplete);
@@ -277,7 +324,7 @@ const validateBirthDate = (value: string): string | undefined => {
     }
   };
 
-  // ✨ NYE: Søsken handlers
+  // ✨ Søsken handlers
   const handleSiblingsToggle = (checked: boolean) => {
     setHasSiblings(checked);
     if (checked && siblings.length === 0) {
@@ -350,6 +397,7 @@ const validateBirthDate = (value: string): string | undefined => {
   return (
     <div className="px-2 py-4 md:p-12">
       <ScrollToTop />
+
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -365,9 +413,31 @@ const validateBirthDate = (value: string): string | undefined => {
         <h2 className="font-bebas text-bebas-base md:text-bebas-lg lg:text-bebas-xl text-gray-900 dark:text-white mb-2 break-words max-w-prose">
           Kontaktinformasjon
         </h2>
-        <p className="text-gray-600 dark:text-gray-300 font-montserrat">
-          Vi trenger litt informasjon om eleven og foresatt
+        <p className="text-gray-600 dark:text-gray-300 font-montserrat mb-4">
+          Vi trenger informasjon om eleven og foresatt for å kunne fullføre påmeldingen.
         </p>
+        
+        {/* ✨ NY: Lenke til betingelser */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="bg-brand-50/50 dark:bg-brand-900/20 rounded-lg p-4 border border-brand-200/50 dark:border-brand-700/30"
+        >
+          <p className="text-sm text-gray-600 dark:text-gray-300 font-montserrat mb-2">
+            Ved å melde deg på aksepterer du våre betingelser for kursdeltagelse.
+          </p>
+          <Link 
+            to="/betingelser"
+            target="_blank"
+            className="inline-flex items-center gap-2 text-brand-600 dark:text-brand-400 
+                       hover:text-brand-700 dark:hover:text-brand-300 
+                       transition-colors font-montserrat font-medium text-sm"
+          >
+            <ExternalLink className="h-4 w-4" />
+            Les betingelser og vilkår
+          </Link>
+        </motion.div>
       </motion.div>
 
       <div className="space-y-8">
@@ -481,7 +551,7 @@ const validateBirthDate = (value: string): string | undefined => {
           </div>
         </motion.div>
 
-        {/* ✨ NY: Søsken Section */}
+        {/* ✨ Søsken Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -510,20 +580,20 @@ const validateBirthDate = (value: string): string | undefined => {
               htmlFor="hasSiblings" 
               className="text-sm font-montserrat font-medium text-gray-700 dark:text-gray-300 cursor-pointer"
             >
-              Eleven har søsken som også skal meldes på (familierabatt)
+              Eleven har familiemedlem som også skal meldes på (familierabatt)
             </label>
           </div>
 
           {hasSiblings && (
             <div className="space-y-4">
               <p className="text-sm text-purple-600 dark:text-purple-300 font-montserrat mb-4">
-                Skriv inn navn på søsken som også skal meldes på kurs. Rabatten aktiveres ved fakturering.
+                Skriv inn navn på familiemedlem som også skal meldes på kurs. Rabatten aktiveres ved fakturering.
               </p>
               <div className="mt-3 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200 dark:border-purple-700">
                 <div className="text-sm">
                   <p className="font-semibold text-purple-700 dark:text-purple-300 mb-1 text-left">Rabatter tilgjengelig:</p>
                   <ul className="list-disc list-inside space-y-1 text-purple-600 dark:text-purple-400 text-left">
-                    <li>Søskenrabatt 200kr avslag for kurs 60 min</li>
+                    <li>Familierabatt 200kr avslag for kurs 60 min</li>
                     <li>Familierabatt 20% for dansepakke nr. 2</li>
                     <li>Familierabatt 50% for dansepakke nr. 3+</li>
                   </ul>
@@ -552,7 +622,7 @@ const validateBirthDate = (value: string): string | undefined => {
                                     ? "border-red-500 dark:border-red-500"
                                     : "border-gray-300 dark:border-gray-600"
                                 }`}
-                      placeholder="Søsknets fornavn"
+                      placeholder="Familiemedlem fornavn"
                     />
                     {validationErrors.siblings?.[index]?.firstName && (
                       <div className="flex items-center gap-2 mt-2 text-red-600 dark:text-red-400 text-sm">
@@ -578,7 +648,7 @@ const validateBirthDate = (value: string): string | undefined => {
                                       ? "border-red-500 dark:border-red-500"
                                       : "border-gray-300 dark:border-gray-600"
                                   }`}
-                        placeholder="Søsknets etternavn"
+                        placeholder="Familiemedlem etternavn"
                       />
                       
                     </div>
@@ -610,7 +680,7 @@ const validateBirthDate = (value: string): string | undefined => {
                 className="w-full py-3 border-purple-300 text-purple-600 hover:bg-purple-50 font-montserrat"
               >
                 <Plus className="h-4 w-4 mr-2" />
-                Legg til søsken
+                Legg til familiemedlem
               </Button>
             </div>
           )}
@@ -627,8 +697,8 @@ const validateBirthDate = (value: string): string | undefined => {
         >
           <div className="flex items-center gap-3 mb-4">
             <UserCheck className="h-5 w-5 text-magenta-600 dark:text-magenta-400" />
-            <h3 className="font-bebas text-bebas-base  text-gray-900 dark:text-white">
-              Foresatt / Kontaktperson
+            <h3 className="font-bebas text-bebas-base text-gray-900 dark:text-white">
+              Fullt navn
             </h3>
           </div>
 
@@ -649,7 +719,7 @@ const validateBirthDate = (value: string): string | undefined => {
                               ? "border-red-500 dark:border-red-500"
                               : "border-gray-300 dark:border-gray-600"
                           }`}
-                placeholder="Navn på foresatt/kontaktperson"
+                placeholder="Fullt navn på foresatt"
               />
               {validationErrors.guardianName && (
                 <div className="flex items-center gap-2 mt-2 text-red-600 dark:text-red-400 text-sm">
@@ -657,6 +727,93 @@ const validateBirthDate = (value: string): string | undefined => {
                   <span className="font-montserrat">{validationErrors.guardianName}</span>
                 </div>
               )}
+            </div>
+
+            {/* ✨ NYE: Adressefelter */}
+            <div>
+              <label className="block text-sm font-montserrat font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Adresse *
+              </label>
+              <div className="relative">
+                <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                <input
+                  type="text"
+                  value={guardianForm.address}
+                  onChange={(e) => handleGuardianChange("address", e.target.value)}
+                  className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent
+                            bg-white dark:bg-surface-dark text-gray-900 dark:text-white
+                            font-montserrat transition-colors ${
+                              validationErrors.address
+                                ? "border-red-500 dark:border-red-500"
+                                : "border-gray-300 dark:border-gray-600"
+                            }`}
+                  placeholder="Gateadresse"
+                />
+              </div>
+              {validationErrors.address && (
+                <div className="flex items-center gap-2 mt-2 text-red-600 dark:text-red-400 text-sm">
+                  <AlertCircle className="h-4 w-4" />
+                  <span className="font-montserrat">{validationErrors.address}</span>
+                </div>
+              )}
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Postal Code */}
+              <div>
+                <label className="block text-sm font-montserrat font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Postnummer *
+                </label>
+                <div className="relative">
+                  <Home className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                  <input
+                    type="text"
+                    value={guardianForm.postalCode}
+                    onChange={(e) => handleGuardianChange("postalCode", e.target.value)}
+                    className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent
+                              bg-white dark:bg-surface-dark text-gray-900 dark:text-white
+                              font-montserrat transition-colors ${
+                                validationErrors.postalCode
+                                  ? "border-red-500 dark:border-red-500"
+                                  : "border-gray-300 dark:border-gray-600"
+                              }`}
+                    placeholder="0000"
+                    maxLength={4}
+                  />
+                </div>
+                {validationErrors.postalCode && (
+                  <div className="flex items-center gap-2 mt-2 text-red-600 dark:text-red-400 text-sm">
+                    <AlertCircle className="h-4 w-4" />
+                    <span className="font-montserrat">{validationErrors.postalCode}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* City */}
+              <div>
+                <label className="block text-sm font-montserrat font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Poststed *
+                </label>
+                <input
+                  type="text"
+                  value={guardianForm.city}
+                  onChange={(e) => handleGuardianChange("city", e.target.value)}
+                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent
+                            bg-white dark:bg-surface-dark text-gray-900 dark:text-white
+                            font-montserrat transition-colors ${
+                              validationErrors.city
+                                ? "border-red-500 dark:border-red-500"
+                                : "border-gray-300 dark:border-gray-600"
+                            }`}
+                  placeholder="Poststed"
+                />
+                {validationErrors.city && (
+                  <div className="flex items-center gap-2 mt-2 text-red-600 dark:text-red-400 text-sm">
+                    <AlertCircle className="h-4 w-4" />
+                    <span className="font-montserrat">{validationErrors.city}</span>
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

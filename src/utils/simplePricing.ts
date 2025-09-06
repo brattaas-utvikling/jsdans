@@ -163,14 +163,14 @@ export function calculateSimplePrice(
   // Endelig pris
   const totalPrice = Math.max(0, priceAfterVolumeDiscount);
 
-  console.log('💰 Prisberegning:', {
-    barnedansCount,
-    vanligCount, 
-    kompaniCount,
-    basePrice,
-    volumeDiscount,
-    totalPrice
-  });
+  // console.log('💰 Prisberegning:', {
+  //   barnedansCount,
+  //   vanligCount, 
+  //   kompaniCount,
+  //   basePrice,
+  //   volumeDiscount,
+  //   totalPrice
+  // });
 
   return {
     totalPrice,
