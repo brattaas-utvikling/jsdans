@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import ScrollToTop from "@/helpers/ScrollToTop";
-import { Download } from "lucide-react";
+import { Download, Calendar, ArrowRight } from "lucide-react";
 import {
   fetchSchedulesWithClasses,
   getThemeFromClass,
@@ -15,19 +15,26 @@ import {
   type ScheduleWithClass,
 } from "../services/scheduleServices";
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function SchedualPage() {
   const [selectedDay, setSelectedDay] = useState("Mandag");
   const [themeFilter, setThemeFilter] = useState<string | null>(null);
   const [selectedRoom, setSelectedRoom] = useState<string>(STUDIO_ROOMS[0]);
   const [isInitialized, setIsInitialized] = useState(false);
+  const navigate = useNavigate();
   // Desktop sal-filter
   const [selectedRooms, setSelectedRooms] = useState<string[]>(STUDIO_ROOMS);
+
 
   const [schedules, setSchedules] = useState<ScheduleWithClass[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Handler for signup button
+  const handleSignUp = () => {
+    navigate('/registration');
+  };
 
   // Fetch schedules from Appwrite
   const fetchSchedules = async () => {
@@ -59,17 +66,16 @@ export default function SchedualPage() {
   }, [isInitialized]);
 
   // Filter schedules based on day and theme
-// ✅ Bedre dependency tracking og error handling
-const filteredSchedules = useMemo(() => {
-  if (!schedules.length) return [];
-  
-  return schedules.filter(schedule => {
-    if (!schedule?.dance_class) return false;
-    const dayMatch = schedule.day === selectedDay;
-    const themeMatch = !themeFilter || getThemeFromClass(schedule.dance_class) === themeFilter;
-    return dayMatch && themeMatch;
-  });
-}, [schedules, selectedDay, themeFilter]);
+  const filteredSchedules = useMemo(() => {
+    if (!schedules.length) return [];
+    
+    return schedules.filter(schedule => {
+      if (!schedule?.dance_class) return false;
+      const dayMatch = schedule.day === selectedDay;
+      const themeMatch = !themeFilter || getThemeFromClass(schedule.dance_class) === themeFilter;
+      return dayMatch && themeMatch;
+    });
+  }, [schedules, selectedDay, themeFilter]);
 
   // Create schedule index for efficient lookup - mobile (filtered by day)
   const scheduleIndex = useMemo(() => {
@@ -108,71 +114,71 @@ const filteredSchedules = useMemo(() => {
 
   // Room selector component
   const RoomSelector = () => (
-  <div className="hidden lg:flex justify-center mb-6">
-    <div className="flex flex-wrap justify-center gap-3 max-w-4xl mx-auto px-4">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.2 }}
-      >
-        <Button
-          onClick={() => setSelectedRooms(STUDIO_ROOMS)}
-          className={`h-10 font-montserrat font-medium rounded-full transition-all duration-200 text-xs sm:text-sm px-4 py-2 ${
-            selectedRooms.length === STUDIO_ROOMS.length
-              ? "bg-brand-500 text-white shadow-brand"
-              : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
-          }`}
-        >
-          <span className="whitespace-nowrap">Alle saler</span>
-        </Button>
-      </motion.div>
-      
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.2, delay: 0.05 }}
-      >
-        <Button
-          onClick={() => setSelectedRooms([])}
-          className={`h-10 font-montserrat font-medium rounded-full transition-all duration-200 text-xs sm:text-sm px-4 py-2 ${
-            selectedRooms.length === 0
-              ? "bg-coral-500 text-white shadow-lg shadow-coral-500/25"
-              : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
-          }`}
-        >
-          <span className="whitespace-nowrap">Fjern alle</span>
-        </Button>
-      </motion.div>
-      
-      {STUDIO_ROOMS.map((room, index) => (
+    <div className="hidden lg:flex justify-center mb-6">
+      <div className="flex flex-wrap justify-center gap-3 max-w-4xl mx-auto px-4">
         <motion.div
-          key={room}
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.2, delay: (index + 2) * 0.05 }}
+          transition={{ duration: 0.2 }}
         >
           <Button
-            onClick={() => {
-              const isSelected = selectedRooms.includes(room);
-              setSelectedRooms(
-                isSelected
-                  ? selectedRooms.filter((r) => r !== room)
-                  : [...selectedRooms, room],
-              );
-            }}
+            onClick={() => setSelectedRooms(STUDIO_ROOMS)}
             className={`h-10 font-montserrat font-medium rounded-full transition-all duration-200 text-xs sm:text-sm px-4 py-2 ${
-              selectedRooms.includes(room)
-                ? "bg-magenta-500 text-white shadow-lg shadow-magenta-500/25"
+              selectedRooms.length === STUDIO_ROOMS.length
+                ? "bg-brand-500 text-white shadow-brand"
                 : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
             }`}
           >
-            <span className="whitespace-nowrap">{room}</span>
+            <span className="whitespace-nowrap">Alle saler</span>
           </Button>
         </motion.div>
-      ))}
+        
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.2, delay: 0.05 }}
+        >
+          <Button
+            onClick={() => setSelectedRooms([])}
+            className={`h-10 font-montserrat font-medium rounded-full transition-all duration-200 text-xs sm:text-sm px-4 py-2 ${
+              selectedRooms.length === 0
+                ? "bg-coral-500 text-white shadow-lg shadow-coral-500/25"
+                : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+            }`}
+          >
+            <span className="whitespace-nowrap">Fjern alle</span>
+          </Button>
+        </motion.div>
+        
+        {STUDIO_ROOMS.map((room, index) => (
+          <motion.div
+            key={room}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.2, delay: (index + 2) * 0.05 }}
+          >
+            <Button
+              onClick={() => {
+                const isSelected = selectedRooms.includes(room);
+                setSelectedRooms(
+                  isSelected
+                    ? selectedRooms.filter((r) => r !== room)
+                    : [...selectedRooms, room],
+                );
+              }}
+              className={`h-10 font-montserrat font-medium rounded-full transition-all duration-200 text-xs sm:text-sm px-4 py-2 ${
+                selectedRooms.includes(room)
+                  ? "bg-magenta-500 text-white shadow-lg shadow-magenta-500/25"
+                  : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+              }`}
+            >
+              <span className="whitespace-nowrap">{room}</span>
+            </Button>
+          </motion.div>
+        ))}
+      </div>
     </div>
-  </div>
-);
+  );
 
   // Helper function to check if a time slot is occupied by a longer schedule
   const isTimeSlotOccupied = (
@@ -216,7 +222,7 @@ const filteredSchedules = useMemo(() => {
     let schedule;
 
     if (isDesktop && day) {
-      // For desktop: bruk fullSche0duleIndex med spesifikk dag
+      // For desktop: bruk fullScheduleIndex med spesifikk dag
       schedule = fullScheduleIndex[day]?.[room]?.[time];
     } else {
       // For mobil: bruk scheduleIndex (filtrert på selectedDay)
@@ -234,10 +240,10 @@ const filteredSchedules = useMemo(() => {
       schedule.substitute_instructor || schedule.dance_class?.instructor;
 
     // Kompakte høyder: desktop 48px, mobil 32px per slot
-const heightInPx = isDesktop
-  ? duration * 28 + (duration - 1) * 1 // h-7 = 28px ✅
-  : duration * 24 + (duration - 1) * 1; // h-6 = 24px (oppdater fra 20px)
-  
+    const heightInPx = isDesktop
+      ? duration * 28 + (duration - 1) * 1 // h-7 = 28px
+      : duration * 24 + (duration - 1) * 1; // h-6 = 24px
+      
     return (
       <motion.div
         key={schedule.$id}
@@ -331,87 +337,80 @@ const heightInPx = isDesktop
     <div className="min-h-screen bg-white dark:bg-surface-dark">
       <ScrollToTop />
 
-{/* Hero Section */}
-<section
-  className="bg-gradient-to-br from-brand-50/80 to-surface-muted 
-                      dark:from-brand-900/10 dark:to-surface-dark-muted 
-                      pt-24 pb-4 relative overflow-hidden"
->
-  <div className="absolute top-0 right-0 w-64 h-64 bg-magenta-400/10 rounded-full blur-3xl" />
-  <div className="absolute bottom-0 left-0 w-48 h-48 bg-brand-400/10 rounded-full blur-3xl" />
-
-  <div className="container mx-auto px-4 md:px-6 relative z-10">
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8 }}
-      className="text-center max-w-4xl mx-auto"
-    >
-      <h1
-        className="text-xl font-medium text-brand-600 dark:text-brand-400 
-                        uppercase tracking-wider mb-3"
-      >
-        Timeplan
-      </h1>
-      <h2 className="font-bebas font-semibold text-bebas-xl md:text-bebas-2xl mb-6 text-gray-900 dark:text-white">
-        Våre dansetimer
-      </h2>
-      <p className="text-lg text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed">
-        Se når dine favorittklasser går og finn den perfekte tiden for
-        deg.
-      </p>
-      
-      {/* Oppstart info med påmeldingsknapp */}
-      <div className="mt-8 space-y-4">
-        <div className="bg-magenta-100 dark:bg-magenta-900/20 text-magenta-600 dark:text-magenta-300 font-bold text-xl py-2 px-4 rounded-md border border-magenta-300 dark:border-magenta-700">
-          Oppstart 25. august!
-        </div>
-        
-        
-        {/* Påmeldingsseksjon */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-        >
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <p className="text-lg font-montserrat font-semibold text-gray-900 dark:text-white">
-                Klar for å melde deg på?
-              </p>
-              <p className="text-gray-600 dark:text-gray-300 font-montserrat">
-                Spondkode: <span className="font-bold text-magenta-600 dark:text-magenta-400 bg-magenta-50 dark:bg-magenta-900/30 px-2 py-1 rounded">COGZO</span>
-              </p>
+      {/* Desktop: Static Gradient Top Bar - Always visible */}
+      <div className="hidden lg:block">
+        <div className="bg-gradient-to-r from-brand-500/90 to-magenta-500/90 backdrop-blur text-white">
+          <div className="max-w-6xl mx-auto px-4 py-2 flex justify-between items-center">
+            <div className="flex items-center gap-3">
+              <Calendar className="h-4 w-4" />
+              <span className="text-sm font-medium font-montserrat">
+                Klar for å melde deg på? Spond-kode: <strong>COGZO</strong>
+              </span>
             </div>
-            
-            <Link to="/registration" className="inline-block w-full sm:w-auto">
-              <Button
-                className="w-full sm:w-auto font-montserrat font-semibold
-                           bg-brand-500 hover:bg-brand-600
-                          dark:bg-white dark:hover:bg-gray-50
-                          text-white dark:text-brand-600
-                          dark:hover:text-brand-700
-                          shadow-lg hover:shadow-xl transform active:scale-95
-                          transition-all duration-200 rounded-full px-8 py-3"
-              >
-                Meld deg på nå
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
+            <button 
+              onClick={handleSignUp}
+              className="bg-white/20 hover:bg-white/30 text-white font-medium py-1.5 px-4 rounded-full transition-colors text-sm font-montserrat"
+            >
+              Meld deg på
+            </button>
           </div>
-        <div className="uppercase text-brand-500 dark:text-brand-400 font-bold text-3xl mt-8 py-2 px-4 rounded-md">
-          Gratis prøveuker 35 og 36!
         </div>
-        </motion.div>
       </div>
-    </motion.div>
-  </div>
-</section>
+
+      {/* Mobile: Static Bottom Bar - Always visible */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 dark:bg-surface-dark/95 backdrop-blur border-t border-brand-200 dark:border-brand-700 shadow-xl">
+        <div className="px-4 py-3 flex justify-between items-center">
+          <div className="text-center flex-1">
+            <p className="text-xs text-gray-600 dark:text-gray-400 font-montserrat">Spond-kode</p>
+            <span className="text-sm font-bold text-brand-600 dark:text-brand-400 font-montserrat">COGZO</span>
+          </div>
+          <button 
+            onClick={handleSignUp}
+            className="bg-brand-500 hover:bg-brand-600 dark:bg-brand-600 dark:hover:bg-brand-700 text-white font-medium py-2 px-6 rounded-full transition-colors font-montserrat"
+          >
+            Meld deg på
+          </button>
+        </div>
+      </div>
+
+      {/* Hero Section */}
+      <section
+        className="bg-gradient-to-br from-brand-50/80 to-surface-muted 
+                          dark:from-brand-900/10 dark:to-surface-dark-muted 
+                          pt-24 pb-4 relative overflow-hidden"
+      >
+        <div className="absolute top-0 right-0 w-64 h-64 bg-magenta-400/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-brand-400/10 rounded-full blur-3xl" />
+
+        <div className="container mx-auto px-4 md:px-6 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-center max-w-4xl mx-auto"
+          >
+            <h1
+              className="text-xl font-medium text-brand-600 dark:text-brand-400 
+                            uppercase tracking-wider mb-3"
+            >
+              Timeplan
+            </h1>
+            <h2 className="font-bebas font-semibold text-bebas-xl md:text-bebas-2xl mb-6 text-gray-900 dark:text-white">
+              Våre dansetimer
+            </h2>
+            <p className="text-lg text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed">
+              Se når dine favorittklasser går og finn den perfekte tiden for
+              deg.
+            </p>
+          </motion.div>
+        </div>
+      </section>
 
       {/* Timeplan Section */}
       <section
         className="py-4 pb-8 px-4 bg-gradient-to-br from-brand-50/80 to-surface-muted 
-                         dark:from-brand-900/10 dark:to-surface-dark-muted"
+                         dark:from-brand-900/10 dark:to-surface-dark-muted
+                         lg:pb-8" /* Extra padding for mobile bottom bar */
       >
         <div className="container mx-auto px-4 md:px-6">
           {/* Controls */}
@@ -488,7 +487,7 @@ const heightInPx = isDesktop
                 ))}
               </div>
 
-                            {/* Room selector & Theme selector - Mobile version */}
+              {/* Room selector & Theme selector - Mobile version */}
               <div className="lg:hidden w-full max-w-sm space-y-4 mx-auto">
                 {/* Kurs selector - dropdown */}
                 <select
@@ -535,8 +534,6 @@ const heightInPx = isDesktop
           {/* Room Selector for Desktop */}
           <RoomSelector />
 
-
-
           {/* Schedule Grid */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -553,20 +550,20 @@ const heightInPx = isDesktop
                 </h3>
               </div>
 
-                <div className="schedule-grid grid grid-cols-[50px_1fr] gap-px bg-gray-200 dark:bg-gray-800"> {/* Endret fra 60px til 50px */}
-                  <div className="bg-gray-100 dark:bg-gray-700 font-montserrat font-medium text-center py-1 text-xs text-gray-700 dark:text-gray-200">
-                    Tid
-                  </div>
-                  <div className="bg-gray-100 dark:bg-gray-700 font-montserrat font-medium text-center py-1 text-xs text-gray-700 dark:text-gray-200">
-                    Klasse
-                  </div>
+              <div className="schedule-grid grid grid-cols-[50px_1fr] gap-px bg-gray-200 dark:bg-gray-800">
+                <div className="bg-gray-100 dark:bg-gray-700 font-montserrat font-medium text-center py-1 text-xs text-gray-700 dark:text-gray-200">
+                  Tid
+                </div>
+                <div className="bg-gray-100 dark:bg-gray-700 font-montserrat font-medium text-center py-1 text-xs text-gray-700 dark:text-gray-200">
+                  Klasse
+                </div>
 
                 {TIME_SLOTS.map((time) => (
                   <React.Fragment key={`mobile-${time}`}>
                     <div className="bg-gray-50 dark:bg-gray-600 text-xs text-center py-1 font-montserrat text-gray-600 dark:text-gray-300">
                       {time.substring(0, 5)}
                     </div>
-                    <div className="relative h-6 bg-white dark:bg-gray-900"> {/* Endret fra h-8 til h-5 */}
+                    <div className="relative h-6 bg-white dark:bg-gray-900">
                       {!isTimeSlotOccupied(selectedRoom, time) &&
                         renderSchedule(selectedRoom, time)}
                     </div>
@@ -649,7 +646,7 @@ const heightInPx = isDesktop
           </motion.div>
         </div>
         <div>
-                    {/* Download Schedule Component */}
+          {/* Download Schedule Component */}
           <div className="flex justify-center my-4">
             <Button
               onClick={() => {
