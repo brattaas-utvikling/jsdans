@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import ScrollToTop from "@/helpers/ScrollToTop";
-import { Download, Calendar, ArrowRight } from "lucide-react";
+import { Download, ArrowRight } from "lucide-react";
 import {
   fetchSchedulesWithClasses,
   getThemeFromClass,
@@ -340,13 +340,7 @@ export default function SchedualPage() {
       {/* Desktop: Static Gradient Top Bar - Always visible */}
       <div className="hidden lg:block">
         <div className="bg-gradient-to-r from-brand-500/90 to-magenta-500/90 backdrop-blur text-white">
-          <div className="max-w-6xl mx-auto px-4 py-2 flex justify-between items-center">
-            <div className="flex items-center gap-3">
-              <Calendar className="h-4 w-4" />
-              <span className="text-sm font-medium font-montserrat">
-                Klar for å melde deg på? Spond-kode: <strong>COGZO</strong>
-              </span>
-            </div>
+          <div className="max-w-6xl mx-auto px-4 py-2 flex justify-end items-center">
             <button 
               onClick={handleSignUp}
               className="bg-white/20 hover:bg-white/30 text-white font-medium py-1.5 px-4 rounded-full transition-colors text-sm font-montserrat"
@@ -358,12 +352,12 @@ export default function SchedualPage() {
       </div>
 
       {/* Mobile: Static Bottom Bar - Always visible */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 dark:bg-surface-dark/95 backdrop-blur border-t border-brand-200 dark:border-brand-700 shadow-xl">
-        <div className="px-4 py-3 flex justify-between items-center">
-          <div className="text-center flex-1">
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/10 dark:bg-surface-dark/10 backdrop-blur border-t border-brand-200 dark:border-brand-700 shadow-xl">
+        <div className="px-4 py-3 flex justify-center items-center">
+          {/* <div className="text-center flex-1">
             <p className="text-xs text-gray-600 dark:text-gray-400 font-montserrat">Spond-kode</p>
             <span className="text-sm font-bold text-brand-600 dark:text-brand-400 font-montserrat">COGZO</span>
-          </div>
+          </div> */}
           <button 
             onClick={handleSignUp}
             className="bg-brand-500 hover:bg-brand-600 dark:bg-brand-600 dark:hover:bg-brand-700 text-white font-medium py-2 px-6 rounded-full transition-colors font-montserrat"
@@ -402,6 +396,7 @@ export default function SchedualPage() {
               Se når dine favorittklasser går og finn den perfekte tiden for
               deg.
             </p>
+            <p className="mt-4 text-lg text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed">Når du er påmeldt kan du finne oss i spond: <span className="text-magenta-500 font-semibold">COGZO</span></p>
           </motion.div>
         </div>
       </section>
