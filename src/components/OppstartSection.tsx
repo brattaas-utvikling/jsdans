@@ -118,23 +118,25 @@ export default function OppstartSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: 0.5 }}
-              className="flex flex-col sm:flex-row gap-4"
+              className="flex flex-col sm:flex-row gap-4 align-middle items-center"
             >
-              <Link to="/registration">
-                <Button
-                  size="lg"
-                  className="bg-magenta-500 hover:bg-magenta-600
+<a 
+              href="mailto:kontakt@urbanstudios.no?subject=Påmelding til gratis prøvetime&body=Hei!%0A%0AJeg vil melde meg på gratis prøvetime!%0A%0ANår: (dato og klokka/hvilket kurs)%0A%0ANavn:%0AFødselsdato:%0ATelefon: (til foresatte hvis elev er under 16 år)%0AE-post: (til foresatte hvis elev er under 16 år)%0A%0AMvh%0A[foresattes/elevens navn]"
+              className="sm:w-auto inline-flex items-center justify-center gap-3
+                        bg-magenta-500 hover:bg-magenta-600
                             dark:bg-white dark:hover:bg-magenta-600/80
                             text-white dark:text-magenta-600
                             dark:hover:text-white/90
-                            font-semibold rounded-full px-8 py-4 text-lg
-                            shadow-brand-lg hover:shadow-brand-xl transition-all duration-300
-                            transform active:scale-[0.98]"
-                >
-                  Meld deg på her
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </Link>
+                        px-8 py-3 rounded-full font-semibold text-base
+                        shadow-brand-lg hover:shadow-brand-xl transition-all duration-200
+                        transform active:scale-[0.98]
+                        focus:ring-2 focus:ring-brand-500/30 focus:ring-offset-2
+                        no-underline"
+              aria-label="Send e-post for påmelding til prøvetime hos Urban Studios"
+            >
+              Meld deg på til prøvetime her!
+              <ArrowRight className="h-5 w-5" />
+            </a>
               <Link to="/timeplan">
                 <Button
                   size="lg"

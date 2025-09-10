@@ -16,6 +16,8 @@ import {
 } from "../services/scheduleServices";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { getTimeplanDownloadUrl } from "@/helpers/storageHelpers";
+
 
 export default function SchedualPage() {
   const [selectedDay, setSelectedDay] = useState("Mandag");
@@ -25,7 +27,37 @@ export default function SchedualPage() {
   const navigate = useNavigate();
   // Desktop sal-filter
   const [selectedRooms, setSelectedRooms] = useState<string[]>(STUDIO_ROOMS);
+  const [isDownloading, setIsDownloading] = useState<boolean>(false);
 
+  // Oppdatert download handler
+const handleDownloadTimeplan = async () => {
+  setIsDownloading(true);
+  try {
+    const downloadUrl = await getTimeplanDownloadUrl();
+    
+    // Opprett download link
+    const link = document.createElement("a");
+    link.href = downloadUrl;
+    link.download = "Urban-Studios-Timeplan.pdf";
+    link.target = "_blank";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+  } catch (error) {
+    console.error("Download feilet:", error);
+    
+    // Type-safe error handling
+    const errorMessage = error instanceof Error 
+      ? error.message 
+      : "Ukjent feil oppstod";
+    
+    alert(`Kunne ikke laste ned timeplanen: ${errorMessage}`);
+    
+  } finally {
+    setIsDownloading(false);
+  }
+};
 
   const [schedules, setSchedules] = useState<ScheduleWithClass[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -644,12 +676,8 @@ export default function SchedualPage() {
           {/* Download Schedule Component */}
           <div className="flex justify-center my-4">
             <Button
-              onClick={() => {
-                const link = document.createElement("a");
-                link.href = "/Urban-Studios-Timeplan.pdf";
-                link.download = "Urban-Studios-Timeplan.pdf";
-                link.click();
-              }}
+              onClick={handleDownloadTimeplan}
+              disabled={isDownloading}
               variant="outline"
               size="sm"
               className="font-montserrat font-medium rounded-full 
@@ -657,14 +685,24 @@ export default function SchedualPage() {
                         hover:bg-brand-50 hover:text-brand-700
                         dark:border-brand-700 dark:text-brand-400 
                         dark:hover:bg-brand-900/30 dark:hover:text-brand-300
-                        transition-all duration-200"
+                        transition-all duration-200
+                        disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <Download className="mr-2 h-4 w-4" />
-              Last ned timeplan
+              {isDownloading ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-brand-600 mr-2"></div>
+                  Laster ned...
+                </>
+              ) : (
+                <>
+                  <Download className="mr-2 h-4 w-4" />
+                  Last ned timeplan
+                </>
+              )}
             </Button>
           </div>
           <div className="text-center mt-6 text-gray-500 dark:text-gray-400 font-montserrat text-xs">
-            Timeplanen er oppdatert 02. september 2025. Forbehold om endringer.
+            Timeplanen er oppdatert 10. september 2025. Forbehold om endringer.
           </div>
         </div>
       </section>

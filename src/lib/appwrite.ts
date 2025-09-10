@@ -1,5 +1,5 @@
 // src/lib/appwrite.ts - Oppdatert for Appwrite v18
-import { Client, Databases, Account, Query } from "appwrite";
+import { Client, Databases, Account, Query, Storage } from "appwrite";
 
 // Initialize Appwrite client
 const client = new Client();
@@ -14,9 +14,11 @@ client
 // Initialize services
 export const account = new Account(client);
 export const databases = new Databases(client);
+export const storage = new Storage(client);
 
 // Database and Collection IDs
 export const DATABASE_ID = import.meta.env.VITE_DATABASE_ID || "main";
+export const BUCKET_ID = import.meta.env.VITE_BUCKET_ID;
 
 export const COLLECTIONS = {
   DANCE_CLASSES:
