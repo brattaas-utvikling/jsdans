@@ -121,7 +121,7 @@ export default function OppstartSection() {
               className="flex flex-col sm:flex-row gap-4 align-middle items-center"
             >
 <a 
-              href="mailto:kontakt@urbanstudios.no?subject=Påmelding til gratis prøvetime&body=Hei!%0A%0AJeg vil melde meg på gratis prøvetime!%0A%0ANår: (dato og klokka/hvilket kurs)%0A%0ANavn:%0AFødselsdato:%0ATelefon: (til foresatte hvis elev er under 16 år)%0AE-post: (til foresatte hvis elev er under 16 år)%0A%0AMvh%0A[foresattes/elevens navn]"
+              href="mailto:kontakt@urbanstudios.no?subject=Påmelding til gratis prøvetime&body=Når (dato)%0A%0AKurs (et eller flere)%0A%0ANavn%0AFødselsdato%0A%0AForesatt (registreres for alle under 18 år)%0ANavn%0ATelefon%0AE-post"
               className="sm:w-auto inline-flex items-center justify-center gap-3
                         bg-magenta-500 hover:bg-magenta-600
                             dark:bg-white dark:hover:bg-magenta-600/80
