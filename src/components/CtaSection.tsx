@@ -76,11 +76,11 @@ export default function CtaSection() {
             className="font-montserrat text-lg text-white/90 mb-8 max-w-xl"
             itemProp="description"
           >
-            Endelig kan vi dele dette vi har drømt om så lenge! Vi åpner dørene
-            for Urban Studios høsten 2025, et profesjonelt dansestudio hvor du
-            kan utforske forskjellige stilarter og utvikle deg innen scenisk
-            dansekunst. Enten du er nybegynner eller en mer erfaren danser, har
-            vi danseklasser som vil utfordre deg! <span className="text-magenta-400 dark:text-magenta-300 font-bold">Oppstart 25. august!</span>
+            Velkommen til Urban - Kongsvingers nyetablerte dansestudio i
+            Jernbanegata 16. Vi gir små og store dansere muligheten til å
+            utvikle ferdighetene sine i de klassiske dansestilene. Her tilbys
+            ukentlige klasser i ballett, jazz, moderne, show/musikal og hiphop
+            tilpasset elevens ferdigheter og nivåer.
           </motion.p>
 
           {/* CTA Buttons - forbedret z-index og touch-target */}
