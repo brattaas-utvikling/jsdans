@@ -112,9 +112,9 @@ export default function AutumnSemesterSection() {
                     {" "}og er perfekt for deg som har lyst til å danse for gøy, som ikke har så lang erfaring, som begynte «for sent», deg som aldri har danset før eller deg som vil friske opp gammel kunnskap. Det er ny koreografi annenhver uke.
                   </p>
                   <p className="text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed text-base">
-                  <span className="text-brand-600 dark:text-brand-400 font-medium">Åpne klasser</span> betales enten per gang, ved kjøp av klippekort eller ved påmelding for et helt semester av gangen (15 uker). Finn din favorittklasse i spond og husk å trykke «deltar» før du kommer!
+                  <span className="text-brand-600 dark:text-brand-400 font-medium">Åpne klasser</span> betales enten per gang, ved kjøp av klippekort eller ved påmelding for et helt semester av gangen (15 uker). Finn din favorittklasse i spond og husk å trykke «deltar» før du kommer!<span className="text-brand-600 dark:text-brand-400 font-medium">Gruppekode: COGZO.</span>
                   </p>
-                  <p className="text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed text-base"><span className="text-brand-600 dark:text-brand-400 font-medium">Gruppekode: COGZO.</span>{" "}Meld deg på til en gratis prøvetime ved å trykke på lenken under (eller send en e-post til kontakt@urbanstudios.no med navn, fødselsdato, telefonnummer). Du kan også registrere deg når du kommer.</p>
+                  <p className="text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed text-base">Meld deg på til en gratis prøvetime ved å trykke på lenken under (eller send en e-post til kontakt@urbanstudios.no med navn, fødselsdato, telefonnummer). Du kan også registrere deg når du kommer.</p>
                 </div>
               </div>
 
