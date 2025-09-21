@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
 import {
   Card,
   CardDescription,
@@ -387,12 +386,12 @@ export default function CarouselCard({
 
 
             {/* Booking Info - FIXED responsive spacing */}
-            <div
+            {/* <div
               className="bg-gradient-to-br from-brand-50/80 to-surface-muted 
                            dark:from-brand-900/10 dark:to-surface-dark-muted 
                            p-4 sm:p-6 rounded-xl border border-brand-100/50 dark:border-brand-700/30 relative overflow-hidden"
             >
-              {/* Decorative elements */}
+
               <div className="absolute top-0 right-0 w-32 h-32 bg-magenta-400/10 rounded-full blur-2xl" />
               <div className="absolute bottom-0 left-0 w-24 h-24 bg-brand-400/10 rounded-full blur-2xl" />
 
@@ -426,7 +425,7 @@ export default function CarouselCard({
                   </Link>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
 
           <DialogFooter className="mt-4 sm:mt-6">
