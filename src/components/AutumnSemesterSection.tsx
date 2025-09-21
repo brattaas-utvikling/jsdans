@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import {
   Calendar
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function AutumnSemesterSection() {
   return (
@@ -57,7 +58,7 @@ export default function AutumnSemesterSection() {
                   <div className="flex-grow"></div>
                   
                   <div className="bg-magenta-50 dark:bg-magenta-900/20 border border-magenta-200 dark:border-magenta-700 
-                                rounded-xl p-4 h-[120px] flex items-start gap-3">
+                                rounded-xl p-4 h-auto flex items-start gap-3">
                     <Calendar className="h-5 w-5 text-magenta-500 mt-1 flex-shrink-0" />
                     <div>
                       <p className="text-magenta-700 dark:text-magenta-300 font-montserrat text-sm leading-relaxed">
@@ -79,6 +80,7 @@ export default function AutumnSemesterSection() {
                 transition={{ duration: 0.4, delay: 0.5 }}
                 className="pt-4"
               >
+                <Link to="/timeplan" className="block w-full">
                 <Button
                   size="lg"
                   variant="outline"
@@ -92,6 +94,7 @@ export default function AutumnSemesterSection() {
                 >
                   Se timeplanen
                 </Button>
+                </Link>
               </motion.div>
             </motion.div>
 
