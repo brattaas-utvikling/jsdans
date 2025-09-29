@@ -165,9 +165,9 @@ body {
 }
 
 /* Smooth transition for glass morphism effect */
-.expo-slider .active-slide-content {
-  transition: opacity 0.5s ease-in-out;
-}
+/* .expo-slider .active-slide-content {
+  transition: opacity 0.3s ease-in-out;
+} */
 
 .expo-slider .swiper-pagination {
   bottom: 10px;
