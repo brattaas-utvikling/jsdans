@@ -59,6 +59,10 @@ export default function ConfirmationStep() {
     try {
       dispatch({ type: 'SET_SUBMITTING', payload: true });
       
+      if (!state.enrollmentData.termsAccepted) {
+        throw new Error("Du må bekrefte betingelser og vilkår før du kan sende inn påmeldingen.");
+      }
+      
       // Submit enrollment
       const id = await submitEnrollment(state.enrollmentData);
       

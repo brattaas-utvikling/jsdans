@@ -37,6 +37,8 @@ export interface EnrollmentData {
   // Søsken-relaterte felter
   hasSiblings: boolean;
   siblings: Sibling[];
+  termsAccepted: boolean;
+  termsAcceptedAt: string | null;
 }
 
 export interface EnrollmentErrors {
@@ -86,6 +88,7 @@ export type EnrollmentAction =
   | { type: 'SET_LOADING'; payload: boolean }
   | { type: 'SET_SUBMITTING'; payload: boolean }
   | { type: 'SET_AVAILABLE_COURSES'; payload: DanceClass[] }
+  | { type: 'SET_TERMS_ACCEPTED'; payload: { accepted: boolean; acceptedAt: string | null } }
   // Søsken actions
   | { type: 'SET_HAS_SIBLINGS'; payload: boolean }
   | { type: 'SET_SIBLINGS'; payload: Sibling[] }
@@ -142,6 +145,8 @@ export interface EnrollmentDocument {
     firstName: string;
     lastName: string;
   }>;
+  termsAccepted: boolean;
+  termsAcceptedAt?: string;
   submittedAt: string;
   status: 'pending' | 'confirmed' | 'paid' | 'cancelled';
 }

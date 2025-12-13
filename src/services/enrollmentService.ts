@@ -42,6 +42,10 @@ export interface FlatEnrollmentSubmission {
   pricing_vanligPrice: number;
   pricing_kompaniPrice: number;
   
+  // ✅ Terms
+  termsAccepted: boolean;
+  termsAcceptedAt: string | null;
+  
   // Metadata
   submittedAt: string;
   status: 'pending' | 'confirmed' | 'paid' | 'cancelled';
@@ -134,6 +138,14 @@ export class EnrollmentService {
         }
       }
 
+      if (!enrollmentData.termsAccepted) {
+        return {
+          success: false,
+          error: "Du må bekrefte betingelser og vilkår før du kan sende inn påmeldingen.",
+        };
+      }
+      
+
       // 2. Forbered data for Appwrite (med adressefelt)
       const flatEnrollmentDoc: FlatEnrollmentSubmission = {
         // Student fields
@@ -175,6 +187,9 @@ export class EnrollmentService {
         pricing_vanligPrice: enrollmentData.pricing.breakdown.vanligPrice,
         pricing_kompaniPrice: enrollmentData.pricing.breakdown.kompaniPrice,
         
+        termsAccepted: enrollmentData.termsAccepted,
+        termsAcceptedAt: enrollmentData.termsAcceptedAt,
+
         // Metadata
         submittedAt: new Date().toISOString(),
         status: 'pending',
@@ -255,6 +270,8 @@ export class EnrollmentService {
           hasSiblings: enrollmentData.hasSiblings,
           siblings: enrollmentData.siblings,
           pricing: enrollmentData.pricing,
+          termsAccepted: enrollmentData.termsAccepted,
+          termsAcceptedAt: enrollmentData.termsAcceptedAt,
         },
         documentId: String(documentId),
         timestamp: new Date().toISOString(),
