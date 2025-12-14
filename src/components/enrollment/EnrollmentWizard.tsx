@@ -173,7 +173,7 @@ export default function EnrollmentWizard() {
             </h1>
             <h2 className="font-bebas font-semibold text-bebas-2xl md:text-bebas-3xl mb-6 
                           text-transparent bg-clip-text bg-sunset-gradient py-2">
-              Åpent for påmelding!
+              Åpent for påmelding 2026!
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed mb-8">
               Meld deg på våre kurs i bare noen få enkle steg. Vi guider deg gjennom hele prosessen.
