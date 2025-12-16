@@ -37,12 +37,12 @@ export default function TermsModal({ open, onOpenChange }: TermsModalProps) {
 
         <DialogFooter className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
           <Button
-            className="w-full font-medium font-montserrat py-3 
+            className="w-full lg:w-1/2 mx-auto font-medium font-montserrat py-3 
                       bg-brand-500 hover:bg-brand-600 text-white 
                       transition-colors duration-200 rounded-full"
             onClick={() => onOpenChange(false)}
           >
-            Jeg forstår og aksepterer betingelsene
+            Lukk
           </Button>
         </DialogFooter>
       </DialogContent>
