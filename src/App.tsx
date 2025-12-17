@@ -11,7 +11,7 @@ import ClassesSection from "./pages/CoursesPage";
 // import RegistrationPage from "./pages/RegistrationPage";
 import TermsConditions from "./pages/TermsConditions";
 import NotFoundPage from "./pages/NotFoundPage";
-import SchedualPage from "./pages/SchedualPage";
+// import SchedualPage from "./pages/SchedualPage";
 import { EnrollmentProvider } from "./contexts/EnrollmentContext";
 import EnrollmentWizard from "./components/enrollment/EnrollmentWizard";
 
@@ -52,14 +52,14 @@ export default function App() {
             </Layout>
           }
         />
-        <Route
+        {/* <Route
           path="/timeplan"
           element={
             <Layout>
               <SchedualPage />
             </Layout>
           }
-        />
+        /> */}
         <Route
           path="/registration"
           element={
