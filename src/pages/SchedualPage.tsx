@@ -652,7 +652,7 @@ export default function SchedualPage() {
           </div>
 
           <div className="text-center mt-6 text-gray-500 dark:text-gray-400 font-montserrat text-xs">
-            Timeplanen er oppdatert 10. september 2025. Forbehold om endringer.
+            Timeplanen er oppdatert 18. desember 2025. Forbehold om endringer.
           </div>
         </div>
       </section>
