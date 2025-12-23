@@ -14,17 +14,19 @@ export default function CtaSection() {
     >
       {/* Background image med SEO-optimalisert alt-tekst */}
       <div className="absolute inset-0 z-0">
-        <img
-          src="https://fra.cloud.appwrite.io/v1/storage/buckets/6857bb630022ef965c25/files/6857bbd2001faadf46b6/view?project=6853fb68001e82047908&mode=admin"
-          alt="Dansestudio ved Urban Studios Kongsvinger - profesjonell danseopplæring for alle nivåer"
-          className="w-full h-full object-cover"
-          loading="eager"
-          fetchPriority="high"
-          width="1740"
-          height="600"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-black/30 dark:from-black/70 dark:to-black/40" />
-      </div>
+  <img
+    src="/images/studio.jpeg"
+    alt="Dansestudio ved Urban Studios Kongsvinger – profesjonell danseopplæring for alle nivåer"
+    className="w-full h-full object-cover"
+    loading="eager"
+    fetchPriority="high"
+    decoding="async"
+    width="1920"
+    height="1080"
+  />
+  <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-black/30 dark:from-black/70 dark:to-black/40" />
+</div>
+
 
       {/* Content - økt z-index for hele innholdsområdet */}
       <div className="container mx-auto px-4 md:px-6 relative z-20">
