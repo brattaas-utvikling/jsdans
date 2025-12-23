@@ -61,7 +61,13 @@ export default function SpringSemesterSection() {
               {/* Subtle overlay som i wizard */}
               <div className="absolute inset-0 bg-gradient-to-br from-brand-50/30 to-transparent dark:from-brand-900/10 dark:to-transparent pointer-events-none" />
               <div className="relative z-10">
-                <p className="text-gray-700 dark:text-gray-300 font-montserrat leading-relaxed text-base">
+              <h3 className="text-gray-900 dark:text-white font-montserrat text-sm sm:text-base font-semibold">
+                    Forestilling i Rådhusteateret 3. mai 2026
+                </h3>
+                <p className="mt-1 text-xs sm:text-sm text-gray-500 dark:text-gray-400 font-montserrat">
+  (med forbehold om endring)
+</p>
+                <p className="mt-4 text-gray-700 dark:text-gray-300 font-montserrat leading-relaxed text-base">
                   Urban tilbyr kveldsskole for{" "}
                   <span className="font-semibold text-gray-900 dark:text-white">3–19 år</span>{" "}
                   (mandag–fredag) og åpne klasser for voksne{" "}
@@ -141,14 +147,9 @@ export default function SpringSemesterSection() {
               {/* Subtle overlay */}
               <div className="absolute inset-0 bg-gradient-to-br from-brand-50/30 to-transparent dark:from-brand-900/10 dark:to-transparent pointer-events-none" />
               <div className="relative z-10 flex flex-col min-w-0">
-                <p className="text-gray-900 dark:text-white font-montserrat text-sm sm:text-base">
-                  <span className="font-semibold">
-                    Forestilling i Rådhusteateret 3. mai 2026
-                  </span>{" "}
-                  <span className="text-gray-600 dark:text-gray-400">(med forbehold om endring)</span>
-                </p>
 
-                <div className="mt-4 overflow-hidden rounded-2xl border border-brand-100/60 dark:border-brand-700/30 bg-white dark:bg-surface-dark">
+
+                <div className="overflow-hidden rounded-2xl border border-brand-100/60 dark:border-brand-700/30 bg-white dark:bg-surface-dark">
                   <div className="relative aspect-[16/9]">
                     <img
                       src="https://fra.cloud.appwrite.io/v1/storage/buckets/6857bb630022ef965c25/files/694a40c5002317f44bf0/view?project=6853fb68001e82047908&mode=admin"
@@ -171,6 +172,7 @@ export default function SpringSemesterSection() {
                   <p className="mt-1 font-montserrat text-lg font-semibold text-magenta-700 dark:text-magenta-300 tracking-wide">
                     COGZO
                   </p>
+                  <p className="mt-2 font-montserrat text-sm font-normal text-gray-700 dark:text-gray-300 ">Eleven legges til i sine klasser etter påmelding og betaling</p>
                 </div>
 
                 {/* CTA: alltid 3 på lg */}
