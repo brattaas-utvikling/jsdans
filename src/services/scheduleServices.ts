@@ -37,10 +37,36 @@ export interface ScheduleWithClass extends Schedule {
   dance_class: DanceClass;
 }
 
-// Tema mapping basert på kurs type/navn
+// OPPDATERT: Tema mapping basert på kurs type/navn med riktige Tailwind farger
 export const getThemeFromClass = (danceClass: DanceClass): string => {
   const name = danceClass.name.toLowerCase();
 
+  // Ballett (pink)
+  if (name.includes("ballett") || name.includes("ballet")) {
+    return "Ballett";
+  }
+
+  // Barneballett (cyan)
+  if (
+    name.includes("barneballett") ||
+    name.includes("barnedans") ||
+    danceClass.age.includes("2-4") ||
+    danceClass.age.includes("5-6")
+  ) {
+    return "Toddler";
+  }
+
+  // Contemporary kids (emerald)
+  if (name.includes("contemporary kids") || name.includes("contemporary") && name.includes("kids")) {
+    return "Moderne";
+  }
+
+  // Forkurs tåsiss (pink)
+  if (name.includes("forkurs") && (name.includes("tåspiss") || name.includes("taaspiss"))) {
+    return "Tåspiss"; // Bruker Tåspiss tema som også er pink
+  }
+
+  // Hip hop (orange)
   if (
     name.includes("hiphop") ||
     name.includes("hip hop") ||
@@ -48,55 +74,73 @@ export const getThemeFromClass = (danceClass: DanceClass): string => {
   ) {
     return "Hiphop";
   }
+
+  // Jazz (purple)
   if (name.includes("jazz") && !name.includes("show")) {
     return "Jazz";
   }
-  if (name.includes("ballett") || name.includes("ballet")) {
-    return "Ballett";
-  }
-  if (name.includes("tåspiss") || name.includes("taaspiss")) {
-    return "Tåspiss";
-  }
-  if (name.includes("moderne") || name.includes("contemporary")) {
+
+  // Moderne (emerald)
+  if (name.includes("moderne")) {
     return "Moderne";
   }
+
+  // Show/Musikal (red)
   if (
     name.includes("show") ||
-    name.includes("musikal") ||
-    name.includes("kompani")
+    name.includes("musikal")
   ) {
     return "Show";
   }
+
+  // Streetstyle boys (orange) - samme som hip hop
+  if (name.includes("streetstyle") || name.includes("street style")) {
+    return "Hiphop"; // Bruker Hiphop tema som også er orange
+  }
+
+  // Styrke og tøy (yellow)
   if (name.includes("styrke") || name.includes("tøy")) {
     return "Styrke";
   }
-  if (
-    name.includes("barnedans") ||
-    name.includes("barneballett") ||
-    danceClass.age.includes("2-4") ||
-    danceClass.age.includes("5-6")
-  ) {
-    return "Toddler";
+
+  // Urban aspirant (gray)
+  if (name.includes("urban aspirant") || name.includes("aspirant")) {
+    return "UrbanAspirant";
   }
 
-  // Fallback basert på farge
+  // Urban kompani (gray)
+  if (name.includes("kompani")) {
+    return "UrbanKompani";
+  }
+
+  // Yoga (yellow)
+  if (name.includes("yoga")) {
+    return "Yoga";
+  }
+
+  // Tåspiss (pink)
+  if (name.includes("tåspiss") || name.includes("taaspiss")) {
+    return "Tåspiss";
+  }
+
+  // Fallback basert på farge hvis navn ikke matcher
   switch (danceClass.color?.toLowerCase()) {
+    case "pink":
+      return "Ballett";
+    case "cyan":
+      return "Toddler";
+    case "emerald":
+      return "Moderne";
     case "orange":
       return "Hiphop";
     case "purple":
       return "Jazz";
-    case "rose":
-      return "Ballett";
-    case "emerald":
-      return "Moderne";
     case "red":
       return "Show";
-    case "slate":
+    case "yellow":
       return "Styrke";
-    case "cyan":
-      return "Toddler";
-    case "fuchsia":
-      return "Tåspiss";
+    case "gray":
+      return "UrbanAspirant";
     default:
       return "Hiphop";
   }
@@ -173,7 +217,7 @@ export const fetchSchedulesByTheme = async (
   );
 };
 
-// OPPDATERT: Helper: Get schedule duration in time slots (15 min slots)
+// Helper: Get schedule duration in time slots (15 min slots)
 export const getScheduleDuration = (schedule: Schedule): number => {
   const startMinutes = timeToMinutes(schedule.start_time);
   const endMinutes = timeToMinutes(schedule.end_time);
@@ -195,7 +239,7 @@ const timeToMinutes = (timeString: string): number => {
 export const STUDIO_ROOMS = ["Sal 1", "Sal 2"];
 export const DAYS_OF_WEEK = ["Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag"];
 
-// OPPDATERT: TIME_SLOTS med 15-minutters intervaller
+// TIME_SLOTS med 15-minutters intervaller
 export const TIME_SLOTS = [
   "15:30",
   "16:00",
@@ -223,7 +267,7 @@ export const TIME_SLOTS = [
   "21:30",
 ];
 
-// Tema-farger - Oppdatert til å matche ClassCard
+
 export const THEMES = {
   Hiphop: {
     color: "bg-orange-50 dark:bg-orange-700",
@@ -236,9 +280,14 @@ export const THEMES = {
     borderColor: "border-purple-200 dark:border-purple-800",
   },
   Ballett: {
-    color: "bg-rose-50 dark:bg-rose-700",
-    textColor: "text-rose-800 dark:text-rose-200",
-    borderColor: "border-rose-200 dark:border-rose-800",
+    color: "bg-pink-50 dark:bg-pink-700",
+    textColor: "text-pink-800 dark:text-pink-200",
+    borderColor: "border-pink-200 dark:border-pink-800",
+  },
+  Tåspiss: {
+    color: "bg-pink-50 dark:bg-pink-700",
+    textColor: "text-pink-800 dark:text-pink-200",
+    borderColor: "border-pink-200 dark:border-pink-800",
   },
   Moderne: {
     color: "bg-emerald-50 dark:bg-emerald-700",
@@ -251,19 +300,29 @@ export const THEMES = {
     borderColor: "border-red-200 dark:border-red-800",
   },
   Styrke: {
-    color: "bg-slate-50 dark:bg-slate-700",
-    textColor: "text-slate-800 dark:text-slate-200",
-    borderColor: "border-slate-200 dark:border-slate-800",
+    color: "bg-yellow-50 dark:bg-yellow-700",
+    textColor: "text-yellow-800 dark:text-yellow-200",
+    borderColor: "border-yellow-200 dark:border-yellow-800",
+  },
+  Yoga: {
+    color: "bg-yellow-50 dark:bg-yellow-700",
+    textColor: "text-yellow-800 dark:text-yellow-200",
+    borderColor: "border-yellow-200 dark:border-yellow-800",
   },
   Toddler: {
     color: "bg-cyan-50 dark:bg-cyan-700",
     textColor: "text-cyan-800 dark:text-cyan-200",
     borderColor: "border-cyan-200 dark:border-cyan-800",
   },
-  Tåspiss: {
-    color: "bg-fuchsia-50 dark:bg-fuchsia-700",
-    textColor: "text-fuchsia-800 dark:text-fuchsia-200",
-    borderColor: "border-fuchsia-200 dark:border-fuchsia-800",
+  UrbanAspirant: {
+    color: "bg-gray-50 dark:bg-gray-700",
+    textColor: "text-gray-800 dark:text-gray-200",
+    borderColor: "border-gray-200 dark:border-gray-800",
+  },
+  UrbanKompani: {
+    color: "bg-gray-50 dark:bg-gray-700",
+    textColor: "text-gray-800 dark:text-gray-200",
+    borderColor: "border-gray-200 dark:border-gray-800",
   },
 };
 

@@ -143,3 +143,69 @@ body {
     font-weight: 700;
   }
 }
+/* src/styles/print.css */ /* src/styles/print.css */
+
+@media print {
+  /* Fjern browser header/footer */
+  @page {
+    size: landscape;
+    margin: 0.4cm;
+  }
+
+  /* Skjul alt */
+  body * {
+    visibility: hidden !important;
+  }
+
+  /* Vis KUN print-komponenten */
+  #printable-schedule,
+  #printable-schedule * {
+    visibility: visible !important;
+  }
+
+  /* Posisjonering */
+  #printable-schedule {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+  }
+
+  /* Behold farger */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Unngå sideskift */
+  .schedule-block {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Lett skalering for å passe på 1 side */
+  #printable-schedule {
+    transform: scale(0.96);
+    transform-origin: top left;
+  }
+
+  /* Lett redusert cell height */
+  #printable-schedule .h-7 {
+    height: 26px !important;
+  }
+
+  /* Lett redusert padding */
+  #printable-schedule .p-4 {
+    padding: 0.75rem !important;
+  }
+
+  #printable-schedule .py-3 {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+  }
+
+  #printable-schedule .py-1\.5 {
+    padding-top: 0.25rem !important;
+    padding-bottom: 0.25rem !important;
+  }
+}

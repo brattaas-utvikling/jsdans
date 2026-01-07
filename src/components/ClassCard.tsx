@@ -516,46 +516,110 @@ export default function ClassCard({
             </div>
 
             {/* Booking Info - FIXED responsive spacing */}
-            <div
-              className="bg-gradient-to-br from-brand-50/80 to-surface-muted 
-                           dark:from-brand-900/10 dark:to-surface-dark-muted 
-                           p-4 sm:p-6 rounded-xl border border-brand-100/50 dark:border-brand-700/30 relative overflow-hidden"
-            >
-              {/* Decorative elements */}
-              <div className="absolute top-0 right-0 w-32 h-32 bg-magenta-400/10 rounded-full blur-2xl" />
-              <div className="absolute bottom-0 left-0 w-24 h-24 bg-brand-400/10 rounded-full blur-2xl" />
-
-              <div className="relative z-10">
-                <h4 className="font-bebas text-base sm:text-lg mb-2 text-gray-900 dark:text-white">
-                  Klar for å begynne?
-                </h4>
-                <p className="text-gray-600 dark:text-gray-300 mb-4 font-montserrat text-sm sm:text-base">
-                  Bli med på en prøvetime og opplev gleden ved dans. I uke 35 og
-                  36 kan du prøve så mange klasser du vil helt gratis. Ingen
-                  påmelding nødvendig. Timeplanen kommer snart!
-                </p>
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <Link to="/registration" className="flex-1">
-                    <Button
-                      className="w-full font-semibold bg-brand-500 hover:bg-brand-600
-                                     dark:bg-white dark:hover:bg-brand-600/80
-                                     text-white dark:text-brand-600
-                                     dark:hover:text-white/90 transition-all duration-200 text-sm sm:text-base"
-                    >
-                      Påmelding
-                    </Button>
-                  </Link>
-                  <Link to="/kontakt" className="flex-1">
-                    <Button
-                      className="w-full font-medium bg-transparent border-2 border-brand-300 text-brand-600 hover:bg-brand-50 hover:text-brand-600
-                                     dark:border-brand-700 dark:text-brand-400 dark:hover:bg-brand-900/30 dark:hover:text-brand-400 text-sm sm:text-base"
-                    >
-                      Kontakt oss
-                    </Button>
-                  </Link>
+            {/* Quick Actions - Simplified and intuitive */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+              {/* Påmelding Card */}
+              <Link to="/registration" className="group">
+                <div
+                  className="relative p-4 sm:p-5 rounded-xl border-2 border-brand-200 dark:border-brand-700/50 
+                             bg-gradient-to-br from-brand-50 to-brand-100/50 
+                             dark:from-brand-900/20 dark:to-brand-950/40
+                             hover:border-brand-400 dark:hover:border-brand-500
+                             hover:shadow-lg transition-all duration-300 overflow-hidden"
+                >
+                  {/* Decorative gradient */}
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-brand-400/10 rounded-full blur-2xl" />
+                  
+                  <div className="relative z-10">
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="p-2 rounded-lg bg-brand-500/10 dark:bg-brand-400/20">
+                        <Calendar className="h-5 w-5 text-brand-600 dark:text-brand-400" />
+                      </div>
+                      <svg 
+                        className="h-5 w-5 text-brand-400 dark:text-brand-500 transform group-hover:translate-x-1 transition-transform" 
+                        fill="none" 
+                        viewBox="0 0 24 24" 
+                        stroke="currentColor"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
+                    
+                    <h4 className="font-bebas text-lg sm:text-xl text-gray-900 dark:text-white mb-1">
+                      Meld deg på
+                    </h4>
+                    <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 font-montserrat">
+                      Sikre plassen din i klassen
+                    </p>
+                  </div>
                 </div>
-              </div>
+              </Link>
+
+              {/* Kontakt Card */}
+              <Link to="/kontakt" className="group">
+                <div
+                  className="relative p-4 sm:p-5 rounded-xl border-2 border-gray-200 dark:border-gray-700/50 
+                             bg-gradient-to-br from-gray-50 to-gray-100/50 
+                             dark:from-gray-900/20 dark:to-gray-950/40
+                             hover:border-gray-400 dark:hover:border-gray-500
+                             hover:shadow-lg transition-all duration-300 overflow-hidden"
+                >
+                  {/* Decorative gradient */}
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-gray-400/10 rounded-full blur-2xl" />
+                  
+                  <div className="relative z-10">
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="p-2 rounded-lg bg-gray-500/10 dark:bg-gray-400/20">
+                        <User className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+                      </div>
+                      <svg 
+                        className="h-5 w-5 text-gray-400 dark:text-gray-500 transform group-hover:translate-x-1 transition-transform" 
+                        fill="none" 
+                        viewBox="0 0 24 24" 
+                        stroke="currentColor"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
+                    
+                    <h4 className="font-bebas text-lg sm:text-xl text-gray-900 dark:text-white mb-1">
+                      Spørsmål?
+                    </h4>
+                    <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 font-montserrat">
+                      Ta kontakt med oss
+                    </p>
+                  </div>
+                </div>
+              </Link>
             </div>
+
+            {/* Free trial email link banner */}
+            {/* <div className="flex items-center gap-3 p-3 sm:p-4">
+              <div className="p-1.5 flex-shrink-0">
+                <Heart className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+              </div>
+              <div className="flex-1">
+                <p className="text-xs sm:text-sm font-montserrat text-emerald-800 dark:text-emerald-200">
+                  <a
+                    href="mailto:kontakt@urbanstudios.no?subject=Påmelding til gratis prøvetime (Vår 2026)&body=Navn%0AFødselsdato%0ATelefon%0AE-post%0A%0AØnsket klasse(r)%0APreferert tid"
+                    className="inline-flex items-center gap-1.5 font-semibold text-emerald-700 dark:text-emerald-300 hover:text-emerald-900 dark:hover:text-emerald-100 transition-colors underline decoration-emerald-400/50 hover:decoration-emerald-600 underline-offset-2"
+                    aria-label="Send e-post for påmelding til gratis prøvetime"
+                  >
+                    Gratis prøvetime!
+                    <svg 
+                      className="h-3.5 w-3.5 flex-shrink-0" 
+                      fill="none" 
+                      viewBox="0 0 24 24" 
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </a>
+                  
+                </p>
+              </div>
+            </div> */}
           </div>
 
           <DialogFooter className="mt-4 sm:mt-6">
