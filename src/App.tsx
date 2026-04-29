@@ -13,7 +13,8 @@ import TermsConditions from "./pages/TermsConditions";
 import NotFoundPage from "./pages/NotFoundPage";
 import SchedualPage from "./pages/SchedualPage";
 import { EnrollmentProvider } from "./contexts/EnrollmentContext";
-import EnrollmentWizard from "./components/enrollment/EnrollmentWizard";
+// import EnrollmentWizard from "./components/enrollment/EnrollmentWizard";
+import SommerkursPage from "./pages/SommerkursPage";
 
 export default function App() {
   return (
@@ -60,14 +61,21 @@ export default function App() {
             </Layout>
           }
         />
-        <Route
+        <Route path="/sommerkurs"
+        element={
+            <Layout>
+              <SommerkursPage />
+            </Layout>
+            } 
+        />
+        {/* <Route
           path="/registration"
           element={
             <Layout>
               <EnrollmentWizard />
             </Layout>
           }
-        />
+        /> */}
         <Route
           path="/priser"
           element={

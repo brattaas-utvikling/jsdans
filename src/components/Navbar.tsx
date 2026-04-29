@@ -48,9 +48,10 @@ export default function Navbar() {
     () => [
       { label: "Hjem", href: "/" },
       { label: "Om oss", href: "/om-oss" },
+      { label: "Sommerkurs", href: "/sommerkurs" },
       { label: "Kurs", href: "/kurs" },
       { label: "Timeplan", href: "/timeplan" },
-      { label: "Påmelding", href: "/registration" },
+      // { label: "Påmelding", href: "/registration" },
       { label: "Pris", href: "/priser" },
       { label: "Nyheter", href: "/nyheter" },
     ],

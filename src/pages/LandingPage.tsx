@@ -4,6 +4,7 @@ import CtaSection from "@/components/CtaSection";
 // import HeroSection from "@/components/HeroSection";
 import HomepageNews from "@/components/HomePageNews";
 import SpringSemesterSection from "@/components/SpringSemesterSection";
+import SummerSection from "@/components/SummerSection";
 
 
 import ScrollToTop from "@/helpers/ScrollToTop";
@@ -13,6 +14,7 @@ export default function LandingPage() {
     <>
       <ScrollToTop />
       <CtaSection />
+      <SummerSection />
       <SpringSemesterSection />
       <CoursesCarousel />
       <HomepageNews />

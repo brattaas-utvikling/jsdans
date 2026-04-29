@@ -78,11 +78,7 @@ export default function CtaSection() {
             className="font-montserrat text-lg text-white/90 mb-8 max-w-xl"
             itemProp="description"
           >
-            Velkommen til Urban - Kongsvingers nyetablerte dansestudio i
-            Jernbanegata 16. Vi gir små og store dansere muligheten til å
-            utvikle ferdighetene sine i de klassiske dansestilene. Her tilbys
-            ukentlige klasser i ballett, jazz, moderne, show/musikal og hiphop
-            tilpasset elevens ferdigheter og nivåer.
+Velkommen til Urban - Kongsvingers nyetablerte dansestudio i Jernbanegata 16. Vi gir små og store dansere muligheten til å utvikle ferdighetene sine i de klassiske dansestilene. Her tilbys ukentlige klasser i ballett, jazz, moderne, show/musikal og hiphop tilpasset elevens ferdigheter og nivåer. 
           </motion.p>
 
           {/* CTA Buttons - forbedret z-index og touch-target */}
