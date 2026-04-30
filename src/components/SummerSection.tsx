@@ -1,20 +1,7 @@
+import { downloadPdf } from "@/helpers/downloadPdf";
 import { motion } from "framer-motion";
 import { ArrowRight, Download, ExternalLink, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
-async function downloadPdf(url: string, filename: string) {
-  try {
-    const response = await fetch(url);
-    const blob = await response.blob();
-    const blobUrl = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = blobUrl;
-    link.download = filename;
-    link.click();
-    URL.revokeObjectURL(blobUrl);
-  } catch (err) {
-    console.error("Nedlasting feilet:", err);
-  }
-}
 
 export default function SummerSection() {
   return (
@@ -53,7 +40,7 @@ export default function SummerSection() {
               leading-tight text-center mb-8 uppercase
             "
           >
-            FORESTILLING OG SOMMERKURS 2026
+          Vårsemesteret er snart over...
           </motion.h2>
 
           {/* Grid */}
@@ -66,6 +53,7 @@ export default function SummerSection() {
               viewport={{ once: true }}
               transition={{ duration: 0.55, delay: 0.1 }}
               className="
+              order-last lg:order-first
                 rounded-2xl
                 bg-white dark:bg-surface-dark
                 shadow-brand-lg
@@ -131,6 +119,7 @@ export default function SummerSection() {
               viewport={{ once: true }}
               transition={{ duration: 0.55, delay: 0.2 }}
               className="
+                order-first lg:order-last
                 rounded-2xl
                 bg-white dark:bg-surface-dark
                 shadow-brand-lg
@@ -165,8 +154,8 @@ export default function SummerSection() {
                     {/* Last ned PDF */}
                   <button
                     onClick={() => downloadPdf(
-                      "https://fra.cloud.appwrite.io/v1/storage/buckets/68c1ddbf000312c6515e/files/timeplan-sommerkurs-2026/view?project=6853fb68001e82047908&mode=admin",
-                      "sommerkurs-timeplan-2026.pdf"
+                      "https://fra.cloud.appwrite.io/v1/storage/buckets/68c1ddbf000312c6515e/files/timeplan-sommerkurs2026/view?project=6853fb68001e82047908&mode=admin",
+                      "sommerkurs-timeplan2026.pdf"
                     )}
                     className="
                       inline-flex items-center justify-center gap-2

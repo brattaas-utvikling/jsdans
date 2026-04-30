@@ -3,21 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Mail, CreditCard, Download, ChevronDown, Calendar } from "lucide-react";
 import { Link } from "react-router-dom";
 import ScrollToTop from "@/helpers/ScrollToTop";
+import { downloadPdf } from "@/helpers/downloadPdf";
 
-async function downloadPdf(url: string, filename: string) {
-  try {
-    const response = await fetch(url);
-    const blob = await response.blob();
-    const blobUrl = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = blobUrl;
-    link.download = filename;
-    link.click();
-    URL.revokeObjectURL(blobUrl);
-  } catch (err) {
-    console.error("Nedlasting feilet:", err);
-  }
-}
 
 const KLASSER = [
   {
@@ -180,14 +167,67 @@ export default function SommerkursPage() {
         </div>
       </section>
 
+
+                      {/* ── TIMEPLAN ─────────────────────────────────────────── */}
+                      <section className="py-16 bg-white dark:bg-surface-dark relative overflow-hidden">
+                        <div className="absolute top-4 right-4 w-32 h-32 bg-brand-400/10 rounded-full blur-3xl" />
+                        <div className="absolute bottom-4 left-4 w-32 h-32 bg-magenta-400/10 rounded-full blur-3xl" />
+                        <div className="container mx-auto px-4 md:px-6 relative z-10">
+                          <div className="max-w-4xl mx-auto">
+                            <motion.h2
+                              initial={{ opacity: 0, y: 18 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              viewport={{ once: true }}
+                              transition={{ duration: 0.5 }}
+                              className="font-bebas text-bebas-xl md:text-bebas-2xl lg:text-bebas-3xl text-gray-900 dark:text-white leading-tight text-center mb-8 uppercase"
+                            >
+                              TIMEPLAN
+                            </motion.h2>
+                            <motion.div
+                              initial={{ opacity: 0, y: 20 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              viewport={{ once: true }}
+                              transition={{ duration: 0.55, delay: 0.1 }}
+                              className="rounded-2xl bg-white dark:bg-surface-dark shadow-brand-lg border border-brand-100/50 dark:border-brand-700/30 overflow-hidden relative"
+                            >
+                              <div className="absolute inset-0 bg-gradient-to-br from-brand-50/30 to-transparent dark:from-brand-900/10 dark:to-transparent pointer-events-none" />
+                              <div className="relative aspect-[16/9] sm:aspect-[2/1]">
+                                <img
+                                  src="/images/timeplan-sommerkurs-2026.jpg"
+                                  alt="Timeplan for 5-ukers sommerkurs ved Urban Studios 2026"
+                                  loading="lazy"
+                                  className="absolute inset-0 h-full w-full object-cover object-top"
+                                  width={1200}
+                                  height={600}
+                                />
+                              </div>
+                              <div className="relative z-10 px-6 py-4 flex items-center justify-between flex-wrap gap-3">
+                                <p className="text-sm text-gray-500 dark:text-gray-400 font-montserrat">
+                                  Last ned timeplanen for å skrive ut eller dele
+                                </p>
+                                <button
+                                  onClick={() =>
+                                    downloadPdf(
+                                      "https://fra.cloud.appwrite.io/v1/storage/buckets/68c1ddbf000312c6515e/files/timeplan-sommerkurs2026/view?project=6853fb68001e82047908&mode=admin",
+                                      "sommerkurs-timeplan-2026.pdf"
+                                    )
+                                  }
+                                  className="inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold min-h-[44px] border border-brand-200 dark:border-brand-700/50 text-gray-900 dark:text-white cursor-pointer hover:bg-brand-50 dark:hover:bg-brand-900/20 transition-all duration-200 active:scale-[0.98] focus:ring-2 focus:ring-brand-500/30 focus:ring-offset-2"
+                                >
+                                  TIMEPLAN
+                                  <Download className="h-3.5 w-3.5 text-brand-500" />
+                                </button>
+                              </div>
+                            </motion.div>
+                          </div>
+                        </div>
+                      </section>
       {/* ── PÅMELDING + BETALING — editorial, ingen kort ─────── */}
       <section className="py-16 bg-gradient-to-br from-brand-50/80 to-surface-muted dark:from-brand-900/10 dark:to-surface-dark-muted relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-magenta-400/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-brand-400/10 rounded-full blur-3xl pointer-events-none" />
-
         <div className="container mx-auto px-4 md:px-6 relative z-10">
           <div className="max-w-4xl mx-auto">
-
             {/* To kolonner med vertikal divider på desktop */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-0 md:divide-x md:divide-brand-200/50 dark:md:divide-brand-700/30">
 
@@ -304,60 +344,6 @@ export default function SommerkursPage() {
         </div>
       </section>
 
-      {/* ── TIMEPLAN ─────────────────────────────────────────── */}
-      <section className="py-16 bg-white dark:bg-surface-dark relative overflow-hidden">
-        <div className="absolute top-4 right-4 w-32 h-32 bg-brand-400/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-4 left-4 w-32 h-32 bg-magenta-400/10 rounded-full blur-3xl" />
-        <div className="container mx-auto px-4 md:px-6 relative z-10">
-          <div className="max-w-4xl mx-auto">
-            <motion.h2
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="font-bebas text-bebas-xl md:text-bebas-2xl lg:text-bebas-3xl text-gray-900 dark:text-white leading-tight text-center mb-8 uppercase"
-            >
-              TIMEPLAN
-            </motion.h2>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.55, delay: 0.1 }}
-              className="rounded-2xl bg-white dark:bg-surface-dark shadow-brand-lg border border-brand-100/50 dark:border-brand-700/30 overflow-hidden relative"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-brand-50/30 to-transparent dark:from-brand-900/10 dark:to-transparent pointer-events-none" />
-              <div className="relative aspect-[16/9] sm:aspect-[2/1]">
-                <img
-                  src="https://fra.cloud.appwrite.io/v1/storage/buckets/6857bb630022ef965c25/files/timeplan-sommerkurs-2026/view?project=6853fb68001e82047908&mode=admin"
-                  alt="Timeplan for 5-ukers sommerkurs ved Urban Studios 2026"
-                  loading="lazy"
-                  className="absolute inset-0 h-full w-full object-cover object-top"
-                  width={1200}
-                  height={600}
-                />
-              </div>
-              <div className="relative z-10 px-6 py-4 flex items-center justify-between flex-wrap gap-3">
-                <p className="text-sm text-gray-500 dark:text-gray-400 font-montserrat">
-                  Last ned timeplanen for å skrive ut eller dele
-                </p>
-                <button
-                  onClick={() =>
-                    downloadPdf(
-                      "https://fra.cloud.appwrite.io/v1/storage/buckets/68c1ddbf000312c6515e/files/timeplan-sommerkurs-2026/view?project=6853fb68001e82047908&mode=admin",
-                      "sommerkurs-timeplan-2026.pdf"
-                    )
-                  }
-                  className="inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold min-h-[44px] border border-brand-200 dark:border-brand-700/50 text-gray-900 dark:text-white cursor-pointer hover:bg-brand-50 dark:hover:bg-brand-900/20 transition-all duration-200 active:scale-[0.98] focus:ring-2 focus:ring-brand-500/30 focus:ring-offset-2"
-                >
-                  TIMEPLAN
-                  <Download className="h-3.5 w-3.5 text-brand-500" />
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
 
       {/* ── NYE KLASSER ──────────────────────────────────────── */}
       <section className="py-16 bg-gradient-to-br from-brand-50/80 to-surface-muted dark:from-brand-900/10 dark:to-surface-dark-muted relative overflow-hidden">
