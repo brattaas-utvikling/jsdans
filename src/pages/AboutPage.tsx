@@ -351,10 +351,9 @@ export default function AboutPage() {
               <div className="space-y-3">
                 {[
                   "Ingrid Fløiten Nordli",
-                  "Espen Kamøy Furuseth", 
-                  "Eileen Grethe Oplenskedal Hokaasen",
-                  "Tone Fredheim",
-                  "Petra Noer Sæthre"
+                  "Petra Noer Sæthre",
+                  "Fredrik Petrov",
+                  "Tone Fredheim"
                 ].map((member, index) => (
                   <motion.div
                     key={member}

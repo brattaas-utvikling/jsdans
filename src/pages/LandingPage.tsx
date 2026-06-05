@@ -3,6 +3,7 @@ import CtaSection from "@/components/CtaSection";
 
 // import HeroSection from "@/components/HeroSection";
 import HomepageNews from "@/components/HomePageNews";
+import { KompaniAuditionh26 } from "@/components/KompaniAuditionh26";
 import SpringSemesterSection from "@/components/SpringSemesterSection";
 import SummerSection from "@/components/SummerSection";
 
@@ -14,6 +15,7 @@ export default function LandingPage() {
     <>
       <ScrollToTop />
       <CtaSection />
+      <KompaniAuditionh26 />
       <SummerSection />
       <SpringSemesterSection />
       <CoursesCarousel />
