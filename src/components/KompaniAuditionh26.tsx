@@ -1,5 +1,4 @@
 import { motion, useReducedMotion } from "framer-motion";
-import { Button } from "@/components/ui/button";
 import { ArrowRight, Mail } from "lucide-react";
 
 // Bytt ut med faktisk bildeimport eller prop når du har auditonsbildet
