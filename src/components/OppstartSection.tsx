@@ -65,7 +65,7 @@ export default function OppstartSection() {
                 transition={{ duration: 0.4, delay: 0.3 }}
                 className="text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed"
               >I disse ukene kan du teste ut dine favorittklasser uten å forplikte deg! 
-                Prøv alt fra Hip Hop til Moderne dans, og opplev energien i vårt studio.
+                Prøv alt fra Hip Hop til Moderne dans, og opplev energien i våre studio.
               </motion.p>
             </div>
 
