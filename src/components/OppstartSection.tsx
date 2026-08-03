@@ -40,7 +40,7 @@ export default function OppstartSection() {
               transition={{ duration: 0.5, delay: 0.1 }}
               className="font-bebas text-bebas-2xl md:text-bebas-3xl lg:text-bebas-4xl text-gray-900 dark:text-white leading-tight"
             >
-              OPPSTART MANDAG 25. AUGUST!
+              OPPSTART MANDAG 24. AUGUST!
             </motion.h2>
 
             {/* Main content */}
@@ -65,7 +65,7 @@ export default function OppstartSection() {
                 transition={{ duration: 0.4, delay: 0.3 }}
                 className="text-gray-600 dark:text-gray-300 font-montserrat leading-relaxed"
               >I disse ukene kan du teste ut dine favorittklasser uten å forplikte deg! 
-                Prøv alt fra Hip Hop til Moderne dans, og opplev energien i vårt splitter nye studio.
+                Prøv alt fra Hip Hop til Moderne dans, og opplev energien i vårt studio.
               </motion.p>
             </div>
 
@@ -92,7 +92,7 @@ export default function OppstartSection() {
                 <div className="flex items-center gap-3">
                   <Calendar className="h-5 w-5 text-magenta-500 flex-shrink-0" />
                   <span className="font-montserrat text-gray-700 dark:text-gray-300">
-                    <strong>Mandag 25. august</strong>
+                    <strong>Mandag 24. august</strong>
                   </span>
                 </div>
 
