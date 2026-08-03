@@ -39,6 +39,8 @@ export interface EnrollmentData {
   siblings: Sibling[];
   termsAccepted: boolean;
   termsAcceptedAt: string | null;
+  // Fritekst fra bruker til studio (valgfritt)
+  comment: string;
 }
 
 export interface EnrollmentErrors {
@@ -89,6 +91,7 @@ export type EnrollmentAction =
   | { type: 'SET_SUBMITTING'; payload: boolean }
   | { type: 'SET_AVAILABLE_COURSES'; payload: DanceClass[] }
   | { type: 'SET_TERMS_ACCEPTED'; payload: { accepted: boolean; acceptedAt: string | null } }
+  | { type: 'SET_COMMENT'; payload: string }
   // Søsken actions
   | { type: 'SET_HAS_SIBLINGS'; payload: boolean }
   | { type: 'SET_SIBLINGS'; payload: Sibling[] }

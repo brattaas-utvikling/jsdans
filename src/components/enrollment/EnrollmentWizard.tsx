@@ -46,6 +46,9 @@ export default function EnrollmentWizard() {
           availableFromYear: course.availableFromYear,
           type: course.type,
           studio: course.studio,
+          // ✅ VIKTIG: schedule må bli med — ellers mister e-post og database
+          // dag/klokkeslett for kursene (coursesService beriker med denne).
+          schedule: course.schedule,
         }));
 
         dispatch({ type: 'SET_AVAILABLE_COURSES', payload: formattedCourses });

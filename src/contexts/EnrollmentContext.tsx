@@ -47,6 +47,7 @@ const initialState: EnrollmentState = {
     // ✅ NYTT: Betingelser
     termsAccepted: false,
     termsAcceptedAt: null,
+    comment: "",
   },
   errors: {},
   isLoading: false,
@@ -130,6 +131,16 @@ function enrollmentReducer(state: EnrollmentState, action: EnrollmentAction): En
       return {
         ...state,
         availableCourses: action.payload,
+      }
+
+    // Fritekst-kommentar til studio
+    case "SET_COMMENT":
+      return {
+        ...state,
+        enrollmentData: {
+          ...state.enrollmentData,
+          comment: action.payload,
+        },
       }
 
     // ✅ NYTT: Terms acceptance
@@ -245,6 +256,7 @@ interface EnrollmentContextType {
 
   // ✅ NYTT: Terms convenience method
   setTermsAccepted: (accepted: boolean) => void
+  setComment: (comment: string) => void
 
   // Søsken convenience methods
   setSiblingsEnabled: (enabled: boolean) => void
@@ -375,6 +387,10 @@ export function EnrollmentProvider({ children }: EnrollmentProviderProps) {
   }, [])
 
   // ✅ NYTT: Terms setter
+  const setComment = useCallback((comment: string) => {
+    dispatch({ type: "SET_COMMENT", payload: comment })
+  }, [])
+
   const setTermsAccepted = useCallback((accepted: boolean) => {
     dispatch({
       type: "SET_TERMS_ACCEPTED",
@@ -521,6 +537,7 @@ export function EnrollmentProvider({ children }: EnrollmentProviderProps) {
     resetEnrollment,
 
     setTermsAccepted,
+    setComment,
 
     setSiblingsEnabled,
     setSiblings,

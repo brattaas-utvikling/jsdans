@@ -112,7 +112,7 @@ export default function SummaryStep() {
 
   const showMissingBox = missingItems.length > 0
 
-  const seasonLabel = "Våren 2026"
+  const seasonLabel = "Høsten 2026"
 
   return (
     <div className="px-2 py-4 md:p-12">
@@ -199,6 +199,60 @@ export default function SummaryStep() {
           </div>
         </motion.div>
 
+        {/* Melding til studio (hvis skrevet) */}
+        {state.enrollmentData.comment.trim() && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
+            className="bg-white dark:bg-surface-dark p-6 rounded-xl border border-brand-100/60 dark:border-brand-700/30"
+          >
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="font-bebas text-bebas-base text-gray-900 dark:text-white">
+                Din melding til oss
+              </h3>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => handleEditSection("contact")}
+                className="font-montserrat text-brand-600 dark:text-brand-400"
+              >
+                Endre
+              </Button>
+            </div>
+            <p className="whitespace-pre-wrap font-montserrat text-gray-700 dark:text-gray-300">
+              {state.enrollmentData.comment}
+            </p>
+          </motion.div>
+        )}
+
+        {/* Søskenpåminnelse — vises KUN når ingen søsken er lagt inn */}
+        {!state.enrollmentData.hasSiblings && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.15, ease: "easeOut" }}
+            className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-purple-200/60 dark:border-purple-700/40 bg-purple-50/50 dark:bg-purple-900/15 px-4 py-3"
+          >
+            <p className="text-sm font-montserrat text-gray-700 dark:text-gray-300">
+              Skal søsken også meldes på? Legg dem til for å få{" "}
+              <span className="font-semibold text-purple-700 dark:text-purple-300">
+                familierabatt
+              </span>
+              .
+            </p>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => handleEditSection("contact")}
+              className="font-montserrat border-purple-300 text-purple-700 hover:bg-purple-100 dark:border-purple-700 dark:text-purple-300"
+            >
+              Legg til søsken
+            </Button>
+          </motion.div>
+        )}
+
         {/* Søsken (hvis finnes) */}
         {state.enrollmentData.hasSiblings && state.enrollmentData.siblings.length > 0 && (
           <motion.div
@@ -247,7 +301,7 @@ export default function SummaryStep() {
           </motion.div>
         )}
 
-        {/* Kontaktperson (✅ inkl adresse) */}
+        {/* Kontaktperson/foresatt (✅ inkl adresse) */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -258,7 +312,7 @@ export default function SummaryStep() {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
               <Users className="h-5 w-5 text-magenta-600 dark:text-magenta-400" />
-              <h3 className="font-bebas text-bebas-base text-gray-900 dark:text-white">Kontaktperson</h3>
+              <h3 className="font-bebas text-bebas-base text-gray-900 dark:text-white">Foresatt</h3>
             </div>
             <Button
               variant="ghost"

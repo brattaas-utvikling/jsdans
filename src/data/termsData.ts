@@ -17,31 +17,31 @@ export const termsData = [
       icon: AlertTriangleIcon,
       title: "Bindende påmelding",
       content:
-        "Etter andre kursuke er påmeldingen bindende og man må betale den totale kursavgiften. Kjøpsavtalen er underlagt norsk lov. Ved langvarig sykdom (mer enn 4 uker) kan det søkes om å få en del av semesteravgiften refundert. Man må da fremlegge legeerklæring for sykdom, og søknaden sendes per mail til ingrid@urbanstudios.no.",
+        "Påmelding skjer via skjema på nettsiden til studioet, og er bindende fra skjema er sendt inn. Kjøpsavtalen er underlagt norsk lov. Etter påmelding vil kontaktpersonen motta mail med bekreftelse på at påmeldingen er registrert, deretter får man svar om plass på ønskede kurs samt faktura for kursavgiften som må betales innen fristen og før oppmøte i første ordinære klasse etter prøveukene. Avmelding må sendes til ingrid@urbanstudios.no  innen kl.16 fredag i den siste prøveuken. Ved langvarig sykdom (mer enn 4 uker) kan det søkes om å få en del av semesteravgiften refundert. Man må da fremlegge legeerklæring for sykdom, og søknaden sendes per mail til ingrid@urbanstudios.no.",
+    },
+    {
+      icon: GraduationCap,
+      title: "Undervisningsåret",
+      content:
+        "Vår undervisning er basert på nivåinndeling og vi forbeholder oss retten til å plassere eleven i riktig klasse basert på elevens nivå ved semesterstart/etter prøvetime. Eleven kan få tilbud om å gå opp et nivå underveis i semesteret etter instruktørens anbefaling. Urban Studios følger skoleruten og holder stengt i ferier, men holder åpnet for undervisning på andre røde dager med mindre annet er spesifisert. Semesteret avsluttes med en visning/forestilling og billettkostnader kommer utenom semesteravgiften. Vi tar forbehold om evt feil og endringer.",
     },
     {
       icon: MessageCircle,
       title: "Spond",
       content:
-        "Urban Studios bruker Spond for kommunikasjon mellom instruktører og elever/foresatte.",
-    },
-    {
-      icon: GraduationCap,
-      title: "Undervisning",
-      content:
-        "Vår undervisning er basert på nivåinndeling og vi forbeholder oss retten til å plassere eleven i riktig klasse basert på elevens nivå ved semesterstart/etter prøvetime. Eleven kan få tilbud om å gå opp et nivå underveis i semesteret etter instruktørens anbefaling. Urban Studios følger skoleruten og holder stengt i ferier, men holder åpnet for undervisning på andre røde dager med mindre annet er spesifisert. Semesteret avsluttes med en visning/forestilling og billettkostnader kommer utenom semesteravgiften. Vi tar forbehold om evt feil og endringer.",
+        "Urban Studios bruker Spond for kommunikasjon mellom instruktører og elever/foresatte. Elever og foresatte plikter å holde seg oppdatert på informasjonen som deles her, samt svare på om man kommer til timer og annet i sine respektive klasser.",
     },
     {
       icon: CalendarOffIcon,
       title: "Avlysning av timer",
       content:
-        "Det kan forekomme avlysning av timer på grunn av sykdom eller andre årsaker, dette informeres om i Spond. Dette kompenseres ikke med redusert semesteravgift, men om mulig vil disse timene bli tatt igjen ved en senere anledning.",
+        "Det kan forekomme avlysning av timer f.eks. på grunn av sykdom hos instruktør eller hvis det er for få deltakere; dette informeres om i Spond. Dette kompenseres ikke med redusert semesteravgift, men om mulig vil disse timene bli tatt igjen ved en senere anledning. Ved sykdom er det alltid forsøkt å finne vikar før timen blir avlyst.",
     },
     {
       icon: UsersIcon,
       title: "Nedlegging av kurs",
       content:
-        "Urban Studios forbeholder seg retten til å legge ned timer der det er 5 eller færre betalende påmeldte elever, i løpet av de 4 første ukene av kursperioden. Elevene som er påmeldte til kurs som legges ned vil hvis mulig overføres til annet tilsvarende kurs. Ved nedleggelse av hele kurs vil resterende semesteravgift for det aktuelle kurset bli refundert.",
+        "Urban Studios forbeholder seg retten til å legge ned kurs der det er 5 eller færre påmeldte elever i løpet av de 4 første ukene av kursperioden. Elevene som er påmeldte til kurs som legges ned vil få tilbud om å overføres til et annet tilsvarende kurs. Ved nedleggelse av kurs vil resterende semesteravgift for det aktuelle kurset bli refundert.",
     },
     {
       icon: ShieldIcon,

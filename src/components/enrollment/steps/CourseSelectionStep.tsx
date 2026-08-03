@@ -170,7 +170,7 @@ export default function CourseSelectionStep() {
       case 'kompani':
         return { label: 'Kompani', color: 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-200' };
       case 'vanlig':
-        return { label: '15 uker vår', color: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-200' };
+        return { label: '15 uker høst', color: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-200' };
       default:
         return { label: 'Ukjent', color: 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-200' };
     }
@@ -304,9 +304,6 @@ export default function CourseSelectionStep() {
         <p className="text-gray-600 dark:text-gray-300 font-montserrat mb-2">
           Velg de kursene <span className="font-bold text-brand-600 dark:text-brand-400">{state.enrollmentData.student.firstName}</span> ønsker å delta på
         </p>
-          <p className="text-sm text-brand-600 dark:text-brand-400 font-montserrat mt-1">
-            NB! Hvis du har familiemedlem og kan oppnå "familierabatt", vennligst legg inn navn på søsken i <span className="font-semibold">"Kontaktinformasjon - steget"</span>.
-          </p>
 
       </motion.div>
 

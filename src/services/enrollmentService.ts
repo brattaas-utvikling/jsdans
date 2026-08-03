@@ -45,6 +45,9 @@ export interface FlatEnrollmentSubmission {
   // ✅ Terms
   termsAccepted: boolean;
   termsAcceptedAt: string | null;
+
+  // Fritekst fra bruker
+  comment: string;
   
   // Metadata
   submittedAt: string;
@@ -94,6 +97,7 @@ export interface EnrollmentRecord {
       kompaniPrice: number;
     };
   };
+  comment: string;
   submittedAt: string;
   status: 'pending' | 'confirmed' | 'paid' | 'cancelled';
 }
@@ -190,6 +194,9 @@ export class EnrollmentService {
         termsAccepted: enrollmentData.termsAccepted,
         termsAcceptedAt: enrollmentData.termsAcceptedAt,
 
+        // Fritekst til studio (trimmet, maks 1000 tegn)
+        comment: (enrollmentData.comment || '').trim().slice(0, 1000),
+
         // Metadata
         submittedAt: new Date().toISOString(),
         status: 'pending',
@@ -272,6 +279,7 @@ export class EnrollmentService {
           pricing: enrollmentData.pricing,
           termsAccepted: enrollmentData.termsAccepted,
           termsAcceptedAt: enrollmentData.termsAcceptedAt,
+          comment: (enrollmentData.comment || '').trim().slice(0, 1000),
         },
         documentId: String(documentId),
         timestamp: new Date().toISOString(),
@@ -292,9 +300,10 @@ export class EnrollmentService {
       // });
 
       // Execute function
-      await functions.createExecution('send-enrollment-email', payloadString);
-
-      // console.log('📧 E-post notifikasjon sendt via Appwrite Function');
+      // async = true: Appwrite køer jobben og svarer umiddelbart.
+      // Uten dette holdes nettleseren åpen gjennom to SMTP-sendinger, og
+      // e-posten kan gå tapt hvis brukeren navigerer bort.
+      await functions.createExecution('send-enrollment-email', payloadString, true);
       
     } catch (error: unknown) {
       // Silently fail - don't break enrollment submission
@@ -429,6 +438,7 @@ export class EnrollmentService {
             kompaniPrice: doc.pricing_kompaniPrice as number,
           },
         },
+        comment: (doc.comment as string) || '',
         submittedAt: doc.submittedAt as string,
         status: doc.status as 'pending' | 'confirmed' | 'paid' | 'cancelled',
       }));

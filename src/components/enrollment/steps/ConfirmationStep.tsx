@@ -87,9 +87,12 @@ export default function ConfirmationStep() {
   };
 
   const handleRetry = () => {
+    // FIKS: tidligere satte denne bare state til 'idle'. useEffect har tom
+    // dependency-liste og kjørte aldri på nytt → komponenten falt gjennom til
+    // `return null` og brukeren fikk blank skjerm. Nå kalles innsendingen direkte.
     setError('');
-    setSubmissionState('idle');
-    submissionAttempted.current = false; // Reset for retry
+    submissionAttempted.current = true;
+    handleSubmission();
   };
 
   const handleNewEnrollment = () => {
@@ -250,37 +253,59 @@ export default function ConfirmationStep() {
                   <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 mt-0.5" />
                   <div>
                     <p className="font-montserrat font-medium text-gray-900 dark:text-white">
-                      Påmeldingen er lagret
+                      Påmeldingen er registrert
                     </p>
                     <p className="text-sm text-gray-600 dark:text-gray-300 font-montserrat">
-                      Referanse: {enrollmentId.slice(-8).toUpperCase()}
+                      Referanse:{' '}
+                      <span className="font-semibold tracking-wider text-brand-600 dark:text-brand-400">
+                        {enrollmentId.slice(-8).toUpperCase()}
+                      </span>
                     </p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start gap-3">
                   <Mail className="h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5" />
                   <div>
                     <p className="font-montserrat font-medium text-gray-900 dark:text-white">
-                      E-post sendt til studio
+                      Bekreftelse sendt på e-post
                     </p>
                     <p className="text-sm text-gray-600 dark:text-gray-300 font-montserrat">
-                      Vi har mottatt påmeldingen din og tar kontakt snart
+                      Sjekk{' '}
+                      <span className="font-medium break-all">
+                        {state.enrollmentData.guardian.email}
+                      </span>
+                      . Ser du den ikke innen noen minutter, sjekk søppelpost.
                     </p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start gap-3">
                   <CheckCircle className="h-5 w-5 text-purple-600 dark:text-purple-400 mt-0.5" />
                   <div>
                     <p className="font-montserrat font-medium text-gray-900 dark:text-white">
-                      Bekreftelse kommer
+                      Videre prosess
                     </p>
                     <p className="text-sm text-gray-600 dark:text-gray-300 font-montserrat">
-                      Du vil få en e-post med betalingsinformasjon og kursdetaljer
+                      <span className="font-bold">Påmeldingen er bindende.</span>{' '}
+                      Du vil nå motta en automatisk mail med bekreftelse på
+                      registrering, deretter får du svar om plass på kurs i egen
+                      mail og påfølgende faktura.
                     </p>
                   </div>
                 </div>
+              </div>
+
+              {/* Spond-påminnelse */}
+              <div className="mt-5 pt-4 border-t border-green-200/60 dark:border-green-700/30 text-left">
+                <p className="text-sm text-gray-600 dark:text-gray-300 font-montserrat">
+                  Mens du venter kan du laste ned{' '}
+                  <span className="font-semibold">Spond</span> og finne oss med
+                  gruppekoordinator{' '}
+                  <span className="font-mono font-bold tracking-widest text-brand-600 dark:text-brand-400">
+                    COGZO
+                  </span>
+                </p>
               </div>
             </div>
           </motion.div>

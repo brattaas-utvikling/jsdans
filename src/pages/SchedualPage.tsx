@@ -275,7 +275,7 @@ const PrintableSchedule = () => {
     >
       <div className="bg-brand-50 p-4 border-b border-brand-200">
         <h3 className="font-bebas text-lg font-semibold text-center text-gray-900">
-          Urban Studios - Timeplan Vår 2026
+          Urban Studios - Timeplan høst 2026
         </h3>
       </div>
 
@@ -750,7 +750,7 @@ const PrintableSchedule = () => {
           </div>
 
           <div className="text-center mt-6 text-gray-500 dark:text-gray-400 font-montserrat text-xs">
-            Timeplanen er oppdatert 4. januar 2026. Forbehold om endringer.
+            Timeplanen er oppdatert 02. August 2026. Forbehold om endringer.
           </div>
         </div>
       </section>

@@ -16,6 +16,7 @@ import {
   MapPin,
   Home,
   FileText,
+  MessageSquare,
 } from "lucide-react";
 import { useEnrollment } from "@/contexts/EnrollmentContext";
 import ScrollToTop from "@/helpers/ScrollToTop";
@@ -40,6 +41,8 @@ interface ValidationErrors {
   };
 }
 
+const MAX_COMMENT_LENGTH = 1000;
+
 export default function ContactInfoStep() {
   const {
     state,
@@ -47,6 +50,7 @@ export default function ContactInfoStep() {
     setGuardianData,
     goToNextStep,
     validateCurrentStep,
+    setComment,
     dispatch,
   } = useEnrollment();
 
@@ -673,6 +677,44 @@ export default function ContactInfoStep() {
           )}
         </motion.div>
 
+        {/* Melding til studio (valgfritt) */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.15 }}
+          className="bg-gradient-to-br from-brand-50/50 to-coral-50/30
+                     dark:from-brand-900/20 dark:to-coral-900/10
+                     px-3 py-6 rounded-xl border border-brand-100/50 dark:border-brand-700/30"
+        >
+          <div className="flex items-center gap-3 mb-2">
+            <MessageSquare className="h-5 w-5 text-brand-600 dark:text-brand-400" />
+            <h3 className="font-bebas text-bebas-base text-gray-900 dark:text-white">
+              Melding til studio
+            </h3>
+          </div>
+          <p className="text-sm text-gray-600 dark:text-gray-300 font-montserrat mb-3">
+            Har du noe vi bør vite? For eksempel tilgodehavende fra forrige
+            semester, allergier, eller ønske om spesiell klasse. (Valgfritt)
+          </p>
+          <label htmlFor="enrollment-comment" className="sr-only">
+            Melding til studio
+          </label>
+          <textarea
+            id="enrollment-comment"
+            value={state.enrollmentData.comment}
+            onChange={(e) => setComment(e.target.value.slice(0, MAX_COMMENT_LENGTH))}
+            rows={4}
+            maxLength={MAX_COMMENT_LENGTH}
+            placeholder="Skriv her hvis du har en beskjed til oss …"
+            className="w-full px-4 py-3 rounded-lg border border-brand-200 dark:border-brand-700/40
+                       bg-white dark:bg-surface-dark font-montserrat text-gray-900 dark:text-white
+                       focus:ring-2 focus:ring-brand-500 focus:border-transparent resize-y"
+          />
+          <p className="mt-1 text-right text-xs font-montserrat text-gray-500 dark:text-gray-400">
+            {state.enrollmentData.comment.length}/{MAX_COMMENT_LENGTH}
+          </p>
+        </motion.div>
+
         {/* Guardian Information */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -684,9 +726,14 @@ export default function ContactInfoStep() {
         >
           <div className="flex items-center gap-3 mb-4">
             <UserCheck className="h-5 w-5 text-magenta-600 dark:text-magenta-400" />
-            <h3 className="font-bebas text-bebas-base text-gray-900 dark:text-white">
-              Kontaktperson
-            </h3>
+            <div>
+              <h3 className="font-bebas text-bebas-base text-gray-900 dark:text-white">
+                Foresatt
+              </h3>
+              <p className="text-xs font-montserrat text-gray-500 dark:text-gray-400">
+                Foresatt — eller deg selv hvis du er over 18
+              </p>
+            </div>
           </div>
 
           <div className="space-y-4">

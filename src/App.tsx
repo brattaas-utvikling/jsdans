@@ -11,11 +11,11 @@ import ClassesSection from "./pages/CoursesPage";
 // import RegistrationPage from "./pages/RegistrationPage";
 import TermsConditions from "./pages/TermsConditions";
 import NotFoundPage from "./pages/NotFoundPage";
-// import SchedualPage from "./pages/SchedualPage";
+import SchedualPage from "./pages/SchedualPage";
 import { EnrollmentProvider } from "./contexts/EnrollmentContext";
-// import EnrollmentWizard from "./components/enrollment/EnrollmentWizard";
+import EnrollmentWizard from "./components/enrollment/EnrollmentWizard";
 import SommerkursPage from "./pages/SommerkursPage";
-import { KommerSnart } from "./components/KommerSnart";
+// import { KommerSnart } from "./components/KommerSnart";
 
 export default function App() {
   return (
@@ -58,8 +58,8 @@ export default function App() {
           path="/timeplan"
           element={
             <Layout>
-              {/* <SchedualPage /> */}
-              <KommerSnart />
+              <SchedualPage />
+              {/* <KommerSnart /> */}
             </Layout>
           }
         />
@@ -70,14 +70,14 @@ export default function App() {
             </Layout>
             } 
         />
-        {/* <Route
+        <Route
           path="/registration"
           element={
             <Layout>
               <EnrollmentWizard />
             </Layout>
           }
-        /> */}
+        />
         <Route
           path="/priser"
           element={
