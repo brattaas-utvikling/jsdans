@@ -693,8 +693,7 @@ export default function ContactInfoStep() {
             </h3>
           </div>
           <p className="text-sm text-gray-600 dark:text-gray-300 font-montserrat mb-3">
-            Har du noe vi bør vite? For eksempel tilgodehavende fra forrige
-            semester, allergier, eller ønske om spesiell klasse. (Valgfritt)
+            Har du noe vi bør vite?
           </p>
           <label htmlFor="enrollment-comment" className="sr-only">
             Melding til studio
