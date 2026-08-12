@@ -287,7 +287,7 @@ export default function ConfirmationStep() {
                       Videre prosess
                     </p>
                     <p className="text-sm text-gray-600 dark:text-gray-300 font-montserrat">
-                      <span className="font-bold">Påmeldingen er bindende.</span>{' '}
+                      <span className="font-bold">Påmeldingen er bindende når du får tildelt plass på kurs.</span>{' '}
                       Du vil nå motta en automatisk mail med bekreftelse på
                       registrering, deretter får du svar om plass på kurs i egen
                       mail og påfølgende faktura.
@@ -301,7 +301,7 @@ export default function ConfirmationStep() {
                 <p className="text-sm text-gray-600 dark:text-gray-300 font-montserrat">
                   Mens du venter kan du laste ned{' '}
                   <span className="font-semibold">Spond</span> og finne oss med
-                  gruppekoordinator{' '}
+                  gruppekode{' '}
                   <span className="font-mono font-bold tracking-widest text-brand-600 dark:text-brand-400">
                     COGZO
                   </span>

@@ -5,18 +5,6 @@ import { GraduationCap } from "lucide-react";
 const instructors = [
   {
     id: 1,
-    name: "Fredrik Petrov",
-    age: 32,
-    location: "Kongsvinger",
-    image: "https://fra.cloud.appwrite.io/v1/storage/buckets/6857bb630022ef965c25/files/698c79bc0022e632da65/view?project=6853fb68001e82047908&mode=admin",
-    education: "Bachelor i samtidsdans ved Kunsthøgskolen i Oslo (KHiO)",
-    description: "Fredrik Petrov er 32 år og har vokst opp i Kongsvinger. Han danset på Jump frem til han begynte på danselinjen ved Fagerborg vgs i Oslo (skolen er i dag lagt ned og linjen videreføres på Edvard Munch vgs). Han gikk videre med en bachelorgrad i samtidsdans ved KIhO (2016) og har siden jobbet bredt og tverrfaglig i det norske scenekunstfeltet, både som danser, skuespiller og skapende kunstner. Som koreograf og utøver står han bak kritikerroste forestillinger, kjent for et uttrykk som kombinerer fysisk presisjon, rå energi og tydelig form.",
-    description2: "I undervisningen har Fredrik et sterkt teknisk fokus, samtidig som han legger stor vekt på fellesskap, trygghet og tilhørighet i rommet. Klassene er dynamiske, levende og utforskende – med rom for både hard jobbing, nysgjerrighet og personlig uttrykk. Fredrik skal undervise i Hiphop 3 Girly og Moderne 3, samt lede Kompaniet denne våren.",
-    bgColor: "from-brand-50 to-coral-50",
-    bgColorDark: "dark:from-brand-900/20 dark:to-coral-900/20"
-  },
-  {
-    id: 2,
     name: "Iselin Nybak",
     age: 24,
     location: "",
@@ -28,7 +16,7 @@ const instructors = [
     bgColorDark: "dark:from-magenta-900/20 dark:to-brand-900/20"
   },
   {
-    id: 3,
+    id: 2,
     name: "Wiktor Matulewicz",
     age: 23,
     location: "Kongsvinger",
@@ -39,44 +27,9 @@ const instructors = [
     bgColor: "from-coral-50 to-magenta-50",
     bgColorDark: "dark:from-coral-900/20 dark:to-magenta-900/20"
   },
+
   {
-    id: 4,
-    name: "Olga Etkalo",
-    age: 37,
-    location: "Ukraina → Kongsvinger",
-    image: "https://fra.cloud.appwrite.io/v1/storage/buckets/6857bb630022ef965c25/files/68926c2c000225fd1871/view?project=6853fb68001e82047908&mode=admin",
-    education: "Utdannet danser, koreograf og pedagog ved Kharkiv State Academy of Culture",
-    description: "Olga Etkalo er 37 år og utdannet danser, koreograf og pedagog ved Kharkiv State Academy of Culture i Ukraina. Hun har nå etablert seg i Kongsvinger med sine to barn. Hun har stor kapasitet og har mange visjoner for kreativ dans.",
-    description2: "Olga underviser i Ballett 2 og Forkurs for tåspiss, samt Ballett for 2.-5. trinn.",
-    bgColor: "from-brand-50 to-coral-50",
-    bgColorDark: "dark:from-brand-900/20 dark:to-coral-900/20"
-  },
-  {
-    id: 5,
-    name: "Emma Vangen",
-    age: 17,
-    location: "Kongsvinger",
-    image: "https://fra.cloud.appwrite.io/v1/storage/buckets/6857bb630022ef965c25/files/68926c45003ba94e5466/view?project=6853fb68001e82047908&mode=admin",
-    education: "Studiespesialierende ved Øvrebyen vgs",
-    description: "Emma Vangen er 17 år og går i VG3 ved Øvrebyen vgs. Emma har danset siden hun var 3 år gammel, og i løpet av 14 år har hun danset flere ulike sjangere, alt fra ballett til hiphop til heels. Hun har jobbet som assistent på ulike klasser, og etter at hun sluttet å danse selv har hun undervist Hiphop på Victory Dance.",
-    description2: "Emma underviser i Hiphop Commercial nivå 2 og Hiphop Girly Ungdom dette semesteret, i tillegg har hun Styrke/tøy på mandagskvelden som er verdt å få med seg om man vil bli en sterk og smidig danser!",
-    bgColor: "from-coral-50 to-magenta-50",
-    bgColorDark: "dark:from-coral-900/20 dark:to-magenta-900/20"
-  },
-  {
-    id: 6,
-    name: "Alma Sidenia Kamøy Furuseth",
-    age: 18,
-    location: "Kongsvinger",
-    image: "https://fra.cloud.appwrite.io/v1/storage/buckets/6857bb630022ef965c25/files/68926c6e00320f6a91ce/view?project=6853fb68001e82047908&mode=admin",
-    education: "Studiespesialierende ved Øvrebyen vgs",
-    description: "Alma Sidenia Kamøy Furuseth er 18 år gammel og går i VG3 ved Øvrebyen vgs. Med to foreldre som begge er utdannede dansere, har dansing vært en stor del av livet siden Alma var liten. Hun har danset mange sjangre, med fokus på basefagene ballett, jazz, moderne og hiphop. Siden høsten 2024 har hun også undervist i Hiphop og Showdans på Victory Dance.",
-    description2: "Alma underviser denne våren i Show/Musikal 1 og Voksenjazz, sistnevnte er en åpen klasse i jazz for deg som har fylt 16 år og vil danse for gøy- ingen krav til tidligere danseerfaring!",
-    bgColor: "from-magenta-50 to-brand-50",
-    bgColorDark: "dark:from-magenta-900/20 dark:to-brand-900/20"
-  },
-  {
-    id: 7,
+    id: 3,
     name: "Nora Tosounidi",
     age: 17,
     location: "Kongsvinger",
@@ -88,7 +41,7 @@ const instructors = [
     bgColorDark: "dark:from-brand-900/20 dark:to-coral-900/20"
   },
   {
-    id: 8,
+    id: 4,
     name: "Nina Helen Berger",
     age: 15,
     location: "Kongsvinger",
@@ -101,7 +54,7 @@ const instructors = [
     bgColorDark: "dark:from-magenta-900/20 dark:to-brand-900/20"
   },
   {
-    id: 9,
+    id: 5,
     name: "Frida Elise Hvarstad-Nabben",
     age: 16,
     location: "Kongsvinger",
@@ -113,7 +66,7 @@ const instructors = [
     bgColorDark: "dark:from-coral-900/20 dark:to-magenta-900/20"
   },
   {
-    id: 10,
+    id: 6,
     name: "Anna Matilde Hvarstad-Nabben & Otilie Nordseth",
     age: "18 & 17",
     location: "Kongsvinger",
@@ -124,6 +77,54 @@ const instructors = [
     bgColor: "from-brand-50 to-coral-50",
     bgColorDark: "dark:from-brand-900/20 dark:to-coral-900/20"
   }
+    // {
+  //   id: 1,
+  //   name: "Fredrik Petrov",
+  //   age: 32,
+  //   location: "Kongsvinger",
+  //   image: "https://fra.cloud.appwrite.io/v1/storage/buckets/6857bb630022ef965c25/files/698c79bc0022e632da65/view?project=6853fb68001e82047908&mode=admin",
+  //   education: "Bachelor i samtidsdans ved Kunsthøgskolen i Oslo (KHiO)",
+  //   description: "Fredrik Petrov er 32 år og har vokst opp i Kongsvinger. Han danset på Jump frem til han begynte på danselinjen ved Fagerborg vgs i Oslo (skolen er i dag lagt ned og linjen videreføres på Edvard Munch vgs). Han gikk videre med en bachelorgrad i samtidsdans ved KIhO (2016) og har siden jobbet bredt og tverrfaglig i det norske scenekunstfeltet, både som danser, skuespiller og skapende kunstner. Som koreograf og utøver står han bak kritikerroste forestillinger, kjent for et uttrykk som kombinerer fysisk presisjon, rå energi og tydelig form.",
+  //   description2: "I undervisningen har Fredrik et sterkt teknisk fokus, samtidig som han legger stor vekt på fellesskap, trygghet og tilhørighet i rommet. Klassene er dynamiske, levende og utforskende – med rom for både hard jobbing, nysgjerrighet og personlig uttrykk. Fredrik skal undervise i Hiphop 3 Girly og Moderne 3, samt lede Kompaniet denne våren.",
+  //   bgColor: "from-brand-50 to-coral-50",
+  //   bgColorDark: "dark:from-brand-900/20 dark:to-coral-900/20"
+  // },
+    // {
+  //   id: 4,
+  //   name: "Olga Etkalo",
+  //   age: 37,
+  //   location: "Ukraina → Kongsvinger",
+  //   image: "https://fra.cloud.appwrite.io/v1/storage/buckets/6857bb630022ef965c25/files/68926c2c000225fd1871/view?project=6853fb68001e82047908&mode=admin",
+  //   education: "Utdannet danser, koreograf og pedagog ved Kharkiv State Academy of Culture",
+  //   description: "Olga Etkalo er 37 år og utdannet danser, koreograf og pedagog ved Kharkiv State Academy of Culture i Ukraina. Hun har nå etablert seg i Kongsvinger med sine to barn. Hun har stor kapasitet og har mange visjoner for kreativ dans.",
+  //   description2: "Olga underviser i Ballett 2 og Forkurs for tåspiss, samt Ballett for 2.-5. trinn.",
+  //   bgColor: "from-brand-50 to-coral-50",
+  //   bgColorDark: "dark:from-brand-900/20 dark:to-coral-900/20"
+  // },
+  // {
+  //   id: 5,
+  //   name: "Emma Vangen",
+  //   age: 17,
+  //   location: "Kongsvinger",
+  //   image: "https://fra.cloud.appwrite.io/v1/storage/buckets/6857bb630022ef965c25/files/68926c45003ba94e5466/view?project=6853fb68001e82047908&mode=admin",
+  //   education: "Studiespesialierende ved Øvrebyen vgs",
+  //   description: "Emma Vangen er 17 år og går i VG3 ved Øvrebyen vgs. Emma har danset siden hun var 3 år gammel, og i løpet av 14 år har hun danset flere ulike sjangere, alt fra ballett til hiphop til heels. Hun har jobbet som assistent på ulike klasser, og etter at hun sluttet å danse selv har hun undervist Hiphop på Victory Dance.",
+  //   description2: "Emma underviser i Hiphop Commercial nivå 2 og Hiphop Girly Ungdom dette semesteret, i tillegg har hun Styrke/tøy på mandagskvelden som er verdt å få med seg om man vil bli en sterk og smidig danser!",
+  //   bgColor: "from-coral-50 to-magenta-50",
+  //   bgColorDark: "dark:from-coral-900/20 dark:to-magenta-900/20"
+  // },
+  // {
+  //   id: 6,
+  //   name: "Alma Sidenia Kamøy Furuseth",
+  //   age: 18,
+  //   location: "Kongsvinger",
+  //   image: "https://fra.cloud.appwrite.io/v1/storage/buckets/6857bb630022ef965c25/files/68926c6e00320f6a91ce/view?project=6853fb68001e82047908&mode=admin",
+  //   education: "Studiespesialierende ved Øvrebyen vgs",
+  //   description: "Alma Sidenia Kamøy Furuseth er 18 år gammel og går i VG3 ved Øvrebyen vgs. Med to foreldre som begge er utdannede dansere, har dansing vært en stor del av livet siden Alma var liten. Hun har danset mange sjangre, med fokus på basefagene ballett, jazz, moderne og hiphop. Siden høsten 2024 har hun også undervist i Hiphop og Showdans på Victory Dance.",
+  //   description2: "Alma underviser denne våren i Show/Musikal 1 og Voksenjazz, sistnevnte er en åpen klasse i jazz for deg som har fylt 16 år og vil danse for gøy- ingen krav til tidligere danseerfaring!",
+  //   bgColor: "from-magenta-50 to-brand-50",
+  //   bgColorDark: "dark:from-magenta-900/20 dark:to-brand-900/20"
+  // },
 ];
 
 export default function InstructorsSection() {
