@@ -9,10 +9,10 @@ const PROVETIME_IMG = "https://fra.cloud.appwrite.io/v1/storage/buckets/6857bb63
 // ─── Lenker ──────────────────────────────────────────────────────────────────
 const TIMEPLAN_URL   = "/timeplan";
 const PAAMELDING_URL = "/registration";
-const PROVETIME_URL  =
+const PROVETIME_URL =
   "mailto:registrer@urbanstudios.no" +
   "?subject=P%C3%A5melding%20pr%C3%B8vetime" +
-  "&body=Navn%3A%20%0AKlasse%2Fstil%20jeg%20vil%20pr%C3%B8ve%3A%20%0ATelefon%3A%20";
+  "&body=Navn%3A%20%0AF%C3%B8dselsdato%3A%20%0AKlasse%2Fstil%20jeg%20vil%20pr%C3%B8ve%3A%20%0ATelefon%3A%20";
 const KONTAKT_URL    = "/kontakt";
 
 /**
