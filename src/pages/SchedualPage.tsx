@@ -1,10 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Printer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ScrollToTop from "@/helpers/ScrollToTop";
 import { Link, useNavigate } from "react-router-dom";
-
 import {
   fetchSchedulesWithClasses,
   getThemeFromClass,
@@ -16,6 +14,15 @@ import {
   THEMES,
   type ScheduleWithClass,
 } from "../services/scheduleServices";
+import { Calendar, Clock, User, MapPin, Users, ArrowRight, Printer, InfoIcon } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 
 export default function SchedualPage() {
   const navigate = useNavigate();
@@ -26,7 +33,8 @@ export default function SchedualPage() {
 
   // Theme filter
   const [themeFilter, setThemeFilter] = useState<string | null>(null);
-
+  //modal state
+  const [selectedSchedule, setSelectedSchedule] = useState<ScheduleWithClass | null>(null);
   // Desktop room filter
   const [selectedRooms, setSelectedRooms] = useState<string[]>(STUDIO_ROOMS);
 
@@ -150,14 +158,36 @@ export default function SchedualPage() {
       ? duration * 28 + (duration - 1) * 1
       : duration * 24 + (duration - 1) * 1;
 
+    // return (
+    //   <motion.div
+    //     key={schedule.$id}
+    //     initial={{ opacity: 0, scale: 0.95 }}
+    //     animate={{ opacity: 1, scale: 1 }}
+    //     transition={{ duration: 0.3 }}
+    //     className={`absolute inset-0 ${isDesktop ? "rounded-lg px-1 py-0.5" : "rounded px-1 py-0.5"} font-montserrat schedule-block
+    //       ${themeColors.color} ${themeColors.textColor} shadow-md z-10`}
+    //     style={{ height: `${heightInPx}px` }}
+    //     title={`${schedule.dance_class.name} - ${schedule.start_time} til ${schedule.end_time}`}
+    //   >
     return (
       <motion.div
         key={schedule.$id}
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
+        whileHover={{ scale: 1.03, boxShadow: "0 8px 16px rgba(0,0,0,0.15)" }}
+        whileTap={{ scale: 0.96 }}
         transition={{ duration: 0.3 }}
-        className={`absolute inset-0 ${isDesktop ? "rounded-lg px-1 py-0.5" : "rounded px-1 py-0.5"} font-montserrat schedule-block
-          ${themeColors.color} ${themeColors.textColor} shadow-md z-10`}
+        role="button"
+        tabIndex={0}
+        onClick={() => setSelectedSchedule(schedule)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            setSelectedSchedule(schedule);
+          }
+        }}
+        className={`absolute inset-0 ${isDesktop ? "rounded-lg px-1 py-0.5" : "rounded px-1 py-0.5"} font-montserrat schedule-block cursor-pointer
+          ${themeColors.color} ${themeColors.textColor} shadow-md z-10 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-1`}
         style={{ height: `${heightInPx}px` }}
         title={`${schedule.dance_class.name} - ${schedule.start_time} til ${schedule.end_time}`}
       >
@@ -189,6 +219,7 @@ export default function SchedualPage() {
             {schedule.currentStudents || 0}/{schedule.maxStudents}
           </div>
         )}
+        <InfoIcon className="absolute bottom-0.5 right-0.5 h-2.5 w-2.5 opacity-50" />
       </motion.div>
     );
   };
@@ -500,6 +531,9 @@ const PrintableSchedule = () => {
               Når du er påmeldt kan du finne oss i spond:{" "}
               <span className="text-magenta-500 font-semibold">COGZO</span>
             </p>
+            <p className="mt-2 text-sm text-gray-500 dark:text-gray-400 font-montserrat italic">
+  Trykk på en time i timeplanen for å se mer informasjon om kurset
+</p>
           </motion.div>
         </div>
       </section>
@@ -787,6 +821,129 @@ const PrintableSchedule = () => {
           </motion.div>
         </div>
       </section>
+      <Dialog
+  open={!!selectedSchedule}
+  onOpenChange={(open) => {
+    if (!open) setSelectedSchedule(null);
+  }}
+>
+  {selectedSchedule && (() => {
+    const theme = getThemeFromClass(selectedSchedule.dance_class);
+    const themeColors = getThemeColors(theme as keyof typeof THEMES);
+    const instructor =
+      selectedSchedule.substitute_instructor || selectedSchedule.dance_class?.instructor;
+    const isFull =
+      !!selectedSchedule.maxStudents &&
+      (selectedSchedule.currentStudents || 0) >= selectedSchedule.maxStudents;
+
+    return (
+      <DialogContent className="w-[95vw] max-w-lg max-h-[90vh] overflow-y-auto bg-white dark:bg-surface-dark mx-auto my-2 sm:my-8 p-4 sm:p-6">
+        <DialogHeader className="space-y-2">
+          <DialogTitle className="text-xl sm:text-2xl font-bebas text-gray-900 dark:text-white pr-8">
+            {selectedSchedule.dance_class.name}
+          </DialogTitle>
+          {selectedSchedule.dance_class.description && (
+            <DialogDescription className="text-sm sm:text-base text-start font-montserrat text-gray-600 dark:text-gray-300">
+              {selectedSchedule.dance_class.description}
+            </DialogDescription>
+          )}
+        </DialogHeader>
+
+        <div className="space-y-4 mt-2">
+          <div className={`p-4 rounded-lg border ${themeColors.color} ${themeColors.textColor} ${themeColors.borderColor}`}>
+            <div className="flex items-center gap-2 font-montserrat font-semibold">
+              <Calendar className="h-4 w-4" />
+              {selectedSchedule.day}
+            </div>
+            <div className="flex items-center gap-2 mt-1 font-montserrat">
+              <Clock className="h-4 w-4" />
+              {selectedSchedule.start_time.substring(0, 5)} - {selectedSchedule.end_time.substring(0, 5)}
+            </div>
+            <div className="flex items-center gap-2 mt-1 font-montserrat">
+              <MapPin className="h-4 w-4" />
+              {selectedSchedule.room}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-surface-dark-muted rounded-lg border border-brand-100/50 dark:border-brand-700/30">
+              <User className="h-4 w-4 text-brand-500 flex-shrink-0" />
+              <div className="min-w-0">
+                <div className="font-montserrat font-semibold text-gray-900 dark:text-white text-sm">
+                  Instruktør
+                </div>
+                <div className="text-xs text-gray-600 dark:text-gray-300 font-montserrat truncate">
+                  {instructor}
+                  {selectedSchedule.substitute_instructor && (
+                    <span className="opacity-70"> (vikar)</span>
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-surface-dark-muted rounded-lg border border-brand-100/50 dark:border-brand-700/30">
+              <Users className="h-4 w-4 text-brand-500 flex-shrink-0" />
+              <div className="min-w-0">
+                <div className="font-montserrat font-semibold text-gray-900 dark:text-white text-sm">
+                  Alder
+                </div>
+                <div className="text-xs text-gray-600 dark:text-gray-300 font-montserrat">
+                  {selectedSchedule.dance_class.age}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {!!selectedSchedule.maxStudents && selectedSchedule.maxStudents > 0 && (
+            <div className="p-3 bg-gray-50 dark:bg-surface-dark-muted rounded-lg border border-brand-100/50 dark:border-brand-700/30">
+              <div className="flex justify-between text-sm font-montserrat mb-1">
+                <span className="text-gray-700 dark:text-gray-200">Påmeldte</span>
+                <span className={isFull ? "text-red-600 font-semibold" : "text-gray-700 dark:text-gray-200"}>
+                  {selectedSchedule.currentStudents || 0}/{selectedSchedule.maxStudents}
+                  {isFull && " (fullt)"}
+                </span>
+              </div>
+              <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                <div
+                  className={`h-full ${isFull ? "bg-red-500" : "bg-brand-500"}`}
+                  style={{
+                    width: `${Math.min(
+                      100,
+                      ((selectedSchedule.currentStudents || 0) / selectedSchedule.maxStudents) * 100,
+                    )}%`,
+                  }}
+                />
+              </div>
+            </div>
+          )}
+
+          {selectedSchedule.special_notes && (
+            <div className="p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg text-sm font-montserrat text-amber-800 dark:text-amber-200">
+              {selectedSchedule.special_notes}
+            </div>
+          )}
+        </div>
+
+        <DialogFooter className="mt-6 flex-col gap-2 sm:flex-row">
+          <Link to="/registration" className="w-full">
+            <Button
+              className="w-full bg-brand-500 hover:bg-brand-600 text-white font-medium"
+              onClick={() => setSelectedSchedule(null)}
+            >
+              Meld deg på
+            </Button>
+          </Link>
+          <Button
+            variant="outline"
+            className="w-full font-medium border-2 border-brand-300 text-brand-600 hover:bg-brand-50 dark:border-brand-700 dark:text-brand-400 dark:hover:bg-brand-900/30"
+            onClick={() => setSelectedSchedule(null)}
+          >
+            Lukk
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    );
+  })()}
+</Dialog>
     </div>
   );
 }
