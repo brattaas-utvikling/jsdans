@@ -281,7 +281,7 @@ export function HostsemesterSection() {
                 className="font-montserrat text-xs leading-relaxed
                            text-gray-400 dark:text-gray-500"
               >
-                * Ved oppmøte til prøvetime aksepterer du våre{" "}
+                * Prøvetimer gjelder nye elever. Ved å delta på prøvetime aksepterer du våre{" "}
                 <a
                   href={BETINGELSER_URL}
                   className="underline underline-offset-2
@@ -289,7 +289,7 @@ export function HostsemesterSection() {
                              hover:text-gray-900 dark:hover:text-white
                              transition-colors duration-150"
                 >
-                  betingelser for kursdeltagelse
+                  betingelser.
                 </a>
                 .
               </motion.p>

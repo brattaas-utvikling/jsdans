@@ -7,7 +7,8 @@ import { Link } from "react-router-dom";
 export default function CtaSection() {
   return (
     <section
-      className="relative h-dvh min-h-[600px] flex items-end overflow-hidden"
+      className="relative h-[calc(100dvh-48px)] md:h-dvh min-h-[520px] overflow-hidden
+                 flex flex-col"
       aria-labelledby="cta-heading"
       itemScope
       itemType="https://schema.org/LocalBusiness"
@@ -24,46 +25,98 @@ export default function CtaSection() {
           width="1920"
           height="1080"
         />
-
-        {/* Sterkere, lagdelt overlay:
-            – venstre side mørkest (teksten bor her)
-            – topp-til-bunn-gradient i tillegg for å dempe toppkanten */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/20" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/70" />
       </div>
 
-      {/* ── Innhold ──────────────────────────────────────────────────── */}
-      <div className="container mx-auto px-4 md:px-6 relative z-20 pb-[15vh] md:pb-[18vh]">
-        <div className="max-w-2xl">
-
-          {/* H1 — Bebas, stor og tydelig */}
+      {/* ── MOBIL: tekst sentrert midt på siden ───────────────────────
+          ── DESKTOP: skjult — desktop bruker bunnen-blokken under ─── */}
+      <div className="relative z-20 flex-1 flex items-center
+                      px-4 md:hidden">
+        <div className="max-w-sm">
           <motion.h1
             id="cta-heading"
             initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1 }}
-            viewport={{ once: true }}
-            className="font-bebas text-[clamp(2.8rem,8vw,5.5rem)] uppercase
+            className="font-bebas text-[clamp(2.8rem,10vw,4rem)] uppercase
                        leading-[0.95] tracking-wide text-white mb-3"
             itemProp="name"
           >
-            {/* br kun på mobil — brekker "Velkommen til" / "Urban Studios" */}
-            Velkommen til<br /> Urban Studios
+            Velkommen til<br />Urban Studios
             <br />
-            {/* Undertittel — bevisst mindre, ca 55% av heading-størrelsen */}
             <span className="text-transparent bg-clip-text bg-hero-gradient
-                             text-[clamp(1.6rem,5vw,3rem)]">
+                             text-[clamp(1.6rem,6vw,2.4rem)]">
               Uttrykk deg selv gjennom dans
             </span>
           </motion.h1>
 
-          {/* Ingress — kortere og luftigere */}
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.22 }}
+            className="font-montserrat text-sm leading-relaxed text-white/75"
+            itemProp="description"
+          >
+            Ballett, jazz, moderne, show/musikal og hiphop — for alle nivåer
+            fra 3 år og oppover.
+          </motion.p>
+        </div>
+      </div>
+
+      {/* ── MOBIL: knapp pinnet til bunnen ───────────────────────────── */}
+      <div className="relative z-20 px-4 pb-12 md:hidden">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.36 }}
+        >
+          <Link
+            to="/kurs"
+            style={{ touchAction: "manipulation" }}
+            className={cn(
+              buttonVariants({ variant: "default" }),
+              "w-full rounded-full min-h-[48px] px-8",
+              "bg-brand-500 hover:bg-brand-600 text-white",
+              "font-montserrat font-bold text-sm tracking-wide",
+              "shadow-lg transition-all duration-200 active:scale-[0.98]",
+              "focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2",
+            )}
+            aria-label="Se alle dansetimer og kurs hos Urban Studios Kongsvinger"
+          >
+            Se våre kurs
+          </Link>
+        </motion.div>
+      </div>
+
+      {/* ── DESKTOP: alt samlet nederst til venstre ──────────────────── */}
+      <div className="relative z-20 hidden md:block
+                      container mx-auto px-6
+                      mt-auto pb-[18vh]">
+        <div className="max-w-2xl">
+          <motion.h1
+            aria-hidden="true"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.1 }}
+            viewport={{ once: true }}
+            className="font-bebas text-[clamp(3rem,6vw,5.5rem)] uppercase
+                       leading-[0.95] tracking-wide text-white mb-3"
+          >
+            Velkommen til Urban Studios
+            <br />
+            <span className="text-transparent bg-clip-text bg-hero-gradient
+                             text-[clamp(2rem,4vw,3rem)]">
+              Uttrykk deg selv gjennom dans
+            </span>
+          </motion.h1>
+
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.22 }}
             viewport={{ once: true }}
-            className="font-montserrat text-base md:text-lg leading-relaxed
+            className="font-montserrat text-lg leading-relaxed
                        text-white/80 mb-8 max-w-lg"
             itemProp="description"
           >
@@ -71,13 +124,12 @@ export default function CtaSection() {
             fra 3 år og oppover, i Jernbanegata 16.
           </motion.p>
 
-          {/* CTA-knapper */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.32 }}
             viewport={{ once: true }}
-            className="flex flex-col sm:flex-row gap-3"
+            className="flex gap-3"
           >
             <Link
               to="/kurs"
@@ -98,9 +150,9 @@ export default function CtaSection() {
         </div>
       </div>
 
-      {/* Bunn-fade mot neste seksjon */}
-      <div className="absolute bottom-0 left-0 w-full h-24
-                      bg-gradient-to-t from-black/60 to-transparent z-10
+      {/* Bunn-fade */}
+      <div className="absolute bottom-0 left-0 w-full h-32
+                      bg-gradient-to-t from-black/70 to-transparent z-10
                       pointer-events-none" />
 
       {/* Skjult SEO */}
