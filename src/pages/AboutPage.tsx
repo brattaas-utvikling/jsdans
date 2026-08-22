@@ -315,7 +315,7 @@ export default function AboutPage() {
             <img
               src={heroSection.img}
               alt={heroSection.headlines}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover object-bottom"
               loading="lazy"
             />
             {/* Glow effekt - subtil brand-farget glow */}

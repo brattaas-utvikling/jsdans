@@ -66,6 +66,8 @@ body {
 
   * {
     @apply border-gray-200 dark:border-gray-700;
+    box-shadow: none !important;
+    text-shadow: none !important;
   }
 
   body {

@@ -1,181 +1,141 @@
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { STUDIO_INFO } from "@/data/dance-studio-data";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { homepageSchemaModalBased } from "@/utils/homepageSchemaModalBased";
 import { Link } from "react-router-dom";
 
 export default function CtaSection() {
   return (
     <section
-      className="relative h-[90vh] min-h-[600px] flex items-center overflow-hidden"
+      className="relative h-dvh min-h-[600px] flex items-end overflow-hidden"
       aria-labelledby="cta-heading"
       itemScope
       itemType="https://schema.org/LocalBusiness"
     >
-      {/* Background image med SEO-optimalisert alt-tekst */}
+      {/* ── Bakgrunnsbilde ───────────────────────────────────────────── */}
       <div className="absolute inset-0 z-0">
-  <img
-    src="/images/studio.jpeg"
-    alt="Dansestudio ved Urban Studios Kongsvinger – profesjonell danseopplæring for alle nivåer"
-    className="w-full h-full object-cover"
-    loading="eager"
-    fetchPriority="high"
-    decoding="async"
-    width="1920"
-    height="1080"
-  />
-  <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-black/30 dark:from-black/70 dark:to-black/40" />
-</div>
+        <img
+          src="https://fra.cloud.appwrite.io/v1/storage/buckets/6857bb630022ef965c25/files/6a89699300069217943e/view?project=6853fb68001e82047908&impersonateuserid=&mode=admin"
+          alt="Dansestudio ved Urban Studios Kongsvinger – profesjonell danseopplæring for alle nivåer"
+          className="w-full h-full object-cover object-bottom"
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
+          width="1920"
+          height="1080"
+        />
 
+        {/* Sterkere, lagdelt overlay:
+            – venstre side mørkest (teksten bor her)
+            – topp-til-bunn-gradient i tillegg for å dempe toppkanten */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60" />
+      </div>
 
-      {/* Content - økt z-index for hele innholdsområdet */}
-      <div className="container mx-auto px-4 md:px-6 relative z-20">
-        <div className="max-w-3xl">
-          {/* H1 - Urban Studios med SEO-optimalisering */}
+      {/* ── Innhold ──────────────────────────────────────────────────── */}
+      <div className="container mx-auto px-4 md:px-6 relative z-20 pb-[15vh] md:pb-[18vh]">
+        <div className="max-w-2xl">
+
+          {/* H1 — Bebas, stor og tydelig */}
           <motion.h1
             id="cta-heading"
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.7, delay: 0.1 }}
             viewport={{ once: true }}
-            className="flex items-center gap-2 mb-4"
+            className="font-bebas text-[clamp(2.8rem,8vw,5.5rem)] uppercase
+                       leading-[0.95] tracking-wide text-white mb-3"
             itemProp="name"
           >
-            <span
-              className="text-base font-bebas text-white/60 uppercase tracking-wider sr-only"
-              aria-label="Urban Studios - Dansestudio Kongsvinger"
-            >
-              URBAN STUDIOS - Dansestudio Kongsvinger
+            {/* br kun på mobil — brekker "Velkommen til" / "Urban Studios" */}
+            Velkommen til<br /> Urban Studios
+            <br />
+            {/* Undertittel — bevisst mindre, ca 55% av heading-størrelsen */}
+            <span className="text-transparent bg-clip-text bg-hero-gradient
+                             text-[clamp(1.6rem,5vw,3rem)]">
+              Uttrykk deg selv gjennom dans
             </span>
           </motion.h1>
 
-          {/* H2 - Hovedbudskap (din opprinnelige tagline) */}
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="text-4xl md:text-5xl lg:text-6xl font-montserrat font-bold text-white mb-6 tracking-tight"
-          >
-            {STUDIO_INFO.tagline}
-            <motion.span
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              viewport={{ once: true }}
-              className="font-montserrat block mt-2 text-transparent bg-clip-text bg-hero-gradient py-2"
-            >
-              Uttrykk deg selv gjennom dans
-            </motion.span>
-          </motion.h2>
-
-          {/* P - Din opprinnelige beskrivelse med SEO-søkeord tillagt */}
+          {/* Ingress — kortere og luftigere */}
           <motion.p
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
+            transition={{ duration: 0.7, delay: 0.22 }}
             viewport={{ once: true }}
-            className="font-montserrat text-lg text-white/90 mb-8 max-w-xl"
+            className="font-montserrat text-base md:text-lg leading-relaxed
+                       text-white/80 mb-8 max-w-lg"
             itemProp="description"
           >
-Velkommen til Urban - Kongsvingers nyetablerte dansestudio i Jernbanegata 16. Vi gir små og store dansere muligheten til å utvikle ferdighetene sine i de klassiske dansestilene. Her tilbys ukentlige klasser i ballett, jazz, moderne, show/musikal og hiphop tilpasset elevens ferdigheter og nivåer. 
+            Ballett, jazz, moderne, show/musikal og hiphop — for alle nivåer
+            fra 3 år og oppover, i Jernbanegata 16.
           </motion.p>
 
-          {/* CTA Buttons - forbedret z-index og touch-target */}
+          {/* CTA-knapper */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
+            transition={{ duration: 0.7, delay: 0.32 }}
             viewport={{ once: true }}
-            className="flex flex-col sm:flex-row gap-4 relative z-30"
+            className="flex flex-col sm:flex-row gap-3"
           >
             <Link
               to="/kurs"
-              className="relative z-40 touch-manipulation"
               style={{ touchAction: "manipulation" }}
+              className={cn(
+                buttonVariants({ variant: "default" }),
+                "rounded-full min-h-[48px] px-8",
+                "bg-brand-500 hover:bg-brand-600 text-white",
+                "font-montserrat font-bold text-sm tracking-wide",
+                "shadow-lg hover:shadow-xl transition-all duration-200 active:scale-[0.98]",
+                "focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2",
+              )}
+              aria-label="Se alle dansetimer og kurs hos Urban Studios Kongsvinger"
             >
-              <Button
-                size="lg"
-                className="w-full sm:w-auto rounded-full bg-brand-500 hover:bg-brand-600 text-white border-0 font-montserrat-medium 
-                          relative z-50 touch-manipulation min-h-[48px] px-8 py-4
-                          shadow-lg hover:shadow-xl transition-all duration-200
-                          active:scale-95 focus:ring-2 focus:ring-brand-400/50 focus:ring-offset-2"
-                aria-label="Se alle dansetimer og kurs hos Urban Studios Kongsvinger"
-                title="Utforsk vårt utvalg av hip-hop, moderne dans og breakdance kurs"
-                style={{ touchAction: "manipulation" }}
-              >
-                Se våre kurs
-              </Button>
+              Se våre kurs
             </Link>
 
-            {/* Din kommenterte ut knapp - kan aktiveres igjen */}
-            {/* <Button
-              size="lg"
-              variant="outline"
-              className="rounded-full border-white/30 text-white hover:bg-white/10 hover:text-white font-montserrat-medium"
+            <Link
+              to="/timeplan"
+              style={{ touchAction: "manipulation" }}
+              className={cn(
+                buttonVariants({ variant: "outline" }),
+                "rounded-full min-h-[48px] px-8",
+                "border-white/40 text-white bg-transparent",
+                "font-montserrat font-bold text-sm tracking-wide",
+                "hover:bg-white/10 hover:text-white hover:border-white/60",
+                "transition-all duration-200 active:scale-[0.98]",
+                "focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2",
+              )}
               aria-label="Se timeplan for dansetimer i Kongsvinger"
-              title="Oversikt over tidspunkt for alle våre dansetimer"
             >
               Timeplan
-              <ArrowRightIcon className="ml-2 h-4 w-4" />
-            </Button> */}
-
-            <span id="cta-description" className="sr-only">
-              Urban Studios - Dansestudio i Kongsvinger med hip-hop, moderne
-              dans og breakdance for alle nivåer
-            </span>
+            </Link>
           </motion.div>
-
-          {/* Skjult SEO-informasjon for søkemotorer */}
-          <div className="sr-only">
-            <span
-              itemProp="address"
-              itemScope
-              itemType="https://schema.org/PostalAddress"
-            >
-              <span itemProp="streetAddress">Storgata 42</span>
-              <span itemProp="addressLocality">Kongsvinger</span>
-              <span itemProp="postalCode">2212</span>
-              <span itemProp="addressCountry">Norge</span>
-            </span>
-            <span itemProp="telephone">+47 123 45 678</span>
-            <span itemProp="email">post@urbanstudios.no</span>
-            <span itemProp="priceRange">400-800 NOK</span>
-          </div>
         </div>
       </div>
 
-      {/* JSON-LD schema */}
+      {/* Bunn-fade mot neste seksjon */}
+      <div className="absolute bottom-0 left-0 w-full h-24
+                      bg-gradient-to-t from-black/60 to-transparent z-10
+                      pointer-events-none" />
+
+      {/* Skjult SEO */}
+      <div className="sr-only">
+        <span itemProp="address" itemScope itemType="https://schema.org/PostalAddress">
+          <span itemProp="streetAddress">Jernbanegata 16</span>
+          <span itemProp="addressLocality">Kongsvinger</span>
+          <span itemProp="postalCode">2212</span>
+          <span itemProp="addressCountry">Norge</span>
+        </span>
+        <span itemProp="telephone">+47 123 45 678</span>
+        <span itemProp="email">post@urbanstudios.no</span>
+      </div>
+
+      {/* JSON-LD */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(homepageSchemaModalBased),
-        }}
-      />
-
-      {/* Dine opprinnelige animerte dekorative elementer - redusert z-index */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 1.5, delay: 0.8 }}
-        viewport={{ once: true }}
-        className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-white/90 dark:from-black to-transparent z-5"
-      />
-
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        whileInView={{ opacity: 0.2, scale: 1 }}
-        transition={{ duration: 2, delay: 1 }}
-        viewport={{ once: true }}
-        className="absolute -bottom-12 -right-12 w-64 h-64 bg-brand-500/20 rounded-full blur-3xl z-1"
-      />
-
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        whileInView={{ opacity: 0.1, scale: 1 }}
-        transition={{ duration: 2, delay: 1.2 }}
-        viewport={{ once: true }}
-        className="absolute top-1/4 -left-12 w-48 h-48 bg-magenta-500/10 rounded-full blur-3xl z-1"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(homepageSchemaModalBased) }}
       />
     </section>
   );

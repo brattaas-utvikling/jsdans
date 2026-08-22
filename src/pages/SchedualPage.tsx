@@ -272,7 +272,7 @@ const PrintableSchedule = () => {
       <div
         key={schedule.$id}
         className={`absolute inset-0 rounded-lg px-1 py-0.5 font-montserrat schedule-block
-          ${themeColors.color} ${themeColors.textColor} shadow-md z-10`}
+          ${themeColors.color} ${themeColors.textColor} shadow-md print:shadow-none z-10`}
         style={{ height: `${heightInPx}px` }}
       >
         <div className="font-bold text-xs leading-tight mb-0.5 line-clamp-3">
