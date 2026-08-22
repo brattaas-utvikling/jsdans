@@ -6,32 +6,15 @@ import { Calendar } from "lucide-react";
 const HERO_IMAGE    = "https://fra.cloud.appwrite.io/v1/storage/buckets/6857bb630022ef965c25/files/6a1f38ce002a8cf7c428/view?project=6853fb68001e82047908&impersonateuserid=&mode=admin";
 const PROVETIME_IMG = "https://fra.cloud.appwrite.io/v1/storage/buckets/6857bb630022ef965c25/files/695822c8002e43f3b1c7/view?project=6853fb68001e82047908&impersonateuserid=&mode=admin";
 
-// ─── Lenker ──────────────────────────────────────────────────────────────────
 const TIMEPLAN_URL   = "/timeplan";
 const PAAMELDING_URL = "/registration";
 const PROVETIME_URL =
   "mailto:registrer@urbanstudios.no" +
-  "?subject=P%C3%A5melding%20pr%C3%B8vetime" +
-  "&body=Navn%3A%20%0AF%C3%B8dselsdato%3A%20%0AKlasse%2Fstil%20jeg%20vil%20pr%C3%B8ve%3A%20%0ATelefon%3A%20";
+  "?subject=P%C3%A5melding%20pr%C3%B8vetime%20%E2%80%93%20Urban%20Studios" +
+  "&body=Navn%3A%20%0AF%C3%B8dselsdato%3A%20%0AKlasse%2Fstil%20jeg%20vil%20pr%C3%B8ve%3A%20%0ATelefon%3A%20%0A%0A---%0AVed%20%C3%A5%20sende%20denne%20e-posten%20bekrefter%20jeg%20at%20jeg%20har%20lest%20og%20aksepterer%20Urban%20Studios%20sine%20betingelser%20for%20kursdeltagelse.%0ABetingelser%3A%20https%3A%2F%2Furbanstudios.no%2Fbetingelser";
 const KONTAKT_URL    = "/kontakt";
+const BETINGELSER_URL = "/betingelser";
 
-/**
- * ─── JUSTERING MOT SIDENS CONTAINER ──────────────────────────────────────────
- * Seksjonene her er full-bleed (bakgrunn/bilde går helt ut til kanten), mens
- * resten av forsiden bruker `container mx-auto px-4 md:px-6`. For at TEKSTEN
- * skal stå på samme loddrette linje som CtaSection og AutumnSemesterSection,
- * gis innholdsblokken en fast bredde lik HALVE containerens innholdsbredde,
- * og skyves mot midten av siden med ml-auto / mr-auto.
- *
- * Hvorfor dette treffer eksakt: griden er 50/50, så kolonnegrensa ligger på
- * viewportens midtpunkt — som også er containerens midtpunkt. En blokk med
- * bredde = halve containerinnholdet, limt til den grensa, får da venstre kant
- * nøyaktig der containeren begynner.
- *
- * Tailwind v3 standard container: md 768 / lg 1024 / xl 1280 / 2xl 1536.
- * Minus 2 × px-6 (48px) → innhold 720 / 976 / 1232 / 1488 → halve: under.
- * (Bevisst valg fremfor calc(100vw …), som bommer med scrollbarens bredde.)
- */
 const HALF_CONTAINER = "md:w-[360px] lg:w-[488px] xl:w-[616px] 2xl:w-[744px]";
 
 function useFadeUp(prefersReduced: boolean | null) {
@@ -52,8 +35,6 @@ export function HostsemesterSection() {
 
       {/* ══════════════════════════════════════════════════════════
           SEKSJON 1 — NYTT ÅR
-          Mørk bakgrunn. Tekst venstre (containerjustert), bilde høyre (full-bleed).
-          Mobil: bilde øverst, tekst under.
       ══════════════════════════════════════════════════════════ */}
       <section
         aria-labelledby="hostsemester-heading"
@@ -76,18 +57,12 @@ export function HostsemesterSection() {
               height={700}
               className="absolute inset-0 h-full w-full object-cover object-center"
             />
-            {/* Overlay som blender bilde inn i mørk bakgrunn på desktop */}
             <div
               aria-hidden="true"
               className="absolute inset-0
                          bg-gradient-to-b from-black/30 to-black/10
                          md:bg-gradient-to-r md:from-[#0A0604] md:via-[#0A0604]/20 md:to-transparent"
             />
-
-            {/* Rotert stempelmerke — justert til containerens HØYRE kant.
-                Wrapperen er limt til bildekolonnens venstre kant (= sidens
-                midtpunkt) og er like bred som halve containeren, slik at
-                stempelets høyrekant lander på containerlinjen. */}
             <div
               aria-hidden="true"
               className="pointer-events-none absolute inset-0"
@@ -107,7 +82,7 @@ export function HostsemesterSection() {
             </div>
           </motion.div>
 
-          {/* Tekst — under på mobil, venstre på desktop */}
+          {/* Tekst */}
           <div
             className="order-last md:order-first
                        flex flex-col justify-center
@@ -145,7 +120,6 @@ export function HostsemesterSection() {
                 </span>
               </motion.h2>
 
-              {/* Dato-pill */}
               <motion.div {...fadeUp(0.22)}>
                 <span
                   className="inline-flex items-center gap-2
@@ -161,7 +135,10 @@ export function HostsemesterSection() {
                 className="font-montserrat text-sm leading-relaxed text-white/60
                            border-l-2 border-brand-500 pl-4 max-w-sm"
               >
-                Kveldsskolen på Urban tilbyr undervisning innen jazzdans, klassisk ballet, moderne/samtidsdans, hiphop/kommersiell og musikaldans. Vi har to dansesaler med høye speil og høyttalere, og vi gleder oss til å ta imot flere dansere dette året.
+                Kveldsskolen på Urban tilbyr undervisning innen jazzdans, klassisk ballet,
+                moderne/samtidsdans, hiphop/kommersiell og musikaldans. Vi har to dansesaler
+                med høye speil og høyttalere, og vi gleder oss til å ta imot flere dansere
+                dette året.
               </motion.p>
 
               <motion.div {...fadeUp(0.32)} className="flex flex-wrap gap-3">
@@ -202,8 +179,6 @@ export function HostsemesterSection() {
 
       {/* ══════════════════════════════════════════════════════════
           SEKSJON 2 — GRATIS PRØVETIMER
-          Hvit bakgrunn. Bilde venstre (full-bleed), tekst høyre (containerjustert).
-          Mobil: bilde øverst, tekst under.
       ══════════════════════════════════════════════════════════ */}
       <section aria-labelledby="provetime-heading" className="bg-white dark:bg-surface-dark">
         <div className="grid grid-cols-1 md:grid-cols-2">
@@ -223,7 +198,7 @@ export function HostsemesterSection() {
             />
           </motion.div>
 
-          {/* Tekst — hard sort venstrekant på desktop */}
+          {/* Tekst */}
           <div
             className="flex flex-col justify-center
                        px-6 py-12 md:px-0 md:py-16
@@ -273,7 +248,8 @@ export function HostsemesterSection() {
                   className={cn(
                     buttonVariants({ variant: "default" }),
                     "rounded-full min-h-[44px] px-6",
-                    "bg-gray-900 hover:bg-gray-800 text-white dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100",
+                    "bg-gray-900 hover:bg-gray-800 text-white",
+                    "dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100",
                     "font-montserrat text-xs font-bold tracking-widest uppercase",
                     "transition-all duration-200 active:scale-[0.98]",
                     "focus-visible:ring-2 focus-visible:ring-gray-900 focus-visible:ring-offset-2",
@@ -287,7 +263,8 @@ export function HostsemesterSection() {
                   className={cn(
                     buttonVariants({ variant: "outline" }),
                     "rounded-full min-h-[44px] px-6",
-                    "border-2 border-gray-900 text-gray-900 dark:border-white dark:text-white",
+                    "border-2 border-gray-900 text-gray-900",
+                    "dark:border-white dark:text-white",
                     "font-montserrat text-xs font-bold tracking-widest uppercase",
                     "hover:bg-gray-50 dark:hover:bg-white/10",
                     "transition-all duration-200 active:scale-[0.98]",
@@ -297,6 +274,26 @@ export function HostsemesterSection() {
                   Kontakt oss
                 </a>
               </motion.div>
+
+              {/* ── Betingelser-merknad ── */}
+              <motion.p
+                {...fadeUp(0.34)}
+                className="font-montserrat text-xs leading-relaxed
+                           text-gray-400 dark:text-gray-500"
+              >
+                * Ved oppmøte til prøvetime aksepterer du våre{" "}
+                <a
+                  href={BETINGELSER_URL}
+                  className="underline underline-offset-2
+                             text-gray-500 dark:text-gray-400
+                             hover:text-gray-900 dark:hover:text-white
+                             transition-colors duration-150"
+                >
+                  betingelser for kursdeltagelse
+                </a>
+                .
+              </motion.p>
+
             </div>
           </div>
         </div>
@@ -304,14 +301,11 @@ export function HostsemesterSection() {
 
       {/* ══════════════════════════════════════════════════════════
           SEKSJON 3 — ELEVFORESTILLING
-          Oransje full-bleed bakgrunn, men innholdet ligger i samme
-          container som CtaSection og AutumnSemesterSection.
       ══════════════════════════════════════════════════════════ */}
       <section
         aria-labelledby="forestilling-heading"
         className="relative overflow-hidden bg-brand-500 py-16 md:py-20"
       >
-        {/* Ghost-tekst — dekorativ, følger seksjonskanten med vilje */}
         <p
           aria-hidden="true"
           className="pointer-events-none select-none
