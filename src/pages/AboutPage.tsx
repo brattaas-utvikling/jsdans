@@ -80,117 +80,167 @@ export default function AboutPage() {
 
     return paragraphs;
   };
-
-  // Render content with pullquote positioned correctly
   const renderContentWithPullquote = (
     section: AboutSection,
     paragraphs: string[],
   ) => {
-    const content = [];
-
-    // Første paragraph
-    if (paragraphs[0]) {
+    const content: React.ReactNode[] = [];
+  
+    // Med 4 paragraphs: pullquote mellom 2 og 3.
+    // Med alle andre antall (1, 2, 3): pullquote mellom 1 og 2.
+    // const pullquoteAfterIndex = paragraphs.length === 4 ? 1 : 0;
+    const pullquoteAfterIndex = paragraphs.length - 2;
+    // ^ 0-basert: 0 = etter paragraph[0], 1 = etter paragraph[1]
+  
+    paragraphs.forEach((paragraph, index) => {
       content.push(
         <motion.div
-          key="paragraph-1"
+          key={`paragraph-${index + 1}`}
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.8, delay: index * 0.2 }}
         >
           <div className="prose prose-lg dark:prose-invert max-w-none">
             <p className="text-gray-700 dark:text-gray-300 font-montserrat leading-relaxed text-lg">
-              {paragraphs[0]}
+              {paragraph}
             </p>
           </div>
         </motion.div>,
       );
-    }
-
-    // Hvis det er færre enn 4 paragraphs: pullquote etter første paragraph
-    // Hvis det er 4 paragraphs: pullquote mellom paragraph 2 og 3
-    const pullquoteAfterParagraph = paragraphs.length === 4 ? 2 : 1;
-
-    // Andre paragraph hvis den eksisterer
-    if (paragraphs[1]) {
-      content.push(
-        <motion.div
-          key="paragraph-2"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          <div className="prose prose-lg dark:prose-invert max-w-none">
-            <p className="text-gray-700 dark:text-gray-300 font-montserrat leading-relaxed text-lg">
-              {paragraphs[1]}
-            </p>
-          </div>
-        </motion.div>,
-      );
-    }
-
-    // Pullquote posisjonering
-    if (
-      pullquoteAfterParagraph === 1 ||
-      (pullquoteAfterParagraph === 2 && paragraphs.length >= 2)
-    ) {
-      content.push(
-        <motion.div
-          key="pullquote"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-center py-8"
-        >
-          <blockquote className="text-transparent bg-clip-text bg-hero-gradient font-bebas text-bebas-xl md:text-bebas-2xl leading-tight">
-            {section.pullQuote}
-          </blockquote>
-        </motion.div>,
-      );
-    }
-
-    // Tredje paragraph hvis den eksisterer
-    if (paragraphs[2]) {
-      content.push(
-        <motion.div
-          key="paragraph-3"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-        >
-          <div className="prose prose-lg dark:prose-invert max-w-none">
-            <p className="text-gray-700 dark:text-gray-300 font-montserrat leading-relaxed text-lg">
-              {paragraphs[2]}
-            </p>
-          </div>
-        </motion.div>,
-      );
-    }
-
-    // Fjerde paragraph hvis den eksisterer
-    if (paragraphs[3]) {
-      content.push(
-        <motion.div
-          key="paragraph-4"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-        >
-          <div className="prose prose-lg dark:prose-invert max-w-none">
-            <p className="text-gray-700 dark:text-gray-300 font-montserrat leading-relaxed text-lg">
-              {paragraphs[3]}
-            </p>
-          </div>
-        </motion.div>,
-      );
-    }
-
+  
+      // Sett inn pullquote umiddelbart etter riktig paragraph
+      if (index === pullquoteAfterIndex) {
+        content.push(
+          <motion.div
+            key="pullquote"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="text-center py-8"
+          >
+            <blockquote className="text-transparent bg-clip-text bg-hero-gradient font-bebas text-bebas-xl md:text-bebas-2xl leading-tight">
+              {section.pullQuote}
+            </blockquote>
+          </motion.div>,
+        );
+      }
+    });
+  
     return content;
   };
+
+  // Render content with pullquote positioned correctly
+  // const renderContentWithPullquote = (
+  //   section: AboutSection,
+  //   paragraphs: string[],
+  // ) => {
+  //   const content = [];
+
+  //   // Første paragraph
+  //   if (paragraphs[0]) {
+  //     content.push(
+  //       <motion.div
+  //         key="paragraph-1"
+  //         initial={{ opacity: 0, y: 30 }}
+  //         whileInView={{ opacity: 1, y: 0 }}
+  //         viewport={{ once: true }}
+  //         transition={{ duration: 0.8 }}
+  //       >
+  //         <div className="prose prose-lg dark:prose-invert max-w-none">
+  //           <p className="text-gray-700 dark:text-gray-300 font-montserrat leading-relaxed text-lg">
+  //             {paragraphs[0]}
+  //           </p>
+  //         </div>
+  //       </motion.div>,
+  //     );
+  //   }
+
+  //   // Hvis det er færre enn 4 paragraphs: pullquote etter første paragraph
+  //   // Hvis det er 4 paragraphs: pullquote mellom paragraph 2 og 3
+  //   const pullquoteAfterParagraph = paragraphs.length === 4 ? 2 : 1;
+
+  //   // Andre paragraph hvis den eksisterer
+  //   if (paragraphs[1]) {
+  //     content.push(
+  //       <motion.div
+  //         key="paragraph-2"
+  //         initial={{ opacity: 0, y: 30 }}
+  //         whileInView={{ opacity: 1, y: 0 }}
+  //         viewport={{ once: true }}
+  //         transition={{ duration: 0.8, delay: 0.2 }}
+  //       >
+  //         <div className="prose prose-lg dark:prose-invert max-w-none">
+  //           <p className="text-gray-700 dark:text-gray-300 font-montserrat leading-relaxed text-lg">
+  //             {paragraphs[1]}
+  //           </p>
+  //         </div>
+  //       </motion.div>,
+  //     );
+  //   }
+
+  //   // Pullquote posisjonering
+  //   if (
+  //     pullquoteAfterParagraph === 1 ||
+  //     (pullquoteAfterParagraph === 2 && paragraphs.length >= 2)
+  //   ) {
+  //     content.push(
+  //       <motion.div
+  //         key="pullquote"
+  //         initial={{ opacity: 0, y: 30 }}
+  //         whileInView={{ opacity: 1, y: 0 }}
+  //         viewport={{ once: true }}
+  //         transition={{ duration: 0.8, delay: 0.4 }}
+  //         className="text-center py-8"
+  //       >
+  //         <blockquote className="text-transparent bg-clip-text bg-hero-gradient font-bebas text-bebas-xl md:text-bebas-2xl leading-tight">
+  //           {section.pullQuote}
+  //         </blockquote>
+  //       </motion.div>,
+  //     );
+  //   }
+
+  //   // Tredje paragraph hvis den eksisterer
+  //   if (paragraphs[2]) {
+  //     content.push(
+  //       <motion.div
+  //         key="paragraph-3"
+  //         initial={{ opacity: 0, y: 30 }}
+  //         whileInView={{ opacity: 1, y: 0 }}
+  //         viewport={{ once: true }}
+  //         transition={{ duration: 0.8, delay: 0.6 }}
+  //       >
+  //         <div className="prose prose-lg dark:prose-invert max-w-none">
+  //           <p className="text-gray-700 dark:text-gray-300 font-montserrat leading-relaxed text-lg">
+  //             {paragraphs[2]}
+  //           </p>
+  //         </div>
+  //       </motion.div>,
+  //     );
+  //   }
+
+  //   // Fjerde paragraph hvis den eksisterer
+  //   if (paragraphs[3]) {
+  //     content.push(
+  //       <motion.div
+  //         key="paragraph-4"
+  //         initial={{ opacity: 0, y: 30 }}
+  //         whileInView={{ opacity: 1, y: 0 }}
+  //         viewport={{ once: true }}
+  //         transition={{ duration: 0.8, delay: 0.8 }}
+  //       >
+  //         <div className="prose prose-lg dark:prose-invert max-w-none">
+  //           <p className="text-gray-700 dark:text-gray-300 font-montserrat leading-relaxed text-lg">
+  //             {paragraphs[3]}
+  //           </p>
+  //         </div>
+  //       </motion.div>,
+  //     );
+  //   }
+
+  //   return content;
+  // };
 
   if (loading) {
     return (
