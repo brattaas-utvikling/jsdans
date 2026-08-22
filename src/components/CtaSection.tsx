@@ -94,23 +94,6 @@ export default function CtaSection() {
             >
               Se våre kurs
             </Link>
-
-            <Link
-              to="/timeplan"
-              style={{ touchAction: "manipulation" }}
-              className={cn(
-                buttonVariants({ variant: "outline" }),
-                "rounded-full min-h-[48px] px-8",
-                "border-white/40 text-white bg-transparent",
-                "font-montserrat font-bold text-sm tracking-wide",
-                "hover:bg-white/10 hover:text-white hover:border-white/60",
-                "transition-all duration-200 active:scale-[0.98]",
-                "focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2",
-              )}
-              aria-label="Se timeplan for dansetimer i Kongsvinger"
-            >
-              Timeplan
-            </Link>
           </motion.div>
         </div>
       </div>
