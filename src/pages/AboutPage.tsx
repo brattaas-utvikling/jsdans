@@ -314,7 +314,6 @@ export default function AboutPage() {
         </section>
       )}
 
-      {/* FIKSET: InstructorsSection med proper overflow håndtering */}
       <div className="w-full overflow-hidden">
         <InstructorsSection />
       </div>
