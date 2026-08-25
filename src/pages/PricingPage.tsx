@@ -376,7 +376,7 @@ export default function PricingPage() {
               {/* Footer */}
               <div className="bg-gray-50/50 dark:bg-gray-800/30 px-6 py-4 border-t border-gray-100/50 dark:border-gray-700/30">
                 <p className="text-xs text-gray-600 dark:text-gray-400 font-montserrat text-center">
-                  Alle priser er inkludert MVA. Kontakt oss for spørsmål om priser eller rabatter.
+                 Kontakt oss for spørsmål om priser eller rabatter.
                 </p>
               </div>
             </div>
