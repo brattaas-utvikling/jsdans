@@ -1,4 +1,4 @@
-// src/services/scheduleService.ts
+// src/services/scheduleServices.ts
 
 import { listDocuments, DATABASE_ID, COLLECTIONS, Query } from "@/lib/appwrite";
 
@@ -57,7 +57,7 @@ export const getThemeFromClass = (danceClass: DanceClass): string => {
   }
 
   // Contemporary kids (emerald)
-  if (name.includes("contemporary kids") || name.includes("contemporary") && name.includes("kids")) {
+  if (name.includes("contemporary kids") || (name.includes("contemporary") && name.includes("kids"))) {
     return "Moderne";
   }
 
@@ -235,6 +235,39 @@ const timeToMinutes = (timeString: string): number => {
   return hours * 60 + minutes;
 };
 
+/* -------------------------------------------------------------------------- */
+/* special_notes                                                              */
+/* -------------------------------------------------------------------------- */
+
+// Hvor mange tegn som får plass i en timeplan-blokk før teksten kuttes
+const INLINE_NOTE_MAX_LENGTH = 16;
+
+/**
+ * Full notat-tekst fra Appwrite, trimmet.
+ * Returnerer null hvis feltet er tomt, mangler eller bare inneholder whitespace.
+ * Brukes i modalen og i tooltip.
+ */
+export const getSpecialNote = (
+  schedule: Pick<Schedule, "special_notes">,
+): string | null => {
+  const note = schedule.special_notes?.trim();
+  return note ? note : null;
+};
+
+/**
+ * Kortversjon av notatet, beregnet på den lille blokka i timeplanen.
+ * Korte notater ("Gruppe 1") vises i sin helhet, lange kuttes med ellipse.
+ * Vil du at lange notater kun skal vises i modalen: bytt siste linje mot `return null;`.
+ */
+export const getInlineSpecialNote = (
+  schedule: Pick<Schedule, "special_notes">,
+): string | null => {
+  const note = getSpecialNote(schedule);
+  if (!note) return null;
+  if (note.length <= INLINE_NOTE_MAX_LENGTH) return note;
+  return `${note.slice(0, INLINE_NOTE_MAX_LENGTH - 1).trimEnd()}…`;
+};
+
 // Constants for timeplan view
 export const STUDIO_ROOMS = ["Sal 1", "Sal 2"];
 export const DAYS_OF_WEEK = ["Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag"];
@@ -266,7 +299,6 @@ export const TIME_SLOTS = [
   "21:15",
   "21:30",
 ];
-
 
 export const THEMES = {
   Hiphop: {

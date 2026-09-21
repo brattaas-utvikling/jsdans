@@ -8,6 +8,8 @@ import {
   getThemeFromClass,
   getScheduleDuration,
   getThemeColors,
+  getSpecialNote,
+  getInlineSpecialNote,
   STUDIO_ROOMS,
   DAYS_OF_WEEK,
   TIME_SLOTS,
@@ -154,21 +156,14 @@ export default function SchedualPage() {
 
     const instructor = schedule.substitute_instructor || schedule.dance_class?.instructor;
 
+    // special_notes: kortversjon i blokka, full tekst i tooltip
+    const inlineNote = getInlineSpecialNote(schedule);
+    const fullNote = getSpecialNote(schedule);
+
     const heightInPx = isDesktop
       ? duration * 28 + (duration - 1) * 1
       : duration * 24 + (duration - 1) * 1;
 
-    // return (
-    //   <motion.div
-    //     key={schedule.$id}
-    //     initial={{ opacity: 0, scale: 0.95 }}
-    //     animate={{ opacity: 1, scale: 1 }}
-    //     transition={{ duration: 0.3 }}
-    //     className={`absolute inset-0 ${isDesktop ? "rounded-lg px-1 py-0.5" : "rounded px-1 py-0.5"} font-montserrat schedule-block
-    //       ${themeColors.color} ${themeColors.textColor} shadow-md z-10`}
-    //     style={{ height: `${heightInPx}px` }}
-    //     title={`${schedule.dance_class.name} - ${schedule.start_time} til ${schedule.end_time}`}
-    //   >
     return (
       <motion.div
         key={schedule.$id}
@@ -186,20 +181,32 @@ export default function SchedualPage() {
             setSelectedSchedule(schedule);
           }
         }}
-        className={`absolute inset-0 ${isDesktop ? "rounded-lg px-1 py-0.5" : "rounded px-1 py-0.5"} font-montserrat schedule-block cursor-pointer
+        className={`absolute inset-0 ${isDesktop ? "rounded-lg px-1 py-0.5" : "rounded px-1 py-0.5"} font-montserrat schedule-block cursor-pointer overflow-hidden
           ${themeColors.color} ${themeColors.textColor} shadow-md z-10 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-1`}
         style={{ height: `${heightInPx}px` }}
-        title={`${schedule.dance_class.name} - ${schedule.start_time} til ${schedule.end_time}`}
+        title={`${schedule.dance_class.name} - ${schedule.start_time} til ${schedule.end_time}${
+          fullNote ? ` · ${fullNote}` : ""
+        }`}
       >
         <div
           className={`font-bold ${isDesktop ? "text-xs" : "text-xs"} leading-tight ${
             isDesktop ? "mb-0.5" : "mb-0"
           }`}
         >
-          <div className="font-bold text-xs leading-tight mb-0.5 line-clamp-3">
+          <div
+            className={`font-bold text-xs leading-tight mb-0.5 ${
+              inlineNote ? "line-clamp-2" : "line-clamp-3"
+            }`}
+          >
             {schedule.dance_class.name}
           </div>
         </div>
+
+        {inlineNote && (
+          <div className="mb-0.5 inline-flex max-w-full items-center rounded-sm bg-black/10 px-1 text-[10px] font-semibold uppercase leading-tight tracking-wide dark:bg-white/20">
+            <span className="truncate">{inlineNote}</span>
+          </div>
+        )}
 
         {instructor && (
           <div className="text-xs opacity-80 mb-0.5 truncate leading-tight">
@@ -224,138 +231,150 @@ export default function SchedualPage() {
     );
   };
 
-  // NYTT: Dedikert print-komponent (alltid desktop layout)// PrintableSchedule komponent (den som fungerte):
+  // Dedikert print-komponent (alltid desktop layout)
+  const PrintableSchedule = () => {
+    const printScheduleIndex = useMemo(() => {
+      const map: Record<string, Record<string, Record<string, ScheduleWithClass>>> = {};
 
-const PrintableSchedule = () => {
-  const printScheduleIndex = useMemo(() => {
-    const map: Record<string, Record<string, Record<string, ScheduleWithClass>>> = {};
+      schedules.forEach((schedule) => {
+        if (!map[schedule.day]) map[schedule.day] = {};
+        if (!map[schedule.day]![schedule.room]) map[schedule.day]![schedule.room] = {};
+        map[schedule.day]![schedule.room]![schedule.start_time] = schedule;
+      });
 
-    schedules.forEach((schedule) => {
-      if (!map[schedule.day]) map[schedule.day] = {};
-      if (!map[schedule.day]![schedule.room]) map[schedule.day]![schedule.room] = {};
-      map[schedule.day]![schedule.room]![schedule.start_time] = schedule;
-    });
+      return map;
+    }, [schedules]);
 
-    return map;
-  }, []);
+    const isPrintTimeSlotOccupied = (room: string, time: string, day: string): boolean => {
+      const timeIndex = TIME_SLOTS.indexOf(time);
+      if (timeIndex <= 0) return false;
 
-  const isPrintTimeSlotOccupied = (room: string, time: string, day: string): boolean => {
-    const timeIndex = TIME_SLOTS.indexOf(time);
-    if (timeIndex <= 0) return false;
+      for (let i = timeIndex - 1; i >= 0; i--) {
+        const previousTime = TIME_SLOTS[i]!;
+        const schedule = printScheduleIndex[day]?.[room]?.[previousTime];
 
-    for (let i = timeIndex - 1; i >= 0; i--) {
-      const previousTime = TIME_SLOTS[i]!;
-      const schedule = printScheduleIndex[day]?.[room]?.[previousTime];
-
-      if (schedule) {
-        const duration = getScheduleDuration(schedule);
-        const endSlotIndex = i + duration;
-        if (endSlotIndex > timeIndex) return true;
+        if (schedule) {
+          const duration = getScheduleDuration(schedule);
+          const endSlotIndex = i + duration;
+          if (endSlotIndex > timeIndex) return true;
+        }
       }
-    }
-    return false;
-  };
+      return false;
+    };
 
-  const renderPrintSchedule = (room: string, time: string, day: string) => {
-    const schedule = printScheduleIndex[day]?.[room]?.[time];
-    if (!schedule) return null;
+    const renderPrintSchedule = (room: string, time: string, day: string) => {
+      const schedule = printScheduleIndex[day]?.[room]?.[time];
+      if (!schedule) return null;
 
-    const duration = getScheduleDuration(schedule);
-    const theme = getThemeFromClass(schedule.dance_class);
-    const themeColors = getThemeColors(theme as keyof typeof THEMES);
-    const instructor = schedule.substitute_instructor || schedule.dance_class?.instructor;
+      const duration = getScheduleDuration(schedule);
+      const theme = getThemeFromClass(schedule.dance_class);
+      const themeColors = getThemeColors(theme as keyof typeof THEMES);
+      const instructor = schedule.substitute_instructor || schedule.dance_class?.instructor;
 
-    // Justert høyde for print: 26px per slot
-    const heightInPx = duration * 26 + (duration - 1) * 1;
+      // special_notes i utskriften
+      const printNote = getInlineSpecialNote(schedule);
+
+      // Justert høyde for print: 26px per slot
+      const heightInPx = duration * 26 + (duration - 1) * 1;
+
+      return (
+        <div
+          key={schedule.$id}
+          className={`absolute inset-0 rounded-lg px-1 py-0.5 font-montserrat schedule-block overflow-hidden
+            ${themeColors.color} ${themeColors.textColor} shadow-md print:shadow-none z-10`}
+          style={{ height: `${heightInPx}px` }}
+        >
+          <div
+            className={`font-bold text-xs leading-tight mb-0.5 ${
+              printNote ? "line-clamp-2" : "line-clamp-3"
+            }`}
+          >
+            {schedule.dance_class.name}
+          </div>
+
+          {printNote && (
+            <div className="mb-0.5 inline-flex max-w-full items-center rounded-sm bg-black/10 px-1 text-[10px] font-semibold uppercase leading-tight tracking-wide">
+              <span className="truncate">{printNote}</span>
+            </div>
+          )}
+
+          {instructor && (
+            <div className="text-xs opacity-80 mb-0.5 truncate leading-tight">
+              {instructor}
+              {schedule.substitute_instructor && <span className="text-xs opacity-75"> (V)</span>}
+            </div>
+          )}
+
+          <div className="text-xs font-medium leading-tight">
+            {`${schedule.start_time.substring(0, 5)}-${schedule.end_time.substring(0, 5)}`}
+          </div>
+
+          {schedule.maxStudents && schedule.maxStudents > 0 && duration > 1 && (
+            <div className="text-xs mt-0.5 font-medium text-gray-900 dark:text-white leading-tight">
+              {schedule.currentStudents || 0}/{schedule.maxStudents}
+            </div>
+          )}
+        </div>
+      );
+    };
 
     return (
       <div
-        key={schedule.$id}
-        className={`absolute inset-0 rounded-lg px-1 py-0.5 font-montserrat schedule-block
-          ${themeColors.color} ${themeColors.textColor} shadow-md print:shadow-none z-10`}
-        style={{ height: `${heightInPx}px` }}
+        id="printable-schedule"
+        className="hidden print:block bg-white rounded-2xl shadow-brand-lg border border-brand-100/50 overflow-hidden"
       >
-        <div className="font-bold text-xs leading-tight mb-0.5 line-clamp-3">
-          {schedule.dance_class.name}
+        <div className="bg-brand-50 p-4 border-b border-brand-200">
+          <h3 className="font-bebas text-lg font-semibold text-center text-gray-900">
+            Urban Studios - Timeplan høst 2026
+          </h3>
         </div>
 
-        {instructor && (
-          <div className="text-xs opacity-80 mb-0.5 truncate leading-tight">
-            {instructor}
-            {schedule.substitute_instructor && <span className="text-xs opacity-75"> (V)</span>}
-          </div>
-        )}
+        <div className="overflow-x-auto">
+          <div
+            className="grid gap-px bg-gray-200 min-w-max"
+            style={{
+              gridTemplateColumns: `60px repeat(${visibleDays.length * STUDIO_ROOMS.length}, minmax(90px, 1fr))`,
+            }}
+          >
+            {/* Header row */}
+            <div className="bg-gray-100 font-montserrat font-medium text-center py-3 text-gray-700 text-xs">
+              Tid
+            </div>
 
-        <div className="text-xs font-medium leading-tight">
-          {`${schedule.start_time.substring(0, 5)}-${schedule.end_time.substring(0, 5)}`}
+            {visibleDays.map((day) =>
+              STUDIO_ROOMS.map((room) => (
+                <div
+                  key={`header-${day}-${room}`}
+                  className="bg-gray-100 font-montserrat font-medium text-center py-1.5 text-gray-700 text-xs"
+                >
+                  <div className="font-semibold text-xs truncate">{day}</div>
+                  <div className="text-xs opacity-75 truncate">{room}</div>
+                </div>
+              )),
+            )}
+
+            {/* Time slots - JUSTERT HØYDE */}
+            {TIME_SLOTS.map((time) => (
+              <React.Fragment key={`print-row-${time}`}>
+                <div className="bg-gray-50 text-xs text-center py-1.5 font-montserrat text-gray-600 flex items-center justify-center">
+                  {time}
+                </div>
+
+                {visibleDays.map((day) =>
+                  STUDIO_ROOMS.map((room) => (
+                    <div key={`cell-${day}-${room}-${time}`} className="relative h-7 bg-white">
+                      {!isPrintTimeSlotOccupied(room, time, day) &&
+                        renderPrintSchedule(room, time, day)}
+                    </div>
+                  )),
+                )}
+              </React.Fragment>
+            ))}
+          </div>
         </div>
-
-        {schedule.maxStudents && schedule.maxStudents > 0 && duration > 1 && (
-          <div className="text-xs mt-0.5 font-medium text-gray-900 dark:text-white leading-tight">
-            {schedule.currentStudents || 0}/{schedule.maxStudents}
-          </div>
-        )}
       </div>
     );
   };
-
-  return (
-    <div
-      id="printable-schedule"
-      className="hidden print:block bg-white rounded-2xl shadow-brand-lg border border-brand-100/50 overflow-hidden"
-    >
-      <div className="bg-brand-50 p-4 border-b border-brand-200">
-        <h3 className="font-bebas text-lg font-semibold text-center text-gray-900">
-          Urban Studios - Timeplan høst 2026
-        </h3>
-      </div>
-
-      <div className="overflow-x-auto">
-        <div
-          className="grid gap-px bg-gray-200 min-w-max"
-          style={{
-            gridTemplateColumns: `60px repeat(${visibleDays.length * STUDIO_ROOMS.length}, minmax(90px, 1fr))`,
-          }}
-        >
-          {/* Header row */}
-          <div className="bg-gray-100 font-montserrat font-medium text-center py-3 text-gray-700 text-xs">
-            Tid
-          </div>
-
-          {visibleDays.map((day) =>
-            STUDIO_ROOMS.map((room) => (
-              <div
-                key={`header-${day}-${room}`}
-                className="bg-gray-100 font-montserrat font-medium text-center py-1.5 text-gray-700 text-xs"
-              >
-                <div className="font-semibold text-xs truncate">{day}</div>
-                <div className="text-xs opacity-75 truncate">{room}</div>
-              </div>
-            )),
-          )}
-
-          {/* Time slots - JUSTERT HØYDE */}
-          {TIME_SLOTS.map((time) => (
-            <React.Fragment key={`print-row-${time}`}>
-              <div className="bg-gray-50 text-xs text-center py-1.5 font-montserrat text-gray-600 flex items-center justify-center">
-                {time}
-              </div>
-
-              {visibleDays.map((day) =>
-                STUDIO_ROOMS.map((room) => (
-                  <div key={`cell-${day}-${room}-${time}`} className="relative h-7 bg-white">
-                    {!isPrintTimeSlotOccupied(room, time, day) &&
-                      renderPrintSchedule(room, time, day)}
-                  </div>
-                )),
-              )}
-            </React.Fragment>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
 
   const RoomSelector = () => (
     <div className="hidden lg:flex justify-center mb-6">
@@ -477,7 +496,7 @@ const PrintableSchedule = () => {
     <div className="min-h-screen bg-white dark:bg-surface-dark">
       <ScrollToTop />
 
-      {/* NYTT: Hidden print component - kun synlig når man printer */}
+      {/* Hidden print component - kun synlig når man printer */}
       <PrintableSchedule />
 
       {/* Desktop: top bar */}
@@ -532,8 +551,8 @@ const PrintableSchedule = () => {
               <span className="text-magenta-500 font-semibold">COGZO</span>
             </p>
             <p className="mt-2 text-sm text-gray-500 dark:text-gray-400 font-montserrat italic">
-  Trykk på en time i timeplanen for å se mer informasjon om kurset
-</p>
+              Trykk på en time i timeplanen for å se mer informasjon om kurset
+            </p>
           </motion.div>
         </div>
       </section>
@@ -821,129 +840,144 @@ const PrintableSchedule = () => {
           </motion.div>
         </div>
       </section>
+
       <Dialog
-  open={!!selectedSchedule}
-  onOpenChange={(open) => {
-    if (!open) setSelectedSchedule(null);
-  }}
->
-  {selectedSchedule && (() => {
-    const theme = getThemeFromClass(selectedSchedule.dance_class);
-    const themeColors = getThemeColors(theme as keyof typeof THEMES);
-    const instructor =
-      selectedSchedule.substitute_instructor || selectedSchedule.dance_class?.instructor;
-    const isFull =
-      !!selectedSchedule.maxStudents &&
-      (selectedSchedule.currentStudents || 0) >= selectedSchedule.maxStudents;
+        open={!!selectedSchedule}
+        onOpenChange={(open) => {
+          if (!open) setSelectedSchedule(null);
+        }}
+      >
+        {selectedSchedule &&
+          (() => {
+            const theme = getThemeFromClass(selectedSchedule.dance_class);
+            const themeColors = getThemeColors(theme as keyof typeof THEMES);
+            const instructor =
+              selectedSchedule.substitute_instructor || selectedSchedule.dance_class?.instructor;
+            const isFull =
+              !!selectedSchedule.maxStudents &&
+              (selectedSchedule.currentStudents || 0) >= selectedSchedule.maxStudents;
 
-    return (
-      <DialogContent className="w-[95vw] max-w-lg max-h-[90vh] overflow-y-auto bg-white dark:bg-surface-dark mx-auto my-2 sm:my-8 p-4 sm:p-6">
-        <DialogHeader className="space-y-2">
-          <DialogTitle className="text-xl sm:text-2xl font-bebas text-gray-900 dark:text-white pr-8">
-            {selectedSchedule.dance_class.name}
-          </DialogTitle>
-          {selectedSchedule.dance_class.description && (
-            <DialogDescription className="text-sm sm:text-base text-start font-montserrat text-gray-600 dark:text-gray-300">
-              {selectedSchedule.dance_class.description}
-            </DialogDescription>
-          )}
-        </DialogHeader>
+            // Full notat-tekst i modalen
+            const specialNote = getSpecialNote(selectedSchedule);
 
-        <div className="space-y-4 mt-2">
-          <div className={`p-4 rounded-lg border ${themeColors.color} ${themeColors.textColor} ${themeColors.borderColor}`}>
-            <div className="flex items-center gap-2 font-montserrat font-semibold">
-              <Calendar className="h-4 w-4" />
-              {selectedSchedule.day}
-            </div>
-            <div className="flex items-center gap-2 mt-1 font-montserrat">
-              <Clock className="h-4 w-4" />
-              {selectedSchedule.start_time.substring(0, 5)} - {selectedSchedule.end_time.substring(0, 5)}
-            </div>
-            <div className="flex items-center gap-2 mt-1 font-montserrat">
-              <MapPin className="h-4 w-4" />
-              {selectedSchedule.room}
-            </div>
-          </div>
+            return (
+              <DialogContent className="w-[95vw] max-w-lg max-h-[90vh] overflow-y-auto bg-white dark:bg-surface-dark mx-auto my-2 sm:my-8 p-4 sm:p-6">
+                <DialogHeader className="space-y-2">
+                  <DialogTitle className="text-xl sm:text-2xl font-bebas text-gray-900 dark:text-white pr-8">
+                    {selectedSchedule.dance_class.name}
+                  </DialogTitle>
+                  {selectedSchedule.dance_class.description && (
+                    <DialogDescription className="text-sm sm:text-base text-start font-montserrat text-gray-600 dark:text-gray-300">
+                      {selectedSchedule.dance_class.description}
+                    </DialogDescription>
+                  )}
+                </DialogHeader>
 
-          <div className="grid grid-cols-2 gap-3">
-            <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-surface-dark-muted rounded-lg border border-brand-100/50 dark:border-brand-700/30">
-              <User className="h-4 w-4 text-brand-500 flex-shrink-0" />
-              <div className="min-w-0">
-                <div className="font-montserrat font-semibold text-gray-900 dark:text-white text-sm">
-                  Instruktør
-                </div>
-                <div className="text-xs text-gray-600 dark:text-gray-300 font-montserrat truncate">
-                  {instructor}
-                  {selectedSchedule.substitute_instructor && (
-                    <span className="opacity-70"> (vikar)</span>
+                <div className="space-y-4 mt-2">
+                  <div
+                    className={`p-4 rounded-lg border ${themeColors.color} ${themeColors.textColor} ${themeColors.borderColor}`}
+                  >
+                    <div className="flex items-center gap-2 font-montserrat font-semibold">
+                      <Calendar className="h-4 w-4" />
+                      {selectedSchedule.day}
+                    </div>
+                    <div className="flex items-center gap-2 mt-1 font-montserrat">
+                      <Clock className="h-4 w-4" />
+                      {selectedSchedule.start_time.substring(0, 5)} -{" "}
+                      {selectedSchedule.end_time.substring(0, 5)}
+                    </div>
+                    <div className="flex items-center gap-2 mt-1 font-montserrat">
+                      <MapPin className="h-4 w-4" />
+                      {selectedSchedule.room}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-surface-dark-muted rounded-lg border border-brand-100/50 dark:border-brand-700/30">
+                      <User className="h-4 w-4 text-brand-500 flex-shrink-0" />
+                      <div className="min-w-0">
+                        <div className="font-montserrat font-semibold text-gray-900 dark:text-white text-sm">
+                          Instruktør
+                        </div>
+                        <div className="text-xs text-gray-600 dark:text-gray-300 font-montserrat truncate">
+                          {instructor}
+                          {selectedSchedule.substitute_instructor && (
+                            <span className="opacity-70"> (vikar)</span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-surface-dark-muted rounded-lg border border-brand-100/50 dark:border-brand-700/30">
+                      <Users className="h-4 w-4 text-brand-500 flex-shrink-0" />
+                      <div className="min-w-0">
+                        <div className="font-montserrat font-semibold text-gray-900 dark:text-white text-sm">
+                          Alder
+                        </div>
+                        <div className="text-xs text-gray-600 dark:text-gray-300 font-montserrat">
+                          {selectedSchedule.dance_class.age}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {!!selectedSchedule.maxStudents && selectedSchedule.maxStudents > 0 && (
+                    <div className="p-3 bg-gray-50 dark:bg-surface-dark-muted rounded-lg border border-brand-100/50 dark:border-brand-700/30">
+                      <div className="flex justify-between text-sm font-montserrat mb-1">
+                        <span className="text-gray-700 dark:text-gray-200">Påmeldte</span>
+                        <span
+                          className={
+                            isFull ? "text-red-600 font-semibold" : "text-gray-700 dark:text-gray-200"
+                          }
+                        >
+                          {selectedSchedule.currentStudents || 0}/{selectedSchedule.maxStudents}
+                          {isFull && " (fullt)"}
+                        </span>
+                      </div>
+                      <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                        <div
+                          className={`h-full ${isFull ? "bg-red-500" : "bg-brand-500"}`}
+                          style={{
+                            width: `${Math.min(
+                              100,
+                              ((selectedSchedule.currentStudents || 0) /
+                                selectedSchedule.maxStudents) *
+                                100,
+                            )}%`,
+                          }}
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {specialNote && (
+                    <div className="p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg text-sm font-montserrat text-amber-800 dark:text-amber-200">
+                      <div className="mb-1 font-semibold">Merk</div>
+                      {specialNote}
+                    </div>
                   )}
                 </div>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-surface-dark-muted rounded-lg border border-brand-100/50 dark:border-brand-700/30">
-              <Users className="h-4 w-4 text-brand-500 flex-shrink-0" />
-              <div className="min-w-0">
-                <div className="font-montserrat font-semibold text-gray-900 dark:text-white text-sm">
-                  Alder
-                </div>
-                <div className="text-xs text-gray-600 dark:text-gray-300 font-montserrat">
-                  {selectedSchedule.dance_class.age}
-                </div>
-              </div>
-            </div>
-          </div>
 
-          {!!selectedSchedule.maxStudents && selectedSchedule.maxStudents > 0 && (
-            <div className="p-3 bg-gray-50 dark:bg-surface-dark-muted rounded-lg border border-brand-100/50 dark:border-brand-700/30">
-              <div className="flex justify-between text-sm font-montserrat mb-1">
-                <span className="text-gray-700 dark:text-gray-200">Påmeldte</span>
-                <span className={isFull ? "text-red-600 font-semibold" : "text-gray-700 dark:text-gray-200"}>
-                  {selectedSchedule.currentStudents || 0}/{selectedSchedule.maxStudents}
-                  {isFull && " (fullt)"}
-                </span>
-              </div>
-              <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                <div
-                  className={`h-full ${isFull ? "bg-red-500" : "bg-brand-500"}`}
-                  style={{
-                    width: `${Math.min(
-                      100,
-                      ((selectedSchedule.currentStudents || 0) / selectedSchedule.maxStudents) * 100,
-                    )}%`,
-                  }}
-                />
-              </div>
-            </div>
-          )}
-
-          {selectedSchedule.special_notes && (
-            <div className="p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg text-sm font-montserrat text-amber-800 dark:text-amber-200">
-              {selectedSchedule.special_notes}
-            </div>
-          )}
-        </div>
-
-        <DialogFooter className="mt-6 flex-col gap-2 sm:flex-row">
-          <Link to="/registration" className="w-full">
-            <Button
-              className="w-full bg-brand-500 hover:bg-brand-600 text-white font-medium"
-              onClick={() => setSelectedSchedule(null)}
-            >
-              Meld deg på
-            </Button>
-          </Link>
-          <Button
-            variant="outline"
-            className="w-full font-medium border-2 border-brand-300 text-brand-600 hover:bg-brand-50 dark:border-brand-700 dark:text-brand-400 dark:hover:bg-brand-900/30"
-            onClick={() => setSelectedSchedule(null)}
-          >
-            Lukk
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    );
-  })()}
-</Dialog>
+                <DialogFooter className="mt-6 flex-col gap-2 sm:flex-row">
+                  <Link to="/registration" className="w-full">
+                    <Button
+                      className="w-full bg-brand-500 hover:bg-brand-600 text-white font-medium"
+                      onClick={() => setSelectedSchedule(null)}
+                    >
+                      Meld deg på
+                    </Button>
+                  </Link>
+                  <Button
+                    variant="outline"
+                    className="w-full font-medium border-2 border-brand-300 text-brand-600 hover:bg-brand-50 dark:border-brand-700 dark:text-brand-400 dark:hover:bg-brand-900/30"
+                    onClick={() => setSelectedSchedule(null)}
+                  >
+                    Lukk
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            );
+          })()}
+      </Dialog>
     </div>
   );
 }
